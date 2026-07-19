@@ -1,0 +1,154 @@
+{
+  "identity": {
+    "id": "joystick-pan-tilt-turret",
+    "title": "Joystick Pan-Tilt Turret",
+    "tagline": "Push the joystick, a two-servo camera-style mount points wherever you push it.",
+    "category": "Robots & Motion",
+    "difficulty": "Intermediate",
+    "estimatedTime": "35 minutes"
+  },
+  "goal": "Control two servos — one for horizontal pan, one for vertical tilt — from a single analog joystick, building the same kind of manually-aimed mount used under small cameras and turret-style sensor rigs.",
+  "simpleSummary": "Aim a small camera-style mount up/down and left/right using a single joystick.",
+  "howItWorks": "An analog joystick module is really just two independent potentiometers sharing one stick — pushing it left/right turns one internal potentiometer, pushing it up/down turns the other, and each reports its own 0-1023 value exactly like the single potentiometer in Servo Pan Sweep. This project simply doubles that exact pattern: read VRx and map it to the pan servo's angle, read VRy and map it to the tilt servo's angle, completely independently of each other. Nothing about combining two axes is conceptually new here — it's the same one-pot-to-one-servo idea, running twice in parallel.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "Small screwdriver for mounting servos to a pan-tilt bracket"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "joystick-module",
+      "quantity": 1
+    },
+    {
+      "componentId": "sg90-servo",
+      "quantity": 2,
+      "note": "pan + tilt"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 9 wires"
+    }
+  ],
+  "circuitDiagramCaption": "Joystick's two axes (VRx, VRy) on A0/A1; pan servo on D9, tilt servo on D10.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VRx"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0"
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VRy"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "Signal (orange/yellow wire)",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        },
+        "label": "pan"
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "Signal (orange/yellow wire)",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        },
+        "label": "tilt"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the joystick's VCC to 5V, GND to GND, VRx to A0, and VRy to A1.",
+      "detail": "The joystick's SW (push-button, from clicking the stick down) is left unconnected in this build — see Extend This Project for a use for it."
+    },
+    {
+      "step": 2,
+      "instruction": "Mount one servo for horizontal rotation (pan) and attach a second servo to its horn/bracket for vertical rotation (tilt), so the tilt servo physically rides on top of the pan servo's motion.",
+      "detail": "This mechanical stacking — one axis mounted on top of the other — is the standard pan-tilt arrangement used everywhere from security cameras to the Obstacle-Avoidance Robot's sensor mount, just with two axes here instead of one."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the pan servo's signal to D9 and the tilt servo's signal to D10, with both powered from 5V/GND.",
+      "detail": "Two servos moving at once can draw a noticeable current spike — if you see resets or jitter, power the servos from a separate 5V source rather than the Arduino's own regulator."
+    }
+  ],
+  "code": [
+    {
+      "filename": "joystick_pan_tilt.ino",
+      "language": "arduino",
+      "source": "#include <Servo.h>\n\n// Joystick Pan-Tilt Turret\n// Maps joystick X/Y axes onto two independent servo angles.\n\nconst int VRX_PIN = A0;\nconst int VRY_PIN = A1;\n\nconst int PAN_SERVO_PIN = 9;\nconst int TILT_SERVO_PIN = 10;\n\nServo panServo;\nServo tiltServo;\n\nvoid setup() {\n  panServo.attach(PAN_SERVO_PIN);\n  tiltServo.attach(TILT_SERVO_PIN);\n}\n\nvoid loop() {\n  int panAngle = map(analogRead(VRX_PIN), 0, 1023, 0, 180);\n  int tiltAngle = map(analogRead(VRY_PIN), 0, 1023, 0, 180);\n\n  panServo.write(panAngle);\n  tiltServo.write(tiltAngle);\n\n  delay(15);\n}\n",
+      "explanation": "This is deliberately almost identical to Servo Pan Sweep's loop(), just duplicated for a second axis — read an analog value, map it to a servo angle, write it, for VRx/pan and again for VRy/tilt. Recognizing when a new project is \"the same pattern, twice\" rather than something conceptually new is a useful skill in its own right once you're combining components you've already used individually."
+    }
+  ],
+  "expectedBehavior": "Pushing the joystick left/right smoothly pans the turret; pushing it up/down smoothly tilts it, with both axes responding independently and simultaneously to diagonal pushes.",
+  "troubleshooting": [
+    {
+      "issue": "One axis works but the other doesn't respond.",
+      "fix": "Double check that axis's analog pin wiring and that you haven't accidentally mapped both servos to the same analog pin by mistake."
+    },
+    {
+      "issue": "Turret twitches constantly even with the joystick centered.",
+      "fix": "Most joysticks don't return to exactly the same center value every time — add a small dead zone (e.g. ignore analogRead() changes within ±10 of center) before mapping to an angle."
+    },
+    {
+      "issue": "Servos jitter or the Arduino resets when both move at once.",
+      "fix": "This is a power issue, not a code issue — power the servos from a separate supply rather than the Arduino's onboard 5V regulator, which struggles to supply two servos moving simultaneously."
+    }
+  ],
+  "extensions": [
+    "Use the joystick's click button (SW pin) to snap the turret back to a centered \"home\" position.",
+    "Mount a laser pointer or small camera on the turret for an aimable pointer/webcam mount.",
+    "Add a set of preset positions triggered by separate buttons instead of only manual joystick control.",
+    "Combine with the Obstacle-Avoidance Robot's sensor-sweep logic for a manually-overridable auto-scan mode."
+  ]
+}

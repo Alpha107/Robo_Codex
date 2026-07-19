@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "slam",
+    "title": "SLAM (Simultaneous Localization and Mapping)",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Advanced",
+    "tagline": "Building a map of an unknown space and figuring out where you are in it — both at once, from the same data."
+  },
+  "simpleSummary": "Building a map of a space you've never seen before while also figuring out exactly where you are within that map — solving both problems together, since each one needs the other.",
+  "keyIdea": "SLAM jointly estimates a robot's own trajectory and a map of its surroundings at the same time, because accurate mapping requires knowing your location while taking each measurement, and accurate localization requires already having a map — a chicken-and-egg problem solved by handling both together.",
+  "overview": "Localizing a robot normally assumes a known map already exists; mapping an environment normally assumes the robot's own position is already known while it takes measurements. SLAM (Simultaneous Localization and Mapping) tackles the situation where neither is true: a robot exploring a genuinely unknown space must build a map and figure out its own position within that map at the same time, using the same stream of sensor data for both. The key technique that makes this tractable is loop closure: when a robot recognizes it has returned to a place it has already mapped, that recognition creates a powerful constraint that can retroactively correct accumulated drift across the entire trajectory and map built so far — sometimes fixing a large chunk of accumulated error in a single correction.",
+  "equations": [
+    {
+      "label": "The SLAM Problem (formal statement)",
+      "expression": "estimate p(x₁:t, m | z₁:t, u₁:t)",
+      "meaning": "SLAM estimates the joint probability of the entire robot trajectory x₁:t and the map m, given every sensor observation z₁:t and every motion/control input u₁:t received so far — 'joint' is the key word, since trajectory and map are estimated together, not one after the other."
+    }
+  ],
+  "howItWorks": "Two broad families of approaches solve SLAM. Filtering approaches extend estimation techniques already covered elsewhere in this encyclopedia: EKF-SLAM folds both the robot's pose and every observed landmark's position into one large joint state vector, updated with the Extended Kalman Filter; FastSLAM instead uses a particle filter for the robot's trajectory, paired with many small individual Kalman filters (one per landmark) for the map. Modern practical SLAM systems more commonly use a graph-based (pose-graph) approach instead: each node in a graph represents the robot's estimated pose at a particular moment in time, and edges represent constraints between poses — relative motion from odometry between consecutive poses, and, crucially, loop closure constraints whenever the robot recognizes it has revisited an already-mapped place. Solving a large optimization problem over this entire graph at once finds the most globally consistent set of poses (and map) given every constraint simultaneously, which is exactly what lets a single loop closure correct drift that accumulated over a long, otherwise-uncorrected path. Because odometry alone always drifts (see Odometry & Dead Reckoning), loop closures are what make long-duration, large-scale SLAM actually usable rather than progressively less accurate the longer a robot explores.",
+  "diagramCaption": "Before loop closure, accumulated drift means the robot's path doesn't quite meet itself when it returns to a known location; recognizing that revisit lets the whole trajectory and map be corrected to close the loop properly.",
+  "realWorldExamples": [
+    "A LiDAR-equipped robot vacuum or delivery robot building a 2D floor plan of a building it has never seen before while simultaneously tracking its own position within that plan.",
+    "Visual SLAM running inside AR/VR headsets and phone-based augmented reality apps, tracking the device's position while building a map of the surrounding room in real time.",
+    "Autonomous vehicles building detailed local maps of their immediate surroundings while precisely localizing themselves within those maps for safe navigation."
+  ],
+  "commonMisconceptions": [
+    "\"SLAM is only used in advanced research robots\" — it runs inside many consumer robot vacuums and virtually every modern AR/VR headset.",
+    "\"SLAM requires a LiDAR sensor\" — camera-based visual SLAM and other sensor combinations are widely used; LiDAR is common but not required.",
+    "\"SLAM produces a perfect, final map on the very first pass\" — the map and trajectory are progressively refined and corrected, especially at loop closures, meaning earlier parts of a map are often retroactively adjusted as more data arrives."
+  ],
+  "relatedComponents": ["rplidar", "mpu6050", "usb-webcam", "esp32-cam"],
+  "relatedProjects": [],
+  "relatedConcepts": ["particle-filter-monte-carlo-localization", "kalman-filter", "odometry-and-dead-reckoning", "computer-vision-basics"]
+}

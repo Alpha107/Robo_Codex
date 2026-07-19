@@ -1,0 +1,162 @@
+{
+  "identity": {
+    "id": "robotic-gripper",
+    "name": "Robotic Gripper (2-Finger Parallel Jaw)",
+    "category": "Structural & Mechanical",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A parallel-jaw gripper converts a single rotary actuator (usually a servo turning a small rack-and-pinion or lead-screw mechanism) into two fingers that move toward and away from each other while staying parallel, rather than pivoting like a pair of pliers. Keeping the fingers parallel matters because it keeps the contact patch on a flat-sided object consistent regardless of the object's exact width, which makes grasp planning far simpler than with angular jaws. The core design tension is force versus stroke and versus speed: a gripper geared for high gripping force to hold a heavy or slippery part will close slower and have less usable opening range than one geared for fast, light-duty picks, and cheap versions expose only position control with no direct force feedback, so 'gripping force' is really just 'how hard the actuator stalls against the object' unless the unit has current or strain sensing built in.",
+  "simpleSummary": "A robot hand with two flat fingers that slide toward each other in parallel to grab an object, driven by a small motor.",
+  "specifications": {
+    "actuationType": "Servo-driven rack-and-pinion parallel jaw (electric)",
+    "jawStroke": "0-50 mm opening (each finger travels ~25 mm)",
+    "grippingForce": "20-60 N, adjustable via servo current/PWM duty limiting",
+    "payloadCapacity": "~1 kg for friction grasps, more with form-closure fixtures on the fingertips",
+    "positionRepeatability": "±0.1 mm jaw position",
+    "fullStrokeTime": "~0.1-0.3 s",
+    "weight": "~250-400 g",
+    "mountingInterface": "ISO 9409-1-50-4-M6 robot wrist flange pattern",
+    "controlInterface": "Hobby PWM servo signal, or serial/Modbus smart-gripper protocol on higher-end units"
+  },
+  "pinMap": [
+    {
+      "name": "Mounting Flange",
+      "position": null,
+      "category": "special",
+      "function": "Bolt pattern that attaches the gripper body to the robot wrist or end-effector adapter plate.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Cheaper arms often don't follow the ISO 9409-1-50-4-M6 pattern exactly — an adapter plate is frequently needed, and that plate adds unaccounted-for length that throws off reach and inverse-kinematics calculations if it isn't measured in."
+    },
+    {
+      "name": "Finger Mount (Left)",
+      "position": null,
+      "category": "special",
+      "function": "Dovetail or T-slot interface for swapping in different fingertip pads (rubber, hard plastic, or custom 3D-printed jaws).",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Fingertip mounting screws back out over repeated impact-style grasp cycles if not thread-locked — losing a fingertip mid-grasp on a running cell is a common, avoidable failure."
+    },
+    {
+      "name": "Finger Mount (Right)",
+      "position": null,
+      "category": "special",
+      "function": "Symmetric mount to the left finger; both move inward/outward together to keep the jaw parallel.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Finger pads must be replaced as a matched pair and re-zeroed. Mismatched pad thickness between left and right shifts the parallel close point off-center, so the gripper grabs objects slightly crooked even though each finger individually looks fine."
+    },
+    {
+      "name": "Signal",
+      "position": null,
+      "category": "digital",
+      "function": "PWM control input on servo-actuated grippers; commanding a pulse width drives the jaw to a target open/close position.",
+      "voltageRange": "0-5V (or 3.3V logic depending on controller)",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "Standard hobby PWM only free-runs the actuator toward a target position — it does not report force. Commanding a fully-closed position against a rigid object without a current or stall-current limit stalls and can overheat the internal actuator."
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input to the internal actuator (servo or motor) driving the jaw mechanism.",
+      "voltageRange": "6-7.4V typical for hobby-servo-actuated units",
+      "currentLimit": "1-3A continuous, higher briefly on stall",
+      "alternateFunctions": [],
+      "gotcha": "Inrush current when the jaw snaps closed against a rigid object briefly spikes well above the datasheet 'typical' figure. Wiring and connectors that are fine on the open bench can overheat after repeated closed-on-hard-object cycles in production use."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground return shared with the controller and power supply.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Ground must be common with the signal source ground, not just the power supply — a floating signal ground causes erratic jaw position jitter that looks like a bad servo."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Pick-and-place kitting cell",
+      "scenario": "Mount on a 6-DOF arm to pick uniform parts from a bin and place them into kitting trays, using fixed open/close positions per part type.",
+      "pinsInvolved": [
+        "Signal",
+        "VCC",
+        "GND",
+        "Mounting Flange"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Bin picking with variable object width",
+      "scenario": "Combine with a vision system that estimates object width so the gripper commands a close position matched to each part instead of a single fixed stroke.",
+      "pinsInvolved": [
+        "Signal",
+        "Finger Mount (Left)",
+        "Finger Mount (Right)"
+      ],
+      "difficulty": "Advanced (requires vision-to-grasp coordination)"
+    },
+    {
+      "title": "Delicate object handling with force limiting",
+      "scenario": "Use current-sense feedback on the actuator to stop closing the instant grip force reaches a set threshold, avoiding crushing fragile objects like eggs or 3D-printed parts.",
+      "pinsInvolved": [
+        "Signal",
+        "VCC"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Educational kinematics demo",
+      "scenario": "Attach to a desktop 6-DOF arm kit as the end effector for teaching pick-and-place programming and basic grasp planning.",
+      "pinsInvolved": [
+        "Mounting Flange",
+        "Signal",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Assembly line part handoff",
+      "scenario": "Grip a part from a fixture, transfer it to a conveyor or a second fixture, using repeatable jaw positions for consistent placement.",
+      "pinsInvolved": [
+        "Signal",
+        "Mounting Flange",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "6-DOF robotic arm kit",
+      "Force/torque sensor",
+      "Servo motor controller",
+      "Machine vision camera"
+    ],
+    "oftenConfusedWith": [
+      "Soft/pneumatic gripper (compliant fingers, different failure and force profile)",
+      "Vacuum/suction gripper (no fingers, relies on air seal instead of jaw force)"
+    ],
+    "oftenUpgradedTo": [
+      "Adaptive underactuated multi-finger gripper (conforms to irregular shapes)",
+      "Pneumatic parallel gripper (higher force, faster cycle time, needs compressed air supply)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Commanding a full-close position on a rigid object with no force/current limit, stalling and overheating the actuator.",
+    "Assuming the ISO wrist flange pattern matches without measuring, then discovering the adapter plate changes the effective reach.",
+    "Skipping thread-lock on fingertip mounting screws, losing a fingertip during repeated impact-style grasps.",
+    "Swapping only one fingertip pad instead of both, causing off-center, crooked grasps.",
+    "Undersizing the power wiring based on 'typical' current specs instead of the higher inrush seen when snapping closed on hard objects."
+  ]
+}

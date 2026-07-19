@@ -1,0 +1,148 @@
+{
+  "identity": {
+    "id": "magnetometer-qmc5883l",
+    "name": "Magnetometer / Compass (QMC5883L)",
+    "category": "Motion & Orientation Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The QMC5883L measures the strength of the magnetic field along three axes, which is what lets it work out a heading relative to magnetic north the same way a physical compass needle does. It became the de facto budget breakout chip after largely replacing the older HMC5883L on cheap modules — the two are pin-compatible and often sold under the same silkscreen label, but they use a different I2C address and register map entirely, so code written for one reads garbage from the other. On its own it only gives a heading when held perfectly level; any tilt introduces error unless the reading is tilt-compensated using a separate accelerometer, which is exactly why most robotics projects pair it with (or upgrade to) a combined IMU instead of using it alone.",
+  "simpleSummary": "A tiny sensor that senses Earth's magnetic field to work out which way is north, like a digital compass needle.",
+  "specifications": {
+    "axes": "3-axis magnetic field measurement",
+    "range": "±2 Gauss / ±8 Gauss, selectable",
+    "resolution": "16-bit ADC, ~2-12 milliGauss/LSB depending on range",
+    "outputDataRate": "10/50/100/200 Hz, selectable",
+    "interface": "I2C, default address 0x0D",
+    "operatingVoltage": "3.3V (breakouts often add a 5V-tolerant regulator)",
+    "currentDraw": "~1-2 mA active, sub-µA in standby"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~1-2 mA active",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Boards silkscreened 'HMC5883L' sometimes actually carry a QMC5883L die (or vice versa) as manufacturers swap suppliers — the two use different I2C addresses (0x0D vs 0x1E) and register maps, so a library written for one will read nothing or garbage from the other. Confirm which chip you actually have before debugging your code."
+    },
+    {
+      "name": "DRDY",
+      "position": null,
+      "category": "digital",
+      "function": "Data-ready interrupt output — pulses when a new measurement is available, letting you skip polling the status register over I2C.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": "Often left unconnected on breakout boards — if it never toggles, that's expected unless you've wired it, not a sign the sensor has failed."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robot compass heading",
+      "scenario": "Fuse magnetometer heading with a gyroscope for a stable compass reading that doesn't drift the way pure gyro integration does.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Metal detector / ferrous object trigger",
+      "scenario": "Watch for sudden local field distortions caused by a nearby ferrous object passing close to the sensor.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Drone yaw reference",
+      "scenario": "Provide an absolute heading reference to correct for gyroscope yaw drift in a flight controller.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL",
+        "DRDY"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Handheld digital compass",
+      "scenario": "Simple standalone gadget that displays heading on a small screen.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Non-contact current sensing",
+      "scenario": "Roughly estimate current flow through a nearby wire from the magnetic field it generates (coarse, needs calibration).",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "MPU6050 (fusing accel+gyro with this magnetometer to build a custom 9-DOF stack)"
+    ],
+    "oftenConfusedWith": [
+      "HMC5883L (nearly pin-identical breakout, but a different I2C address and register map — firmware for one won't read the other correctly without changes)",
+      "MPU9250/BNO055 (this is a bare magnetometer only; those already include a magnetometer alongside a gyroscope and accelerometer in one package)"
+    ],
+    "oftenUpgradedTo": [
+      "MPU9250, for a full 9-DOF sensor in one part instead of wiring a separate magnetometer",
+      "BNO055, for finished sensor-fusion heading output instead of raw magnetometer readings that need your own tilt-compensation and calibration"
+    ]
+  },
+  "beginnerMistakes": [
+    "Mounting it close to motors, speakers, or a steel chassis, which corrupts every reading with local magnetic distortion.",
+    "Skipping hard-iron/soft-iron calibration (the figure-8 waving routine), leaving heading off by tens of degrees.",
+    "Assuming it's an HMC5883L (or vice versa) and using the wrong library/address for the chip actually on the board.",
+    "Forgetting magnetic north isn't true north — the declination angle varies by location and matters for real navigation.",
+    "Reading raw axis values without tilt-compensation, so heading is only correct when the sensor is held perfectly level."
+  ]
+}

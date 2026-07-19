@@ -1,0 +1,83 @@
+{
+  "identity": {
+    "id": "ir-obstacle-sensor",
+    "name": "IR Obstacle Avoidance Sensor",
+    "category": "Distance & Proximity Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This small board pairs an infrared LED with a phototransistor: the LED constantly emits IR light, and the phototransistor detects how much bounces back off a nearby object. An onboard comparator chip (usually an LM393) turns that analog reflection level into a simple digital HIGH/LOW signal — 'something is close' or 'nothing is close' — with a trimpot to adjust the sensitivity threshold. It's cheaper and simpler than an ultrasonic sensor but far less precise: it can't tell you how far away something is, only whether it's within an adjustable trigger range, and dark or light-absorbing surfaces can fool it into never triggering.",
+  "simpleSummary": "A simple sensor that shines invisible light and detects if something is in front of it.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "outputType": "Digital (HIGH/LOW), threshold set by an onboard trimpot",
+    "detectionRange": "~2cm - 30cm (adjustable, model-dependent)",
+    "responseTime": "Fast (comparator-based, no software filtering needed)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the IR LED and comparator circuit.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output — typically LOW when an obstacle is detected within range, HIGH otherwise (some modules invert this).",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A (digital output)",
+      "alternateFunctions": [],
+      "gotcha": "Dark, matte, or angled surfaces absorb/deflect the IR beam and can fail to trigger detection even at close range — don't rely on it for reliably detecting all obstacle types."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Simple obstacle-avoiding robot",
+      "scenario": "Mount 2-3 around a robot's perimeter for cheap, fast binary obstacle detection.",
+      "pinsInvolved": [
+        "OUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Object-present trigger",
+      "scenario": "Trigger an action (alarm, counter, gate) when any object comes within range.",
+      "pinsInvolved": [
+        "OUT"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "L298N motor driver"
+    ],
+    "oftenConfusedWith": [
+      "HC-SR04 (measures actual distance, not just presence)",
+      "Sharp GP2Y0A21 (analog distance output)"
+    ],
+    "oftenUpgradedTo": [
+      "HC-SR04 or Sharp GP2Y0A21 when actual distance measurement is needed instead of simple detection"
+    ]
+  }
+}

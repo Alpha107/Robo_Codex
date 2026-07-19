@@ -1,0 +1,29 @@
+{
+  "identity": {
+    "id": "actuator-selection-servo-stepper-bldc",
+    "title": "Actuator Selection: Servo vs Stepper vs BLDC",
+    "category": "Actuation Foundations",
+    "level": "Foundational",
+    "tagline": "A practical decision framework for choosing between the three main motor types, based on what the task actually needs."
+  },
+  "simpleSummary": "A practical guide to choosing between the three main motor types for a robot — servo, stepper, and brushless DC — based on what the task actually needs: an exact angle, a precise open-loop position, or raw speed and power.",
+  "keyIdea": "Servos, steppers, and BLDC motors each trade off precision, feedback, cost, and power differently, and the right motor for a task is entirely determined by which of those trade-offs the task actually needs.",
+  "overview": "This page pulls together a decision that's otherwise scattered across individual component pages and Motor Control Theory. Hobby servos have built-in position feedback via an internal potentiometer, simple 3-wire PWM control, and a limited rotation range on standard models — they're already closed-loop internally, which makes them the right choice whenever a task wants to command and hold a specific angle directly, like an arm joint or a steering mechanism. Stepper motors need no feedback for basic operation, moving in discrete, fixed-size steps commanded open-loop — genuinely precise as long as no steps are missed, but with no built-in confirmation that a commanded step actually happened, making them the right choice for precise open-loop positioning under known, controlled load, like a 3D printer or CNC axis. Brushless DC (BLDC) motors offer the highest power-to-weight ratio and top speed of the three, but need a dedicated ESC and typically have no positional feedback at all without adding a separate encoder — fundamentally a speed-and-power-oriented motor rather than a precise-positioning one, the right choice for drone propellers or high-speed wheels.",
+  "equations": [],
+  "howItWorks": "The practical decision framework is simple to state: does the task need to command an exact angle (servo), an exact discrete position reached by counting open-loop steps (stepper), or mostly speed and power with position secondary or handled by a separate sensor (BLDC)? A few trade-offs are easy to miss. Steppers can silently miss steps under too much load — tying directly back to Motor Control Theory's stall/torque limits and Gear Ratios' torque requirements — breaking the 'no feedback needed' assumption without any built-in way to detect it, which is exactly why higher-load stepper applications sometimes add an encoder anyway despite steppers traditionally being an open-loop choice. Standard servos have a limited rotation range (typically around 180 degrees) unless specifically modified into a continuous-rotation servo, which then gives up positional feedback and control entirely (becoming speed-only, much like a small geared DC motor) in exchange for continuous rotation. And a BLDC motor's need for an ESC to handle its three-phase commutation is a direct consequence of its physical operating principle, adding real cost and complexity compared to a simple brushed DC motor for tasks that don't actually need BLDC's power or efficiency advantages.",
+  "diagramCaption": "Each motor type has a distinct motion character: a servo sweeps to and holds a commanded angle, a stepper advances in discrete fixed jumps, and a BLDC motor simply spins continuously and fast.",
+  "realWorldExamples": [
+    "This site's Servo Pan Sweep and pan-tilt projects using standard hobby servos specifically because they need to command and hold an exact angle directly.",
+    "The DC Motor Speed Control and line-following/obstacle-avoidance robot projects using simple geared DC motors rather than steppers or BLDC, since precise positioning isn't the goal — just controllable speed and direction.",
+    "3D printers and CNC machines almost universally using stepper motors for axis positioning, since precise, repeatable open-loop positioning is exactly their core requirement.",
+    "Drones using BLDC motors for their propellers specifically for power-to-weight ratio and top speed, with attitude control handled by varying each motor's speed rather than any single motor's own position."
+  ],
+  "commonMisconceptions": [
+    "\"Steppers are always more precise than servos\" — steppers are precise as long as they never stall or miss a step, but a stalled stepper silently loses position with no feedback to detect it, whereas a servo's built-in feedback constantly confirms its actual position.",
+    "\"BLDC motors are just a fancier brushed DC motor and can be swapped in directly\" — they fundamentally require a dedicated ESC for electronic commutation to run at all, unlike a brushed DC motor, which a simple H-bridge can drive directly.",
+    "\"A continuous-rotation servo is still a servo in the full sense\" — modifying a servo for continuous rotation removes its positional feedback and control entirely, turning it into a speed-only actuator much closer to a small geared DC motor."
+  ],
+  "relatedComponents": ["sg90-servo", "mg996r-servo", "continuous-rotation-servo", "nema17-stepper", "28byj48-stepper", "bldc-motor", "dc-geared-motor", "esc", "a4988-drv8825"],
+  "relatedProjects": ["servo-pan-sweep", "dc-motor-speed-control"],
+  "relatedConcepts": ["motor-control-theory", "gear-ratios-and-mechanical-advantage", "open-loop-vs-closed-loop-control"]
+}

@@ -1,0 +1,116 @@
+{
+  "identity": {
+    "id": "rotary-encoder",
+    "name": "Rotary Encoder (KY-040 style)",
+    "category": "Line Following / Encoders / Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A rotary encoder looks like a potentiometer knob but works completely differently: instead of reporting an absolute position, it reports relative movement — 'turned one detent clockwise' or 'turned one detent counter-clockwise' — via two output signals (CLK and DT) that shift phase depending on rotation direction. That makes it ideal for menu navigation and unbounded adjustment controls (volume knobs, 3D printer jog wheels) where a potentiometer's fixed rotation range would be limiting. Most breakout modules also include a built-in push button, activated by pressing the knob straight down.",
+  "simpleSummary": "A knob that spins forever with clicks, reporting which way it turned instead of an absolute position.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V (mechanical switches, not voltage-sensitive)",
+    "outputType": "Two digital quadrature signals (CLK, DT) plus an integrated push-button switch",
+    "detents": "Commonly 20 detents per revolution (varies by model)",
+    "resolution": "One CLK/DT transition pair per detent"
+  },
+  "pinMap": [
+    {
+      "name": "CLK",
+      "position": null,
+      "category": "digital",
+      "function": "First quadrature output — compared against DT's phase to determine rotation direction.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Mechanical contacts bounce — without debouncing in software (or a hardware filter), a single detent click can register as multiple steps."
+    },
+    {
+      "name": "DT",
+      "position": null,
+      "category": "digital",
+      "function": "Second quadrature output — whether DT is HIGH or LOW when CLK changes indicates rotation direction.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SW",
+      "position": null,
+      "category": "digital",
+      "function": "Integrated push-button, activated by pressing the knob down (active LOW on most breakouts).",
+      "voltageRange": "0-5V digital, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Push button"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input, usually just pulling the switch/quadrature lines up through internal or external pull-up resistors.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "Very low",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Menu navigation control",
+      "scenario": "Scroll through an OLED/LCD menu and select items with the integrated push button.",
+      "pinsInvolved": [
+        "CLK",
+        "DT",
+        "SW"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Volume/brightness control knob",
+      "scenario": "Unbounded adjustment dial for audio volume, LED brightness, or similar continuous settings.",
+      "pinsInvolved": [
+        "CLK",
+        "DT"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "3D printer / CNC jog wheel",
+      "scenario": "Manually jog an axis a precise number of steps per detent click.",
+      "pinsInvolved": [
+        "CLK",
+        "DT"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "16x2 LCD",
+      "OLED display"
+    ],
+    "oftenConfusedWith": [
+      "Potentiometer (absolute position, limited rotation range, no button)",
+      "Optical wheel encoder (measures motor/wheel rotation, not a manual control knob)"
+    ],
+    "oftenUpgradedTo": [
+      "Absolute magnetic encoders for applications needing exact angle, not just relative steps"
+    ]
+  }
+}

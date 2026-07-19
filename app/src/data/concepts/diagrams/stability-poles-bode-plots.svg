@@ -1,0 +1,44 @@
+<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .decaydraw { stroke-dasharray: 260; animation: draw 2.6s ease-out infinite; }
+    @keyframes draw { from { stroke-dashoffset: 260; } 70%, 100% { stroke-dashoffset: 0; } }
+  </style>
+
+  <text x="155" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">s-PLANE (pole locations)</text>
+  <rect x="30" y="40" width="125" height="220" fill="#d3f9d8"/>
+  <rect x="155" y="40" width="125" height="220" fill="#ffe3e3"/>
+  <line x1="155" y1="40" x2="155" y2="260" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="30" y1="150" x2="280" y2="150" stroke="#1a1d23" stroke-width="2"/>
+  <text x="285" y="154" font-size="12" fill="#5b6270">Re</text>
+  <text x="150" y="35" text-anchor="middle" font-size="12" fill="#5b6270">Im</text>
+  <text x="55" y="270" font-size="11" font-weight="700" fill="#2f9e44">stable region</text>
+  <text x="185" y="270" font-size="11" font-weight="700" fill="#e03131">unstable region</text>
+
+  <text x="90" y="120" text-anchor="middle" font-size="16" font-weight="700" fill="#2f9e44">&#10005;</text>
+  <text x="90" y="185" text-anchor="middle" font-size="16" font-weight="700" fill="#2f9e44">&#10005;</text>
+  <text x="115" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#2f9e44">&#10005;</text>
+  <text x="225" y="105" text-anchor="middle" font-size="16" font-weight="700" fill="#e03131">&#10005;</text>
+  <text x="30" y="105" text-anchor="middle" font-size="10" fill="#2f9e44">decaying</text>
+  <text x="225" y="88" text-anchor="middle" font-size="10" fill="#e03131">growing (unstable)</text>
+
+  <line x1="330" y1="0" x2="330" y2="380" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="510" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">BODE MAGNITUDE PLOT</text>
+  <line x1="380" y1="240" x2="380" y2="50" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="380" y1="240" x2="660" y2="240" stroke="#1a1d23" stroke-width="2"/>
+  <text x="365" y="55" text-anchor="end" font-size="11" fill="#5b6270">Gain (dB)</text>
+  <text x="655" y="256" text-anchor="end" font-size="11" fill="#5b6270">Frequency (log)</text>
+  <path d="M380,90 H480 Q540,90 560,150 T660,225" fill="none" stroke="#2f6fae" stroke-width="2.5"/>
+  <line x1="380" y1="150" x2="660" y2="150" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="560" y="145" font-size="10" fill="#5b6270">0 dB (unity gain)</text>
+  <path d="M560,150 L560,215" stroke="#f08c00" stroke-width="2" stroke-dasharray="3 3"/>
+  <text x="565" y="200" font-size="10" font-weight="700" fill="#f08c00">gain margin</text>
+
+  <text x="165" y="300" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1d23">What each pole looks like over time:</text>
+
+  <text x="70" y="320" font-size="10" font-weight="700" fill="#2f9e44">stable pole &#8594; decaying oscillation</text>
+  <path d="M35,340 q10,-25 20,0 t20,0 t20,0 t20,0 t20,0 t20,0 q10,10 15,10" fill="none" stroke="#2f9e44" stroke-width="2" class="decaydraw"/>
+
+  <text x="255" y="320" font-size="10" font-weight="700" fill="#e03131">unstable pole &#8594; growing oscillation</text>
+  <path d="M225,335 q8,-8 16,0 t16,-4 t16,4 t16,-14 t16,14 t16,-24" fill="none" stroke="#e03131" stroke-width="2" class="decaydraw"/>
+</svg>

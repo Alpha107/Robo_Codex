@@ -1,0 +1,428 @@
+{
+  "identity": {
+    "id": "raspberry-pi-5",
+    "name": "Raspberry Pi 5",
+    "category": "Single Board Computer",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Raspberry Pi 5 is the same 'real Linux computer' idea as the Pi 4 — it boots an OS from a microSD card, multitasks, and runs regular Python/C++ programs instead of firmware — but the underlying architecture changed enough that it's a genuine generational leap, not just a speed bump. The BCM2712 SoC uses quad-core Cortex-A76 cores at 2.4GHz (versus the Pi 4's Cortex-A72 at 1.5GHz), giving roughly 2-3x the CPU throughput. The bigger structural change is invisible until you go looking for it: almost all I/O (USB, Ethernet, GPIO, camera/display) is no longer wired directly to the main SoC. It's handled by a new custom RP1 southbridge chip connected over an internal PCIe link — the same north-bridge/south-bridge split desktop PCs have used for decades. That split is also what unlocked the Pi line's first PCIe 2.0 x1 connector, exposed as a small FFC ribbon slot, for a genuine NVMe SSD.",
+  "simpleSummary": "A faster, restructured successor to the Pi 4 with a real NVMe SSD option, an onboard clock battery, and a dedicated fan header.",
+  "specifications": {
+    "processor": "Broadcom BCM2712, quad-core Cortex-A76, 2.4 GHz (vs Cortex-A72 @ 1.5GHz on Pi 4)",
+    "gpu": "VideoCore VII, supports OpenGL ES 3.1 and Vulkan 1.2",
+    "ram": "4GB / 8GB / 16GB LPDDR4X-4267 (the 2GB option from Pi 4 was dropped)",
+    "ioController": "RP1 southbridge chip handles USB, Ethernet, GPIO, and camera/display I/O over an internal PCIe link — decoupled from the main SoC, unlike the Pi 4",
+    "storage": "microSD (OS boot), plus PCIe 2.0 x1 NVMe SSD support via the FFC connector (requires a HAT+ or adapter board), USB boot supported",
+    "connectivity": "Gigabit Ethernet, WiFi 802.11ac, Bluetooth 5.0/BLE",
+    "usb": "2x USB 3.0, 2x USB 2.0",
+    "video": "2x micro-HDMI (dual 4K60 supported), 2x 4-lane MIPI camera/display connectors (combined CSI/DSI, replacing the Pi 4's separate single CSI + single DSI ports)",
+    "power": "5V/5A via USB-C with USB Power Delivery negotiation (27W max); an old 5V/3A Pi 4 supply still boots it but throttles peripherals",
+    "gpio": "40-pin header, 3.3V logic, physically and electrically pin-compatible with the Pi 4's layout",
+    "dimensions": "85mm x 56mm (same form factor as Pi 4)",
+    "cooling": "Runs noticeably hotter than the Pi 4 under sustained load; the official Active Cooler (fan + heatsink) is effectively required, not optional, for CPU-heavy workloads"
+  },
+  "pinMap": [
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output (two physical pins, same rail).",
+      "voltageRange": "3.3V",
+      "currentLimit": "~50 mA recommended for external use",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "5V rail, sourced from the USB-C input (two physical pins, same rail).",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on power supply headroom; a weak supply here starves GPIO-powered peripherals before it starves the CPU.",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference (multiple physical pins, all the same net).",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO2 (SDA1)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line, now routed through the RP1 chip rather than directly by the SoC.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["I2C SDA"],
+      "gotcha": "Has a fixed onboard pull-up resistor, unlike most other GPIOs. Very tight bit-banged timing (unusual for I2C, but common on GPIO4/17 elsewhere) can behave slightly differently now that it's mediated by RP1 instead of the SoC directly."
+    },
+    {
+      "name": "GPIO3 (SCL1)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["I2C SCL"],
+      "gotcha": "Fixed onboard pull-up, same as GPIO2."
+    },
+    {
+      "name": "GPIO4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["1-Wire (common default)"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO14 (TXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART transmit, also used by the Linux serial console by default.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["UART TX"],
+      "gotcha": "May be claimed by the OS console — disable serial console in raspi-config to reuse for a project."
+    },
+    {
+      "name": "GPIO15 (RXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["UART RX"],
+      "gotcha": "Same console caveat as GPIO14."
+    },
+    {
+      "name": "GPIO17",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO18",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["PWM", "I2S"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO27",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO22",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO23",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO24",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO10 (MOSI)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["SPI MOSI"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO9 (MISO)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["SPI MISO"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO11 (SCLK)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["SPI SCLK"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO8 (CE0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 chip-select 0.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["SPI CE0"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO7 (CE1)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 chip-select 1.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["SPI CE1"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO25",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["PWM"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["PWM"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO19",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": ["PWM", "I2S"],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO16",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO26",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO20",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO21",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PCIE_FFC",
+      "position": null,
+      "category": "special",
+      "function": "PCIe 2.0 x1 connector, exposed as a small flat-flex-cable (FFC) slot, for NVMe SSDs or other PCIe expansion boards via a HAT+ or adapter.",
+      "voltageRange": "3.3V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["General PCIe expansion (not just NVMe)"],
+      "gotcha": "The FFC ribbon is fragile and easy to half-insert — a not-fully-seated cable causes the NVMe drive to be detected intermittently rather than cleanly fail. Booting from it also usually requires updating the bootloader EEPROM and setting PCIe boot order first."
+    },
+    {
+      "name": "FAN_HEADER",
+      "position": null,
+      "category": "special",
+      "function": "Dedicated 4-pin PWM-controlled fan connector for the official Active Cooler; new to the Pi 5, absent on Pi 4.",
+      "voltageRange": "5V, PWM signal 0-3.3V",
+      "currentLimit": "~200 mA fan supply",
+      "alternateFunctions": [],
+      "gotcha": "Only the official Active Cooler's connector matches this header's pinout/keying — generic fans wired here need checking against the pinout before assuming plug-and-play."
+    },
+    {
+      "name": "RTC_BATTERY",
+      "position": null,
+      "category": "power",
+      "function": "2-pin connector for an optional CR2032-backed RTC battery, keeping the onboard real-time clock accurate across power loss.",
+      "voltageRange": "3V (coin cell)",
+      "currentLimit": "Microamp-level RTC keep-alive draw",
+      "alternateFunctions": [],
+      "gotcha": "No battery ships by default — without one, the RTC still exists in silicon but resets on every power loss, so the system clock is wrong at boot until it syncs over the network, same as a Pi 4."
+    },
+    {
+      "name": "PWR_BUTTON",
+      "position": null,
+      "category": "special",
+      "function": "Onboard power button header — first Pi with a real power button rather than just pulling the plug.",
+      "voltageRange": "3.3V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "A single press is configurable behavior (shutdown, reboot, or nothing) — it does not always mean a safe shutdown happened unless configured that way, and a yanked power cord can still corrupt the SD card just like on a Pi 4."
+    },
+    {
+      "name": "CAM_DSI",
+      "position": null,
+      "category": "communication",
+      "function": "Two identical 4-lane MIPI connectors that can each be configured as camera (CSI) or display (DSI) input — the Pi 4 had one fixed CSI port and one fixed DSI port instead.",
+      "voltageRange": "MIPI differential signaling",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["Camera input", "Display output"],
+      "gotcha": "Pi 4-era camera/display ribbon cables are a different connector pitch and are not physically compatible without an adapter cable, despite looking similar."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Faster on-device computer vision",
+      "scenario": "Run larger or higher-resolution vision models (object detection, pose estimation) locally in near real time, something the Pi 4's CPU visibly struggled to keep up with.",
+      "pinsInvolved": ["CAM_DSI", "GPIO17", "GND"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "NVMe-backed high-throughput data logger",
+      "scenario": "Attach an NVMe SSD via the PCIe FFC connector for continuous high-speed sensor or video logging that would wear out a microSD card.",
+      "pinsInvolved": ["PCIE_FFC"],
+      "difficulty": "Advanced (requires bootloader EEPROM configuration)"
+    },
+    {
+      "title": "Offline field robot with correct timestamps",
+      "scenario": "Add a CR2032 to the RTC battery header so a robot deployed without WiFi at boot still logs data with an accurate clock instead of defaulting to 1970.",
+      "pinsInvolved": ["RTC_BATTERY"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Home automation hub with more headroom",
+      "scenario": "Run Home Assistant plus more integrations and add-ons than a Pi 4 could handle smoothly, as the central server for a house of ESP32/ESP8266 sensor nodes.",
+      "pinsInvolved": [],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Network-attached sensor logger",
+      "scenario": "Read I2C sensors and log to a local database, served over the network via a small web dashboard.",
+      "pinsInvolved": ["GPIO2 (SDA1)", "GPIO3 (SCL1)"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Demanding retro emulation / media center",
+      "scenario": "The extra CPU headroom makes more demanding emulators (PS2, GameCube-era) and higher-bitrate media playback practical compared to a Pi 4.",
+      "pinsInvolved": [],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi Camera Module 3",
+      "NVMe SSD + PCIe HAT/adapter",
+      "Raspberry Pi Active Cooler",
+      "Arduino Uno (as a real-time I/O co-processor)"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi 4 Model B (same GPIO pinout and form factor, but different SoC/I-O architecture and power requirements)",
+      "Raspberry Pi Pico (a microcontroller, not a computer, no OS)"
+    ],
+    "oftenUpgradedTo": [
+      "Jetson Orin Nano (when GPU-accelerated AI inference matters more than general CPU speed)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Reusing a Raspberry Pi 4 power supply (5V/3A) — the Pi 5 wants 5V/5A over USB-C with PD negotiation, and an underpowered supply silently throttles USB and CPU performance instead of failing outright.",
+    "Skipping the Active Cooler or a heatsink — the Pi 5 draws meaningfully more power than a Pi 4 and throttles under sustained load without active cooling, unlike a Pi 4 that could often get away with passive-only in light use.",
+    "Assuming an NVMe drive on the PCIe FFC will boot immediately — it usually needs a bootloader EEPROM update and an explicit PCIe boot order change first.",
+    "Mis-seating the PCIe FFC ribbon cable — it's a fragile flex connector, and a half-inserted cable causes the drive to be intermittently undetected rather than cleanly fail, which reads like a software bug.",
+    "Assuming an old Pi 4 HAT that bit-bangs a timing-critical protocol behaves identically — GPIO is now routed through the RP1 chip instead of the SoC directly, and very tight timing-sensitive code can occasionally behave slightly differently."
+  ]
+}

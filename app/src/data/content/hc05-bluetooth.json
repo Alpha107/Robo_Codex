@@ -1,0 +1,131 @@
+{
+  "identity": {
+    "id": "hc05-bluetooth",
+    "name": "HC-05 / HC-06 Bluetooth Module",
+    "category": "Communication Modules",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "These small modules make Bluetooth communication look exactly like a wired serial connection to a microcontroller — anything sent to the module's RX pin goes out over Bluetooth, and anything received over Bluetooth appears on TX, with no Bluetooth-specific code needed at all. The key difference between the two: the HC-06 is slave-only (it can be connected to, but can't initiate a connection to another device), while the HC-05 supports both master and slave roles and can be reconfigured via AT commands — useful when two microcontrollers need to talk to each other wirelessly rather than just to a phone.",
+  "simpleSummary": "A module that adds Bluetooth to a microcontroller, working just like a wireless wired connection.",
+  "specifications": {
+    "operatingVoltage": "3.3V logic, board commonly accepts 3.6-6V on VCC via an onboard regulator",
+    "interface": "UART (TXD/RXD), configured via AT commands",
+    "range": "~10m (class 2 Bluetooth, typical)",
+    "role": "HC-05: master or slave (configurable); HC-06: slave only",
+    "defaultBaudRate": "9600 (commonly), configurable via AT commands"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input to the onboard regulator.",
+      "voltageRange": "3.6-6V",
+      "currentLimit": "~30-40 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial transmit — outputs 3.3V logic level.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Safe to connect directly to a 5V board's RX pin (most Arduino RX pins tolerate 3.3V signals), but the reverse direction needs a voltage divider."
+    },
+    {
+      "name": "RXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial receive — expects 3.3V logic, not reliably 5V tolerant.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Feeding a full 5V signal from an Arduino's TX pin directly into this pin can degrade or damage the module over time — use a voltage divider or logic level shifter."
+    },
+    {
+      "name": "STATE",
+      "position": null,
+      "category": "digital",
+      "function": "Output indicating connection status (HIGH when paired/connected).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "EN/KEY",
+      "position": null,
+      "category": "digital",
+      "function": "On HC-05, pulling HIGH during power-up forces the module into AT command configuration mode instead of normal communication mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "AT mode select"
+      ],
+      "gotcha": "Not present (or non-functional) on most HC-06 modules — HC-06 configuration options are much more limited."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Phone-controlled robot",
+      "scenario": "Control a robot's motors from a Bluetooth serial terminal app on a phone.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Wireless sensor data logging to a laptop",
+      "scenario": "Stream sensor readings to a computer over Bluetooth serial instead of a USB cable.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Microcontroller-to-microcontroller wireless link",
+      "scenario": "Using an HC-05 in master mode paired with another HC-05/06 in slave mode for board-to-board communication.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD",
+        "EN/KEY"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "L298N motor driver"
+    ],
+    "oftenConfusedWith": [
+      "NRF24L01/HC-12 (different wireless protocols, not phone-compatible Bluetooth)"
+    ],
+    "oftenUpgradedTo": [
+      "ESP32 (adds Bluetooth Low Energy plus WiFi in the same board as the microcontroller)"
+    ]
+  }
+}

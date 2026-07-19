@@ -1,0 +1,114 @@
+{
+  "identity": {
+    "id": "neo6m-gps",
+    "name": "GPS Module (NEO-6M)",
+    "category": "Communication Modules",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The NEO-6M listens to satellite signals and reports position, altitude, speed, and precise time over a plain UART connection, streaming standardized NMEA sentences that a library (like TinyGPS++) parses into usable coordinates. The most important thing to know before using one: it needs a genuinely clear view of the sky — indoors, or even near tall buildings, it can take a very long time to get a fix or fail entirely — and a brand-new module doing a 'cold start' (no prior almanac data) can take 30 seconds to several minutes to find its first fix, even outdoors, though subsequent fixes are much faster thanks to a small backup battery that retains satellite data through power-off.",
+  "simpleSummary": "A module that listens to satellites and reports your exact location.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V (breakout boards commonly include a regulator)",
+    "interface": "UART, outputs standard NMEA 0183 sentences",
+    "defaultBaudRate": "9600",
+    "timeToFirstFix": "Cold start: ~30s-several minutes; warm/hot start (with battery-backed almanac): a few seconds",
+    "accuracy": "~2.5m horizontal (typical, open sky)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~45 mA while acquiring, less once tracking",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial transmit — continuously streams NMEA sentences whether or not a fix has been acquired.",
+      "voltageRange": "0-3.3V (5V-tolerant on most breakouts)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Receiving NMEA data does NOT mean you have a valid position fix — check the fix-quality field in the sentence, don't assume any data means a valid location."
+    },
+    {
+      "name": "RXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial receive, accepts configuration commands (e.g. changing output sentence rate).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PPS",
+      "position": null,
+      "category": "digital",
+      "function": "Pulse-per-second output — a precisely-timed pulse once per second once a fix is acquired, useful for high-accuracy timing applications.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [],
+      "gotcha": "Not present on all breakout boards — only useful for projects needing GPS-disciplined timing, not plain positioning."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "GPS-logging robot/drone",
+      "scenario": "Record a path traveled or navigate to waypoint coordinates.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Vehicle tracker",
+      "scenario": "Combine with a GSM module (SIM800L) to periodically report location remotely.",
+      "pinsInvolved": [
+        "TXD"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Precise clock synchronization",
+      "scenario": "Use the PPS output for GPS-disciplined precise timekeeping.",
+      "pinsInvolved": [
+        "PPS"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "SIM800L GSM module"
+    ],
+    "oftenConfusedWith": [
+      "Cellular-based location (much lower accuracy, no line-of-sky requirement)"
+    ],
+    "oftenUpgradedTo": [
+      "RTK-capable GPS modules for centimeter-level accuracy"
+    ]
+  }
+}

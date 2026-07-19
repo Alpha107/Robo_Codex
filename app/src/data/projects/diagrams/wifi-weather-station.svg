@@ -1,0 +1,20 @@
+<svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="90" width="180" height="130" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="120" y="150" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">ESP32</text>
+  <text x="120" y="171" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">DevKit</text>
+  <text x="120" y="195" text-anchor="middle" fill="#ffffff" font-size="11">(WiFi weather page)</text>
+
+  <rect x="410" y="30" width="160" height="60" rx="8" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <text x="490" y="65" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">BME280</text>
+
+  <rect x="410" y="180" width="160" height="70" rx="8" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="490" y="210" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">OLED</text>
+  <text x="490" y="230" text-anchor="middle" fill="#ffffff" font-size="11">(SSD1306, I2C)</text>
+
+  <path d="M210,140 H360 V60 H410" fill="none" stroke="#cc5de8" stroke-width="3"/>
+  <path d="M210,170 H380 V215 H410" fill="none" stroke="#cc5de8" stroke-width="3"/>
+  <circle cx="210" cy="140" r="4" fill="#cc5de8"/>
+  <circle cx="210" cy="170" r="4" fill="#cc5de8"/>
+  <text x="220" y="132" font-size="12" font-weight="600" fill="#1a1d23">GPIO21/22 &#8594; SDA/SCL</text>
+  <text x="220" y="188" font-size="11" fill="#5b6270">(shared I2C bus, both devices)</text>
+</svg>

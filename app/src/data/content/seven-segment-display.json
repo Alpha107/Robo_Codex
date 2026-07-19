@@ -1,0 +1,160 @@
+{
+  "identity": {
+    "id": "seven-segment-display",
+    "name": "7-Segment Display",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Before anyone reaches for a full graphics screen just to show a number, there's the 7-segment display: seven individual LED bars (plus often a decimal point) arranged to form digits 0-9 and a few crude letters by lighting the right combination. Each segment is wired and controlled individually — there's no built-in driver chip — so displaying a digit means turning on several GPIO pins in the right pattern, and a multi-digit display (common in 4-digit clock modules) needs a technique called multiplexing to control many digits with a manageable number of pins, since driving each digit's segments individually and continuously would need far too many pins otherwise.",
+  "simpleSummary": "Seven LED bars arranged to display any digit 0-9.",
+  "specifications": {
+    "operatingVoltage": "Each segment is a standard LED, ~2V forward voltage, needs a current-limiting resistor",
+    "configuration": "Common-cathode or common-anode (determines whether segments are activated by sourcing or sinking current)",
+    "segmentCount": "7 segments (A-G) plus often a decimal point (DP)",
+    "multiplexing": "Multi-digit modules share segment lines across digits, cycling through digits rapidly to appear simultaneously lit"
+  },
+  "pinMap": [
+    {
+      "name": "Segment A",
+      "position": null,
+      "category": "digital",
+      "function": "Top horizontal segment.",
+      "voltageRange": "0-5V (through current-limiting resistor)",
+      "currentLimit": "~10-20 mA per segment",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Segment B",
+      "position": null,
+      "category": "digital",
+      "function": "Top-right vertical segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Segment C",
+      "position": null,
+      "category": "digital",
+      "function": "Bottom-right vertical segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Segment D",
+      "position": null,
+      "category": "digital",
+      "function": "Bottom horizontal segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Segment E",
+      "position": null,
+      "category": "digital",
+      "function": "Bottom-left vertical segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Segment F",
+      "position": null,
+      "category": "digital",
+      "function": "Top-left vertical segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Segment G",
+      "position": null,
+      "category": "digital",
+      "function": "Middle horizontal segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DP",
+      "position": null,
+      "category": "digital",
+      "function": "Decimal point segment.",
+      "voltageRange": "0-5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "COM",
+      "position": null,
+      "category": "power",
+      "function": "Common pin — ground (common-cathode) or power (common-anode) shared by all segments in one digit.",
+      "voltageRange": "0V or 5V depending on type",
+      "currentLimit": "Sum of all lit segments' current",
+      "alternateFunctions": [],
+      "gotcha": "Wiring a common-cathode display as if it were common-anode (or vice versa) means every segment appears inverted — always check which type you have before wiring."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Digital clock/timer display",
+      "scenario": "Multiplexed multi-digit display showing time or countdown values.",
+      "pinsInvolved": [
+        "Segment A",
+        "Segment B",
+        "Segment C",
+        "Segment D",
+        "COM"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Simple numeric readout",
+      "scenario": "Show a single sensor value or counter without needing a full graphics display.",
+      "pinsInvolved": [
+        "Segment A",
+        "Segment B",
+        "Segment C",
+        "Segment D",
+        "Segment E",
+        "Segment F",
+        "Segment G"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Scoreboard/counter display",
+      "scenario": "Simple score or count display for a game or competition timer.",
+      "pinsInvolved": [
+        "Segment A",
+        "Segment G",
+        "COM"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Shift register (74HC595, for pin-efficient driving)"
+    ],
+    "oftenConfusedWith": [
+      "OLED/LCD displays (arbitrary graphics/text vs fixed digit shapes only)"
+    ],
+    "oftenUpgradedTo": [
+      "Driver-IC-based display modules (e.g. TM1637) that need only 2 control pins regardless of digit count"
+    ]
+  }
+}

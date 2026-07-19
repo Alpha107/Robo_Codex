@@ -1,0 +1,157 @@
+{
+  "identity": {
+    "id": "temperature-humidity-display",
+    "title": "Temperature & Humidity Display",
+    "tagline": "A little weather station for your desk: live temperature and humidity, always on screen.",
+    "category": "Sensors & Automation",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "25 minutes"
+  },
+  "goal": "Read live temperature and humidity from a DHT11/DHT22 sensor and display both continuously on a 16x2 LCD — a compact standalone environment monitor, and the foundation the Smart Home Sensor Hub and WiFi Weather Station projects both build on later.",
+  "simpleSummary": "Read live temperature and humidity from a DHT sensor and display both on a screen.",
+  "howItWorks": "Unlike the analog or simple digital sensors used elsewhere in this encyclopedia, the DHT11/DHT22 communicates over a single wire using its own small timed-pulse protocol — it sends a whole packet of temperature and humidity data as a precise sequence of pulse lengths, which is why reading it requires a library rather than a plain digitalRead() or analogRead(). That library handles the pulse-timing and hands you back two plain numbers: temperature and humidity. From there, this project is mostly about display — formatting those two numbers clearly onto a small 2-line screen.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "dht11-dht22",
+      "quantity": 1
+    },
+    {
+      "componentId": "lcd1602",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 5
+    }
+  ],
+  "circuitDiagramCaption": "DHT sensor's single data line on D2; LCD on the I2C bus (A4/A5).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "dht11-dht22",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "dht11-dht22",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "dht11-dht22",
+          "pin": "DATA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A5"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the DHT sensor's VCC to Arduino 5V, GND to GND, and DATA to D2.",
+      "detail": "Some DHT breakout boards include a pull-up resistor on the data line already; if you're using a bare 3-pin sensor with no breakout board, add a 10kΩ resistor between DATA and VCC."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the LCD's I2C backpack: GND to Arduino GND, VCC to 5V, SDA to A4, SCL to A5.",
+      "detail": "Identical wiring to the Ultrasonic Distance Meter project's LCD — if you've built that one already, this part is familiar."
+    },
+    {
+      "step": 3,
+      "instruction": "Install both the DHT sensor library and the LiquidCrystal_I2C library before uploading.",
+      "detail": "The DHT library (\"DHT sensor library\" by Adafruit, plus its \"Adafruit Unified Sensor\" dependency) is what turns the sensor's raw timed pulses into simple temperature/humidity numbers."
+    }
+  ],
+  "code": [
+    {
+      "filename": "temperature_humidity_display.ino",
+      "language": "arduino",
+      "source": "#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n#include <DHT.h>\n\n// Temperature & Humidity Display\n// Reads a DHT11/DHT22 and shows both values on a 16x2 I2C LCD.\n\nconst int DHT_PIN = 2;\nconst int DHT_TYPE = DHT11; // change to DHT22 if that's what you have\n\nDHT dht(DHT_PIN, DHT_TYPE);\nLiquidCrystal_I2C lcd(0x27, 16, 2);\n\nvoid setup() {\n  dht.begin();\n  lcd.init();\n  lcd.backlight();\n}\n\nvoid loop() {\n  float humidity = dht.readHumidity();\n  float tempC = dht.readTemperature();\n\n  lcd.setCursor(0, 0);\n  if (isnan(humidity) || isnan(tempC)) {\n    lcd.print(\"Sensor error!   \");\n  } else {\n    lcd.print(\"Temp: \");\n    lcd.print(tempC, 1);\n    lcd.print((char)223); // degree symbol\n    lcd.print(\"C \");\n  }\n\n  lcd.setCursor(0, 1);\n  lcd.print(\"Humidity: \");\n  lcd.print(humidity, 0);\n  lcd.print(\"%  \");\n\n  delay(2000); // DHT11/22 can only be read reliably about once every 1-2 seconds\n}\n",
+      "explanation": "dht.readHumidity() and dht.readTemperature() do the heavy lifting, decoding the sensor's raw timed-pulse protocol into plain numbers. isnan() (\"is not a number\") checks for the read failing entirely — DHT sensors occasionally miss a read due to timing sensitivity, and printing a clear error is much friendlier than silently displaying stale or garbage values. The 2-second delay isn't arbitrary — it's the sensor's own minimum reliable sampling interval, not a display-refresh choice."
+    }
+  ],
+  "expectedBehavior": "The LCD's top line shows current temperature, the bottom line shows humidity, both updating every two seconds. Breathing directly on the sensor should visibly raise the humidity reading within a few seconds.",
+  "troubleshooting": [
+    {
+      "issue": "LCD repeatedly shows \"Sensor error!\"",
+      "fix": "Double-check the DATA wire is firmly seated and the correct DHT_TYPE constant (DHT11 vs DHT22) matches your actual sensor — using the wrong type is a common cause of consistent read failures."
+    },
+    {
+      "issue": "Readings are implausible (e.g. -999 or wildly jumping around).",
+      "fix": "Add a 10kΩ pull-up resistor between DATA and VCC if your sensor is a bare 3-pin module without a breakout board — many boards include this already, bare sensors don't."
+    },
+    {
+      "issue": "LCD shows nothing at all.",
+      "fix": "This is an LCD wiring/address issue, not a sensor issue — see the Ultrasonic Distance Meter project's troubleshooting for the same LCD setup."
+    }
+  ],
+  "extensions": [
+    "Add a threshold alert (buzzer or LED) if humidity climbs above a level that risks mold growth.",
+    "Log readings with timestamps over Serial for a simple environment history.",
+    "Feed this same sensor into the Smart Home Sensor Hub project's WiFi dashboard.",
+    "Add a second DHT sensor in another room and display both readings side by side."
+  ]
+}

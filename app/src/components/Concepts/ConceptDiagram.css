@@ -1,0 +1,30 @@
+.concept-diagram {
+  margin: 0;
+  background: #f4f6f9;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.concept-diagram-svg {
+  width: 100%;
+}
+
+.concept-diagram-svg svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.concept-diagram figcaption {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.concept-diagram-missing {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  font-style: italic;
+}

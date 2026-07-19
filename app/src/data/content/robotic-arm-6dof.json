@@ -1,0 +1,213 @@
+{
+  "identity": {
+    "id": "robotic-arm-6dof",
+    "name": "6-DOF Robotic Arm Kit",
+    "category": "Structural & Mechanical",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A 6 degree-of-freedom arm kit gives a wrist enough independent rotation axes (typically base yaw, shoulder pitch, elbow pitch, and three wrist axes) to place an end effector at any position and orientation within its reach envelope, which is what unlocks real pick-and-place and inverse-kinematics programming rather than the fixed-motion pan/tilt behavior of a 2-3 axis arm. These desktop-scale kits use six standard or serial-bus hobby servos, one per joint, chained mechanically through 3D-printed or laser-cut links, which is worlds apart from an industrial 6-axis arm's harmonic-drive joints and absolute encoders — payload, repeatability, and duty cycle are all far lower, and that tradeoff is exactly what makes the kit affordable and buildable on a desk. Because torque compounds down the chain (the base joint carries the weight and dynamic load of all five joints above it), the base and shoulder servos are consistently the first to show strain, chatter, or brownout symptoms when the arm is pushed toward its rated payload.",
+  "simpleSummary": "A small desktop robot arm with six motorized joints that let it reach and orient a gripper almost anywhere within its work area, like a miniature industrial arm.",
+  "specifications": {
+    "degreesOfFreedom": "6 (base yaw, shoulder pitch, elbow pitch, wrist roll, wrist pitch, wrist yaw)",
+    "reach": "~500-650 mm typical for a desktop-scale kit",
+    "payloadAtFullReach": "~250-500 g",
+    "repeatability": "±0.5-2 mm (hobby-servo tier, not industrial-grade)",
+    "actuators": "6x metal-gear digital servos or serial bus servos, one per joint",
+    "jointRange": "~180-270 degrees per joint depending on axis",
+    "controlInterface": "Hobby PWM per servo, or a daisy-chained serial bus servo protocol",
+    "weight": "~1.5-3 kg fully assembled",
+    "powerRequirement": "6-7.4V servo bus; several amps peak when multiple joints move simultaneously"
+  },
+  "pinMap": [
+    {
+      "name": "Base Mount",
+      "position": null,
+      "category": "special",
+      "function": "Mounting holes securing the arm's rotating base to a benchtop plate or mobile robot chassis.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Kit base mounting bosses are often plastic. Overtightening a screw directly into the boss instead of using the supplied metal insert or nut strips the threads, and a stripped base mount shows up later as base wobble that looks like a servo problem."
+    },
+    {
+      "name": "Joint 1 Signal (Base Yaw)",
+      "position": null,
+      "category": "digital",
+      "function": "PWM/servo control signal for the base rotation joint, which turns the whole arm left/right.",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A (signal only)",
+      "alternateFunctions": [],
+      "gotcha": "This servo carries the summed weight and dynamic torque of all five downstream joints, so it's the first to show chatter or brownout under load. An arm that 'shakes at the base' usually has undersized power wiring to this specific servo, not a bad unit."
+    },
+    {
+      "name": "Joint 2 Signal (Shoulder Pitch)",
+      "position": null,
+      "category": "digital",
+      "function": "PWM/servo control signal for the shoulder joint, which lifts the upper arm against gravity.",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A (signal only)",
+      "alternateFunctions": [],
+      "gotcha": "Shoulder pitch sees the highest static torque of any joint in the chain (lifting the entire arm's weight). It's the usual payload bottleneck — upgrading just this servo, or adding a counterbalance spring, is the typical fix when the kit can't hold its rated payload at full reach."
+    },
+    {
+      "name": "Joint 3 Signal (Elbow Pitch)",
+      "position": null,
+      "category": "digital",
+      "function": "PWM/servo control signal for the elbow joint, bending the forearm relative to the upper arm.",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A (signal only)",
+      "alternateFunctions": [],
+      "gotcha": "Elbow torque demand changes drastically with arm extension — a pose that's easy at a folded elbow angle can stall this servo at full extension even at the same payload."
+    },
+    {
+      "name": "Joint 4 Signal (Wrist Roll)",
+      "position": null,
+      "category": "digital",
+      "function": "PWM/servo control signal that rotates the wrist about the forearm's long axis.",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A (signal only)",
+      "alternateFunctions": [],
+      "gotcha": "This joint is not a continuous-rotation slip ring — it has a hard mechanical limit. Repeatedly winding it past that limit to 'unwind' cabling snaps the internal wiring harness inside the wrist, a common kit failure mode."
+    },
+    {
+      "name": "Joint 5 Signal (Wrist Pitch)",
+      "position": null,
+      "category": "digital",
+      "function": "PWM/servo control signal that tilts the end effector up/down relative to the forearm.",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A (signal only)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Joint 6 Signal (Wrist Yaw)",
+      "position": null,
+      "category": "digital",
+      "function": "PWM/servo control signal that rotates the end effector left/right at the wrist, often the last joint before the gripper mount.",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A (signal only)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Power Input (V+)",
+      "position": null,
+      "category": "power",
+      "function": "Main servo power bus feeding all six joints, kept separate from the logic/controller supply.",
+      "voltageRange": "6-7.4V",
+      "currentLimit": "5-10A supply recommended for simultaneous multi-joint moves",
+      "alternateFunctions": [],
+      "gotcha": "Powering all six servos off the same 5V rail as the microcontroller (e.g. an Arduino's onboard 5V pin) causes brownouts and resets the moment more than one joint moves at once. Servos need their own dedicated supply."
+    },
+    {
+      "name": "Power Input (GND)",
+      "position": null,
+      "category": "power",
+      "function": "Ground return for the servo power bus, shared with the controller's signal ground.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The servo power supply's ground and the controller's signal ground must be tied together even though they're separate supplies — skipping this common ground causes erratic jitter across all six joints that looks like a firmware bug."
+    },
+    {
+      "name": "End Effector Mount",
+      "position": null,
+      "category": "special",
+      "function": "Mounting flange at the wrist tip for attaching a gripper or other tool.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The arm's stated payload assumes the tool is mounted close to this flange. Adding an extension bracket for a custom end effector multiplies the torque seen at the wrist joints and can overload them well below the arm's rated payload."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Desktop pick-and-place demo",
+      "scenario": "Pick small blocks or parts from fixed positions and place them into a tray using pre-taught joint angles.",
+      "pinsInvolved": [
+        "Joint 1 Signal (Base Yaw)",
+        "Joint 2 Signal (Shoulder Pitch)",
+        "Joint 3 Signal (Elbow Pitch)",
+        "End Effector Mount"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Forward/inverse kinematics teaching platform",
+      "scenario": "Use the kit to demonstrate computing joint angles from a desired end-effector pose, a staple robotics-course exercise.",
+      "pinsInvolved": [
+        "Joint 1 Signal (Base Yaw)",
+        "Joint 2 Signal (Shoulder Pitch)",
+        "Joint 3 Signal (Elbow Pitch)",
+        "Joint 4 Signal (Wrist Roll)",
+        "Joint 5 Signal (Wrist Pitch)",
+        "Joint 6 Signal (Wrist Yaw)"
+      ],
+      "difficulty": "Advanced (requires kinematics math)"
+    },
+    {
+      "title": "Small parts sorting cell",
+      "scenario": "Combine with a camera and a gripper end effector to sort parts by color or shape into different bins.",
+      "pinsInvolved": [
+        "End Effector Mount",
+        "Joint 1 Signal (Base Yaw)",
+        "Joint 2 Signal (Shoulder Pitch)"
+      ],
+      "difficulty": "Advanced (vision + motion coordination)"
+    },
+    {
+      "title": "Pen-plotter / drawing robot",
+      "scenario": "Mount a pen as the end effector and drive the wrist through a path to draw shapes or write text on a flat surface.",
+      "pinsInvolved": [
+        "End Effector Mount",
+        "Joint 5 Signal (Wrist Pitch)",
+        "Joint 6 Signal (Wrist Yaw)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Multi-axis camera positioner",
+      "scenario": "Use the arm purely as a positioning rig for a camera or sensor rather than as a manipulator, sweeping through fixed viewpoints for inspection.",
+      "pinsInvolved": [
+        "Joint 1 Signal (Base Yaw)",
+        "Joint 2 Signal (Shoulder Pitch)",
+        "Joint 5 Signal (Wrist Pitch)"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Coordinated arm + mobile base pick task",
+      "scenario": "Mount the arm on a mobile chassis and combine base navigation with arm reach to pick objects from locations beyond the arm's stationary reach.",
+      "pinsInvolved": [
+        "Base Mount",
+        "Power Input (V+)",
+        "End Effector Mount"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Robotic gripper (2-finger parallel jaw)",
+      "ROS2 / MoveIt motion planning stack",
+      "Inverse kinematics library",
+      "Serial bus servo controller board"
+    ],
+    "oftenConfusedWith": [
+      "SCARA arm (4-DOF, different kinematics, faster and more rigid for planar pick-and-place)",
+      "Simple pan-tilt bracket (2-DOF, no manipulation capability)"
+    ],
+    "oftenUpgradedTo": [
+      "Industrial 6-axis arm with harmonic-drive joints and absolute encoders for real repeatability and payload"
+    ]
+  },
+  "beginnerMistakes": [
+    "Powering all six servos from the controller board's onboard 5V regulator instead of a dedicated servo power supply, causing brownouts on multi-joint moves.",
+    "Commanding the wrist roll joint past its mechanical limit repeatedly, snapping the internal wiring harness.",
+    "Ignoring that torque compounds toward the base — upgrading a wrist servo to fix an arm that can't lift its rated payload, when the shoulder or base servo is the actual bottleneck.",
+    "Mounting a long custom end-effector extension without recalculating the torque it adds at the wrist joints.",
+    "Skipping a home/calibration routine at power-up, so joint angle assumptions in software don't match the arm's actual physical pose."
+  ]
+}

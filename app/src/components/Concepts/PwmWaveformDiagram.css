@@ -1,0 +1,91 @@
+.pwm-diagram {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-panel);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.pwm-diagram-led {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pwm-diagram-led-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pwm-glow 3s ease-in-out infinite;
+}
+
+.pwm-diagram-led-label {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pwm-diagram-track {
+  width: 100%;
+  max-width: 340px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-panel-raised);
+  overflow: hidden;
+  position: relative;
+}
+
+.pwm-diagram-on-segment {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  animation: pwm-width 3s ease-in-out infinite;
+}
+
+.pwm-diagram-caption {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  text-align: center;
+  max-width: 480px;
+}
+
+@keyframes pwm-glow {
+  0%, 100% {
+    opacity: 0.25;
+    box-shadow: 0 0 4px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 80%, transparent);
+  }
+}
+
+@keyframes pwm-width {
+  0%, 100% {
+    width: 12%;
+  }
+  50% {
+    width: 88%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pwm-diagram-led-dot,
+  .pwm-diagram-on-segment {
+    animation: none;
+  }
+  .pwm-diagram-on-segment {
+    width: 50%;
+  }
+}

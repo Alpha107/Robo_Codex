@@ -1,0 +1,88 @@
+{
+  "identity": {
+    "id": "hall-effect-sensor",
+    "name": "Hall Effect Sensor",
+    "category": "Line Following / Encoders / Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A Hall effect sensor detects the presence and (on linear versions) strength of a nearby magnetic field, with no physical contact needed — just a small magnet passing close by. The simplest digital versions just report 'magnet detected' or not, which makes them a favorite for contactless speed sensing (a magnet glued to a spinning wheel triggers the sensor once per rotation) and for door/lid switches that need to work through a sealed enclosure wall, since magnetic fields pass through most non-metal materials.",
+  "simpleSummary": "A sensor that notices when a magnet passes close by, with no physical touching needed.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V (module-dependent)",
+    "outputType": "Digital (magnet present/absent) on simple modules; analog field-strength on linear Hall sensors",
+    "detectionDistance": "A few millimeters to ~1-2cm depending on magnet strength",
+    "responseTime": "Very fast, suitable for high-RPM sensing"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~5-10 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output — typically LOW when a magnet of the correct polarity is nearby (some modules also expose a raw analog field-strength pin).",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Many Hall sensors only respond to one magnetic pole (north or south) — a magnet flipped the wrong way around won't trigger it at all."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Contactless wheel speed sensing",
+      "scenario": "Glue a small magnet to a wheel and count trigger pulses per rotation for speed/distance feedback, with no physical wear like an optical encoder.",
+      "pinsInvolved": [
+        "OUT"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Sealed door/lid sensor",
+      "scenario": "Detect whether an enclosure's lid is open or closed without a physical switch penetrating the housing.",
+      "pinsInvolved": [
+        "OUT"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Brushless motor commutation feedback",
+      "scenario": "Some BLDC motors use built-in Hall sensors to report rotor position to the ESC.",
+      "pinsInvolved": [
+        "OUT"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Small neodymium magnets",
+      "Arduino Uno"
+    ],
+    "oftenConfusedWith": [
+      "Optical wheel encoder (higher resolution, but wears mechanically/optically over time)"
+    ],
+    "oftenUpgradedTo": [
+      "Quadrature Hall encoders for direction-aware speed sensing"
+    ]
+  }
+}

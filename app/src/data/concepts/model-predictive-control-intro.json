@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "model-predictive-control-intro",
+    "title": "Model Predictive Control (Intro)",
+    "category": "Control Theory",
+    "level": "Advanced",
+    "tagline": "Planning several steps into the future at every single time step, then only ever acting on the first step of that plan."
+  },
+  "simpleSummary": "A controller that uses a model to simulate several possible near-future outcomes, picks the best short plan, does only the very first action from it, and then re-plans from scratch on the next tick.",
+  "keyIdea": "At every control step, simulate the system's likely future over a short time horizon for candidate control sequences, choose the sequence that best balances tracking accuracy against control effort while respecting real limits, apply only its first action, then repeat the whole process on the next step.",
+  "overview": "PID and feedforward control both make decisions based on the current instant — current error, or a precomputed feedforward term — with no explicit look-ahead and no built-in way to respect hard limits like a motor's maximum torque or a robot's maximum safe speed. Model Predictive Control (MPC) takes a fundamentally different approach: at every control cycle, it uses a model of the system to predict how different candidate sequences of future control actions would play out over a short prediction horizon, solves an optimization problem to find the best such sequence (trading off tracking accuracy against control effort, and respecting explicit constraints), and then only actually applies the very first action of that optimal sequence. On the next control cycle, it measures the real (possibly slightly different than predicted) state and repeats the entire prediction-and-optimization process from scratch — a strategy called receding horizon control.",
+  "equations": [
+    {
+      "label": "MPC Cost Function",
+      "expression": "J = Σ(k=0 to N−1) [ (xₖ − x_ref)ᵀQ(xₖ − x_ref) + uₖᵀRuₖ ]",
+      "meaning": "The controller minimizes a cost J summed over a prediction horizon of N future steps: the first term penalizes deviation from the reference state x_ref (weighted by matrix Q), and the second penalizes control effort uₖ (weighted by matrix R) — trading off accuracy against energy/aggressiveness."
+    },
+    {
+      "label": "Subject To",
+      "expression": "x(k+1) = A·x(k) + B·u(k),   u_min ≤ u(k) ≤ u_max",
+      "meaning": "The optimization is constrained by the system's own predicted dynamics (from its state-space model) and by real physical limits on the control input, like a motor's maximum PWM or a robot's maximum safe speed — constraints that PID has no native way to enforce."
+    }
+  ],
+  "howItWorks": "At each control step, MPC does four things: first, it takes the current measured (or estimated) state as its starting point. Second, using a model of the system's dynamics, it predicts how the state would evolve over the next N steps for various candidate sequences of control actions. Third, it solves an optimization problem — typically a quadratic program — to find the specific sequence of control actions that minimizes a cost balancing tracking error against control effort, all while strictly respecting constraints like actuator limits or safety boundaries. Fourth, and critically, it only ever applies the first action of that optimal sequence to the real system, discarding the rest of the plan. On the very next control step, it measures the real state again (which may differ slightly from what was predicted, due to model imperfections or disturbances) and re-solves the entire optimization fresh. This constant re-planning is what makes MPC naturally robust to model inaccuracy and disturbances despite relying on an imperfect model — it never trusts its own multi-step prediction beyond the first action. The major cost is computational: solving an optimization problem at every control step, fast enough to keep up with the real system, is far more demanding than PID's simple algebraic formula, which is why MPC historically required more powerful onboard computers and is now increasingly feasible on capable embedded hardware.",
+  "diagramCaption": "At the current time step, MPC predicts several candidate trajectories over a short horizon, picks the best one (respecting constraints), applies only its first control action, then slides the whole window forward and re-optimizes on the next step.",
+  "realWorldExamples": [
+    "Self-driving car trajectory tracking, respecting hard limits on steering angle and acceleration while predicting several seconds ahead to smoothly handle upcoming curves.",
+    "Quadruped robot (legged robot) locomotion planning, predicting several future footstep placements to maintain balance rather than reacting only after the robot starts to tip.",
+    "Drone trajectory optimization that respects maximum tilt angle and motor thrust limits directly in its planning, rather than commanding an aggressive maneuver and hoping the low-level controller can execute it safely."
+  ],
+  "commonMisconceptions": [
+    "\"MPC needs no system model, unlike PID\" — the opposite is true: MPC requires an even more explicit and detailed model than PID does, since it actively simulates the system's future; this model dependency is the central trade-off of the technique.",
+    "\"MPC is always too computationally expensive for real robots\" — true historically for large or nonlinear systems, but simplified linear MPC with short horizons is now practical on modest embedded hardware.",
+    "\"MPC's multi-step plan is what actually gets executed\" — only ever the very first action of each freshly-computed plan is applied; the rest of the plan is thrown away and recomputed on the next step, which is precisely what makes it robust to imperfect predictions."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": [],
+  "relatedConcepts": ["state-space-representation", "pid-control", "feedforward-control", "trajectory-generation-and-smoothing"]
+}

@@ -1,0 +1,176 @@
+{
+  "identity": {
+    "id": "ball-screw-actuator",
+    "name": "Ball-Screw Linear Actuator",
+    "category": "Motors & Actuators",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A ball screw converts rotary motion into linear motion the same way a hobby lead-screw actuator does — a threaded rod turns and a nut travels along it — but with recirculating ball bearings riding in the thread groove instead of the nut's metal sliding directly against the screw. That single change is what makes it an industrial-tier part: rolling friction instead of sliding friction means far higher mechanical efficiency (often 90%+ vs. an Acme screw's 20-40%), and a preloaded ball nut removes almost all axial backlash, so commanding a specific position actually gets you that position, repeatably, move after move. It's driven externally by a stepper or servo motor coupled to the screw (it has no motor of its own), and because it's a precision mechanical component, it needs to be paired with a matching stepper/servo driver, limit switches to define safe travel, and usually a home sensor so the controller knows where zero actually is after every power-up.",
+  "simpleSummary": "A precision screw-and-nut mechanism that turns a motor's spinning into smooth, accurate straight-line motion with almost no play, using ball bearings instead of a sliding nut.",
+  "specifications": {
+    "leadPerRevolution": "1mm - 10mm per revolution (model-dependent, finer lead = more resolution, less speed)",
+    "strokeLength": "100mm - 1000mm+ (model-dependent)",
+    "maxThrustForce": "500N - 5000N+ depending on screw diameter",
+    "repeatability": "±0.01mm - ±0.05mm (preloaded ball nut, near-zero backlash)",
+    "maxLinearSpeed": "Up to ~1 m/s on fine-lead high-speed screws, lower on high-force coarse screws",
+    "driveMotor": "External NEMA23/NEMA24 stepper or AC/DC servo, coupled via a flexible shaft coupling",
+    "screwDiameter": "8mm - 32mm+ depending on load rating",
+    "dutyCycle": "Continuous duty at rated load (mechanically efficient, low self-heating compared to a sliding lead screw)"
+  },
+  "pinMap": [
+    {
+      "name": "MOTOR_A+",
+      "position": null,
+      "category": "power",
+      "function": "Drive motor coil A terminal (bipolar stepper), energized in sequence with the other coil to rotate the screw.",
+      "voltageRange": "Driver-switched, motor-rated (often 24-48V for NEMA23/24)",
+      "currentLimit": "Motor-rated, typically 2-6A per phase",
+      "alternateFunctions": [],
+      "gotcha": "This actuator has no onboard driver — it must be paired with an external stepper/servo driver sized for the motor's holding torque, not just its running current, since a ball screw under load can demand full torque at zero speed."
+    },
+    {
+      "name": "MOTOR_A-",
+      "position": null,
+      "category": "power",
+      "function": "Drive motor coil A other terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Motor-rated",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MOTOR_B+",
+      "position": null,
+      "category": "power",
+      "function": "Drive motor coil B terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Motor-rated",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MOTOR_B-",
+      "position": null,
+      "category": "power",
+      "function": "Drive motor coil B other terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Motor-rated",
+      "alternateFunctions": [],
+      "gotcha": "Swapping any one coil's two leads reverses rotation direction on that coil alone and desyncs the step sequence — if the carriage suddenly stalls or vibrates without moving, check for a single reversed lead before suspecting the driver."
+    },
+    {
+      "name": "LIMIT_EXTEND",
+      "position": null,
+      "category": "digital",
+      "function": "Normally-open limit switch that trips when the carriage reaches full extension, used by the controller to stop or reverse the motor before the mechanism crashes into its hard stop.",
+      "voltageRange": "0-24V logic (controller-dependent)",
+      "currentLimit": "N/A (switch contact)",
+      "alternateFunctions": [],
+      "gotcha": "Software-only travel limits are not a substitute for this switch — if the controller loses step count (stall, power glitch, EMI) it has no other way to know the carriage is about to hit the end block at full speed."
+    },
+    {
+      "name": "LIMIT_RETRACT",
+      "position": null,
+      "category": "digital",
+      "function": "Normally-open limit switch that trips at full retraction.",
+      "voltageRange": "0-24V logic",
+      "currentLimit": "N/A (switch contact)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SWITCH_COMMON",
+      "position": null,
+      "category": "digital",
+      "function": "Shared common/return wire for the limit and home switches.",
+      "voltageRange": "0-24V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "HOME_SENSOR",
+      "position": null,
+      "category": "digital",
+      "function": "Dedicated home-position sensor (often a small optical or hall-effect flag), used at power-up to re-establish an absolute zero reference before any move.",
+      "voltageRange": "0-24V logic",
+      "currentLimit": "N/A (sensor output)",
+      "alternateFunctions": [],
+      "gotcha": "Stepper-driven ball screws have no idea where they are after a power cycle — skipping the homing routine on startup and issuing an absolute move blind is a common way to slam the carriage into an end stop."
+    },
+    {
+      "name": "ENCODER_A",
+      "position": null,
+      "category": "digital",
+      "function": "Optional motor-shaft quadrature encoder channel A, for closed-loop stall/position verification on servo-driven variants.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor output)",
+      "alternateFunctions": [],
+      "gotcha": "Only present on servo/closed-loop variants — a plain open-loop stepper version has no way to detect a missed step other than hitting a limit switch or home sensor unexpectedly."
+    },
+    {
+      "name": "ENCODER_B",
+      "position": null,
+      "category": "digital",
+      "function": "Optional motor-shaft quadrature encoder channel B.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor output)",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "CNC or 3D-printer Z-axis",
+      "scenario": "Drive a machine's vertical axis with a fine-lead ball screw for high positioning accuracy and near-zero backlash on layer height or cut depth.",
+      "pinsInvolved": ["MOTOR_A+", "MOTOR_A-", "MOTOR_B+", "MOTOR_B-"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Robotic linear stage",
+      "scenario": "Provide a precise, repeatable single-axis slide for a pick-and-place mechanism or camera focus rail, homing to a known reference at every startup.",
+      "pinsInvolved": ["MOTOR_A+", "MOTOR_A-", "MOTOR_B+", "MOTOR_B-", "HOME_SENSOR"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Heavy-load lift mechanism",
+      "scenario": "Push/lift a load far heavier than a hobby linear actuator could manage, using the ball screw's high thrust rating and near-zero backlash to avoid sag under load.",
+      "pinsInvolved": ["MOTOR_A+", "MOTOR_A-", "MOTOR_B+", "MOTOR_B-", "LIMIT_EXTEND", "LIMIT_RETRACT"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Closed-loop servo positioning",
+      "scenario": "Pair the servo-driven variant's shaft encoder with the driver's closed loop to detect and correct for any missed motion under unexpected load spikes.",
+      "pinsInvolved": ["ENCODER_A", "ENCODER_B", "MOTOR_A+", "MOTOR_B+"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "End-of-travel safety interlock",
+      "scenario": "Wire both limit switches into the motion controller's fault input so a stalled or runaway move stops the motor in hardware, independent of software travel limits.",
+      "pinsInvolved": ["LIMIT_EXTEND", "LIMIT_RETRACT", "SWITCH_COMMON"],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "NEMA 23/24 stepper motor or AC/DC servo",
+      "a4988-drv8825 / tb6600 stepper driver, or a servo drive",
+      "Linear rail / guide bearing for carriage support"
+    ],
+    "oftenConfusedWith": [
+      "linear-actuator (a self-contained hobby lead/Acme-screw actuator with its own integrated DC motor, no external driver needed, but noticeably more backlash and lower repeatability — this ball screw is a bare precision mechanism that needs an external motor and driver)"
+    ],
+    "oftenUpgradedTo": [
+      "Servo-driven ball screw with closed-loop encoder feedback, for stall detection and guaranteed positioning under variable load"
+    ]
+  },
+  "beginnerMistakes": [
+    "Treating it like a hobby linear actuator and expecting an integrated motor/driver — a bare ball screw needs an external stepper or servo motor and matching driver to do anything.",
+    "Skipping the homing routine after power-up and issuing an absolute-position move blind, risking a hard crash into the end stop.",
+    "Sizing the drive motor for running torque only, ignoring that a loaded ball screw can demand full holding torque even at a dead stop.",
+    "Relying on software travel limits alone with no physical limit switches wired in, leaving no hardware backstop if the controller loses step count.",
+    "Mounting the carriage load off-axis from the screw's centerline, inducing side-loading that accelerates ball-nut wear far faster than the rated life."
+  ]
+}

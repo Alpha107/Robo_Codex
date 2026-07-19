@@ -1,0 +1,124 @@
+{
+  "identity": {
+    "id": "rgb-mood-light",
+    "title": "RGB Mood Light",
+    "tagline": "One data wire, unlimited full-color LEDs — the addressable-LED trick behind every RGB strip.",
+    "category": "Beginner Electronics",
+    "difficulty": "Beginner",
+    "estimatedTime": "25 minutes"
+  },
+  "goal": "Drive a strip of WS2812B (\"NeoPixel\") addressable LEDs from a single Arduino pin, smoothly cycling through colors — and understand why this is fundamentally different from wiring up three separate red/green/blue LEDs.",
+  "simpleSummary": "Make a strip of full-color LEDs smoothly cycle through colors.",
+  "howItWorks": "A normal LED needs one wire per LED (plus shared ground). A WS2812B strip sidesteps that entirely: each tiny LED actually contains its own microchip that reads a precise, timed data signal on a single wire, keeps the color instructions meant for it, and passes the rest down the line to the next LED — like a bucket brigade. This is why you can control 1 LED or 500 LEDs from the exact same single Arduino pin: the wiring never changes, only the software's LED count does. The Adafruit_NeoPixel library handles the extremely precise, microsecond-level timing this protocol requires — timing so tight it can't realistically be hand-written with digitalWrite() calls.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "The Adafruit NeoPixel library, installed via the Arduino IDE Library Manager"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "ws2812b-neopixel",
+      "quantity": 1,
+      "note": "a short strip (a handful of LEDs) is enough"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 3
+    }
+  ],
+  "circuitDiagramCaption": "Only three wires total: DIN (data), 5V, and GND — the same three pins regardless of how many LEDs are on the strip.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "ws2812b-neopixel",
+          "pin": "DIN"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ws2812b-neopixel",
+          "pin": "5V"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ws2812b-neopixel",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Identify the strip's DIN (data in) end — WS2812B strips are directional and usually have an arrow silkscreened showing signal flow.",
+      "detail": "Connecting to the DOUT end instead simply won't work — the strip's chips only listen for data flowing in the printed direction."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the strip's DIN to Arduino D6.",
+      "detail": "Any digital pin works here — unlike PWM fading, this project doesn't need a ~ (PWM) pin, since the library generates its own precise timing in software."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the strip's 5V to Arduino 5V, and GND to Arduino GND.",
+      "detail": "For a short strip (under ~8 LEDs) powering directly from the Arduino's 5V pin is fine; a longer strip can draw more current than the Arduino can safely supply and needs its own 5V power source."
+    },
+    {
+      "step": 4,
+      "instruction": "Install the Adafruit NeoPixel library (Tools > Manage Libraries in the Arduino IDE) before uploading the code.",
+      "detail": "This is a software step, not a wiring one, but it's the step most likely to trip up a first-timer — the code won't compile without it."
+    }
+  ],
+  "code": [
+    {
+      "filename": "rgb_mood_light.ino",
+      "language": "arduino",
+      "source": "#include <Adafruit_NeoPixel.h>\n\n// RGB Mood Light — cycles a strip of WS2812B LEDs through colors.\n\nconst int DATA_PIN = 6;\nconst int NUM_LEDS = 8; // change to match your actual strip length\n\nAdafruit_NeoPixel strip(NUM_LEDS, DATA_PIN, NEO_GRB + NEO_KHZ800);\n\nvoid setup() {\n  strip.begin();\n  strip.setBrightness(80); // 0-255 — keep it modest, full brightness is very bright\n  strip.show(); // initialize all pixels to 'off'\n}\n\nvoid loop() {\n  setAllPixels(strip.Color(255, 0, 0));   // red\n  delay(1000);\n  setAllPixels(strip.Color(0, 255, 0));   // green\n  delay(1000);\n  setAllPixels(strip.Color(0, 0, 255));   // blue\n  delay(1000);\n  setAllPixels(strip.Color(255, 120, 0)); // warm amber\n  delay(1000);\n}\n\nvoid setAllPixels(uint32_t color) {\n  for (int i = 0; i < NUM_LEDS; i++) {\n    strip.setPixelColor(i, color);\n  }\n  strip.show(); // nothing changes on the physical strip until show() is called\n}\n",
+      "explanation": "setPixelColor() only updates a color value in the Arduino's memory — it doesn't touch the physical strip at all. show() is the line that actually sends the whole buffer of colors down the data wire in one precisely-timed burst, which is why it's easy to forget and wonder why nothing changed. setAllPixels() is a small helper that sets every LED to the same color and then calls show() once, rather than repeating that pattern for each color change."
+    }
+  ],
+  "expectedBehavior": "The entire strip lights up as one solid color, cycling through red, green, blue, and warm amber, holding each for one second.",
+  "troubleshooting": [
+    {
+      "issue": "Nothing lights up at all.",
+      "fix": "Confirm you're wired to the DIN end, not DOUT, and double-check NUM_LEDS matches your strip's actual LED count."
+    },
+    {
+      "issue": "Colors look wrong (e.g. red shows as green).",
+      "fix": "Change NEO_GRB to NEO_RGB in the strip constructor — different WS2812B batches use different internal color orderings."
+    },
+    {
+      "issue": "Only some of the LEDs respond.",
+      "fix": "Check for a physical break or bad solder joint partway down the strip — since each LED passes data to the next, one bad connection cuts off everything after it."
+    },
+    {
+      "issue": "Strip flickers or resets unexpectedly.",
+      "fix": "This is almost always a power problem on longer strips — add a dedicated 5V supply and a large (~1000µF) capacitor across its output, and keep the Arduino and strip grounds connected."
+    }
+  ],
+  "extensions": [
+    "Animate a single colored pixel chasing down the strip instead of lighting everything the same color.",
+    "Add a photoresistor (LDR) so the strip only lights up once it's dark (combine with Light-Activated Night Lamp).",
+    "Map a potentiometer or joystick axis to hue for a manually-tunable mood light.",
+    "Drive the strip's colors from a rotary encoder's position instead of a fixed color sequence."
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "identity": {
+    "id": "realsense-d435i",
+    "name": "Intel RealSense D435i (RGB-D Depth Camera)",
+    "category": "Vision & Imaging",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The D435i is what a stereo camera becomes once you add a dedicated depth-processing ASIC and an IMU: two IR imagers plus an IR dot projector give it active stereo vision that works even on plain, texture-less walls, and the onboard vision processor turns that into a finished depth image at up to 90fps without ever loading the host CPU. The 'i' specifically means it has a built-in Bosch BMI055 6-axis IMU, hardware-timestamped and aligned to the depth/color frames, which is what makes visual-inertial SLAM (tracking camera motion, not just scene depth) possible without a second sensor. Unlike the catalog's other cameras, it hands you three synchronized data streams at once — RGB, depth, and IMU — over a single USB-C cable, which is exactly why it needs real USB3 bandwidth and a real host computer, not a microcontroller.",
+  "simpleSummary": "A camera that sees full 3D depth at every pixel and also senses its own motion, instead of just taking flat pictures.",
+  "specifications": {
+    "depthTechnology": "Active IR stereo (dual IR imagers + IR dot projector)",
+    "depthFOV": "87° x 58° (H x V)",
+    "depthRange": "0.105m - 10m (best accuracy under ~3m)",
+    "depthResolution": "Up to 1280x720 @ 30fps, 848x480 @ 90fps",
+    "rgbSensor": "2MP, 1920x1080 @ 30fps",
+    "onboardIMU": "Bosch BMI055, 6-DOF accel+gyro, hardware-synced to depth/RGB frames",
+    "interface": "USB-C 3.1 Gen 1",
+    "dimensions": "90mm x 25mm x 25mm",
+    "powerConsumption": "~700mA-1A @ 5V, bus-powered over USB"
+  },
+  "pinMap": [
+    {
+      "name": "USB-C",
+      "position": null,
+      "category": "communication",
+      "function": "Single USB-C 3.1 connector carrying bus power plus the RGB stream, stereo depth stream, and IMU stream simultaneously.",
+      "voltageRange": "5V (USB bus power)",
+      "currentLimit": "~700mA-1A sustained, higher transient at stream startup",
+      "alternateFunctions": [],
+      "gotcha": "Needs a genuine USB3 port and cable. Plugging into a USB2 port or an unpowered USB2 hub still 'works' but silently caps bandwidth, forcing lower resolution/frame rate or dropping the RGB stream entirely with no obvious error."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Bin-picking robotic arm",
+      "scenario": "Generate a dense point cloud of a cluttered parts bin so a grasp-planning algorithm can pick a specific object's pose, not just its 2D silhouette.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Visual-inertial SLAM",
+      "scenario": "Fuse the depth stream with the onboard IMU (via RTAB-Map or ORB-SLAM3) to map an environment and track camera motion without relying on wheel odometry.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Dense obstacle avoidance",
+      "scenario": "Treat the whole depth frame as a proximity field for a mobile robot, catching obstacles at any height in the frame instead of a single ultrasonic ping straight ahead.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Hand/gesture tracking for human-robot interaction",
+      "scenario": "Use the depth stream to segment and track a hand or body skeleton for gesture-based robot control.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "3D object scanning",
+      "scenario": "Sweep the camera around a small object and fuse successive depth frames into a 3D mesh for reverse-engineering or 3D printing.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Jetson Nano",
+      "ROS/ROS2",
+      "Robotic arm/gripper"
+    ],
+    "oftenConfusedWith": [
+      "HC-SR04 (a single distance number vs. a full grid of distance readings, one per pixel, ~30 times a second)",
+      "Stereo Camera Module (looks similar with two lenses, but a raw stereo module has no onboard depth ASIC or IR projector — it hands you two raw video feeds and leaves depth computation to your own CPU/GPU)",
+      "OV7670/USB Webcam (RGB image only, no depth channel at all)"
+    ],
+    "oftenUpgradedTo": [
+      "Industrial structured-light 3D scanners for sub-millimeter static scan accuracy",
+      "3D LiDAR (Spinning) when the required sensing range exceeds the D435i's ~10m limit or full 360° coverage is needed"
+    ]
+  },
+  "beginnerMistakes": [
+    "Using a USB2 cable or an unpowered hub, which chokes bandwidth without throwing a clear error.",
+    "Running it outdoors in direct sunlight, where the IR projector's dot pattern gets washed out and active stereo depth degrades badly.",
+    "Forgetting the ~10.5cm minimum depth range — objects closer than that fall into a blind zone with no reading.",
+    "Assuming the IMU stream is enabled by default — most librealsense examples need it explicitly turned on in the stream configuration.",
+    "Powering it from an underpowered USB port (some phone chargers/hubs), causing random stream dropouts during heavy depth processing."
+  ]
+}

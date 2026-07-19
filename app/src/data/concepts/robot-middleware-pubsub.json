@@ -1,0 +1,28 @@
+{
+  "identity": {
+    "id": "robot-middleware-pubsub",
+    "title": "Robot Middleware (Publish/Subscribe)",
+    "category": "Software & Systems",
+    "level": "Intermediate",
+    "tagline": "A messaging pattern where software components send and receive labeled messages through a shared channel, without knowing about each other."
+  },
+  "simpleSummary": "A messaging pattern where different pieces of software send and receive labeled messages through a shared channel, without needing to know which other specific components exist or are listening.",
+  "keyIdea": "The publish/subscribe pattern lets software components exchange data through named channels (topics) without any component needing to know which other specific components exist, making a robot's software far more modular and easier to extend.",
+  "overview": "The publish/subscribe (pub/sub) pattern is a general messaging architecture, of which ROS's topic system is one well-known specific implementation. A publisher sends messages labeled with a topic name, without knowing or caring which (if any) other components are listening. A subscriber declares interest in a specific topic name and automatically receives every message published to it, without knowing or caring which specific component sent it. The middleware in between handles actually routing each message from every publisher to every interested subscriber. This decoupling — publishers and subscribers never directly reference each other — is the core structural benefit: new components can be added, removed, or swapped out without modifying any component already in the system, as long as everyone agrees on the topic name and message format.",
+  "equations": [],
+  "howItWorks": "A robot's software is naturally built from many independent pieces — sensor drivers, state estimators, planners, controllers — that all need to share data but don't need or want to know about each other's internal implementation details. Pub/sub lets a new component, say an additional logging module, subscribe to an existing sensor topic and start recording data without changing a single line of the original sensor driver or any other existing subscriber at all. It's worth contrasting this with the request/response (service) pattern also used in robotics middleware: pub/sub suits continuous, ongoing data streams where many components might care about the same data (sensor readings, robot pose estimates), while request/response suits one-off, on-demand actions where a specific answer to a specific request is needed right now, like 'compute a path between these two points.'",
+  "diagramCaption": "Publishers send messages to a named topic without knowing who's listening; subscribers receive from that same topic without knowing who sent it — neither side ever references the other directly.",
+  "realWorldExamples": [
+    "ROS's own topic system, which is one specific, extremely widely-used implementation of the general pub/sub pattern described here.",
+    "MQTT, a lightweight pub/sub messaging protocol widely used in IoT and robotics projects, including several of this site's smart-home category projects that could be extended with it.",
+    "A robot architecture where a single IMU driver publishes orientation data that both a logging component and a stabilization controller subscribe to independently, with neither subscriber aware of the other's existence."
+  ],
+  "commonMisconceptions": [
+    "\"Pub/sub and ROS topics are two different things\" — ROS's topic mechanism specifically is one well-known, widely-used implementation of the general pub/sub pattern, not a separate or competing concept.",
+    "\"Pub/sub is only useful for very large, complex robot software\" — the same decoupling benefit shows up even in small hobby projects, any time one component's output needs to be used by more than one other independent component.",
+    "\"A subscriber is guaranteed to receive every message a publisher sends\" — depending on the specific middleware's configuration (quality of service settings, network reliability), messages can occasionally be dropped, which real systems must account for rather than assume away."
+  ],
+  "relatedComponents": ["hc05-bluetooth", "nrf24l01", "esp32-devkit"],
+  "relatedProjects": ["smart-home-sensor-hub", "smart-home-light-automation"],
+  "relatedConcepts": ["ros-concepts", "behavior-trees-and-finite-state-machines"]
+}

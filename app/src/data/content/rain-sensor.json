@@ -1,0 +1,101 @@
+{
+  "identity": {
+    "id": "rain-sensor",
+    "name": "Rain Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A rain sensor is two parts: a flat board printed with a grid of exposed parallel copper traces, and a small comparator board (again, usually LM393-based) that reads it. Water bridging the gaps between traces lowers the resistance across the board, which the comparator converts into both an analog 'how wet' signal and a digital 'wet or not' threshold. It's essentially the same resistive-sensing principle as the soil moisture sensor, just laid out flat to catch falling rain instead of being pushed into soil, and it shares the same corrosion consideration — the exposed copper traces will oxidize over prolonged exposure to moisture.",
+  "simpleSummary": "A flat sensor board that detects water on its surface, so it can trigger an alert when it rains.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "sensingBoard": "Exposed parallel copper traces — resistance drops as more of the grid is bridged by water",
+    "outputType": "Analog (rain intensity) and digital (threshold, trimpot-adjustable)",
+    "durabilityNote": "Copper traces corrode with prolonged exposure — not a permanent outdoor sensor without maintenance or a coated variant"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input to the comparator board.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AOUT",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output, varies with how much of the sensing grid is wet.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DOUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital threshold output, adjustable via the onboard trimpot.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The exposed copper grid corrodes over repeated wet/dry cycles outdoors — expect to eventually clean or replace the sensing board on long-term installations."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Automatic window/skylight closer",
+      "scenario": "Trigger a servo or actuator to close a window when rain is detected.",
+      "pinsInvolved": [
+        "DOUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Smart irrigation skip logic",
+      "scenario": "Skip a scheduled watering cycle if rain is already detected.",
+      "pinsInvolved": [
+        "DOUT"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Weather station rain gauge (binary)",
+      "scenario": "Log rain events over time, though without measuring precise rainfall volume.",
+      "pinsInvolved": [
+        "AOUT"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Servo motor",
+      "Relay module"
+    ],
+    "oftenConfusedWith": [
+      "Soil moisture sensor (same sensing principle, different physical layout/application)"
+    ],
+    "oftenUpgradedTo": [
+      "Tipping-bucket rain gauges for actual rainfall volume measurement"
+    ]
+  }
+}

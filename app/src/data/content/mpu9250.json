@@ -1,0 +1,153 @@
+{
+  "identity": {
+    "id": "mpu9250",
+    "name": "MPU9250 9-DOF IMU",
+    "category": "Motion & Orientation Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The MPU9250 is what the MPU6050 would be with a compass added: the same 3-axis accelerometer and 3-axis gyroscope, plus a built-in 3-axis magnetometer (an AK8963 die inside the same package), giving nine degrees of freedom total. That magnetometer is the whole point — an accelerometer+gyroscope alone can tell you how a device is tilted, but not which way it's actually facing (north), because gyroscope-only heading drifts over time with no way to correct itself. Adding a magnetic compass reference is what makes a stable, drift-free heading possible, at the cost of needing to keep the sensor away from motors, speakers, and other magnetic interference sources.",
+  "simpleSummary": "Like the MPU6050 but with a built-in compass added, for full 9-axis orientation sensing.",
+  "specifications": {
+    "operatingVoltage": "3.3V (breakouts commonly add a 5V-tolerant regulator)",
+    "interface": "I2C (default address 0x68), SPI on some breakouts",
+    "accelerometerRange": "±2/4/8/16g",
+    "gyroscopeRange": "±250/500/1000/2000°/s",
+    "magnetometerRange": "±4800 µT",
+    "resolution": "16-bit accel/gyro, 14-bit magnetometer"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~9-14 mA depending on active sensors",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "AD0",
+      "position": null,
+      "category": "digital",
+      "function": "I2C address select — LOW sets address 0x68, HIGH sets 0x69.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "NCS",
+      "position": null,
+      "category": "digital",
+      "function": "SPI chip-select, on breakouts that expose an SPI mode — tie HIGH to stay in I2C mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI CS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "INT",
+      "position": null,
+      "category": "digital",
+      "function": "Interrupt output, configurable for new-data or motion events.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "FSYNC",
+      "position": null,
+      "category": "digital",
+      "function": "Frame sync input, used in advanced setups to align sampling with an external system.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Rarely used in hobbyist projects — safe to leave unconnected."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Drone/flight controller with stable heading",
+      "scenario": "The magnetometer provides a drift-free compass heading that pure gyroscope integration can't.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA",
+        "INT"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "AR/VR head or hand tracking",
+      "scenario": "9-DOF fusion for stable absolute orientation tracking.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Robot heading/compass navigation",
+      "scenario": "Give a ground robot a stable sense of which way it's facing, independent of wheel-slip-based dead reckoning.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Flight controller firmware (Betaflight/ArduPilot)",
+      "ESP32"
+    ],
+    "oftenConfusedWith": [
+      "MPU6050 (no magnetometer, cheaper, simpler)",
+      "BNO055 (does sensor fusion onboard instead of raw data)"
+    ],
+    "oftenUpgradedTo": [
+      "BNO055 for onboard sensor fusion instead of writing your own filter"
+    ]
+  }
+}

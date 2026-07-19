@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "trajectory-generation-and-smoothing",
+    "title": "Trajectory Generation & Smoothing",
+    "category": "Motion Planning & Navigation",
+    "level": "Intermediate",
+    "tagline": "Turning a rough geometric path into a smooth, physically realistic motion profile a real actuator can actually follow."
+  },
+  "simpleSummary": "Turning a plain list of waypoints into an actual motion plan — deciding exactly when and how fast to move through each point so a real motor can smoothly follow along without needing impossible instant speed changes.",
+  "keyIdea": "Trajectory generation adds a time dimension and physical smoothness to a purely geometric path, producing not just where a robot should go but exactly when and how fast, respecting velocity and acceleration limits so a real actuator can actually track it.",
+  "overview": "A path produced by a planner like Dijkstra, A*, or RRT is purely geometric — a sequence of waypoints or a continuous curve, with no notion of time or speed attached to it at all. Trajectory generation fills that gap: it decides exactly when the robot should be at each point along the path, producing a motion profile that respects real physical limits on velocity, acceleration, and sometimes jerk (the rate of change of acceleration). This matters immensely in practice: a sharp corner in a purely geometric path, followed at full speed with zero smoothing, would require an instantaneous change in direction — physically impossible for any real motor or actuator.",
+  "equations": [
+    {
+      "label": "Trapezoidal Velocity Profile (phases)",
+      "expression": "accelerate at a_max → cruise at v_max → decelerate at −a_max",
+      "meaning": "The classic three-phase motion profile: ramp velocity up to a maximum cruising speed at the maximum allowed acceleration, hold that cruise speed, then ramp back down to stop — respecting known velocity and acceleration limits throughout."
+    }
+  ],
+  "howItWorks": "The trapezoidal velocity profile is the simplest widely-used trajectory shape: accelerate at the maximum allowed rate until reaching a target cruise speed, hold that speed, then decelerate at the maximum allowed rate to arrive exactly at the target with zero remaining velocity. A more refined S-curve profile additionally limits jerk — instead of an instant jump from zero acceleration to maximum acceleration, it ramps acceleration up smoothly too, producing motion that's gentler on real mechanical parts and avoids the vibration or ringing that abrupt acceleration changes can cause, a common concern in 3D printers and CNC machines. Beyond just individual velocity ramps, smoothing also applies to the geometric shape of a path itself: blending sharp waypoint corners with gentle curves (within some allowed deviation tolerance) both respects a real actuator's physical limits and often saves overall time too, since slowing to near-zero at every sharp corner (if unsmoothed) wastes significantly more time than maintaining speed through a gently blended curve. The reference position, velocity, and acceleration profile that trajectory generation produces is exactly what feedforward control uses directly as its known, planned-ahead input.",
+  "diagramCaption": "A trapezoidal velocity profile: acceleration ramps up to a cruise speed, holds, then ramps back down to a stop — a physically realistic motion profile a real actuator can actually track.",
+  "realWorldExamples": [
+    "A 3D printer's motion controller converting a model's geometric toolpath into a trapezoidal or S-curve velocity profile for each axis, avoiding vibration artifacts on the printed part.",
+    "A CNC machine smoothing sharp corners in a cutting path to protect the tool and machine while maintaining cutting speed.",
+    "A robot arm's motion planner smoothing a path between two poses into a realistic, jerk-limited joint trajectory rather than commanding instantaneous position jumps."
+  ],
+  "commonMisconceptions": [
+    "\"Any geometric path is automatically followable by a real robot\" — a raw waypoint path with sharp corners isn't directly trackable without violating velocity or acceleration limits, which is exactly the gap trajectory generation fills.",
+    "\"Trajectory generation is the same thing as path planning\" — path planning decides where to go (a purely spatial problem); trajectory generation decides when and how fast to get there while respecting physical motion limits, a related but genuinely distinct problem.",
+    "\"Smoothing a path always makes the robot slower overall\" — smoothing sharp corners often saves time overall, since maintaining speed through a gentle curve is usually faster than slowing to near-zero at every sharp unsmoothed corner."
+  ],
+  "relatedComponents": ["nema17-stepper", "a4988-drv8825", "mg996r-servo"],
+  "relatedProjects": [],
+  "relatedConcepts": ["feedforward-control", "path-planning-overview", "model-predictive-control-intro"]
+}

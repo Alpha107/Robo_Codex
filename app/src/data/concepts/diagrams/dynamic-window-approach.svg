@@ -1,0 +1,29 @@
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .cand { animation: refresh 2.4s ease-in-out infinite; }
+    @keyframes refresh { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.25; } }
+    .best { animation: bestpulse 1.3s ease-in-out infinite; }
+    @keyframes bestpulse { 0%, 100% { opacity: 1; stroke-width: 3.5; } 50% { opacity: 0.6; stroke-width: 2; } }
+  </style>
+
+  <text x="300" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Simulated Candidate Velocities, Re-Scored Every Cycle</text>
+
+  <rect x="380" y="150" width="70" height="90" fill="#5b6270" opacity="0.85"/>
+  <text x="415" y="145" text-anchor="middle" font-size="10" fill="#5b6270">obstacle</text>
+
+  <g class="cand" stroke="#e03131" stroke-width="2.5" fill="none">
+    <path d="M100,150 Q250,60 420,90"/>
+    <path d="M100,150 Q250,90 430,150"/>
+  </g>
+  <g class="cand" stroke="#f08c00" stroke-width="2.5" fill="none">
+    <path d="M100,150 Q250,120 380,220"/>
+  </g>
+  <path d="M100,150 Q220,190 300,260" stroke="#2f9e44" stroke-width="3.5" fill="none" class="best"/>
+
+  <circle cx="100" cy="150" r="8" fill="#1a1d23"/>
+  <text x="65" y="175" font-size="10.5" font-weight="700" fill="#1a1d23">robot</text>
+
+  <text x="440" y="95" font-size="10" fill="#e03131" font-weight="700">collision &#8212; pruned</text>
+  <text x="440" y="225" font-size="10" fill="#f08c00" font-weight="700">safe but low clearance</text>
+  <text x="230" y="278" font-size="10" fill="#2f9e44" font-weight="700">highest score &#8212; executed this cycle</text>
+</svg>

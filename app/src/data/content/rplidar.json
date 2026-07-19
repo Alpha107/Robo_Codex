@@ -1,0 +1,120 @@
+{
+  "identity": {
+    "id": "rplidar",
+    "name": "RPLIDAR (2D LiDAR Module)",
+    "category": "Distance & Proximity Sensors",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Every other distance sensor in this encyclopedia looks in one direction. An RPLIDAR spins a laser rangefinder continuously, taking thousands of distance readings per second across a full 360-degree sweep, producing a complete 2D map of everything around the robot with each rotation. That's the sensor that makes real SLAM (Simultaneous Localization and Mapping) possible on a hobbyist budget — it's the standard entry point for anyone moving from 'avoid the wall in front of me' navigation into 'build a live map of the room and know where I am in it.' It needs noticeably more from the rest of the system than a single-point sensor: a spinning motor to power, a serial connection fast enough for the data stream, and usually a Raspberry Pi or similar (not a bare Arduino) to run the SLAM software that turns the point cloud into a usable map.",
+  "simpleSummary": "A spinning sensor that scans distance all around it, building a 360-degree map instead of looking one way.",
+  "specifications": {
+    "operatingVoltage": "5V (logic/communication), separate motor supply on some models",
+    "scanRate": "~5.5-10 Hz (full rotations per second)",
+    "range": "~12m (model-dependent, some variants reach 25m+)",
+    "samplesPerScan": "Hundreds to a few thousand distance points per rotation",
+    "interface": "UART serial (often via a USB adapter for PC/Pi connection)",
+    "angularResolution": "~1° or finer depending on model and scan rate"
+  },
+  "pinMap": [
+    {
+      "name": "Motor+",
+      "position": null,
+      "category": "power",
+      "function": "Power for the internal motor that spins the scanning head.",
+      "voltageRange": "Model-dependent, often PWM-controlled for speed",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": "Motor speed affects scan rate and data timing — most SLAM software expects a specific, stable rotation speed."
+    },
+    {
+      "name": "Motor-",
+      "position": null,
+      "category": "power",
+      "function": "Motor ground/return.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TX",
+      "position": null,
+      "category": "communication",
+      "function": "Serial transmit — streams distance/angle data to the host.",
+      "voltageRange": "3.3V or 5V logic (model-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "The data rate is high enough that a software-emulated serial port on a slow microcontroller will drop data — a real hardware UART (or USB adapter to a Pi/PC) is strongly preferred."
+    },
+    {
+      "name": "RX",
+      "position": null,
+      "category": "communication",
+      "function": "Serial receive — accepts start/stop scan commands from the host.",
+      "voltageRange": "3.3V or 5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Logic power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "SLAM-based autonomous navigation",
+      "scenario": "Build a live map of a room while simultaneously tracking the robot's position within it — the core capability behind robot vacuums and autonomous mobile robots.",
+      "pinsInvolved": [
+        "TX",
+        "RX",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "360° obstacle field for path planning",
+      "scenario": "Feed the full point-cloud sweep into a path-planning algorithm for smoother navigation than single-point sensors allow.",
+      "pinsInvolved": [
+        "TX",
+        "RX"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi 4",
+      "ROS/ROS2 navigation stack"
+    ],
+    "oftenConfusedWith": [
+      "HC-SR04/VL53L0X (single-point sensors, no rotation, no mapping capability)"
+    ],
+    "oftenUpgradedTo": [
+      "3D LiDAR units (add vertical scanning planes for full 3D point clouds)"
+    ]
+  }
+}

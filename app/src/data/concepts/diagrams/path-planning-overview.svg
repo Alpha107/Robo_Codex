@@ -1,0 +1,25 @@
+<svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <text x="250" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">A Generic Path Planning Problem</text>
+
+  <g stroke="#dde1e8" stroke-width="1">
+    <path d="M40,60 H460 M40,100 H460 M40,140 H460 M40,180 H460 M40,220 H460 M40,260 H460"/>
+    <path d="M40,60 V300 M80,60 V300 M120,60 V300 M160,60 V300 M200,60 V300 M240,60 V300 M280,60 V300 M320,60 V300 M360,60 V300 M400,60 V300 M440,60 V300"/>
+  </g>
+
+  <rect x="160" y="100" width="80" height="40" fill="#5b6270"/>
+  <rect x="280" y="180" width="40" height="80" fill="#5b6270"/>
+  <rect x="200" y="220" width="80" height="40" fill="#5b6270"/>
+
+  <circle cx="60" cy="80" r="9" fill="#2f6fae"/>
+  <text x="40" y="65" font-size="11" font-weight="700" fill="#2f6fae">start</text>
+
+  <circle cx="420" cy="280" r="9" fill="#e03131"/>
+  <text x="400" y="298" font-size="11" font-weight="700" fill="#e03131">goal</text>
+
+  <path d="M60,80 Q140,80 150,150 Q160,220 260,180 Q360,150 420,280" fill="none" stroke="#2f9e44" stroke-width="3" stroke-dasharray="7 4"/>
+  <circle r="6" fill="#2f9e44">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M60,80 Q140,80 150,150 Q160,220 260,180 Q360,150 420,280"/>
+  </circle>
+
+  <text x="250" y="312" text-anchor="middle" font-size="10.5" fill="#5b6270">Different algorithms search this same kind of space in very different ways.</text>
+</svg>

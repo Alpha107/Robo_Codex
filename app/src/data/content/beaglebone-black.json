@@ -1,0 +1,335 @@
+{
+  "identity": {
+    "id": "beaglebone-black",
+    "name": "BeagleBone Black",
+    "category": "Single Board Computer",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The BeagleBone Black runs full Linux like a Raspberry Pi, but its standout feature is something a Pi doesn't have at all: two onboard PRUs (Programmable Realtime Units) — tiny independent co-processors that can bit-bang precise, jitter-free timing (step-motor pulses, custom protocols) completely outside of Linux's non-real-time scheduling. It also boots from onboard eMMC storage out of the box, no SD card required, and exposes far more pins than a Pi across two 46-pin headers (P8 and P9) instead of one 40-pin header. The pin naming convention (P9_11, P8_7, etc.) refers to physical header position and is its own thing to learn, distinct from both Pi's GPIO numbers and Arduino's D-numbers.",
+  "simpleSummary": "A Linux mini-computer like a Raspberry Pi, with extra chips built in for very precise timing.",
+  "specifications": {
+    "processor": "TI Sitara AM3358, Arm Cortex-A8, 1 GHz",
+    "operatingVoltage": "5V (board), 3.3V (GPIO logic)",
+    "ram": "512 MB DDR3",
+    "storage": "4 GB onboard eMMC, plus a microSD slot",
+    "realTimeCoprocessors": "2x PRU (Programmable Realtime Unit) for hard real-time I/O",
+    "connectivity": "10/100 Ethernet",
+    "usb": "Mini-USB (client/power) + USB-A (host)",
+    "video": "Micro-HDMI",
+    "gpio": "2x 46-pin headers (P8, P9), 3.3V logic",
+    "connector": "Mini-USB (power) or 5V barrel jack"
+  },
+  "pinMap": [
+    {
+      "name": "P9_3 (3.3V)",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~250 mA total across all 3.3V pins",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P9_5 (VDD_5V)",
+      "position": null,
+      "category": "power",
+      "function": "5V rail from the power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P9_1 (GND)",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P9_11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "UART4 RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P9_13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "UART4 TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_14",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_15",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P9_16",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_17 (SPI0 CS0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 chip-select.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "SPI CS0"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_18 (SPI0 D1)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_19 (I2C2 SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "I2C2 clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_20 (I2C2 SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "I2C2 data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_21 (UART2 TXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART2 transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "UART TX",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_22 (UART2 RXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART2 receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "UART RX",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_24 (UART1 TXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART1 transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P9_26 (UART1 RXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART1 receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P8_7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also usable by a PRU for real-time bit-banging.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "PRU I/O"
+      ],
+      "gotcha": "PRU-capable pins need their own dedicated toolchain/firmware to use the real-time feature — plain Linux GPIO access doesn't get you the jitter-free timing."
+    },
+    {
+      "name": "P8_8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PRU-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "PRU I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P8_9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PRU-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "PRU I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P8_10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PRU-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [
+        "PRU I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P8_11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P8_12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "6 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Precision CNC/3D-printer step generation",
+      "scenario": "Use the PRUs to generate jitter-free step/direction pulses for stepper drivers — timing Linux's regular GPIO simply can't guarantee.",
+      "pinsInvolved": [
+        "P8_7",
+        "P8_8",
+        "P8_9",
+        "P8_10"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Industrial protocol bridge",
+      "scenario": "Bridge an industrial serial protocol into a Linux network service using the extra UARTs.",
+      "pinsInvolved": [
+        "P9_21 (UART2 TXD)",
+        "P9_22 (UART2 RXD)",
+        "P9_24 (UART1 TXD)",
+        "P9_26 (UART1 RXD)"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Headless Linux sensor server",
+      "scenario": "Boots straight from onboard eMMC with no SD card, useful for a permanently embedded, low-maintenance sensor gateway.",
+      "pinsInvolved": [
+        "P9_19 (I2C2 SCL)",
+        "P9_20 (I2C2 SDA)"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Stepper drivers (A4988/DRV8825)",
+      "Industrial serial sensors"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi 4 (no PRUs, single header, larger community)"
+    ],
+    "oftenUpgradedTo": [
+      "BeagleBone AI-64 (adds AI acceleration)"
+    ]
+  }
+}

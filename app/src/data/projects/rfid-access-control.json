@@ -1,0 +1,253 @@
+{
+  "identity": {
+    "id": "rfid-access-control",
+    "title": "RFID Access Control",
+    "tagline": "Tap an authorized card, a servo unlocks. Tap the wrong one, and it doesn't.",
+    "category": "Smart Home & IoT",
+    "difficulty": "Intermediate",
+    "estimatedTime": "40 minutes"
+  },
+  "goal": "Build a card-based access control system: scan an RFID card or keyfob on an RC522 reader, and a servo swings open (simulating a lock) only if that card's unique ID is on an authorized list — otherwise, a buzzer signals denial.",
+  "simpleSummary": "Scan an ID card to unlock a servo 'door', denying any card that's not on the allowed list.",
+  "howItWorks": "Every RFID card contains a small chip with a globally unique ID (UID) burned in at manufacture, and no battery of its own — the RC522 reader emits a small radio field that briefly powers the card just long enough for it to transmit its UID back. That UID is really just a sequence of bytes, typically 4 or 7 of them, and this project's whole security logic amounts to comparing the scanned UID byte-by-byte against a short list of pre-recorded \"authorized\" UIDs. The RC522 talks to the Arduino over SPI, a faster synchronous protocol than I2C that's well suited to a reader that needs to communicate a reasonable amount of data (the UID, plus optional stored data on more advanced RFID tags) quickly.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "Arduino IDE Serial Monitor to read each card's unique ID the first time"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "rc522-rfid",
+      "quantity": 1
+    },
+    {
+      "componentId": "sg90-servo",
+      "quantity": 1,
+      "note": "acts as the lock mechanism"
+    },
+    {
+      "componentId": "buzzer",
+      "quantity": 1
+    },
+    {
+      "componentId": "lcd1602",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 12 wires"
+    }
+  ],
+  "circuitDiagramCaption": "RC522 on SPI (D9, D10-D13); servo on D6; buzzer on D7; LCD on the I2C bus (A4/A5).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "rc522-rfid",
+          "pin": "SDA (SS)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rc522-rfid",
+          "pin": "SCK"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D13"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rc522-rfid",
+          "pin": "MOSI"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rc522-rfid",
+          "pin": "MISO"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D12"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rc522-rfid",
+          "pin": "RST"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rc522-rfid",
+          "pin": "3.3V"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "3.3V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "Signal (orange/yellow wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "VCC (red wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "GND (brown/black wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D7"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A5"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the RC522's SDA (SS) to D10, SCK to D13, MOSI to D11, MISO to D12, and RST to D9.",
+      "detail": "These SPI pin assignments (D10-D13) are fixed hardware pins on an Uno, not a free choice — only SDA and RST can be moved to other pins if needed."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the RC522's 3.3V pin to the Arduino's 3.3V output — never to 5V.",
+      "detail": "This is the single most common way to destroy an RC522 module: unlike most modules in this encyclopedia, the RC522 genuinely is not 5V tolerant, and connecting it to 5V can permanently damage it."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the servo's signal to D6, power to 5V, and ground to GND.",
+      "detail": "The servo represents the lock mechanism, exactly as in Keypad Door Lock Simulation."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the buzzer between D7 and GND, and the LCD's I2C backpack to GND/5V/A4/A5.",
+      "detail": "Same buzzer and LCD wiring patterns used throughout this encyclopedia's other projects."
+    }
+  ],
+  "code": [
+    {
+      "filename": "rfid_access_control.ino",
+      "language": "arduino",
+      "source": "#include <SPI.h>\n#include <MFRC522.h>\n#include <Servo.h>\n#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n\n// RFID Access Control\n// Unlocks a servo when a scanned card's UID matches an authorized list.\n\nconst int RST_PIN = 9;\nconst int SS_PIN = 10;\nMFRC522 rfid(SS_PIN, RST_PIN);\n\nconst int SERVO_PIN = 6;\nconst int BUZZER_PIN = 7;\nServo lockServo;\n\nLiquidCrystal_I2C lcd(0x27, 16, 2);\n\n// Add your own cards' UIDs here after reading them once via Serial (see step 1\n// of Troubleshooting) — this example has one placeholder authorized card.\nbyte authorizedUID[][4] = {\n  {0xDE, 0xAD, 0xBE, 0xEF}\n};\nconst int AUTHORIZED_COUNT = 1;\n\nvoid setup() {\n  Serial.begin(9600);\n  SPI.begin();\n  rfid.PCD_Init();\n\n  lockServo.attach(SERVO_PIN);\n  lockServo.write(0); // locked\n\n  pinMode(BUZZER_PIN, OUTPUT);\n\n  lcd.init();\n  lcd.backlight();\n  lcd.print(\"Scan your card\");\n}\n\nvoid loop() {\n  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {\n    return; // no new card this loop\n  }\n\n  Serial.print(\"UID: \");\n  for (int i = 0; i < rfid.uid.size; i++) {\n    Serial.print(rfid.uid.uidByte[i], HEX);\n    Serial.print(\" \");\n  }\n  Serial.println();\n\n  if (isAuthorized(rfid.uid.uidByte, rfid.uid.size)) {\n    grantAccess();\n  } else {\n    denyAccess();\n  }\n\n  rfid.PICC_HaltA();\n}\n\nbool isAuthorized(byte* scannedUID, byte size) {\n  for (int i = 0; i < AUTHORIZED_COUNT; i++) {\n    bool match = true;\n    for (int j = 0; j < size; j++) {\n      if (scannedUID[j] != authorizedUID[i][j]) {\n        match = false;\n        break;\n      }\n    }\n    if (match) return true;\n  }\n  return false;\n}\n\nvoid grantAccess() {\n  lcd.clear();\n  lcd.print(\"Access granted\");\n  lockServo.write(90); // unlocked\n  delay(3000);\n  lockServo.write(0); // re-lock\n  lcd.clear();\n  lcd.print(\"Scan your card\");\n}\n\nvoid denyAccess() {\n  lcd.clear();\n  lcd.print(\"Access denied\");\n  tone(BUZZER_PIN, 300, 500);\n  delay(1500);\n  lcd.clear();\n  lcd.print(\"Scan your card\");\n}\n",
+      "explanation": "PICC_IsNewCardPresent() and PICC_ReadCardSerial() together are what actually detect and read a card in range — both need to succeed before rfid.uid contains anything meaningful, which is why the loop bails out early if either fails. isAuthorized() compares the scanned UID against every entry in the authorizedUID list byte-by-byte, returning true on the first full match — the same lookup-table mindset used in Digital Dice, just comparing byte arrays instead of looking up a display pattern."
+    }
+  ],
+  "expectedBehavior": "Scanning an authorized card shows \"Access granted,\" swings the servo open, and automatically re-locks after 3 seconds. Scanning any other card shows \"Access denied\" and sounds a low buzzer tone.",
+  "troubleshooting": [
+    {
+      "issue": "Reader never detects any card.",
+      "fix": "Triple-check the RC522 is powered from 3.3V, not 5V — an underpowered or damaged module from an accidental 5V connection is a common cause of total non-response."
+    },
+    {
+      "issue": "Every card is denied, including ones you expect to work.",
+      "fix": "This code ships with only a placeholder UID — read your own card's actual UID from the Serial Monitor first (scan it once and copy the printed hex bytes), then replace the placeholder in authorizedUID with your real card's bytes."
+    },
+    {
+      "issue": "Same card sometimes grants access, sometimes denies it.",
+      "fix": "Hold the card steady and closer to the reader — RC522 modules have a fairly short reliable range (a few centimeters), and a partial/interrupted read can occasionally produce inconsistent results."
+    }
+  ],
+  "extensions": [
+    "Store multiple authorized users with names, printing whose card was scanned on the LCD.",
+    "Log every scan attempt (authorized or not) with a timestamp over Serial.",
+    "Add a \"master card\" that enters an admin mode for adding new authorized cards without reflashing code.",
+    "Combine with the Keypad Door Lock Simulation project for two-factor access: card AND code required."
+  ]
+}

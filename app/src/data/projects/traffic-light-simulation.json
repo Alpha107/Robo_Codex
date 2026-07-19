@@ -1,0 +1,164 @@
+{
+  "identity": {
+    "id": "traffic-light-simulation",
+    "title": "Traffic Light Simulation",
+    "tagline": "Three LEDs, one state machine — a real traffic light's timing, on a breadboard.",
+    "category": "Beginner Electronics",
+    "difficulty": "Beginner",
+    "estimatedTime": "20 minutes"
+  },
+  "goal": "Recreate a standard traffic light's red → green → yellow → red cycle using three LEDs and a timed sequence in code — the first project where the code isn't just \"blink one thing,\" it's actually managing a small sequence of states.",
+  "simpleSummary": "Make three LEDs cycle red, green, and yellow like a real traffic light.",
+  "howItWorks": "This project uses exactly the same electrical idea as LED Blink, just three times over — each LED gets its own current-limiting resistor and its own Arduino pin. The only genuinely new idea is in the code: a real traffic light isn't just \"on/off,\" it's a sequence of states that always happen in the same order, each held for a different length of time (green stays lit far longer than yellow). Writing that as a series of digitalWrite() and delay() calls in a specific order is your first taste of a state machine — a program structure you'll use constantly once projects get more complex than a single LED.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 3,
+      "note": "red, yellow, green"
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 3,
+      "note": "220Ω resistor per LED"
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 6 wires"
+    }
+  ],
+  "circuitDiagramCaption": "Three identical LED+resistor branches (D10/D11/D12), all sharing a common ground rail back to Arduino GND.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        },
+        "label": "red"
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        },
+        "label": "yellow"
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)",
+          "instance": 2
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D12"
+        },
+        "label": "green"
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)",
+          "instance": 2
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Place all three LEDs on the breadboard with their cathodes (short legs) sharing the same ground rail.",
+      "detail": "Keeping all three grounded to one shared rail (instead of three separate wires back to the Arduino) is exactly how you'd wire this on a real breadboard, and it cuts your wiring in half."
+    },
+    {
+      "step": 2,
+      "instruction": "Give each LED its own 220Ω resistor in series on its anode (long leg) side.",
+      "detail": "Each LED needs its own resistor — you can't share one resistor across all three, since that would let each LED's brightness affect the others unpredictably."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the red LED's resistor to Arduino D10, yellow's to D11, and green's to D12.",
+      "detail": "Any three digital pins work — these three are just conveniently adjacent on the board."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the shared ground rail to Arduino GND.",
+      "detail": "One ground connection is enough for all three LEDs since they already share a rail."
+    }
+  ],
+  "code": [
+    {
+      "filename": "traffic_light.ino",
+      "language": "arduino",
+      "source": "// Traffic Light Simulation\n// Cycles RED -> GREEN -> YELLOW -> RED on a fixed timer, like a real signal.\n\nconst int RED_PIN = 10;\nconst int YELLOW_PIN = 11;\nconst int GREEN_PIN = 12;\n\nvoid setup() {\n  pinMode(RED_PIN, OUTPUT);\n  pinMode(YELLOW_PIN, OUTPUT);\n  pinMode(GREEN_PIN, OUTPUT);\n}\n\nvoid loop() {\n  // RED\n  allOff();\n  digitalWrite(RED_PIN, HIGH);\n  delay(4000);\n\n  // GREEN\n  allOff();\n  digitalWrite(GREEN_PIN, HIGH);\n  delay(4000);\n\n  // YELLOW (brief warning before red)\n  allOff();\n  digitalWrite(YELLOW_PIN, HIGH);\n  delay(1500);\n}\n\nvoid allOff() {\n  digitalWrite(RED_PIN, LOW);\n  digitalWrite(YELLOW_PIN, LOW);\n  digitalWrite(GREEN_PIN, LOW);\n}\n",
+      "explanation": "allOff() exists so each phase of the cycle starts from a clean slate — without it, forgetting to turn off the previous LED would leave two lit at once. The loop() function itself reads almost like a script: turn red on, wait, switch to green, wait, switch to yellow for a shorter warning period, then loop back to red."
+    }
+  ],
+  "expectedBehavior": "The LEDs cycle continuously: red for 4 seconds, green for 4 seconds, yellow for 1.5 seconds, then back to red — matching the rhythm of a real traffic signal.",
+  "troubleshooting": [
+    {
+      "issue": "One LED never lights.",
+      "fix": "Check that specific LED's orientation and its resistor's connection — since each branch is wired independently, a mistake in one doesn't affect the other two, which makes it easy to isolate."
+    },
+    {
+      "issue": "Two LEDs are lit at the same time.",
+      "fix": "Double check allOff() is being called at the start of every phase — if you're modifying the code and remove that call, the previous LED will stay lit."
+    }
+  ],
+  "extensions": [
+    "Add a pedestrian \"walk/don't walk\" LED pair on a fourth and fifth pin, synced to the red phase.",
+    "Add a push button that, when pressed during the green phase, shortens it (like a pedestrian crossing request).",
+    "Control the three LEDs with a single WS2812B/NeoPixel instead of three separate LEDs and resistors (see the RGB Mood Light project).",
+    "Drive two intersections that must stay in sync (one is always red while the other is green)."
+  ]
+}

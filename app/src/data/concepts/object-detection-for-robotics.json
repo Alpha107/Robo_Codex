@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "object-detection-for-robotics",
+    "title": "Object Detection for Robotics",
+    "category": "AI & Machine Learning",
+    "level": "Advanced",
+    "tagline": "Not just recognizing that an object is somewhere in view, but finding exactly what it is and exactly where."
+  },
+  "simpleSummary": "Having a robot not just recognize that a camera image contains something, but identify exactly what kind of object it is and exactly where it is in the frame, often for several objects at once.",
+  "keyIdea": "Object detection combines classification (what is it?) and localization (exactly where is it, usually as a bounding box) for potentially multiple objects within a single image, typically using a trained neural network.",
+  "overview": "Image classification assigns a single label to an entire image — 'this image contains a cat.' Object detection goes further: it finds and labels potentially multiple distinct objects within one image, each with its own bounding box location — 'there's a cat in this box, and a dog in that box.' This distinction matters enormously for robotics: a robot generally needs to know not just whether an obstacle exists somewhere in view, but exactly where it is, how large, and what kind, to make good navigation or manipulation decisions. Simple classical computer vision techniques can detect one known color or shape reliably, but general multi-object, multi-class detection in cluttered, varied real environments is where trained neural network-based object detectors earn their keep.",
+  "equations": [
+    {
+      "label": "Intersection over Union (IoU)",
+      "expression": "IoU = area(predicted box ∩ true box) / area(predicted box ∪ true box)",
+      "meaning": "The standard metric for evaluating detection accuracy: it measures how well a predicted bounding box overlaps with the true object location, used to decide whether a prediction counts as a correct detection during evaluation."
+    }
+  ],
+  "howItWorks": "Modern object detectors are trained neural networks that take an image as input and output a list of detected objects, each with a class label, a confidence score, and a bounding box describing its location and size. Because a network's raw output can produce multiple overlapping, redundant detections of the same real object, a filtering step called non-max suppression keeps only the single best detection per real object, discarding the rest. A first-class practical concern for any embedded robotics vision project — not just an academic afterthought — is the trade-off between model size, speed, and accuracy: larger, more accurate models need more compute (well suited to a Jetson Nano's GPU), while smaller, faster models trade some accuracy for the ability to run in real time on far more constrained hardware, even a plain ESP32-CAM with a sufficiently lightweight model.",
+  "diagramCaption": "Object detection labels multiple distinct objects within a single frame, each with its own bounding box and confidence score — a fundamentally different (and more useful) output than a single whole-image classification label.",
+  "realWorldExamples": [
+    "A warehouse robot identifying and locating specific boxes or items on a shelf via a Jetson Nano-based object detector before attempting to grasp them.",
+    "An autonomous vehicle detecting and localizing other vehicles, pedestrians, and traffic signs simultaneously within each camera frame.",
+    "A security or monitoring robot using an ESP32-CAM with a lightweight detection model to flag when a specific object or person enters its field of view."
+  ],
+  "commonMisconceptions": [
+    "\"Object detection and image classification are the same thing\" — classification assigns one label to an entire image; detection finds and localizes potentially multiple distinct objects with individual bounding boxes within that same image.",
+    "\"Object detection models understand objects conceptually\" — like other neural networks, they're pattern-matching statistical models that can fail in surprising ways outside their training data, without genuine conceptual understanding of what an object 'is.'",
+    "\"A more accurate detection model is always the right choice\" — on constrained embedded hardware, a smaller, faster, slightly less accurate model that actually runs in real time is often the more practical engineering choice."
+  ],
+  "relatedComponents": ["jetson-nano", "esp32-cam", "usb-webcam", "pi-camera-module"],
+  "relatedProjects": [],
+  "relatedConcepts": ["computer-vision-basics", "neural-networks-for-robotics", "camera-calibration"]
+}

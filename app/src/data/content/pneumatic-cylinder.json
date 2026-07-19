@@ -1,0 +1,158 @@
+{
+  "identity": {
+    "id": "pneumatic-cylinder",
+    "name": "Pneumatic Cylinder + Solenoid Valve",
+    "category": "Motors & Actuators",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A pneumatic cylinder produces linear push/pull force from compressed air pressure acting on a piston, and a double-acting cylinder (the common industrial type) can be actively driven in both directions by routing air to either end. The solenoid valve is the electrical-to-pneumatic interface: it doesn't touch the cylinder's air directly with electricity, it just uses a small electromagnet to shift a spool that redirects compressed air from the supply line to one port or the other (and vents the opposite port to exhaust). This is a fundamentally different actuation philosophy from an electric actuator: pneumatics are fast, powerful for their size, and simple to make fail-safe (spring-return valves vent to a known state on power loss), but the system only works with a compressor and air-prep (filter/regulator/lubricator) supplying clean, dry, pressurized air — there's no such thing as a pneumatic cylinder that 'just plugs into a battery.' Precise intermediate positioning is also genuinely harder than with an electric actuator, because air is compressible — a simple on/off valve only gives you two reliable end positions, and true proportional position control needs a proportional valve and pressure feedback, not just a bigger solenoid.",
+  "simpleSummary": "A cylinder that pushes or pulls using compressed air, switched on and off by a small electric solenoid valve that redirects the airflow.",
+  "specifications": {
+    "boreDiameter": "16mm - 100mm+ (common industrial range)",
+    "strokeLength": "10mm - 500mm+ depending on model",
+    "operatingPressure": "4-8 bar (60-120 psi) typical industrial supply",
+    "forceOutput": "Pressure x piston area, e.g. ~480N push at 6 bar on a 32mm bore",
+    "valveType": "5/2-way monostable solenoid valve (5 ports, 2 switching positions, spring-return)",
+    "solenoidVoltage": "24V DC (common), also 12V DC or 110/230V AC variants",
+    "actuationSpeed": "Full stroke typically under 1 second, tunable with flow-control (speed) valves",
+    "cushioning": "Adjustable pneumatic end-of-stroke cushioning on most industrial cylinders",
+    "requiredSupply": "Clean, dry compressed air from a compressor + filter-regulator-lubricator (FRL) unit"
+  },
+  "pinMap": [
+    {
+      "name": "PORT_A",
+      "position": null,
+      "category": "special",
+      "function": "Cap-end air port — pressurizing this port extends the piston rod.",
+      "voltageRange": "N/A (pneumatic port, not electrical)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Undersized tubing or fittings on this line throttle airflow just like a resistor throttles current — the cylinder will move noticeably slower than its rated speed even though the valve and pressure are both correct."
+    },
+    {
+      "name": "PORT_B",
+      "position": null,
+      "category": "special",
+      "function": "Rod-end air port — pressurizing this port retracts the piston rod.",
+      "voltageRange": "N/A (pneumatic port)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The rod-end has less effective piston area than the cap-end (the rod itself takes up space), so retract force and speed are noticeably lower than extend force/speed at the same supply pressure — easy to miss when sizing a lifting application."
+    },
+    {
+      "name": "SUPPLY_AIR",
+      "position": null,
+      "category": "special",
+      "function": "Compressed air inlet to the solenoid valve, fed from the shop air line or compressor through an FRL (filter-regulator-lubricator) unit.",
+      "voltageRange": "N/A (pneumatic port)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Skipping the filter/regulator stage lets moisture and particulate into the valve — condensation in the lines is a leading cause of sticky, slow-to-shift solenoid valves in humid environments."
+    },
+    {
+      "name": "EXHAUST",
+      "position": null,
+      "category": "special",
+      "function": "Exhaust port where the valve vents the depressurized side of the cylinder to atmosphere during each stroke.",
+      "voltageRange": "N/A (pneumatic port)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "A blocked or muffler-restricted exhaust port doesn't stop the cylinder from moving, it just slows it down and can cause pressure to back up — a surprising 'why is this suddenly sluggish' failure mode."
+    },
+    {
+      "name": "SOLENOID_COIL+",
+      "position": null,
+      "category": "power",
+      "function": "Solenoid valve coil terminal — energizing the coil shifts the valve spool to route supply air to the opposite cylinder port.",
+      "voltageRange": "24V DC (common), or 12V DC / 110-230V AC variants",
+      "currentLimit": "Coil-dependent, typically a few hundred mA at 24V DC",
+      "alternateFunctions": [],
+      "gotcha": "This coil draws real inductive current and needs a driver (relay/transistor/PLC output) sized for it, plus a flyback diode on DC coils — driving it directly from a microcontroller pin will not work and can damage the pin."
+    },
+    {
+      "name": "SOLENOID_COIL-",
+      "position": null,
+      "category": "power",
+      "function": "Solenoid valve coil return terminal.",
+      "voltageRange": "24V DC (common)",
+      "currentLimit": "Coil-dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "REED_EXTEND",
+      "position": null,
+      "category": "digital",
+      "function": "Magnetic reed (or Hall) switch mounted in a slot on the cylinder barrel, triggered by the piston's internal magnet when the rod reaches full extension.",
+      "voltageRange": "5-24V logic depending on switch type",
+      "currentLimit": "N/A (sensor output, often needs a pull-up/pull-down)",
+      "alternateFunctions": [],
+      "gotcha": "These slide-in-a-slot position sensors need to be positioned and locked down precisely against the actual stroke length — a sensor that's a few millimeters out of place reports 'extended' before the rod has actually finished traveling."
+    },
+    {
+      "name": "REED_RETRACT",
+      "position": null,
+      "category": "digital",
+      "function": "Magnetic reed/Hall switch triggered at full retraction.",
+      "voltageRange": "5-24V logic depending on switch type",
+      "currentLimit": "N/A (sensor output)",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Pick-and-place gripper actuation",
+      "scenario": "Extend/retract a pneumatic gripper or pusher on a fast production line, switching the solenoid valve from a PLC output for split-second, repeatable strokes.",
+      "pinsInvolved": ["SOLENOID_COIL+", "SOLENOID_COIL-", "PORT_A", "PORT_B"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Part-present clamping fixture",
+      "scenario": "Clamp a workpiece in a jig using cylinder force, confirming full clamp engagement via the extend reed switch before a downstream process (like welding) proceeds.",
+      "pinsInvolved": ["SOLENOID_COIL+", "REED_EXTEND", "PORT_A"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Fail-safe safety guard",
+      "scenario": "Use a spring-return monostable valve so a loss of electrical power automatically vents the cylinder to a known safe (retracted) position, rather than leaving it wherever it was.",
+      "pinsInvolved": ["SOLENOID_COIL+", "SOLENOID_COIL-", "EXHAUST"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "High-force stamping/pressing station",
+      "scenario": "Use a large-bore cylinder at higher supply pressure to generate stamping force well beyond what an electric linear actuator of similar size could produce.",
+      "pinsInvolved": ["PORT_A", "SUPPLY_AIR", "SOLENOID_COIL+"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Cycle-time monitoring",
+      "scenario": "Read both reed switches into a PLC or microcontroller to time and verify each extend/retract cycle, flagging a fault if a stroke takes longer than expected (indicating an air leak or worn seal).",
+      "pinsInvolved": ["REED_EXTEND", "REED_RETRACT"],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Compressor + FRL (filter-regulator-lubricator) air supply unit",
+      "PLC or relay module driving the solenoid coil",
+      "Flow-control (speed-control) valves for stroke speed tuning"
+    ],
+    "oftenConfusedWith": [
+      "linear-actuator (self-contained electric actuator — plugs straight into a DC supply with no compressor, no air lines, and gives native proportional position control; the pneumatic cylinder needs a whole compressed-air system and is fundamentally an on/off, end-to-end actuator without a proportional valve)",
+      "solenoid (a small electromagnet that directly snaps a plunger — no compressed air involved at all, despite the shared 'solenoid valve' name using the same electromagnet principle just to shift a valve spool instead)"
+    ],
+    "oftenUpgradedTo": [
+      "Proportional pneumatic valve with pressure feedback, for true intermediate position control instead of just two end positions"
+    ]
+  },
+  "beginnerMistakes": [
+    "Assuming it can run off a battery like an electric actuator — it needs a compressor and prepared (filtered, regulated) compressed air supply to do anything at all.",
+    "Driving the solenoid coil directly from a microcontroller GPIO pin instead of through a relay or transistor driver rated for the coil's real inductive current.",
+    "Expecting precise intermediate stopping positions from a simple on/off valve — without a proportional valve and feedback, air's compressibility makes mid-stroke positions unrepeatable.",
+    "Forgetting the rod-end has less piston area than the cap-end, so retract force/speed is noticeably lower than extend — a problem when the cylinder is oriented to lift a load on retraction.",
+    "Skipping the filter-regulator stage on the air supply, letting moisture into the valve and causing slow, sticky, or intermittent shifting over time."
+  ]
+}

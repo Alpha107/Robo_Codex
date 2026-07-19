@@ -1,0 +1,268 @@
+{
+  "identity": {
+    "id": "industrial-servo-drive",
+    "name": "Industrial AC Servo Drive + Motor",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "An industrial AC servo system is a matched pair: a servo drive (a metal-enclosed amplifier with its own DSP-based control loop) and a servo motor with a built-in high-resolution encoder, sold and tuned as a set rather than mixed and matched like hobby gear. The drive rectifies three-phase mains into an internal DC bus, then inverts it back out to the motor windings while running nested current, velocity, and position control loops at kHz rates using the motor's encoder feedback — this is the same closed-loop philosophy as a hobby servo, just with orders of magnitude more resolution, torque, and speed. What makes it 'industrial' beyond raw power is the interface: command comes in as a pulse train, ±10V analog torque/velocity reference, or a fieldbus (EtherCAT/CANopen/Modbus), status and faults go out over dedicated digital I/O, and a mandatory Safe Torque Off (STO) safety circuit lets an emergency-stop chain cut motor torque without powering down the whole drive. Commissioning always starts with parameter auto-tuning against the actual mechanical load — a drive tuned for a light, stiff load will oscillate or fault when bolted to something heavier and less rigid.",
+  "simpleSummary": "A precision motor-and-amplifier pair used in factory automation, where an encoder-equipped AC motor is driven by a matched amplifier running fast closed-loop torque, velocity, and position control.",
+  "specifications": {
+    "mainsInput": "3-phase, 200-230V AC (or 380-480V AC on larger drives)",
+    "ratedMotorPower": "50W - several kW depending on model",
+    "ratedTorque": "0.16 Nm - 20+ Nm depending on motor frame size",
+    "encoderResolution": "17-23 bit absolute (131,072 - 8,388,608+ counts/rev), or high-count incremental",
+    "controlLoopRate": "Current loop ~10-20 kHz, velocity loop ~2-5 kHz, position loop ~1 kHz",
+    "commandInterfaces": "Pulse train (line-driver step/dir or CW/CCW), ±10V analog, EtherCAT/CANopen/Modbus fieldbus",
+    "safetyFeature": "Dual-channel Safe Torque Off (STO), IEC 61800-5-2 compliant",
+    "positionRepeatability": "Typically ±1 encoder count (sub-arcminute at the motor shaft)",
+    "protectionRating": "IP65 (motor, connector-mated) / IP20 (drive enclosure, panel-mount)"
+  },
+  "pinMap": [
+    {
+      "name": "L1",
+      "position": null,
+      "category": "power",
+      "function": "Three-phase AC mains input, line 1, supplying the drive's internal rectifier/DC bus.",
+      "voltageRange": "200-480V AC (model-dependent)",
+      "currentLimit": "Sized to rated motor power, often several amps to tens of amps",
+      "alternateFunctions": [],
+      "gotcha": "Never hot-swap or disconnect mains while the drive is enabled — the internal DC bus capacitors stay charged at lethal voltage for minutes after power-off, which is exactly why drives specify a mandatory discharge wait time before opening the enclosure."
+    },
+    {
+      "name": "L2",
+      "position": null,
+      "category": "power",
+      "function": "Three-phase AC mains input, line 2.",
+      "voltageRange": "200-480V AC",
+      "currentLimit": "Sized to rated motor power",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "L3",
+      "position": null,
+      "category": "power",
+      "function": "Three-phase AC mains input, line 3.",
+      "voltageRange": "200-480V AC",
+      "currentLimit": "Sized to rated motor power",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PE",
+      "position": null,
+      "category": "power",
+      "function": "Protective earth ground for the drive enclosure and mains input.",
+      "voltageRange": "0V (safety ground)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Skipping a proper low-impedance earth bond isn't just a code violation — high-frequency PWM switching noise needs a solid ground return path, or it radiates into nearby sensor and encoder cabling as electrical noise."
+    },
+    {
+      "name": "MOTOR_U",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase U output to the servo motor windings.",
+      "voltageRange": "Switched, up to bus voltage amplitude",
+      "currentLimit": "Up to rated/peak motor current",
+      "alternateFunctions": [],
+      "gotcha": "Motor power and encoder feedback cables must run separately with shielding grounded at one end only — bundling them together couples PWM switching noise straight into the encoder signal and causes erratic position faults."
+    },
+    {
+      "name": "MOTOR_V",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase V output.",
+      "voltageRange": "Switched, up to bus voltage amplitude",
+      "currentLimit": "Up to rated/peak motor current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MOTOR_W",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase W output.",
+      "voltageRange": "Switched, up to bus voltage amplitude",
+      "currentLimit": "Up to rated/peak motor current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MOTOR_PE",
+      "position": null,
+      "category": "power",
+      "function": "Motor frame/case ground, bonded back to the drive's earth terminal.",
+      "voltageRange": "0V (safety ground)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P",
+      "position": null,
+      "category": "power",
+      "function": "Positive DC bus tap for an external regenerative brake resistor, used when decelerating large inertial loads pumps more energy back than the internal bus can absorb.",
+      "voltageRange": "DC bus voltage (varies with mains)",
+      "currentLimit": "Resistor and drive model dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B",
+      "position": null,
+      "category": "power",
+      "function": "Brake resistor return terminal, paired with P.",
+      "voltageRange": "DC bus voltage",
+      "currentLimit": "Resistor and drive model dependent",
+      "alternateFunctions": [],
+      "gotcha": "Omitting the external brake resistor on an application with frequent fast stops of a heavy load causes recurring 'overvoltage' faults during deceleration, not acceleration — a symptom that confuses people expecting overcurrent trips instead."
+    },
+    {
+      "name": "ENCODER",
+      "position": null,
+      "category": "communication",
+      "function": "Multi-conductor feedback cable carrying the motor's absolute/incremental encoder data back to the drive's position and velocity loops.",
+      "voltageRange": "Encoder-specific serial protocol, typically 5V logic",
+      "currentLimit": "Low, sensor-level",
+      "alternateFunctions": [],
+      "gotcha": "This connector is proprietary per drive/motor family — mixing a motor and drive from different vendors (even both 'servo') almost never works without a compatible encoder protocol, despite superficially similar specs."
+    },
+    {
+      "name": "PULSE_IN",
+      "position": null,
+      "category": "digital",
+      "function": "Differential line-driver pulse-train input (step/dir or CW/CCW pulses) from an external motion controller or PLC, commanding incremental position moves.",
+      "voltageRange": "Differential line-driver logic, typically 5V",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": "Single-ended TTL from a hobbyist controller can't reliably drive this input over any cable length — it expects proper differential line-driver signaling, or pulses get lost as electrical noise at high step rates."
+    },
+    {
+      "name": "SERVO_ON",
+      "position": null,
+      "category": "digital",
+      "function": "Digital input contact that enables the drive's power stage; the drive stays in a safe idle state until this is asserted.",
+      "voltageRange": "24V DC (typical industrial I/O level)",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": "Wiring this permanently closed defeats its purpose as part of the machine's start-up interlock sequence — most integrators tie it through the same E-stop/safety chain as STO, not as a bare jumper."
+    },
+    {
+      "name": "ALARM_OUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output contact that opens/closes on a drive fault (overcurrent, overtemperature, encoder loss, etc.), typically wired into a PLC's fault-monitoring input.",
+      "voltageRange": "24V DC (typical industrial I/O level)",
+      "currentLimit": "Relay/opto-output rated, usually <100mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "BRAKE_OUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output driving the motor's built-in electromagnetic holding brake coil (on brake-equipped motors), released only once the drive has torque control established.",
+      "voltageRange": "24V DC (brake coil dependent)",
+      "currentLimit": "Sized to brake coil current, often <1A",
+      "alternateFunctions": [],
+      "gotcha": "The brake engages by spring force when unpowered — on a vertical axis, disabling the drive without a correctly sequenced brake release/engage timing lets the load free-fall for a fraction of a second before the brake bites."
+    },
+    {
+      "name": "STO1",
+      "position": null,
+      "category": "special",
+      "function": "Safe Torque Off channel 1 — a dual-channel safety input that, when opened, removes gate drive to the power stage in hardware, independent of firmware.",
+      "voltageRange": "24V DC (safety-rated input)",
+      "currentLimit": "N/A (safety logic input)",
+      "alternateFunctions": [],
+      "gotcha": "STO removes torque but does not disconnect mains power or discharge the DC bus — it is a safety function for preventing unexpected motion, not a substitute for lockout/tagout during maintenance."
+    },
+    {
+      "name": "STO2",
+      "position": null,
+      "category": "special",
+      "function": "Safe Torque Off channel 2, the redundant safety channel required alongside STO1 for a certified safety rating.",
+      "voltageRange": "24V DC (safety-rated input)",
+      "currentLimit": "N/A (safety logic input)",
+      "alternateFunctions": [],
+      "gotcha": "Jumpering both STO channels permanently HIGH to 'get the drive running' during bring-up defeats the safety function entirely — a common but dangerous shortcut on machines that later go into production without anyone removing the jumper."
+    },
+    {
+      "name": "ANALOG_CMD",
+      "position": null,
+      "category": "analog",
+      "function": "±10V analog input used to command torque or velocity setpoint proportionally, as an alternative to pulse-train or fieldbus control.",
+      "voltageRange": "-10V to +10V",
+      "currentLimit": "N/A (high-impedance analog input)",
+      "alternateFunctions": ["Torque command", "Velocity command"],
+      "gotcha": "Long unshielded analog command cable runs pick up enough electrical noise near the drive's own switching power stage to cause small unwanted torque/speed jitter — shielded twisted pair, grounded at one end, is not optional at industrial cable lengths."
+    },
+    {
+      "name": "RS485",
+      "position": null,
+      "category": "communication",
+      "function": "RS-485 serial bus for parameter configuration, tuning, and status monitoring from a PC or PLC (often Modbus RTU).",
+      "voltageRange": "RS-485 differential signaling",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Multiple drives on the same RS-485 bus need unique station addresses set before connecting — leaving two drives at the factory-default address causes silent bus contention that looks like an unresponsive drive, not an obvious address conflict."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "CNC axis positioning",
+      "scenario": "Drive a ball-screw-coupled machine tool axis with a pulse-train position command from the CNC controller, relying on the servo's high-resolution encoder for sub-micron repeatability.",
+      "pinsInvolved": ["PULSE_IN", "MOTOR_U", "MOTOR_V", "MOTOR_W", "ENCODER"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Pick-and-place robot joint",
+      "scenario": "Command velocity or torque directly over a fieldbus from a robot controller, coordinating multiple axes for smooth synchronized motion.",
+      "pinsInvolved": ["RS485", "MOTOR_U", "MOTOR_V", "MOTOR_W", "ENCODER"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Safety-rated conveyor drive",
+      "scenario": "Wire the STO inputs into a machine's E-stop and light-curtain safety chain so torque is hardware-removed the instant a guard opens, without dropping mains power to the whole cell.",
+      "pinsInvolved": ["STO1", "STO2", "SERVO_ON", "ALARM_OUT"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Vertical axis with holding brake",
+      "scenario": "Drive a gantry's vertical Z-axis motor, using the built-in brake output to hold position mechanically whenever the drive is disabled or on E-stop, preventing free-fall.",
+      "pinsInvolved": ["BRAKE_OUT", "MOTOR_U", "MOTOR_V", "MOTOR_W", "SERVO_ON"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Analog torque control for tensioning",
+      "scenario": "Command a proportional torque setpoint over the ±10V analog input to maintain constant web tension on a roll-to-roll winder.",
+      "pinsInvolved": ["ANALOG_CMD", "MOTOR_U", "MOTOR_V", "MOTOR_W"],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "PLC or industrial motion controller",
+      "EtherCAT/CANopen fieldbus master",
+      "Ball-screw or rotary stage mechanical load"
+    ],
+    "oftenConfusedWith": [
+      "foc-bldc-servo-driver (a compact hobby/robotics-scale FOC driver — no mains rectification, no STO safety circuit, no fieldbus, and far lower absolute encoder resolution)",
+      "tb6600 (an open-loop stepper driver — no encoder feedback loop at all, so it can silently lose steps under load, something a servo drive's closed loop detects and faults on instead)"
+    ],
+    "oftenUpgradedTo": [
+      "Multi-axis EtherCAT servo systems with synchronized master-clock motion for coordinated multi-axis paths"
+    ]
+  },
+  "beginnerMistakes": [
+    "Opening the drive enclosure right after power-off, not realizing the internal DC bus capacitors stay charged at lethal voltage for minutes — always follow the datasheet's discharge wait time.",
+    "Skipping auto-tuning against the actual mechanical load — gains tuned for a light test fixture oscillate or fault once bolted to the real, heavier and less rigid mechanism.",
+    "Jumpering the dual-channel STO safety inputs permanently HIGH just to get the drive spinning during bring-up, then forgetting to remove the jumper before the machine goes into production.",
+    "Running motor power and encoder feedback cables in the same bundle, letting PWM switching noise corrupt the position feedback and cause intermittent faults that look random.",
+    "Mixing a motor and drive from different vendors expecting them to 'just work' because both are labeled servo — the encoder protocol and connector pinout are almost always proprietary per vendor/family."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "imu-calibration-and-bias-compensation",
+    "title": "IMU Calibration & Bias Compensation",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Intermediate",
+    "tagline": "An IMU fresh out of the box lies a little, consistently — calibration measures exactly how, and subtracts it out."
+  },
+  "simpleSummary": "An IMU straight out of the box doesn't quite read zero when it's perfectly still — calibration measures exactly how far off each axis is and subtracts that error out before the readings are trusted for anything.",
+  "keyIdea": "IMU calibration measures each axis's bias (and often scale-factor error) using known-condition readings — like sitting perfectly still, or resting on each of six faces — then subtracts that bias from every future raw reading before it's used.",
+  "overview": "An accelerometer and gyroscope are analog sensing elements with real manufacturing variance between individual chip units — even two IMUs of the exact same model number have slightly different actual bias and scale values — and their behavior can drift further with temperature. This means generic 'typical' values from a datasheet are never as accurate as calibrating the specific physical unit actually in use. Gyroscope calibration is conceptually simple: a gyroscope should read exactly zero on every axis while genuinely stationary, so any nonzero average reading while sitting still is pure bias, easily measured by averaging many samples at rest. Accelerometer calibration is a bit more involved, typically using a six-orientation method — resting the IMU on each of its six faces in turn while stationary lets each axis's known expected reading (+1g, −1g, or 0g depending on orientation) be compared against the actual reading, solving for both bias and scale factor per axis.",
+  "equations": [
+    {
+      "label": "Corrected Reading",
+      "expression": "x_corrected = (x_raw − bias) / scale_factor",
+      "meaning": "Every raw sensor reading has its measured bias subtracted, then is divided by its measured scale factor, to produce the corrected value actually used downstream."
+    },
+    {
+      "label": "Gyroscope Bias Estimation",
+      "expression": "bias_gyro = average(gyro readings while stationary)",
+      "meaning": "Since a gyroscope's true reading is exactly zero while genuinely not rotating, simply averaging many readings taken at rest directly gives the bias to subtract from every future reading."
+    }
+  ],
+  "howItWorks": "Gyro bias is a particularly sneaky problem: even a small uncorrected bias, integrated over time to produce a heading estimate, grows into a large heading error surprisingly quickly — a direct parallel to the wheel-slip-driven drift covered in Odometry & Dead Reckoning, just from a different sensor and a different error source. Temperature dependency makes this worse in practice: gyro bias is known to shift measurably as a chip warms up, which is why more sophisticated systems perform in-field or continuous runtime bias re-estimation rather than trusting a single one-time factory or startup calibration forever. It's worth being precise about what calibration actually fixes: it corrects bias, the systematic and repeatable part of a sensor's error, exactly as described in Sensor Noise & Uncertainty Models — a fundamentally different fix from a Kalman filter's job of handling the remaining random noise that's still present after bias has already been removed.",
+  "diagramCaption": "An uncalibrated gyro's integrated heading estimate drifts steadily even while the sensor sits perfectly still, purely from uncorrected bias; after calibration, the same stationary sensor's heading estimate stays flat.",
+  "realWorldExamples": [
+    "Calibrating an MPU6050 or BNO055 by holding it still and running a calibration routine before using its readings for orientation estimation in a balancing or navigation robot.",
+    "A drone's flight controller performing an automatic gyro calibration sequence every time it's powered on, asking the user to keep it perfectly still for a few seconds specifically to measure and cancel the current bias before flight.",
+    "Noticing a robot's heading estimate (from integrating gyro readings) drift steadily even while the robot sits perfectly motionless — a textbook symptom of uncorrected gyro bias."
+  ],
+  "commonMisconceptions": [
+    "\"A sensor is either calibrated or not, as a one-time fixed thing\" — bias can and does drift with temperature and usage over time, which is why some systems recalibrate periodically or continuously rather than trusting one factory calibration forever.",
+    "\"Calibration removes all sensor error\" — it removes the systematic bias component specifically; the random noise component remains and still needs separate handling, such as a Kalman filter or averaging.",
+    "\"Any IMU of the same model needs the same calibration values\" — manufacturing variance means each individual physical unit needs its own calibration, even among units of the exact same model number."
+  ],
+  "relatedComponents": ["mpu6050", "bno055", "mpu9250"],
+  "relatedProjects": [],
+  "relatedConcepts": ["sensor-noise-and-uncertainty-models", "camera-calibration", "kalman-filter", "odometry-and-dead-reckoning"]
+}

@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "gear-ratios-and-mechanical-advantage",
+    "title": "Gear Ratios & Mechanical Advantage",
+    "category": "Actuation Foundations",
+    "level": "Foundational",
+    "tagline": "Trading rotational speed for turning force, or vice versa, by connecting gears of different sizes together."
+  },
+  "simpleSummary": "Trading rotational speed for turning force (torque), or the other way around, by connecting a small gear to a larger one — never gaining both at once for free.",
+  "keyIdea": "A gear ratio trades speed for torque (or vice versa) in exact proportion — converting a motor's naturally high-speed, low-torque output into the low-speed, high-torque output a real robot wheel or arm joint actually needs.",
+  "overview": "An ideal, frictionless gear system conserves mechanical power, meaning whatever rotational speed is given up must show up as a proportional gain in torque, and vice versa — gearing is fundamentally a trade, never a free gain in total available mechanical power. This matters immensely in practice because small hobby DC motors, like the ones inside a 'TT motor,' naturally spin at high RPM but produce very little torque on their own — far too little to move a real robot chassis or lift real weight. A gearbox trades away most of that excess speed for the torque multiplication actually needed to do useful mechanical work.",
+  "equations": [
+    {
+      "label": "Gear Ratio",
+      "expression": "N = teeth(driven) / teeth(driving) = ω_in/ω_out = τ_out/τ_in",
+      "meaning": "The gear ratio N is set by the ratio of teeth counts between the driven and driving gears; output speed is input speed divided by N, and output torque is input torque multiplied by N, assuming an ideal (frictionless) gear system."
+    }
+  ],
+  "howItWorks": "A larger gear ratio N means more torque multiplication but proportionally lower output speed — the two always move in exact opposite directions for an ideal gear pair. For a real hobby gearbox, like the internal multi-stage gear train found in a common 'TT motor,' several individual gear stages multiply together into one overall much larger ratio than any single gear pair alone could provide. Real (non-ideal) gearboxes also lose some fraction of input power to friction and heat, so actual delivered output torque is somewhat less than the ideal N-multiplied value predicts — typical simple gearboxes run at roughly 70-90% efficiency, with some designs (like worm gears) notably less efficient despite other real advantages, such as achieving a very high ratio in a compact space and offering inherent resistance to being back-driven. This is exactly why a NEMA17-class stepper motor, which already delivers meaningfully more usable torque directly at reasonably low RPM, often doesn't need a separate mechanical gearbox for many applications, while a small high-speed DC motor almost always does to be mechanically useful at all.",
+  "diagramCaption": "A small driving gear spinning fast with low torque meshes with a larger driven gear, which spins proportionally slower but with proportionally more torque — the same trade-off in the opposite direction if reversed.",
+  "realWorldExamples": [
+    "The internal gearbox inside this site's DC Geared Motor (TT motor) component, converting a fast, low-torque bare motor into the slower, higher-torque output actually needed to move a small robot chassis.",
+    "A bicycle's gears, letting a rider trade pedaling speed for climbing torque on a hill, or trade torque for speed on a flat, fast stretch — the same physical trade-off in a familiar, everyday, non-robotics form.",
+    "Timing belts and pulleys achieving a similar speed/torque trade-off to meshed gears, but using a flexible toothed belt instead of directly meshing teeth."
+  ],
+  "commonMisconceptions": [
+    "\"Gearing gives you more torque for free, with no downside\" — it's strictly a trade-off against speed, and in the real non-ideal case, a further real loss to friction — never a free gain in total available mechanical power.",
+    "\"All gearboxes are equally efficient\" — efficiency varies meaningfully by design; a worm gear setup, for instance, is commonly quite inefficient compared to a simple spur gear train, despite offering a very high ratio in a compact space.",
+    "\"A higher gear ratio is always the better choice\" — an excessively high ratio sacrifices more speed than a task actually needs, when a lower ratio (or none at all) might deliver adequate torque while keeping useful speed."
+  ],
+  "relatedComponents": ["dc-geared-motor", "nema17-stepper", "timing-belt-pulley", "robot-wheel"],
+  "relatedProjects": [],
+  "relatedConcepts": ["motor-control-theory", "robot-dynamics-newton-euler-lagrangian", "differential-drive-kinematics"]
+}

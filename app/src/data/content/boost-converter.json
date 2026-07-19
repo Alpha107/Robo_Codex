@@ -1,0 +1,94 @@
+{
+  "identity": {
+    "id": "boost-converter",
+    "name": "Boost Converter (Step-Up)",
+    "category": "Power Management",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A boost converter does the opposite job of a buck converter: it takes a lower input voltage and produces a higher output voltage — useful for running 5V electronics from a single 3.7V LiPo cell, or generating a higher voltage for a specific component from a lower battery voltage. It sounds like it's creating energy from nothing, but it isn't — output current drops as voltage rises, since power in roughly equals power out (minus conversion losses); a boost converter that doubles voltage will supply roughly half the current a linear supply at the same input could, which is a common point of confusion for beginners expecting both higher voltage and unchanged current for free.",
+  "simpleSummary": "A small circuit that turns a lower battery voltage into a higher one.",
+  "specifications": {
+    "inputVoltage": "0.9V - 5V (module-dependent, single-Li-ion-cell-friendly)",
+    "outputVoltage": "Adjustable, commonly up to 28V depending on module",
+    "outputCurrent": "Decreases as the voltage step-up ratio increases (power conservation)",
+    "efficiency": "~80-95%, module and load dependent"
+  },
+  "pinMap": [
+    {
+      "name": "IN+",
+      "position": null,
+      "category": "power",
+      "function": "Positive voltage input, often from a single-cell battery.",
+      "voltageRange": "0.9-5V",
+      "currentLimit": "Depends on required output current and step-up ratio",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN-",
+      "position": null,
+      "category": "power",
+      "function": "Input ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT+",
+      "position": null,
+      "category": "power",
+      "function": "Regulated (higher) positive output, adjustable via onboard trimpot.",
+      "voltageRange": "Up to ~28V (module-dependent)",
+      "currentLimit": "Decreases as output voltage increases relative to input",
+      "alternateFunctions": [],
+      "gotcha": "Don't expect the same current at 12V out that you'd get running the load directly at the battery's native 3.7V — available current drops roughly in proportion to the voltage step-up."
+    },
+    {
+      "name": "OUT-",
+      "position": null,
+      "category": "power",
+      "function": "Output ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Single-cell to 5V USB power",
+      "scenario": "Run 5V electronics or charge a USB device from a single 3.7V LiPo cell.",
+      "pinsInvolved": [
+        "IN+",
+        "IN-",
+        "OUT+",
+        "OUT-"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "High-voltage component supply from low-voltage battery",
+      "scenario": "Generate a higher voltage needed by a specific component (e.g. some sensor or display types) from a lower main battery voltage.",
+      "pinsInvolved": [
+        "OUT+",
+        "OUT-"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "18650 battery holder",
+      "LiPo battery"
+    ],
+    "oftenConfusedWith": [
+      "LM2596 buck converter (steps voltage down, not up)"
+    ],
+    "oftenUpgradedTo": [
+      "Buck-boost converters that handle both step-up and step-down automatically as input voltage varies"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+<svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .flow { stroke-dasharray: 6 5; animation: flowmove 1s linear infinite; }
+    @keyframes flowmove { to { stroke-dashoffset: -22; } }
+  </style>
+
+  <text x="320" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">A ROS Node Graph</text>
+
+  <rect x="30" y="60" width="140" height="55" rx="7" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="100" y="92" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">Camera Driver</text>
+
+  <rect x="30" y="180" width="140" height="55" rx="7" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <text x="100" y="212" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">LiDAR Driver</text>
+
+  <rect x="250" y="120" width="140" height="55" rx="7" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="320" y="152" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">SLAM Node</text>
+
+  <rect x="470" y="60" width="140" height="55" rx="7" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <text x="540" y="92" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">Path Planner</text>
+
+  <rect x="470" y="180" width="140" height="55" rx="7" fill="#e03131" stroke="#1a1d23" stroke-width="2"/>
+  <text x="540" y="212" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="700">Motor Controller</text>
+
+  <path d="M170,88 H250 V148" stroke="#1a1d23" stroke-width="2" fill="none" class="flow"/>
+  <text x="185" y="80" font-size="9.5" fill="#5b6270">/camera/image</text>
+  <path d="M170,207 H250 V162" stroke="#1a1d23" stroke-width="2" fill="none" class="flow"/>
+  <text x="185" y="225" font-size="9.5" fill="#5b6270">/scan</text>
+  <path d="M390,140 H470 V95" stroke="#1a1d23" stroke-width="2" fill="none" class="flow"/>
+  <text x="400" y="132" font-size="9.5" fill="#5b6270">/map</text>
+  <path d="M540,115 V180" stroke="#1a1d23" stroke-width="2" fill="none" class="flow"/>
+  <text x="548" y="150" font-size="9.5" fill="#5b6270">/cmd_vel</text>
+
+  <text x="320" y="265" text-anchor="middle" font-size="10.5" fill="#5b6270">No node references another node directly — only shared, named topics.</text>
+</svg>

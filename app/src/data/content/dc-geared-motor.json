@@ -1,0 +1,77 @@
+{
+  "identity": {
+    "id": "dc-geared-motor",
+    "name": "DC Geared Motor (TT Motor)",
+    "category": "Motors & Actuators",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The yellow 'TT motor' is the default drive motor in nearly every beginner robot car kit: a small brushed DC motor bolted to a plastic gearbox that trades speed for torque, so the output shaft turns slowly enough to actually move a small chassis instead of just spinning the wheels. It has no positioning feedback and no built-in electronics — it's just two wires, and swapping which wire is positive reverses the direction. It always needs a motor driver (like an L298N or L293D) between it and a microcontroller, since microcontroller pins can't supply the current a motor draws.",
+  "simpleSummary": "The classic yellow gearbox motor used in nearly every beginner robot car kit.",
+  "specifications": {
+    "operatingVoltage": "3V - 6V (common variants also exist for 6-12V)",
+    "noLoadCurrent": "~100-250 mA",
+    "stallCurrent": "~1A or more",
+    "outputSpeed": "~100-200 RPM at rated voltage (gear-ratio dependent)",
+    "shaft": "D-shaped output shaft for wheel-hub mounting",
+    "feedback": "None (open-loop) unless paired with a separate encoder disc/sensor"
+  },
+  "pinMap": [
+    {
+      "name": "Terminal A",
+      "position": null,
+      "category": "power",
+      "function": "One motor terminal. Polarity relative to Terminal B determines spin direction.",
+      "voltageRange": "3-6V",
+      "currentLimit": "Up to stall current (~1A+)",
+      "alternateFunctions": [],
+      "gotcha": "Never wire directly to a microcontroller pin — always go through a motor driver; the motor's current draw will damage GPIO pins."
+    },
+    {
+      "name": "Terminal B",
+      "position": null,
+      "category": "power",
+      "function": "Other motor terminal.",
+      "voltageRange": "3-6V",
+      "currentLimit": "Up to stall current (~1A+)",
+      "alternateFunctions": [],
+      "gotcha": "Swap A/B to reverse direction — there's no dedicated 'direction' pin, direction is just relative polarity."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "2WD/4WD robot car chassis",
+      "scenario": "The default motor for beginner wheeled robots, driven through an L298N or L293D from a microcontroller.",
+      "pinsInvolved": [
+        "Terminal A",
+        "Terminal B"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Simple mechanism actuation",
+      "scenario": "Drive a small conveyor, rotating platform, or door mechanism where precise positioning isn't required.",
+      "pinsInvolved": [
+        "Terminal A",
+        "Terminal B"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "L298N motor driver",
+      "L293D",
+      "Robot car chassis kit",
+      "Wheels"
+    ],
+    "oftenConfusedWith": [
+      "Stepper motors (precise positioning, no feedback needed)",
+      "Servo motors (angle-controlled, not continuous drive)"
+    ],
+    "oftenUpgradedTo": [
+      "NEMA 17 stepper (for precise positioning) or a geared motor with an encoder (for closed-loop speed control)"
+    ]
+  }
+}

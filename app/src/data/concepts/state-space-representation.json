@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "state-space-representation",
+    "title": "State-Space Representation",
+    "category": "Control Theory",
+    "level": "Advanced",
+    "tagline": "Describing an entire system's behavior with a vector of internal states and a handful of matrices."
+  },
+  "simpleSummary": "A way of describing a system using a list of internal numbers (its 'state', like position and velocity) and simple matrix math for how that state changes and what you can measure from it.",
+  "keyIdea": "Any linear system's behavior can be captured by a state vector plus two equations: one for how the state evolves over time, and one for how the measurable output relates to that state.",
+  "overview": "Transfer functions describe a system purely in terms of one input and one output in the frequency domain. State-space representation takes a different, more general approach: it describes a system using a vector of internal state variables — the minimal set of numbers that fully capture the system's current condition — plus simple matrix equations describing how that state evolves and how it relates to what can actually be measured. This naturally handles systems with multiple inputs and multiple outputs (MIMO), which transfer functions struggle with, and it operates directly in the time domain rather than requiring a transform. State-space representation is the mathematical foundation underneath the Kalman Filter, LQR (Linear-Quadratic Regulator), and Model Predictive Control — nearly all of modern control theory beyond basic PID is built on this framework.",
+  "equations": [
+    {
+      "label": "State Equation",
+      "expression": "ẋ = Ax + Bu",
+      "meaning": "x is the state vector (e.g. position and velocity); ẋ is its rate of change; u is the input vector (e.g. applied forces/voltages); A describes the system's own internal dynamics; B describes how inputs affect the state."
+    },
+    {
+      "label": "Output Equation",
+      "expression": "y = Cx + Du",
+      "meaning": "y is the vector of measurable outputs; C maps the internal state to what a sensor can actually observe; D is a direct input-to-output term (often zero in physical systems, since inputs rarely affect outputs instantaneously with no dynamics in between)."
+    }
+  ],
+  "howItWorks": "The 'state' of a system is the smallest set of variables such that, if you know their current values and the future inputs, you can predict the system's entire future behavior — for a wheeled robot this might be position, orientation, and velocity; for a motor it might be angular position and angular velocity. The A matrix captures how the state would evolve on its own with no input (e.g. natural decay from friction); the B matrix captures how control inputs push the state around; C determines what a sensor actually reports as a function of the true internal state (which is often not the full state — an encoder might only report position, not velocity); and D captures any instantaneous pass-through from input to output. Because this is a matrix equation, it extends effortlessly to multiple inputs and multiple outputs, which is exactly what a real robot has: a mecanum-wheeled robot has four independent motor inputs and needs a combined understanding of forward, sideways, and rotational velocity as its state. Once a system is in this form, well-established tools become available: controllability and observability analysis (can the input actually steer every state? can the outputs actually reveal every state?), Kalman filtering for estimating states that can't be measured directly, and LQR/MPC for computing optimal control inputs.",
+  "diagramCaption": "The classic state-space block diagram: the input drives the state through B, the state feeds back through A to shape its own evolution, an integrator accumulates the rate of change into the actual state x, and C (plus any direct D path) produces the measurable output.",
+  "realWorldExamples": [
+    "A drone's flight controller state vector — position, velocity, orientation, and angular velocity — updated and controlled as one coupled system rather than as separate independent loops.",
+    "A Kalman filter for a wheeled robot's localization, where the state (x position, y position, heading) is estimated from noisy wheel odometry and IMU measurements using exactly this A/B/C/D structure.",
+    "A mecanum-wheeled robot's four independently driven wheels naturally form a multiple-input, multiple-output system that state-space control handles far more naturally than four separate transfer functions."
+  ],
+  "commonMisconceptions": [
+    "\"State-space is just a more complicated way of writing what a transfer function already says\" — for single-input single-output linear systems they are mathematically equivalent, but state-space additionally handles MIMO systems and internal states that transfer functions cannot represent at all.",
+    "\"The state has to be something you can directly measure\" — often it isn't; that's precisely the problem a Kalman filter solves, estimating unmeasurable states (like velocity) from what actually can be measured.",
+    "\"A, B, C, D are fixed universal matrices\" — they are specific to each system and are derived from that system's own physics or found from another data source, e.g. system identification."
+  ],
+  "relatedComponents": ["mpu6050", "bno055"],
+  "relatedProjects": ["mecanum-omnidirectional-robot"],
+  "relatedConcepts": ["transfer-functions-laplace-basics", "kalman-filter", "stability-poles-bode-plots"]
+}

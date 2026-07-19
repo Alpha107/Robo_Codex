@@ -1,0 +1,84 @@
+{
+  "identity": {
+    "id": "servo-bracket-arm-kit",
+    "name": "Robotic Arm Kit / Servo Bracket",
+    "category": "Structural & Mechanical",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A servo bracket is a small precision-cut mounting piece shaped to hold a standard-size hobby servo securely while exposing its horn for attaching the next link in a chain — stack several of these (a 'U-bracket' for a joint, an 'L-bracket' for a perpendicular turn) and you can build a multi-jointed robotic arm without any custom fabrication. Buying a matched kit avoids the single most common beginner robotic-arm mistake: mounting holes and servo horn spacing that don't quite line up between differently-sourced brackets, causing wobble or bind at every joint.",
+  "simpleSummary": "Precision-cut mounting pieces that let you bolt several servos together into a robotic arm.",
+  "specifications": {
+    "material": "Laser-cut acrylic, 3D-printed plastic, or CNC-cut aluminum",
+    "servoCompatibility": "Sized for standard servos (SG90-class) or larger (MG996R-class), rarely both without adapters",
+    "bracketTypes": "U-bracket (dual-support joint), L-bracket (perpendicular mount), straight extension links",
+    "degreesOfFreedom": "A typical small arm kit provides 4-6 DOF (base rotation, shoulder, elbow, wrist, gripper)"
+  },
+  "pinMap": [
+    {
+      "name": "Servo Mounting Holes",
+      "position": null,
+      "category": "special",
+      "function": "Screw holes matched to a specific servo size's mounting tab pattern.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Mixing bracket sets designed for different servo sizes (e.g. SG90 vs MG996R patterns) is the most common reason a kit's parts don't quite fit together."
+    },
+    {
+      "name": "Horn Attachment Point",
+      "position": null,
+      "category": "special",
+      "function": "Where the servo's rotating horn attaches to the next link, transferring the servo's rotation into arm movement.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Joint Bearing/Idler",
+      "position": null,
+      "category": "special",
+      "function": "On U-bracket joints, a free-spinning support point opposite the servo horn, preventing the joint from wobbling under load.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Skipping the idler-side support (mounting a joint on the servo horn alone) is a common cause of a sagging, imprecise arm under any real payload."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Desktop pick-and-place robotic arm",
+      "scenario": "A 4-6 DOF arm for picking up and moving small objects, the classic servo-based robotics teaching project.",
+      "pinsInvolved": [
+        "Servo Mounting Holes",
+        "Horn Attachment Point",
+        "Joint Bearing/Idler"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Camera pan-tilt-roll mount",
+      "scenario": "Multi-axis camera stabilization or aiming mechanism.",
+      "pinsInvolved": [
+        "Servo Mounting Holes",
+        "Horn Attachment Point"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "MG996R servo motor",
+      "SG90 servo motor",
+      "PCA9685 servo driver board"
+    ],
+    "oftenConfusedWith": [
+      "Aluminum extrusion framing (general structural framing, not servo-specific)"
+    ],
+    "oftenUpgradedTo": [
+      "Metal-geared, higher-precision arm kits or fully custom CNC-machined arm structures"
+    ]
+  }
+}

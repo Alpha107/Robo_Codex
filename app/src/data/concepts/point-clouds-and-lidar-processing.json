@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "point-clouds-and-lidar-processing",
+    "title": "Point Clouds & LiDAR Processing",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Intermediate",
+    "tagline": "Turning thousands of individual laser distance readings into a usable 3D (or 2D) picture of the surrounding space."
+  },
+  "simpleSummary": "Turning a spinning laser sensor's thousands of individual distance readings into a scattered map of points showing the shape of everything around it.",
+  "keyIdea": "A point cloud is a large set of individual measured points in space, with no built-in connectivity between them; useful structure — walls, obstacles, a usable map — has to be extracted from that raw scatter through further processing.",
+  "overview": "A LiDAR sensor like a spinning RPLIDAR module measures distance to whatever's around it at many different angles as it rotates, producing a large collection of individual points — a point cloud. Unlike a photograph, which has a fixed grid of pixels with obvious neighbor relationships, a point cloud is fundamentally just an unordered (or loosely ordered) list of coordinates, with no inherent surface or connectivity information linking nearby points together. This is exactly why processing a point cloud into something actually usable — recognizing walls, obstacles, or building a map fit for path planning — requires its own distinct set of techniques, different from ordinary 2D image processing.",
+  "equations": [
+    {
+      "label": "Polar-to-Cartesian Point Conversion",
+      "expression": "x = r·cos(θ),   y = r·sin(θ)",
+      "meaning": "Raw LiDAR data naturally comes as angle-and-range pairs (θ, r) as the sensor spins; converting each pair into (x, y) Cartesian coordinates is the first step needed before the points can be combined into a usable map or point cloud in a normal coordinate frame."
+    }
+  ],
+  "howItWorks": "As a 2D LiDAR sensor spins, it reports a distance measurement at many angles per full rotation; converting each angle-distance pair to Cartesian (x, y) coordinates, in the sensor's own reference frame, produces one 'slice' of point-cloud data per rotation. To build up a consistent map over time, each new batch of points must further be transformed from the sensor's own frame into a shared, global frame, using the robot's own estimated position and orientation at the moment each point was captured — tying point cloud processing directly to a robot's localization estimate. Raw point clouds are rarely used directly: real systems typically filter out noisy or spurious points (measurement errors are common from surfaces that reflect light poorly, like glass or very dark materials), downsample to reduce the sheer number of points for faster processing, and then convert the cleaned-up cloud into a more structured representation — commonly an occupancy grid, which divides space into a grid of 'occupied,' 'free,' and 'unknown' cells. This structured grid, not the raw scattered point cloud, is usually what actually feeds into a path-planning algorithm or a SLAM system's map.",
+  "diagramCaption": "As a 2D LiDAR spins, it collects a distance reading at each angle, producing a scattered cloud of points that traces out the shape of nearby walls and obstacles.",
+  "realWorldExamples": [
+    "An RPLIDAR module scanning a room to build a 2D point cloud used for SLAM and path planning, as covered on this site's RPLIDAR component page.",
+    "A self-driving car's 3D LiDAR producing dense point clouds of surrounding vehicles and pedestrians, processed for object detection and tracking.",
+    "A depth camera producing a localized 3D point cloud of the scene directly in front of it, used for obstacle detection or basic 3D reconstruction."
+  ],
+  "commonMisconceptions": [
+    "\"A point cloud is basically a 3D photo\" — unlike an image, a point cloud has no fixed grid structure or built-in connectivity between neighboring points; it's an unordered list of coordinates, requiring fundamentally different processing techniques than 2D image processing.",
+    "\"Raw point cloud data is directly usable for path planning\" — real systems almost always convert raw points into a structured representation like an occupancy grid first, since path-planning algorithms need a structured representation to search over efficiently.",
+    "\"More points always means a better map\" — excess point density costs processing time and memory for often-marginal benefit; downsampling to a reasonable density while preserving overall shape is standard practice."
+  ],
+  "relatedComponents": ["rplidar", "vl53l0x", "sharp-gp2y0a21", "hc-sr04"],
+  "relatedProjects": [],
+  "relatedConcepts": ["slam", "computer-vision-basics", "obstacle-avoidance-strategies"]
+}

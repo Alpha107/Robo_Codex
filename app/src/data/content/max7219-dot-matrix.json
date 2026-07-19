@@ -1,0 +1,128 @@
+{
+  "identity": {
+    "id": "max7219-dot-matrix",
+    "name": "8x8 LED Dot Matrix (MAX7219)",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The MAX7219 is a driver chip that takes over the tedious job of multiplexing a grid of LEDs: instead of wiring and scanning 64 individual LEDs yourself, you send the chip row/brightness data over a 3-wire SPI-compatible interface (DIN, CLK, CS) and it handles refreshing the whole 8x8 grid internally. The genuinely useful trick is that these modules are chainable — the chip has a DOUT pin that passes shifted-through data to the next module's DIN, so several 8x8 boards can be daisy-chained off the same three control lines to build a wider scrolling sign, with each module just shifting data on to the next. It's monochrome and pixel-addressable rather than character-addressable, which is the main thing that separates it from a digit-based display like the TM1637 module.",
+  "simpleSummary": "An 8x8 grid of LEDs controlled by a single chip over 3 wires, and multiple grids can be chained together for bigger displays.",
+  "specifications": {
+    "driverChip": "MAX7219",
+    "ledCount": "64 (8x8 monochrome matrix, single color per module)",
+    "interface": "SPI-compatible serial (DIN, CLK, CS/LOAD) — write-only, 16-bit words per command",
+    "chainable": "Yes — DOUT passes shifted data to the next module's DIN, letting many 8x8 boards share the same 3 control lines",
+    "brightnessLevels": "16 levels via an internal digital current-control register (no PWM wiring needed)",
+    "operatingVoltage": "5V DC",
+    "currentDraw": "Up to ~330mA per module with every LED lit at max brightness — long chains need 5V injected partway down, not just fed from one microcontroller pin",
+    "dimensions": "~32mm x 32mm bare module, commonly sold pre-mounted on a breakout PCB"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "5V power input for the LED matrix and the MAX7219 driver.",
+      "voltageRange": "5V",
+      "currentLimit": "Up to ~330 mA per module at full brightness/full grid lit",
+      "alternateFunctions": [],
+      "gotcha": "A chain of 4+ modules at high brightness can pull well over an amp — powering it entirely from a microcontroller's 5V pin causes dim or randomly-lit pixels, not an obvious crash."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the controlling microcontroller and any injected power supply.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DIN",
+      "position": null,
+      "category": "communication",
+      "function": "Serial data input, shifted in MSB-first and latched into the display registers when CS goes high.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A (digital input)",
+      "alternateFunctions": [],
+      "gotcha": "On a chained string, this is only the first module's DIN — later modules take their data from the previous module's DOUT, so a dark second module usually means a bad DOUT-to-DIN link, not a bad DIN wire on that module."
+    },
+    {
+      "name": "CS",
+      "position": null,
+      "category": "communication",
+      "function": "Chip-select/latch pin — pulling it high loads the shifted-in data into the display registers.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A (digital input)",
+      "alternateFunctions": ["Often silkscreened as LOAD on the breakout board"],
+      "gotcha": "Boards commonly print 'LOAD' instead of 'CS' — same physical pin, just the older datasheet naming, which confuses people wiring from two different tutorials."
+    },
+    {
+      "name": "CLK",
+      "position": null,
+      "category": "communication",
+      "function": "Serial clock — data on DIN is sampled on each clock edge.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A (digital input)",
+      "alternateFunctions": [],
+      "gotcha": "CLK and CS are shared across the entire chain (every module's CLK/CS tie together) — only DIN/DOUT actually passes down the line, which trips people up when they try to wire it like a simple bus."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Scrolling text ticker",
+      "scenario": "Chain 4 modules to make a 32x8 display and scroll a message across it, one column at a time.",
+      "pinsInvolved": ["VCC", "GND", "DIN", "CS", "CLK"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Audio VU / level meter",
+      "scenario": "Map a microphone or line-in amplitude reading to a rising bar of lit columns for a simple music visualizer.",
+      "pinsInvolved": ["VCC", "GND", "DIN", "CS", "CLK"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Robot face / animated eyes",
+      "scenario": "Draw simple blinking or expression frames on a single 8x8 grid mounted as a robot's 'face'.",
+      "pinsInvolved": ["VCC", "GND", "DIN", "CS", "CLK"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Pixel-art badge or nametag",
+      "scenario": "Display a small fixed icon or looping animation as a wearable badge, powered from a battery pack.",
+      "pinsInvolved": ["VCC", "GND", "DIN", "CS", "CLK"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Large chained scrolling sign",
+      "scenario": "Daisy-chain 8+ modules with power injected at intervals to build a long marquee-style scrolling sign.",
+      "pinsInvolved": ["VCC", "GND", "DIN", "CS", "CLK"],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "MD_MAX72XX / LedControl library",
+      "DS3231 RTC module (for a scrolling clock)"
+    ],
+    "oftenConfusedWith": [
+      "WS2812B/NeoPixel matrix (individually addressable RGB pixels over a single data wire vs monochrome multiplexed LEDs over a 3-wire SPI-like interface)",
+      "tm1637-7segment (fixed numeric digits vs this module's freeform 8x8 pixel graphics)"
+    ],
+    "oftenUpgradedTo": [
+      "WS2812B RGB matrix panels for full color",
+      "longer chained MAX7219 strings for larger scrolling signs"
+    ]
+  },
+  "beginnerMistakes": [
+    "Powering a multi-module chain entirely from the microcontroller's 5V pin, causing dim or randomly flickering pixels under load instead of an obvious failure.",
+    "Forgetting to clear the chip's 'display test' or shutdown-mode register on startup, leaving the matrix either fully lit or fully dark regardless of what's sent.",
+    "Assuming DIN wiring alone matters on later modules in a chain, when a dark second module is actually a broken DOUT-to-DIN link from the first.",
+    "Not accounting for row/column orientation differences between library and physical module mounting, so images render mirrored or rotated.",
+    "Skipping a decoupling capacitor near each module's VCC/GND on longer chains, causing intermittent glitching pixels."
+  ]
+}

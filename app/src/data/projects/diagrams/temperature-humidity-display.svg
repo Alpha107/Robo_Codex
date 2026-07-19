@@ -1,0 +1,25 @@
+<svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="70" width="180" height="160" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="120" y="145" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="120" y="166" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="410" y="30" width="170" height="60" rx="8" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <text x="495" y="65" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">DHT11/DHT22</text>
+
+  <rect x="410" y="190" width="170" height="70" rx="8" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="495" y="225" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">16x2 LCD</text>
+  <text x="495" y="245" text-anchor="middle" fill="#ffffff" font-size="11">(I2C backpack)</text>
+
+  <path d="M210,110 H340 V60 H410" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="110" r="4" fill="#4dabf7"/>
+  <text x="220" y="102" font-size="12" font-weight="600" fill="#1a1d23">D2 &#8594; DATA</text>
+
+  <path d="M210,170 H340 V225 H410" fill="none" stroke="#cc5de8" stroke-width="3"/>
+  <circle cx="210" cy="170" r="4" fill="#cc5de8"/>
+  <text x="220" y="185" font-size="12" font-weight="600" fill="#1a1d23">A4 &#8594; SDA</text>
+
+  <path d="M210,200 H360 V240 H410" fill="none" stroke="#cc5de8" stroke-width="3"/>
+  <circle cx="210" cy="200" r="4" fill="#cc5de8"/>
+  <text x="220" y="215" font-size="12" font-weight="600" fill="#1a1d23">A5 &#8594; SCL</text>
+
+</svg>

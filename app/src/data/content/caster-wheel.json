@@ -1,0 +1,71 @@
+{
+  "identity": {
+    "id": "caster-wheel",
+    "name": "Caster Wheel",
+    "category": "Structural & Mechanical",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A caster is a passive, freely-rotating wheel that provides a third (or fourth) point of ground contact for balance without being driven by a motor at all — exactly like the small wheels under an office chair. On a 2WD robot, it's what keeps the chassis from tipping forward or backward around the two driven wheels' axle line, swiveling freely to follow whichever direction the robot is actually being pushed in by its drive wheels.",
+  "simpleSummary": "A free-spinning wheel (like on an office chair) that just balances a robot instead of driving it.",
+  "specifications": {
+    "mounting": "Screw-mounted to the underside of a chassis, typically via 2-4 screw holes",
+    "swivelType": "Ball caster (smoothest, omnidirectional) or wheeled swivel caster",
+    "material": "Plastic or metal housing with a metal or nylon ball/wheel",
+    "loadRating": "Must be matched to the total weight it needs to support at its mounting point"
+  },
+  "pinMap": [
+    {
+      "name": "Mounting Screws",
+      "position": null,
+      "category": "special",
+      "function": "Screw holes attaching the caster housing to the chassis underside.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Caster height must roughly match the drive wheels' effective radius, or the chassis tilts and one set of wheels loses traction."
+    },
+    {
+      "name": "Ball/Swivel Point",
+      "position": null,
+      "category": "special",
+      "function": "The actual ground-contact point — a free-rolling ball or small swiveling wheel.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "2WD robot balance support",
+      "scenario": "The standard third point of contact for two-wheel-drive robot chassis.",
+      "pinsInvolved": [
+        "Mounting Screws",
+        "Ball/Swivel Point"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Low-friction furniture-style mobility",
+      "scenario": "Non-robotics use in carts, stands, or movable equipment.",
+      "pinsInvolved": [
+        "Ball/Swivel Point"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Robot chassis kit",
+      "DC geared motor"
+    ],
+    "oftenConfusedWith": [
+      "Omni/mecanum wheels (driven and steerable, not passive)"
+    ],
+    "oftenUpgradedTo": [
+      "4WD or omni-wheel drive configurations that don't need a passive caster at all"
+    ]
+  }
+}

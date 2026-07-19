@@ -1,0 +1,199 @@
+{
+  "identity": {
+    "id": "smart-home-sensor-hub",
+    "title": "Smart Home Sensor Hub",
+    "tagline": "Temperature, humidity, and light level, on a local OLED and a live webpage anyone on your WiFi can check.",
+    "category": "Smart Home & IoT",
+    "difficulty": "Advanced",
+    "estimatedTime": "50 minutes"
+  },
+  "goal": "Combine a temperature/humidity sensor and a light sensor into a single always-on environment dashboard: current readings shown locally on a small OLED screen, and also available as a live webpage anyone on the home WiFi network can load from their phone or laptop.",
+  "simpleSummary": "Build a little dashboard that shows temperature, humidity, and light — on a screen and on a webpage.",
+  "howItWorks": "This project deliberately combines two ideas already built separately elsewhere in this encyclopedia: the DHT temperature/humidity reading from Temperature & Humidity Display, and the LDR voltage-divider light reading from Light-Activated Night Lamp — reusing both without changing how either sensor is read. What's new is showing the same data two ways at once: the OLED gives an always-visible local readout with zero network dependency, while the ESP32's built-in web server (the same technique from Smart Home Light Automation) serves those exact same numbers as a webpage, refreshed on every page load, to any device on the network without needing the OLED to be physically visible.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A phone or laptop connected to the same WiFi network as the ESP32"
+  ],
+  "components": [
+    {
+      "componentId": "esp32-devkit",
+      "quantity": 1
+    },
+    {
+      "componentId": "dht11-dht22",
+      "quantity": 1
+    },
+    {
+      "componentId": "ldr",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 1,
+      "note": "10kΩ resistor for the LDR divider"
+    },
+    {
+      "componentId": "ssd1306-oled",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 9 wires"
+    }
+  ],
+  "circuitDiagramCaption": "DHT on GPIO4; LDR voltage divider on GPIO34 (ADC); OLED on the I2C bus (GPIO21/22).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "dht11-dht22",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "3V3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "dht11-dht22",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "dht11-dht22",
+          "pin": "DATA"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ldr",
+          "pin": "Terminal 1"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "3V3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ldr",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO34"
+        },
+        "label": "divider midpoint"
+      },
+      {
+        "from": {
+          "componentId": "ldr",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "3V3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO21 (SDA)"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO22 (SCL)"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the DHT sensor's VCC to 3V3, GND to GND, and DATA to GPIO4.",
+      "detail": "Same sensor, same wiring role as Temperature & Humidity Display — only the pin numbers differ because this is an ESP32 rather than an Uno."
+    },
+    {
+      "step": 2,
+      "instruction": "Build the same LDR + 10kΩ resistor voltage divider as Light-Activated Night Lamp, but read its midpoint on GPIO34 instead of an Uno's A0.",
+      "detail": "GPIO34 is one of the ESP32's input-only ADC pins — perfectly fine for reading a sensor, but keep in mind it can't be used as a digital output in other projects."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the OLED's GND to GND, VCC to 3V3, SDA to GPIO21, and SCL to GPIO22.",
+      "detail": "These are the ESP32's default I2C pins — a fixed hardware assignment, similar to how A4/A5 are fixed on an Arduino Uno."
+    }
+  ],
+  "code": [
+    {
+      "filename": "smart_home_sensor_hub.ino",
+      "language": "arduino",
+      "source": "#include <WiFi.h>\n#include <WebServer.h>\n#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n#include <DHT.h>\n\n// Smart Home Sensor Hub\n// Shows temperature, humidity, and light level on an OLED and a local webpage.\n\nconst char* WIFI_SSID = \"YOUR_WIFI_NAME\";\nconst char* WIFI_PASSWORD = \"YOUR_WIFI_PASSWORD\";\n\nconst int DHT_PIN = 4;\nconst int LDR_PIN = 34;\n\nDHT dht(DHT_PIN, DHT11);\nAdafruit_SSD1306 display(128, 64, &Wire, -1);\nWebServer server(80);\n\nvoid setup() {\n  dht.begin();\n  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);\n\n  Serial.begin(115200);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n  }\n  Serial.print(\"Dashboard: http://\");\n  Serial.println(WiFi.localIP());\n\n  server.on(\"/\", handleRoot);\n  server.begin();\n}\n\nvoid loop() {\n  server.handleClient();\n  updateDisplay();\n  delay(1000);\n}\n\nvoid updateDisplay() {\n  float tempC = dht.readTemperature();\n  float humidity = dht.readHumidity();\n  int lightLevel = analogRead(LDR_PIN);\n\n  display.clearDisplay();\n  display.setTextSize(1);\n  display.setTextColor(SSD1306_WHITE);\n  display.setCursor(0, 0);\n  display.print(\"Temp: \"); display.print(tempC, 1); display.println(\" C\");\n  display.print(\"Humidity: \"); display.print(humidity, 0); display.println(\" %\");\n  display.print(\"Light: \"); display.println(lightLevel);\n  display.display();\n}\n\nvoid handleRoot() {\n  String page = \"<h1>Home Sensor Hub</h1>\";\n  page += \"<p>Temperature: \" + String(dht.readTemperature(), 1) + \" &deg;C</p>\";\n  page += \"<p>Humidity: \" + String(dht.readHumidity(), 0) + \" %</p>\";\n  page += \"<p>Light level: \" + String(analogRead(LDR_PIN)) + \"</p>\";\n  page += \"<p><a href='/'>Refresh</a></p>\";\n  server.send(200, \"text/html\", page);\n}\n",
+      "explanation": "updateDisplay() and handleRoot() both read the same three sensors independently, right when they're needed, rather than sharing one cached reading — simple and reliable for a slow-changing environment like room temperature, though it does mean the OLED and webpage can show very slightly different numbers if read a moment apart. The main loop() keeps calling server.handleClient() (to answer any waiting web requests) and updateDisplay() (to refresh the OLED) once per second, so both outputs stay current without either blocking the other."
+    }
+  ],
+  "expectedBehavior": "The OLED continuously shows current temperature, humidity, and a raw light level number, updating every second. Visiting the ESP32's IP address in a browser shows the same three readings as a simple webpage, refreshed each time the page reloads.",
+  "troubleshooting": [
+    {
+      "issue": "OLED shows nothing.",
+      "fix": "Confirm the I2C address (commonly 0x3C or 0x3D) matches your specific OLED module, and that SDA/SCL aren't swapped."
+    },
+    {
+      "issue": "Webpage loads but shows blank or NaN values.",
+      "fix": "This is the same DHT read-failure issue covered in Temperature & Humidity Display — confirm the DATA wire and DHT_PIN, and that you're not reading faster than the sensor's ~1-2 second minimum interval."
+    },
+    {
+      "issue": "Light level reading never changes.",
+      "fix": "Confirm the divider's midpoint (not straight 5V or GND) is wired to GPIO34, and that GPIO34 is being used only for this — it's an input-only pin on most ESP32 boards."
+    }
+  ],
+  "extensions": [
+    "Add a motion sensor (PIR) as a fourth data point and trigger the Smart Home Light Automation project's relay based on combined light + motion.",
+    "Push readings to a cloud dashboard (e.g. via MQTT) for remote monitoring away from home.",
+    "Add historical logging with timestamps to an SD card instead of only showing live values.",
+    "Replace the DHT11 with a BME280 (see WiFi Weather Station) for better accuracy and an added pressure reading."
+  ]
+}

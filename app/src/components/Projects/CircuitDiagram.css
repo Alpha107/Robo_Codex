@@ -1,0 +1,30 @@
+.circuit-diagram {
+  margin: 0;
+  background: #f4f6f9;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.circuit-diagram-svg {
+  width: 100%;
+}
+
+.circuit-diagram-svg svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.circuit-diagram figcaption {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.circuit-diagram-missing {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  font-style: italic;
+}

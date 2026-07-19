@@ -1,0 +1,83 @@
+{
+  "identity": {
+    "id": "lipo-battery",
+    "name": "Li-ion / LiPo Battery",
+    "category": "Power Management",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Lithium-ion (rigid cylindrical cells like the 18650) and lithium-polymer (flexible pouch cells, 'LiPo') batteries pack far more energy per gram than the alkaline or NiMH batteries most beginners start with, which is exactly why they're standard in drones, robots, and portable electronics — and exactly why they demand real respect. Unlike a AA battery, over-discharging, overcharging, physically damaging, or short-circuiting a lithium cell can cause it to swell, vent, or catch fire, which is why every lithium battery in a hobby project should be paired with a protection circuit (either built into the cell/pack or a separate BMS board) rather than wired directly to a charger or load.",
+  "simpleSummary": "A lightweight, powerful rechargeable battery used in most robots and drones — needs careful handling.",
+  "specifications": {
+    "nominalVoltage": "3.7V per cell (li-ion/LiPo)",
+    "fullChargeVoltage": "4.2V per cell — never exceed this",
+    "minimumSafeVoltage": "~3.0V per cell — discharging below this damages the cell and can create a fire risk on recharge",
+    "capacity": "Measured in mAh, ranges from ~100mAh (small drones) to 10,000mAh+ (larger robots/power banks)",
+    "connector": "Commonly JST-PH (2-pin) for small packs, XT60/XT30 for higher-current RC/drone packs"
+  },
+  "pinMap": [
+    {
+      "name": "Positive (+)",
+      "position": null,
+      "category": "power",
+      "function": "Positive terminal.",
+      "voltageRange": "3.0-4.2V per cell",
+      "currentLimit": "Depends on cell's discharge rating (often expressed as a 'C' rating)",
+      "alternateFunctions": [],
+      "gotcha": "Never connect directly to a charger without a proper lithium charge controller (like a TP4056) — lithium chemistry requires a specific constant-current/constant-voltage charge profile, unlike simpler battery types."
+    },
+    {
+      "name": "Negative (-)",
+      "position": null,
+      "category": "power",
+      "function": "Negative terminal.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Short-circuiting the terminals, even briefly, can cause rapid overheating — always insulate exposed leads."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Portable robot power supply",
+      "scenario": "Compact, high-energy-density power source for a mobile robot, paired with a BMS/protection circuit.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Drone flight battery",
+      "scenario": "High-discharge-rate LiPo packs providing the burst current drone motors need.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Wearable/small-device power",
+      "scenario": "Thin pouch-cell LiPo packs fit inside slim enclosures where a bulkier battery wouldn't.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "TP4056 charging module",
+      "BMS protection board",
+      "18650 battery holder"
+    ],
+    "oftenConfusedWith": [
+      "NiMH/alkaline batteries (lower energy density, much more tolerant of abuse, no fire risk from over-discharge)"
+    ],
+    "oftenUpgradedTo": [
+      "LiFePO4 (lithium iron phosphate) cells for improved safety margin at the cost of energy density"
+    ]
+  }
+}

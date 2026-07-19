@@ -1,0 +1,142 @@
+{
+  "identity": {
+    "id": "servo-pan-sweep",
+    "title": "Servo Pan Sweep",
+    "tagline": "Turn a knob, the servo points exactly there — manual analog control of a physical angle.",
+    "category": "Robots & Motion",
+    "difficulty": "Intermediate",
+    "estimatedTime": "20 minutes"
+  },
+  "goal": "Map a potentiometer's rotation directly onto a servo's angle in real time, so turning the knob smoothly pans the servo — a foundational \"analog in, motion out\" pattern reused throughout the more advanced robot projects (camera mounts, sensor sweeps, remote-control steering).",
+  "simpleSummary": "Turn a knob to smoothly aim a servo motor to match.",
+  "howItWorks": "A servo motor is fundamentally different from the DC motors used elsewhere in this encyclopedia: instead of just spinning, it holds a specific angular position (typically 0-180°) and actively resists being pushed away from it. It expects a repeating pulse on its signal wire roughly every 20 milliseconds, where the pulse's exact width (about 1-2 milliseconds) tells it which angle to hold — a wider pulse means a larger angle. Arduino's Servo library hides all of that pulse-timing detail behind one simple call, write(angle), so this project is really just: read the potentiometer's position with analogRead() (0-1023), rescale that range down to the servo's 0-180° range with map(), and pass the result straight to write().",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "sg90-servo",
+      "quantity": 1
+    },
+    {
+      "componentId": "potentiometer",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 5
+    }
+  ],
+  "circuitDiagramCaption": "Servo signal on D9; potentiometer wiper on A0.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "Signal (orange/yellow wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "VCC (red wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "GND (brown/black wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "potentiometer",
+          "pin": "Terminal 1 (End A)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "potentiometer",
+          "pin": "Terminal 2 (End B)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "potentiometer",
+          "pin": "Wiper"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the servo's signal wire to D9, power (red) to 5V, and ground (brown/black) to GND.",
+      "detail": "A single SG90 can usually be powered directly from the Arduino's 5V pin without issue — see the Obstacle-Avoidance Robot project's troubleshooting if you notice resets or jitter."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the potentiometer's two outer terminals to 5V and GND, and its middle terminal (the wiper) to A0.",
+      "detail": "This is the exact same voltage-divider idea as the LDR in Light-Activated Night Lamp, except a potentiometer lets you set the divider ratio manually with a knob instead of it changing with light."
+    }
+  ],
+  "code": [
+    {
+      "filename": "servo_pan_sweep.ino",
+      "language": "arduino",
+      "source": "#include <Servo.h>\n\n// Servo Pan Sweep\n// Maps a potentiometer's position directly onto a servo's angle.\n\nconst int POT_PIN = A0;\nconst int SERVO_PIN = 9;\n\nServo panServo;\n\nvoid setup() {\n  panServo.attach(SERVO_PIN);\n}\n\nvoid loop() {\n  int potValue = analogRead(POT_PIN);          // 0-1023\n  int angle = map(potValue, 0, 1023, 0, 180);   // rescale to 0-180 degrees\n\n  panServo.write(angle);\n  delay(15); // gives the servo time to physically catch up between updates\n}\n",
+      "explanation": "map() is doing the entire conceptual translation here: it takes a value known to fall within one range (the potentiometer's 0-1023) and rescales it proportionally into a different range (the servo's 0-180°) — turning the knob a third of the way produces roughly a 60° servo angle, without any manual arithmetic. The small delay isn't for timing the servo's pulse (the library handles that continuously in the background) — it's just pacing how often a new angle is requested, which is plenty responsive for a knob a human is turning by hand."
+    }
+  ],
+  "expectedBehavior": "The servo horn tracks the potentiometer's rotation directly and immediately: turning the knob fully one way points the servo to 0°, fully the other way to 180°, with everything in between mapped proportionally.",
+  "troubleshooting": [
+    {
+      "issue": "Servo doesn't move at all.",
+      "fix": "Confirm the Servo library's attach() call ran (check the pin number matches your wiring) and that the servo has power — a servo with a disconnected signal wire but connected power will simply sit still rather than error out."
+    },
+    {
+      "issue": "Servo jitters or twitches slightly even when the pot isn't moving.",
+      "fix": "This is usually electrical noise on the potentiometer's wiper reading — add a small (0.1µF) capacitor between the wiper and GND, or simply ignore small angle changes (a few degrees) in code."
+    },
+    {
+      "issue": "Servo only moves through part of its range.",
+      "fix": "Check the potentiometer is wired with both outer legs to 5V/GND (giving a full-range wiper voltage), not just one outer leg and the wiper."
+    }
+  ],
+  "extensions": [
+    "Add a second potentiometer and servo for independent pan and tilt (see Joystick Pan-Tilt Turret for the joystick-driven version of this exact idea).",
+    "Replace manual potentiometer control with an automatic sweep between two angles.",
+    "Mount an ultrasonic sensor on the servo horn and combine with distance readings — see Obstacle-Avoidance Robot.",
+    "Smooth the servo's motion by moving one degree at a time toward the target instead of jumping instantly."
+  ]
+}

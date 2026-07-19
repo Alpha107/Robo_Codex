@@ -1,0 +1,111 @@
+{
+  "identity": {
+    "id": "stereo-camera",
+    "name": "Stereo Camera Module",
+    "category": "Vision & Imaging",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A stereo camera module puts two lenses a fixed, known distance apart (the baseline) and captures both feeds with hardware-synchronized global shutters, exactly the way human binocular vision works — but unlike the RealSense D435i, it does no depth computation onboard. It hands the host two raw, time-aligned video streams over USB3 and leaves stereo matching (turning the disparity between the two images into an actual depth value per pixel) entirely to the host's own CPU or GPU, using something like OpenCV's StereoSGBM or ROS's stereo_image_proc. That's the whole appeal for research and custom pipelines: full control over the matching algorithm and parameters, at the cost of needing real compute power on the receiving end that a self-contained depth camera doesn't require.",
+  "simpleSummary": "Two synchronized cameras a fixed distance apart, giving you the raw images to compute your own 3D depth from.",
+  "specifications": {
+    "lensCount": "2 (hardware-synchronized stereo pair)",
+    "baseline": "60mm fixed spacing between lens centers (sets the depth range/precision trade-off)",
+    "resolutionPerLens": "1280x800, global shutter",
+    "shutterType": "Global shutter (both lenses exposed simultaneously, avoiding rolling-shutter skew that would corrupt stereo matching)",
+    "frameRate": "Up to 60fps, hardware-synchronized between both lenses",
+    "fieldOfView": "~100° horizontal per lens",
+    "interface": "USB 3.0 Type-C",
+    "depthComputation": "None onboard — raw stereo pair only; depth computed on the host",
+    "powerConsumption": "~2.5W, bus-powered over USB"
+  },
+  "pinMap": [
+    {
+      "name": "USB-C",
+      "position": null,
+      "category": "communication",
+      "function": "Single USB 3.0 connector carrying bus power plus both raw, synchronized video streams uncompressed.",
+      "voltageRange": "5V (USB bus power)",
+      "currentLimit": "~500mA typical",
+      "alternateFunctions": [],
+      "gotcha": "Two simultaneous uncompressed global-shutter video streams need real USB3 bandwidth — a cheap or shared USB hub bottlenecks it and drops frames on one or both lenses, which shows up as broken stereo matching, not an obvious connection error."
+    },
+    {
+      "name": "Sync/Trigger",
+      "position": null,
+      "category": "special",
+      "function": "Hardware external trigger input/output, used to genlock multiple camera rigs to a common timing signal.",
+      "voltageRange": "3.3V logic",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "External trigger"
+      ],
+      "gotcha": "Fine to leave unconnected for a single stereo unit (it free-runs on its own internal sync) — it only matters once you're combining this rig's timing with a second camera or sensor."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "DIY visual odometry",
+      "scenario": "Run your own stereo depth pipeline on a ground robot instead of relying on a packaged depth-camera ASIC.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Custom stereo-matching research",
+      "scenario": "Use the raw synchronized image pairs as a testbed for developing or comparing stereo-matching algorithms.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "ROS-based drone obstacle sensing",
+      "scenario": "Feed the raw stereo pair into ROS's stereo_image_proc to build a depth image as part of a larger navigation stack.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "3D reconstruction / photogrammetry",
+      "scenario": "Use the known, fixed baseline geometry to reconstruct accurate 3D structure from a static or slowly-moving scene.",
+      "pinsInvolved": [
+        "USB-C"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Multi-camera genlocked rig",
+      "scenario": "Wire the sync pin across several stereo units so all cameras capture the exact same instant for multi-view reconstruction.",
+      "pinsInvolved": [
+        "Sync/Trigger",
+        "USB-C"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Jetson Nano",
+      "ROS/ROS2",
+      "GPU-equipped host computer"
+    ],
+    "oftenConfusedWith": [
+      "Intel RealSense D435i (looks similar — two lenses side by side — but the D435i adds an IR projector and an onboard depth ASIC that hands you a finished depth stream directly, instead of two raw feeds you have to process yourself)",
+      "USB Webcam/OV7670/Raspberry Pi Camera Module (single lens, no depth information possible at all)"
+    ],
+    "oftenUpgradedTo": [
+      "Intel RealSense D435i, when you'd rather not run and tune your own stereo-matching pipeline",
+      "Dedicated industrial stereo/ToF cameras with onboard FPGA depth compute"
+    ]
+  },
+  "beginnerMistakes": [
+    "Not having enough host GPU/CPU headroom to run stereo matching in real time, resulting in laggy or low-rate depth output.",
+    "Ignoring how the fixed 60mm baseline limits far-range depth precision — a wider-baseline rig trades near-field accuracy for usable far-range depth.",
+    "Letting each lens run independent auto-exposure/auto-gain, which desynchronizes brightness between the two images and breaks stereo matching.",
+    "Using a cheap shared USB hub that can't sustain dual global-shutter bandwidth, causing dropped or torn frames."
+  ]
+}

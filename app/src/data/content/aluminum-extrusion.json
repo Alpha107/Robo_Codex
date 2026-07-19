@@ -1,0 +1,92 @@
+{
+  "identity": {
+    "id": "aluminum-extrusion",
+    "name": "Aluminum Extrusion & Brackets",
+    "category": "Structural & Mechanical",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Aluminum extrusion (commonly known by the profile name '2020' or '2040', referring to its cross-section size in millimeters) is a modular structural framing system: T-shaped slots running the full length of each bar accept sliding T-nuts, which bolt on brackets, panels, or other extrusion pieces at any point along the length rather than at fixed pre-drilled holes. That makes it the standard choice for building a CNC machine frame, 3D printer chassis, or camera rig where the structure needs to be rigid, precisely square, and easy to reconfigure as a design evolves — at the cost of being bulkier and heavier than a custom-cut sheet chassis.",
+  "simpleSummary": "Metal bars with grooves down the side that let you bolt brackets on anywhere, like a robot's building blocks.",
+  "specifications": {
+    "commonProfiles": "2020 (20mm x 20mm) and 2040 (20mm x 40mm) are the most common hobby/desktop-CNC sizes",
+    "material": "6063 aluminum alloy, anodized finish",
+    "connectionMethod": "T-slot with sliding T-nuts and corner brackets, or end-tapped connections",
+    "cutability": "Cut to length with a standard hacksaw or miter saw, no specialized tools required"
+  },
+  "pinMap": [
+    {
+      "name": "T-Slot Channel",
+      "position": null,
+      "category": "special",
+      "function": "The full-length groove running along each face, accepting T-nuts anywhere along its length.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "T-nuts must be inserted from the end of the extrusion (or via a drop-in style nut) before the piece is fully assembled into a frame — retrofitting one into a closed structure means disassembly."
+    },
+    {
+      "name": "Corner Bracket Mount",
+      "position": null,
+      "category": "special",
+      "function": "Where an L-shaped or cube corner bracket joins two extrusion pieces at a right angle.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "End Tap Point",
+      "position": null,
+      "category": "special",
+      "function": "The extrusion's hollow center channel, which can be tapped with threads for direct end-to-end bolting without a separate bracket.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "CNC machine / 3D printer frame",
+      "scenario": "Build a rigid, squareable frame for a machine that needs precise, stable geometry.",
+      "pinsInvolved": [
+        "T-Slot Channel",
+        "Corner Bracket Mount"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Camera slider or rig",
+      "scenario": "Modular, reconfigurable framing for photography/videography equipment.",
+      "pinsInvolved": [
+        "T-Slot Channel"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Reconfigurable robot test rig",
+      "scenario": "A frame that can be easily adjusted as a robot design changes during development.",
+      "pinsInvolved": [
+        "T-Slot Channel",
+        "Corner Bracket Mount",
+        "End Tap Point"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "NEMA 17 stepper motor",
+      "Timing belt & pulley",
+      "Ball bearings"
+    ],
+    "oftenConfusedWith": [
+      "Laser-cut acrylic chassis (lighter, cheaper, less rigid/reconfigurable)"
+    ],
+    "oftenUpgradedTo": [
+      "Welded steel framing for industrial-scale rigidity needs"
+    ]
+  }
+}

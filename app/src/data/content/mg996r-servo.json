@@ -1,0 +1,99 @@
+{
+  "identity": {
+    "id": "mg996r-servo",
+    "name": "MG996R Servo Motor",
+    "category": "Motors & Actuators",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The MG996R is what you reach for when an SG90 micro servo isn't strong enough. Same 3-wire PWM control scheme and same beginner-friendly workflow, but standard-servo sized with all-metal gears instead of plastic, delivering roughly six times the torque. That extra torque means it also draws considerably more current, so the 'don't power servos from your microcontroller's 5V pin' rule that's a minor annoyance with an SG90 becomes a hard requirement here.",
+  "simpleSummary": "A stronger servo motor for when a small SG90 servo isn't powerful enough.",
+  "specifications": {
+    "operatingVoltage": "4.8V - 7.2V",
+    "stallTorque": "~9.4 kg·cm @ 4.8V, ~11 kg·cm @ 6V",
+    "speed": "~0.17-0.19 sec / 60 degrees",
+    "rotationRange": "~120-180 degrees (variant-dependent)",
+    "weight": "~55 g",
+    "gearType": "Metal gears",
+    "controlSignal": "PWM, 50 Hz",
+    "pulseWidthRange": "~1ms-2ms, 1.5ms neutral (varies slightly by unit)"
+  },
+  "pinMap": [
+    {
+      "name": "Signal (orange wire)",
+      "position": null,
+      "category": "communication",
+      "function": "PWM control pulse encoding target angle.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (control input)",
+      "alternateFunctions": [],
+      "gotcha": "Same jitter sensitivity as smaller servos — use a proper Servo library or hardware PWM, not manual bit-banging."
+    },
+    {
+      "name": "VCC (red wire)",
+      "position": null,
+      "category": "power",
+      "function": "Motor power input.",
+      "voltageRange": "4.8V - 7.2V",
+      "currentLimit": "Up to 2.5A stall — well beyond what a microcontroller 5V pin can supply",
+      "alternateFunctions": [],
+      "gotcha": "Requires a dedicated power supply for anything beyond a single lightly-loaded servo — this is not optional the way it sometimes is with an SG90."
+    },
+    {
+      "name": "GND (brown/black wire)",
+      "position": null,
+      "category": "power",
+      "function": "Ground return.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Must share a common ground with the controller even when powered from a separate supply."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robotic arm base/shoulder joint",
+      "scenario": "Where an SG90 doesn't have enough torque to lift the arm's own weight plus a payload.",
+      "pinsInvolved": [
+        "Signal (orange wire)",
+        "VCC (red wire)",
+        "GND (brown/black wire)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "RC car/boat steering with real load",
+      "scenario": "Larger, heavier steering mechanisms than a micro servo can handle.",
+      "pinsInvolved": [
+        "Signal (orange wire)",
+        "VCC (red wire)",
+        "GND (brown/black wire)"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Quadruped robot leg joints",
+      "scenario": "Multiple MG996R servos per leg for walking robots needing real torque under load.",
+      "pinsInvolved": [
+        "Signal (orange wire)",
+        "VCC (red wire)",
+        "GND (brown/black wire)"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "PCA9685 servo driver board",
+      "External 6V power supply",
+      "Robotic arm brackets"
+    ],
+    "oftenConfusedWith": [
+      "SG90 (much weaker, plastic gears, smaller)"
+    ],
+    "oftenUpgradedTo": [
+      "Dynamixel smart servos (add position/torque feedback and daisy-chainable digital control)"
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "identity": {
+    "id": "pir-motion-sensor",
+    "name": "PIR Motion Sensor (HC-SR501)",
+    "category": "Distance & Proximity Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The HC-SR501 is entirely passive — unlike an ultrasonic or IR-reflectance sensor, it doesn't emit anything. Its white fresnel dome splits its field of view into multiple zones and focuses infrared radiation onto a pyroelectric element that reacts to a CHANGE in infrared levels, not to infrared itself; that's why it triggers on a person walking through the room but stays silent on a person sitting perfectly still (their body heat isn't changing). Two onboard trimpots (sensitivity and output-hold delay) and a trigger-mode jumper let it be tuned for different rooms without any code, which is exactly why it's the standard 'is anyone here' sensor for beginners despite being just three wires.",
+  "simpleSummary": "A sensor that detects movement by noticing sudden changes in infrared heat, the same way many hallway lights turn on automatically.",
+  "specifications": {
+    "detectionRange": "Up to 7m, adjustable via sensitivity trimpot",
+    "detectionAngle": "~120° cone",
+    "operatingVoltage": "5V-20V DC (onboard voltage regulator)",
+    "outputSignal": "TTL digital, 3.3V HIGH when motion detected",
+    "warmUpTime": "~60 seconds after power-on before readings stabilize",
+    "delayTimeAdjustable": "~3s - 300s output HIGH hold time, set via trimpot",
+    "triggerMode": "Selectable via jumper: single-trigger (L) or repeatable-trigger (H)",
+    "lensType": "Fresnel dome lens, passive infrared (no emitter)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input to the onboard voltage regulator.",
+      "voltageRange": "5V-20V DC",
+      "currentLimit": "~65 mA",
+      "alternateFunctions": [],
+      "gotcha": "It happily runs from anywhere between 5V and 20V thanks to the onboard regulator, but the OUT pin only ever swings 0-3.3V regardless of input voltage — don't assume a 5V logic level here."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output — goes HIGH when motion is detected within range and angle, staying HIGH for the delay time set by the onboard trimpot.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (digital output)",
+      "alternateFunctions": [],
+      "gotcha": "There's a roughly 60-second warm-up period after power-on where the sensor's internal IR baseline is still settling, causing false or erratic triggers — ignore readings during that first minute rather than assuming the sensor is broken."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Automatic light/appliance switch",
+      "scenario": "Trigger a relay to turn on a light or fan when someone enters a room, and let the delay trimpot handle the auto-off timing.",
+      "pinsInvolved": [
+        "OUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Security alarm trigger",
+      "scenario": "Sound a buzzer or send a notification the instant motion is detected in a monitored area.",
+      "pinsInvolved": [
+        "OUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Robot wake-from-sleep trigger",
+      "scenario": "Keep a battery-powered robot in low-power sleep until a person walks nearby, saving power versus constantly polling a camera or ultrasonic sensor.",
+      "pinsInvolved": [
+        "OUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Motion-triggered camera recording",
+      "scenario": "Only wake an ESP32-CAM or start recording when the PIR fires, saving storage and power versus continuous recording.",
+      "pinsInvolved": [
+        "OUT"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Pet feeder / interactive toy trigger",
+      "scenario": "Detect an animal's movement nearby to trigger a feeding mechanism or a toy's response.",
+      "pinsInvolved": [
+        "OUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Relay Module",
+      "Buzzer",
+      "ESP32-CAM"
+    ],
+    "oftenConfusedWith": [
+      "HC-SR04 (measures actual distance to a fixed target; a PIR only fires on a CHANGE in infrared signature, so it can't measure range and won't detect a person standing perfectly still)",
+      "Thermal Camera MLX90640 (a PIR gives one binary yes/no motion bit with no spatial detail; the thermal camera gives a full grid of actual temperature values)"
+    ],
+    "oftenUpgradedTo": [
+      "Thermal Camera MLX90640, for actual spatial and temperature detail instead of a single trigger bit",
+      "mmWave presence sensors, which detect stationary people and have no warm-up delay"
+    ]
+  },
+  "beginnerMistakes": [
+    "Testing immediately after power-up, before the ~60 second warm-up settles, and concluding the sensor is broken.",
+    "Not accounting for the ~120° wide detection cone — it fires on movement well off to the sides, not just dead ahead.",
+    "Mounting it behind glass or plastic — like most PIR sensors, it needs a direct IR path, and glass blocks or blurs it.",
+    "Forgetting the sensitivity and delay trimpots exist, and fighting long HIGH-hold times in software instead of just turning the delay pot down.",
+    "Assuming the OUT pin is 5V logic because VCC is fed 5V-20V, when OUT actually only ever outputs 3.3V."
+  ]
+}

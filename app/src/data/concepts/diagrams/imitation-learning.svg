@@ -1,0 +1,23 @@
+<svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .expertdot { offset-path: path('M50,220 Q200,80 500,90'); animation: goexpert 3.6s linear infinite; }
+    @keyframes goexpert { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+    .clonedot { offset-path: path('M50,220 Q200,90 330,110 Q430,130 470,220'); animation: goclone 3.6s linear infinite; }
+    @keyframes goclone { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  </style>
+
+  <text x="310" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Expert Path vs. a Naively Cloned Policy</text>
+
+  <path d="M50,220 Q200,80 500,90" fill="none" stroke="#2f9e44" stroke-width="3"/>
+  <text x="380" y="70" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2f9e44">expert demonstration</text>
+
+  <path d="M50,220 Q200,90 330,110 Q430,130 470,220" fill="none" stroke="#e03131" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="380" y="248" text-anchor="middle" font-size="10.5" font-weight="700" fill="#e03131">cloned policy — drifts once slightly off</text>
+
+  <circle r="7" fill="#2f9e44" class="expertdot"/>
+  <circle r="7" fill="#e03131" class="clonedot"/>
+
+  <text x="50" y="245" font-size="10.5" fill="#5b6270">start</text>
+
+  <text x="310" y="270" text-anchor="middle" font-size="10" fill="#5b6270">The clone has no training example for "slightly off track" — so the small drift compounds.</text>
+</svg>

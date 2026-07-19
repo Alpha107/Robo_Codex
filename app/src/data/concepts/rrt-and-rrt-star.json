@@ -1,0 +1,28 @@
+{
+  "identity": {
+    "id": "rrt-and-rrt-star",
+    "title": "RRT & RRT*",
+    "category": "Motion Planning & Navigation",
+    "level": "Advanced",
+    "tagline": "Finding a path by randomly sprouting a growing tree of valid moves — surprisingly effective where grid search becomes impractical."
+  },
+  "simpleSummary": "An algorithm that finds a path by randomly growing a branching tree of valid moves out from the start until a branch happens to reach the goal — especially useful when the space is too complex or high-dimensional for a grid-based search to handle.",
+  "keyIdea": "RRT (Rapidly-exploring Random Tree) builds a tree of collision-free moves by repeatedly sampling random points and connecting them to the nearest existing tree node, quickly exploring spaces where grid discretization becomes impractical; RRT* extends this to progressively converge toward an optimal path over time.",
+  "overview": "Grid-based search methods like Dijkstra's algorithm and A* require discretizing the space into a grid or graph — perfectly fine for a 2D floor map, but computationally impossible for a 6-DOF robot arm's configuration space, where a fine-enough grid across six dimensions is astronomically large (the curse of dimensionality). RRT sidesteps this entirely: rather than discretizing the whole space upfront, it incrementally builds a tree of reachable, collision-free configurations by repeatedly sampling a random point and extending the tree toward it from its nearest existing node, continuing until a sample lands near the goal region. RRT* is a refinement that additionally rewires the growing tree as new samples arrive, progressively improving path quality rather than settling for whatever path RRT's randomness happened to find first.",
+  "equations": [],
+  "howItWorks": "Basic RRT repeats a simple loop: sample a random point in configuration space; find the nearest existing node already in the tree; extend (steer) from that nearest node toward the sample by a limited step size; check whether the resulting new edge is collision-free, and if so, add it as a new tree node; repeat until a new node lands close enough to the goal to connect to it. Because the sampling is random, the resulting path is typically valid but often jagged and far from optimal — it's whatever path the randomness happened to stumble onto first. RRT* adds one further step at every iteration: after adding a new node, it checks nearby existing tree nodes and rewires them through the new node whenever doing so reduces their total cost back to the start. Repeated over many iterations, this progressively improves the tree, and RRT* is proven to asymptotically converge toward the truly optimal path as the number of iterations approaches infinity — though any real implementation must stop after a finite amount of time, yielding a good, but not perfectly optimal, path in practice.",
+  "diagramCaption": "RRT grows a randomly branching tree outward from the start; once a branch reaches near the goal, the connected path (highlighted) becomes the found route — often jagged unless refined further by RRT*.",
+  "realWorldExamples": [
+    "Motion planning for a 6-DOF industrial robot arm around obstacles, where the sheer dimensionality of the arm's configuration space makes grid-based search impractical.",
+    "Autonomous vehicle motion planning in continuous space, accounting for the vehicle's own non-holonomic turning constraints.",
+    "Robotic manipulation planning in cluttered environments, such as pick-and-place tasks amid obstacles on a workbench."
+  ],
+  "commonMisconceptions": [
+    "\"RRT always finds the shortest possible path\" — basic RRT's path is often jagged and suboptimal purely from its random sampling; only RRT*, given enough iterations, approaches an optimal path, and even then only asymptotically.",
+    "\"RRT is deterministic — running it twice gives the same path\" — it's inherently randomized; different runs typically produce different specific paths, though a valid solution is reliably found (given enough iterations) whenever one exists.",
+    "\"RRT* always finds the perfectly optimal path in practice\" — it only converges toward optimal as iterations approach infinity; real implementations run for a finite time and get a good, but not perfectly optimal, result."
+  ],
+  "relatedComponents": ["servo-bracket-arm-kit"],
+  "relatedProjects": [],
+  "relatedConcepts": ["path-planning-overview", "degrees-of-freedom-and-workspace", "trajectory-generation-and-smoothing"]
+}

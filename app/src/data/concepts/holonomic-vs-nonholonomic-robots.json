@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "holonomic-vs-nonholonomic-robots",
+    "title": "Holonomic vs Non-Holonomic Robots",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "Can it slide directly sideways right now, or does it have to maneuver to get there like a car parallel parking?"
+  },
+  "simpleSummary": "Whether a robot can move directly in any direction at this exact instant (holonomic), or whether it's limited to moving the way its wheels currently point and has to maneuver — like parallel parking — to end up somewhere its wheels don't already aim (non-holonomic).",
+  "keyIdea": "Holonomic robots can independently and instantly control every one of their degrees of freedom; non-holonomic robots have motion constraints — like a wheel's inability to slide sideways — that couple their degrees of freedom together, so some poses are only reachable eventually, through maneuvering, not directly.",
+  "overview": "A standard wheel can roll forward and backward, and the vehicle it's attached to can turn, but the wheel physically cannot slide directly sideways without skidding. This simple physical fact is a non-holonomic constraint: even though a car or a differential-drive robot's full configuration includes position and orientation (3 degrees of freedom: x, y, and heading), only 2 independent directions of instantaneous motion are actually available at any given moment — forward/backward and turning. This is exactly why parallel parking exists: a car cannot move directly sideways into a parking spot, but it can eventually reach that exact position and orientation through a sequence of forward and backward maneuvers. A holonomic robot has no such constraint: every one of its degrees of freedom can be controlled independently and instantly, meaning it can move sideways, forward, and rotate all at once, with no maneuvering required to reach any nearby pose directly.",
+  "equations": [
+    {
+      "label": "Standard Wheel Rolling Constraint",
+      "expression": "ẋ·sin(θ) − ẏ·cos(θ) = 0",
+      "meaning": "This equation says the robot's velocity (ẋ, ẏ) must point along its current heading θ — it cannot have a velocity component perpendicular to that heading, which is exactly the mathematical statement that a standard wheel can't slide sideways."
+    }
+  ],
+  "howItWorks": "The formal distinction is about instantaneous velocity freedom, not eventual reachability. A non-holonomic robot's motion constraints cannot be 'integrated away' into a simple position-only restriction — they genuinely restrict which velocity directions are available at every instant, even though, given enough maneuvering room and time, the robot can still eventually reach essentially any position and orientation. A standard differential-drive or car-like robot is the classic non-holonomic example: its wheels physically can only roll along their own heading direction, so its full 3-DOF configuration (x, y, heading) is only ever locally reachable in 2 independent directions at a time, forcing multi-step maneuvers for many nearby target poses. A holonomic robot removes this constraint entirely — mecanum or omni wheels use angled rollers around their circumference that allow a controlled sideways slip, meaning the robot can generate independent forward, sideways, and rotational velocity all at the same instant, with no coupling between them at all. The trade-off is mechanical: holonomic wheels are more complex, generally provide less traction and efficiency than standard wheels (some of each wheel's force goes into the rollers rather than pure forward drive), and typically cost more, which is exactly why the simpler, cheaper non-holonomic differential drive remains the default choice unless true omnidirectional motion is specifically needed.",
+  "diagramCaption": "A non-holonomic (car-like) robot must maneuver in multiple steps to reach a point directly to its side; a holonomic (mecanum/omni-wheeled) robot can move there in a single straight motion.",
+  "realWorldExamples": [
+    "This site's Mecanum Omnidirectional Robot project is holonomic — it can drive sideways and diagonally without ever turning its body.",
+    "This site's Line-Following Robot and Obstacle-Avoidance Robot projects both use standard differential drive, which is non-holonomic — they must turn to reorient before moving in a new direction.",
+    "A car parallel parking is the textbook non-holonomic maneuvering example: the car cannot move directly sideways into the spot, but reaches the same final pose through a sequence of forward/backward moves."
+  ],
+  "commonMisconceptions": [
+    "\"Non-holonomic just means 'worse' or 'more limited' overall\" — it describes a different kind of constraint (instantaneous velocity freedom), and it's often mechanically simpler, cheaper, and more efficient than a holonomic alternative.",
+    "\"A robot that can eventually reach any pose is holonomic\" — that describes the non-holonomic case exactly; the defining feature of holonomic motion is instantaneous freedom in every direction, not eventual reachability through maneuvering.",
+    "\"Mecanum wheels have no drawbacks compared to standard wheels\" — they typically sacrifice some traction, efficiency, and load capacity, and add mechanical complexity, in exchange for full omnidirectional motion."
+  ],
+  "relatedComponents": ["mecanum-wheel", "robot-wheel", "dc-geared-motor"],
+  "relatedProjects": ["mecanum-omnidirectional-robot", "line-following-robot"],
+  "relatedConcepts": ["differential-drive-kinematics", "degrees-of-freedom-and-workspace", "odometry-and-dead-reckoning"]
+}

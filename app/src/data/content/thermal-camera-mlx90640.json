@@ -1,0 +1,137 @@
+{
+  "identity": {
+    "id": "thermal-camera-mlx90640",
+    "name": "Thermal Camera (MLX90640)",
+    "category": "Vision & Imaging",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The MLX90640 is a genuine thermal imaging chip, not a single-point IR thermometer: it's a 32x24 grid of independent thermopile pixels, each one reading the actual temperature of whatever it's pointed at, all read out over a plain I2C bus. That low pixel count (768 total, versus millions on a visible-light sensor) is the honest trade for cost — a real FLIR-grade thermal sensor with useful resolution costs many times more — but it's still enough to pick out a person-shaped heat blob in total darkness, or spot a single overheating component on a board. Every chip ships with factory calibration constants in onboard EEPROM that must be read once and applied in software to convert raw pixel counts into actual degrees Celsius; skipping that step gives numbers that look plausible but are wrong.",
+  "simpleSummary": "A low-resolution camera that sees heat instead of light, turning a room into a grid of temperature readings.",
+  "specifications": {
+    "resolution": "32 x 24 pixels (768 thermal pixels total)",
+    "fieldOfView": "55° x 35° (wide-FOV variant; 110°x75° variant also exists)",
+    "refreshRate": "0.5-64 Hz configurable (practical ceiling ~8-16Hz over standard I2C)",
+    "temperatureRangeObject": "-40°C to 300°C",
+    "accuracy": "±1.5°C typical, calibrated",
+    "interface": "I2C, address 0x33, up to 1MHz Fast Mode+",
+    "operatingVoltage": "3.3V (3.0V-3.6V)",
+    "outputData": "Raw 16-bit pixel array + factory EEPROM calibration constants, converted to °C in software"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the sensor die and readout electronics.",
+      "voltageRange": "3.3V (3.0V-3.6V)",
+      "currentLimit": "~23 mA typical, higher during active frame capture",
+      "alternateFunctions": [],
+      "gotcha": "This sensor is 3.3V only on most bare breakouts — it is not 5V tolerant. Check your specific board for an onboard regulator before wiring it to a 5V rail."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line, used to read out the pixel frame and factory calibration constants.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Standard 100kHz I2C limits the usable refresh rate to just a few Hz. Getting anywhere near the sensor's higher refresh settings requires 1MHz Fast Mode+ I2C, which not every microcontroller or long wire run can drive reliably."
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Person/animal presence detection in darkness",
+      "scenario": "Spot a warm, person-shaped blob in a completely dark room without any visible-light illumination, preserving privacy since there's no recognizable image.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Predictive maintenance monitoring",
+      "scenario": "Watch a motor, bearing, or electrical panel for abnormal hot spots that indicate developing failure before it happens.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Non-contact multi-point temperature check",
+      "scenario": "Gauge temperature across several points on a moving part in one frame, instead of aiming a single-point IR thermometer repeatedly.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Warehouse patrol robot fire/hotspot warning",
+      "scenario": "Continuously scan for abnormal heat sources as an early-warning layer on a patrolling robot.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL",
+        "VCC"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Low-cost heat-blob gesture tracking",
+      "scenario": "Track a hand's coarse position by its heat signature as a cheap alternative to a depth camera for close-range interaction.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi 4",
+      "ESP32",
+      "SSD1306 OLED (for visualizing the thermal grid)"
+    ],
+    "oftenConfusedWith": [
+      "PIR Motion Sensor (a PIR only outputs a binary 'something's heat signature changed' trigger; this sensor outputs a real 32x24 grid of actual temperature values, showing shape and intensity, not just a yes/no)",
+      "Intel RealSense D435i / Stereo Camera Module (measure distance/depth, not temperature)"
+    ],
+    "oftenUpgradedTo": [
+      "FLIR Lepton (160x120 resolution, SPI/VoSPI video-style interface, true radiometric imaging quality instead of a coarse grid)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Powering it at 5V directly instead of 3.3V, damaging the sensor.",
+    "Expecting a sharp 'picture' — 768 pixels produces a coarse heat blob, not a photo-quality thermal image.",
+    "Not letting the sensor thermally stabilize for a few seconds after power-on before trusting absolute readings.",
+    "Placing it behind glass or plastic — most common materials are opaque to the long-wave infrared this sensor reads, producing a flat or misleading reading.",
+    "Pushing the refresh rate higher than the I2C bus speed in use can sustain, causing frame reads to return stale or torn pixel data."
+  ]
+}

@@ -1,0 +1,394 @@
+{
+  "identity": {
+    "id": "line-following-robot",
+    "title": "Line-Following Robot",
+    "tagline": "A small 2-wheel robot that steers itself by watching a black line on the floor.",
+    "category": "Robots & Motion",
+    "difficulty": "Intermediate",
+    "estimatedTime": "90 minutes"
+  },
+  "goal": "Build a two-wheeled robot that autonomously follows a black line taped to the floor, using three infrared sensors to see the line and a motor driver to steer left or right in response — no remote control involved.",
+  "simpleSummary": "Build a robot that drives itself along a black line taped to the floor.",
+  "howItWorks": "Infrared sensors work by shining IR light at the floor and measuring how much bounces back: a light (white) surface reflects a lot of it, a dark (black) surface absorbs most of it. Each sensor on the array outputs a simple digital signal — line detected, or not — based on that reflection. With three sensors mounted side by side under the front of the robot, the Arduino can tell exactly where the line is relative to the robot's centerline: if the center sensor sees the line, drive straight; if the line drifts under the left sensor, the robot has turned too far right and needs to steer left to correct; and vice versa. The L298N motor driver exists because the Arduino's pins can only supply a tiny trickle of current — nowhere near enough to spin a motor — so the driver acts as a current amplifier: the Arduino tells it which direction and how fast, and it switches the motor's actual power (from a separate battery) accordingly.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A separate battery pack for the motors",
+    "Black electrical tape and a light-colored floor to make a test track",
+    "Small Phillips screwdriver for chassis assembly"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "ir-line-sensor-array",
+      "quantity": 1,
+      "note": "using 3 of its 5 channels"
+    },
+    {
+      "componentId": "l298n",
+      "quantity": 1
+    },
+    {
+      "componentId": "dc-geared-motor",
+      "quantity": 2,
+      "note": "left + right drive wheels"
+    },
+    {
+      "componentId": "robot-chassis-kit",
+      "quantity": 1
+    },
+    {
+      "componentId": "robot-wheel",
+      "quantity": 2
+    },
+    {
+      "componentId": "caster-wheel",
+      "quantity": 1,
+      "note": "rear support wheel"
+    },
+    {
+      "componentId": "18650-holder",
+      "quantity": 1,
+      "note": "or any 6-12V battery pack matching your motors"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "a full assortment — this build uses ~12"
+    }
+  ],
+  "circuitDiagramCaption": "Sensors tell the Arduino where the line is; the Arduino tells the L298N which way to steer; the L298N does the actual work of driving the motors from battery power. See the wiring steps below for exact pin numbers.",
+  "assembly3D": {
+    "placements": [
+      {
+        "componentId": "robot-chassis-kit",
+        "position": [0, 0.02, 0]
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 0,
+        "position": [-0.8, 0.31, 0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Left Wheel"
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 1,
+        "position": [-0.8, 0.31, -0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Right Wheel"
+      },
+      {
+        "componentId": "caster-wheel",
+        "position": [0.55, 0.22, 0]
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 0,
+        "position": [-0.65, 0.16, 0.25],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "Left Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 1,
+        "position": [-0.65, 0.16, -0.25],
+        "rotation": [0, -1.5707963267948966, 0],
+        "label": "Right Motor"
+      },
+      {
+        "componentId": "l298n",
+        "position": [-0.15, 0.3, 0]
+      },
+      {
+        "componentId": "arduino-uno-r3",
+        "position": [0.3, 0.275, 0.25]
+      },
+      {
+        "componentId": "18650-holder",
+        "position": [0.3, 0.47, -0.25]
+      },
+      {
+        "componentId": "ir-line-sensor-array",
+        "position": [0.65, 0.23, 0],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "IR Line Sensor Array (facing down)"
+      }
+    ],
+    "connections": [
+      {
+        "from": {
+          "componentId": "ir-line-sensor-array",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ir-line-sensor-array",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ir-line-sensor-array",
+          "pin": "OUT1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ir-line-sensor-array",
+          "pin": "OUT3"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ir-line-sensor-array",
+          "pin": "OUT5"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENB"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT3"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT4"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "18650-holder",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "18650-holder",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        },
+        "label": "shared ground"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Mount both drive motors to the chassis's left and right motor mounts, and attach the robot wheels to their shafts.",
+      "detail": "Get the motor orientation consistent on both sides before wiring anything — if one motor is mounted \"backwards\" relative to the other, the robot will spin instead of driving straight, and you'll end up fighting it in software instead of fixing it in hardware."
+    },
+    {
+      "step": 2,
+      "instruction": "Attach the caster wheel at the back of the chassis as a passive support point.",
+      "detail": "Two driven wheels alone can't hold the robot level — the caster is what lets the robot pivot freely on that third point of contact."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire each motor's two terminals to the L298N's OUT1/OUT2 (left motor) and OUT3/OUT4 (right motor).",
+      "detail": "Don't worry about getting + and − backwards here — if a motor spins the wrong direction later, the fix is to simply swap its two wires at the L298N, not to rewire anything else."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire Arduino D8 → L298N IN1, D9 → IN2, D10 → IN3, D11 → IN4.",
+      "detail": "These four pins are the \"steering wheel\" — each motor's direction (forward/reverse/stop) is set by the HIGH/LOW pattern on its pair of IN pins."
+    },
+    {
+      "step": 5,
+      "instruction": "Wire Arduino D5 → L298N ENA, and D6 → ENB.",
+      "detail": "ENA/ENB are the \"gas pedal\" for each motor — driving them with analogWrite() (PWM) controls speed. If your L298N board has ENA/ENB jumper caps installed, remove them first, since a jumper cap forces full speed and ignores the Arduino entirely."
+    },
+    {
+      "step": 6,
+      "instruction": "Connect the battery pack's positive lead to L298N +12V, and its negative lead to L298N GND.",
+      "detail": "This is the motors' actual power supply — keep it separate from the Arduino's USB power. Match your battery voltage to your motors' rating (most small TT gear motors are happy anywhere from 6V to 12V)."
+    },
+    {
+      "step": 7,
+      "instruction": "Connect Arduino GND to L298N GND (the same rail the battery's negative lead is on).",
+      "detail": "This is the step every single line-following-robot tutorial warns you about for a reason: without a shared ground reference between the Arduino and the motor driver's power supply, the Arduino's HIGH/LOW signals are meaningless to the L298N and nothing will behave predictably."
+    },
+    {
+      "step": 8,
+      "instruction": "Wire the IR sensor array's VCC to Arduino 5V and GND to Arduino GND, then its OUT1, OUT3, and OUT5 to Arduino D2, D3, and D4.",
+      "detail": "We're only using the outer-left, center, and outer-right channels of the 5-sensor array for this basic version — simple to reason about, and easy to extend later (see Extend This Project)."
+    },
+    {
+      "step": 9,
+      "instruction": "Tape a strip of black electrical tape in a simple loop or curve on a light-colored floor, place the robot on it, and power the Arduino from a USB battery bank or the L298N's regulated output — not a USB cable tied to your laptop.",
+      "detail": "A tethered robot can't actually drive anywhere. Powering the Arduino from the L298N's 5V output pin is the common approach, but only works correctly if your L298N's 5V regulator jumper is in place — check your specific board's silkscreen."
+    }
+  ],
+  "code": [
+    {
+      "filename": "line_following_robot.ino",
+      "language": "arduino",
+      "source": "// Line-Following Robot\n// Reads 3 IR sensors (left, center, right) and steers a 2-motor chassis\n// to keep the center sensor tracking a black line.\n\nconst int SENSOR_LEFT = 2;\nconst int SENSOR_CENTER = 3;\nconst int SENSOR_RIGHT = 4;\n\nconst int ENA = 5;  // left motor speed (PWM)\nconst int ENB = 6;  // right motor speed (PWM)\nconst int IN1 = 8;  // left motor direction\nconst int IN2 = 9;\nconst int IN3 = 10; // right motor direction\nconst int IN4 = 11;\n\nconst int BASE_SPEED = 150; // 0-255. Start modest, tune up once it works.\n\nvoid setup() {\n  pinMode(SENSOR_LEFT, INPUT);\n  pinMode(SENSOR_CENTER, INPUT);\n  pinMode(SENSOR_RIGHT, INPUT);\n\n  pinMode(IN1, OUTPUT);\n  pinMode(IN2, OUTPUT);\n  pinMode(IN3, OUTPUT);\n  pinMode(IN4, OUTPUT);\n  pinMode(ENA, OUTPUT);\n  pinMode(ENB, OUTPUT);\n}\n\nvoid loop() {\n  // NOTE: this assumes HIGH = line detected. Some sensor boards output the\n  // opposite (LOW = line detected) depending on their onboard comparator —\n  // if the robot reacts backwards, flip these two comparisons.\n  bool left = digitalRead(SENSOR_LEFT) == HIGH;\n  bool center = digitalRead(SENSOR_CENTER) == HIGH;\n  bool right = digitalRead(SENSOR_RIGHT) == HIGH;\n\n  if (center) {\n    driveForward();\n  } else if (left) {\n    steerLeft();\n  } else if (right) {\n    steerRight();\n  } else {\n    stopMotors(); // line lost — see \"Extend This Project\" for a search behavior\n  }\n}\n\nvoid driveForward() {\n  setMotor(IN1, IN2, ENA, BASE_SPEED);\n  setMotor(IN3, IN4, ENB, BASE_SPEED);\n}\n\nvoid steerLeft() {\n  setMotor(IN1, IN2, ENA, 60);          // slow the left motor\n  setMotor(IN3, IN4, ENB, BASE_SPEED);  // keep the right motor driving\n}\n\nvoid steerRight() {\n  setMotor(IN1, IN2, ENA, BASE_SPEED);\n  setMotor(IN3, IN4, ENB, 60);\n}\n\nvoid stopMotors() {\n  setMotor(IN1, IN2, ENA, 0);\n  setMotor(IN3, IN4, ENB, 0);\n}\n\n// Drives one motor forward at the given speed (0-255) via its IN pins + PWM enable.\nvoid setMotor(int in1, int in2, int en, int speed) {\n  digitalWrite(in1, HIGH);\n  digitalWrite(in2, LOW);\n  analogWrite(en, speed);\n}\n",
+      "explanation": "The sensor-reading block turns three raw digital reads into three plain booleans, then a simple if/else chain decides what to do: line under the center sensor means drive straight, line drifted to one side means slow that side's motor so the robot curves back toward it. setMotor() is a small helper that avoids repeating the same three lines for each motor — it sets a direction via two digital pins and a speed via one PWM pin. Slowing one motor rather than stopping or reversing it gives a gentler, more stable correction than a hard turn."
+    }
+  ],
+  "expectedBehavior": "Placed on the line, the robot drives forward while the line stays under its center sensor, and gently curves left or right whenever the line drifts to correct its course, tracing the taped path continuously.",
+  "troubleshooting": [
+    {
+      "issue": "Robot doesn't move at all.",
+      "fix": "Confirm the battery pack is actually powering the L298N (check its onboard power LED if it has one), and that Arduino GND and L298N GND share a connection — this is the #1 cause of \"nothing happens\" in motor-driver circuits."
+    },
+    {
+      "issue": "Robot moves backward instead of forward, or spins in place.",
+      "fix": "Swap that motor's two wires at the L298N's OUT terminals — this reverses its direction without touching any code or other wiring."
+    },
+    {
+      "issue": "Robot reacts backwards to the line (drives off it instead of following it).",
+      "fix": "Your sensor board's HIGH/LOW convention is opposite to the code's assumption — swap the == HIGH checks to == LOW in the three digitalRead lines."
+    },
+    {
+      "issue": "Robot follows the line erratically or loses it on gentle curves.",
+      "fix": "Adjust the sensor array's height above the floor (most modules work best 3-8mm above the surface) and check the onboard sensitivity potentiometer on each channel."
+    },
+    {
+      "issue": "One motor is noticeably weaker than the other.",
+      "fix": "Check for a loose jumper wire at that motor's IN or EN pins first — it's far more often a connection issue than a bad motor."
+    }
+  ],
+  "extensions": [
+    "Use all 5 sensor channels instead of 3 for smoother, more precise curve-following.",
+    "Replace the fixed BASE_SPEED correction with a proportional (PID-style) speed adjustment based on how far off-center the line is.",
+    "Add a \"line lost\" search behavior — spin slowly in the last-known direction until a sensor re-detects the line, instead of stopping.",
+    "Combine this with the Obstacle-Avoidance Robot project's ultrasonic sensor so the robot follows the line but stops or reroutes around unexpected obstacles."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "sensor-noise-and-uncertainty-models",
+    "title": "Sensor Noise & Uncertainty Models",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Foundational",
+    "tagline": "Real sensors never read the exact truth — modeling exactly how they wobble is what makes trusting them (correctly) possible."
+  },
+  "simpleSummary": "Real sensors never give a perfectly exact reading — they wobble around the true value in a describable way, and knowing exactly how much they wobble is what lets a Kalman filter (or anything else) know how much to trust them.",
+  "keyIdea": "Sensor noise is modeled as a random value from a probability distribution (usually Gaussian) added to the true reading, characterized by a bias (a repeatable offset) and a variance (random spread) — and confusing the two leads to fixing the wrong problem.",
+  "overview": "Every real sensor reading is really the true value plus some error. That error splits cleanly into two very different things: bias, a systematic, repeatable offset (a distance sensor that always reads 2cm short, every single time), and noise, random, unpredictable scatter around whatever the sensor reports on average. Noise is almost always modeled as Gaussian (bell-curve-shaped) — both because it's mathematically convenient and because, by the Central Limit Theorem, noise that's the sum of many small independent physical effects genuinely tends to look Gaussian in practice. This noise model is exactly what the Kalman filter's measurement noise covariance (its R matrix) formalizes: get a sensor's actual noise level wrong, and even a perfectly implemented Kalman filter produces an estimate that's either overconfident (trusting a noisy sensor too much) or underconfident (needlessly distrusting a good one).",
+  "equations": [
+    {
+      "label": "Measurement Model with Noise",
+      "expression": "z = x_true + n,   n ~ N(0, σ²)",
+      "meaning": "A sensor reading z equals the true value x_true plus a random noise term n, modeled as drawn from a Gaussian (Normal) distribution with zero mean and variance σ² — σ² is exactly the number a Kalman filter's R matrix needs."
+    },
+    {
+      "label": "Measurement Model with Bias",
+      "expression": "z = x_true + b + n",
+      "meaning": "When a systematic bias b is also present, it adds a constant, repeatable offset on top of the random noise — critically, b does not average away no matter how many readings you take, unlike n."
+    }
+  ],
+  "howItWorks": "Estimating a sensor's real noise characteristics is done practically: hold the sensor perfectly still, pointed at a perfectly known fixed target, and record many readings. The sample mean reveals any bias (the gap between the average reading and the known true value); the sample variance or standard deviation reveals the random noise level. It's worth knowing that noise characteristics can change with conditions — an ultrasonic sensor's readings typically get noisier near its maximum range, and an IMU's gyroscope noise changes with temperature — which is why some systems use more sophisticated, condition-dependent noise models rather than one fixed number. A critical, often-missed distinction: averaging N independent readings shrinks random noise's effective standard deviation by roughly the square root of N, but does absolutely nothing about bias, which stays exactly the same no matter how many readings are averaged together — bias has to be measured once and subtracted out, not averaged away.",
+  "diagramCaption": "Repeated measurements of the exact same true value scatter randomly around it (noise) — but if that scatter is centered away from the true value rather than on it, no amount of averaging fixes that gap; that's bias, and it needs a separate correction.",
+  "realWorldExamples": [
+    "Characterizing an HC-SR04 ultrasonic sensor's noise by taking 100 readings of a fixed known distance and computing the spread, before feeding it into a Kalman filter.",
+    "A GPS module's stated accuracy spec (e.g. '±2.5m') is describing exactly this kind of noise/uncertainty model in a single number.",
+    "Calibrating out a distance sensor's systematic bias (it always reads 3mm short) and its random noise (readings jitter ±1mm) as two genuinely separate problems requiring two separate fixes."
+  ],
+  "commonMisconceptions": [
+    "\"Averaging more readings fixes any sensor inaccuracy\" — averaging reduces random noise but does nothing for systematic bias, which needs to be measured and subtracted out separately.",
+    "\"All sensor noise is Gaussian\" — it's a convenient and often reasonably accurate default assumption, but some sensors produce distinctly non-Gaussian noise (occasional large outlier readings), part of why robust estimator variants exist.",
+    "\"A sensor with a big bias is worse than one with high random noise\" — neither is universally worse; a known, consistent bias can be calibrated out entirely, while high random noise (even unbiased) fundamentally limits precision unless averaged or fused with another source."
+  ],
+  "relatedComponents": ["hc-sr04", "mpu6050", "neo6m-gps"],
+  "relatedProjects": [],
+  "relatedConcepts": ["kalman-filter", "sensor-fusion", "imu-calibration-and-bias-compensation"]
+}

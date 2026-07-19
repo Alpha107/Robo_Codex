@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "computer-vision-basics",
+    "title": "Computer Vision Basics",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Intermediate",
+    "tagline": "How a computer turns a raw grid of pixel brightness values into edges, shapes, colors, and eventually meaning."
+  },
+  "simpleSummary": "The set of techniques that let a computer pull useful information — edges, shapes, colors, objects — out of what is otherwise just a big grid of numbers representing pixel brightness.",
+  "keyIdea": "A raw camera image is just a grid of pixel values with no inherent meaning; computer vision builds meaning up in stages, from simple pixel-level operations (thresholding, edge detection) to grouped shapes and regions, before any higher-level recognition or tracking becomes possible.",
+  "overview": "To a computer, a raw camera image is nothing more than a large grid of numbers representing brightness (or red/green/blue intensity) at each pixel — there's no built-in concept of 'edge,' 'line,' or 'object' anywhere in that raw data. Computer vision is the set of techniques that extract that meaning in stages: converting to grayscale and reducing noise, thresholding (turning pixels into simple black-or-white based on brightness), detecting edges (finding where brightness changes sharply, marking object boundaries), and segmenting regions of similar color. Once these basic building blocks are extracted, higher-level tasks — recognizing shapes, tracking a colored object, or feeding matched features into visual SLAM — become possible on top of them.",
+  "equations": [
+    {
+      "label": "Edge Gradient Magnitude",
+      "expression": "G = √(Gx² + Gy²)",
+      "meaning": "Gx and Gy are the brightness gradient (rate of change) in the horizontal and vertical directions, typically computed with a small convolution kernel (like the Sobel operator); a large gradient magnitude G marks a likely edge, since it means brightness is changing sharply at that pixel."
+    }
+  ],
+  "howItWorks": "A typical classical (non-deep-learning) computer vision pipeline runs roughly in this order: first, the raw image is preprocessed — converted to grayscale if color isn't needed, and blurred slightly to reduce noise that would otherwise trigger false edges. Next, feature extraction pulls out basic structure: edge detection (using gradient operators like Sobel, or more refined methods like Canny) finds boundaries where brightness changes sharply; color-based segmentation isolates regions matching a target color range, almost always done in the HSV color space rather than RGB, since HSV separates color (hue) from brightness, making it far more robust to lighting changes. Finally, higher-level interpretation groups these extracted features into something meaningful — connecting edge pixels into contours, grouping connected same-color regions into 'blobs,' or matching distinctive corner-like feature points between successive frames for tracking or visual SLAM. This layered approach — simple, hand-designed feature extractors as building blocks for higher-level interpretation — remains widely used even now, especially on embedded hardware too constrained to run modern deep-learning-based vision models.",
+  "diagramCaption": "A typical vision pipeline: raw pixels are preprocessed, edges and color regions are extracted as basic features, and those features are grouped into shapes or regions a higher-level task can actually use.",
+  "realWorldExamples": [
+    "A line-following robot using an OV7670 or ESP32-CAM to isolate a dark line from the floor via color/brightness thresholding, rather than the simpler discrete IR sensors used in this site's own Line-Following Robot project.",
+    "Color-based object tracking with a USB webcam and OpenCV, isolating and following a specific colored ball or marker in real time.",
+    "Edge and corner detection used as a preprocessing step before more advanced tasks like feature matching for visual odometry or visual SLAM."
+  ],
+  "commonMisconceptions": [
+    "\"Computer vision always means deep learning\" — classical technique-based vision (thresholding, edge detection, contour/blob detection) remains widely used, especially where deep learning inference isn't computationally feasible.",
+    "\"Color-based detection works reliably in any lighting\" — this is a major practical challenge in real vision projects; RGB-based thresholds especially are highly sensitive to lighting changes, which is exactly why HSV thresholding and careful calibration are standard workarounds.",
+    "\"More image resolution always means better vision results\" — higher resolution costs more processing time and memory, and many robust vision techniques (line-following, blob tracking) work perfectly well, or even better for speed, at deliberately reduced resolution."
+  ],
+  "relatedComponents": ["ov7670", "esp32-cam", "usb-webcam", "pi-camera-module"],
+  "relatedProjects": [],
+  "relatedConcepts": ["camera-calibration", "point-clouds-and-lidar-processing", "object-detection-for-robotics", "neural-networks-for-robotics"]
+}

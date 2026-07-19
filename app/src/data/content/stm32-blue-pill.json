@@ -1,0 +1,547 @@
+{
+  "identity": {
+    "id": "stm32-blue-pill",
+    "name": "STM32 Blue Pill (STM32F103C8T6)",
+    "category": "Microcontroller Board",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Named for its distinctive blue PCB, the 'Blue Pill' is a bare-bones breakout for ST's STM32F103 — a genuine 32-bit ARM Cortex-M3 chip that runs circles around AVR-based Arduinos for a similar price, with far more GPIO, real hardware timers, and multiple communication peripherals. The tradeoff is a rougher on-ramp: no Arduino-style bootloader by default (many boards need to be flashed once via ST-Link or a USB-to-serial adapter in bootloader mode), inconsistent documentation across clone batches, and a chip that runs at 3.3V logic throughout — though most GPIOs are usefully 5V-tolerant as inputs.",
+  "simpleSummary": "A bare-bones but powerful 32-bit board that outperforms Arduino for a similar price.",
+  "specifications": {
+    "microcontroller": "STM32F103C8T6, Arm Cortex-M3, 72 MHz",
+    "operatingVoltage": "3.3V (most GPIOs are 5V-tolerant as inputs)",
+    "flashMemory": "64-128 KB (varies by chip batch)",
+    "sram": "20 KB",
+    "digitalIOPins": "~37 GPIO across ports A, B, C",
+    "connector": "Micro-USB (board-dependent) — often needs external ST-Link for first flash"
+  },
+  "pinMap": [
+    {
+      "name": "PA0",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, 5V-tolerant, ADC-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA1",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, 5V-tolerant, ADC-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable, common USART2 TX.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "USART2 TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable, common USART2 RX.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "USART2 RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable, common SPI1 chip-select.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "SPI1 NSS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable, SPI1 clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "SPI1 SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable, SPI1 MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "SPI1 MISO",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable, SPI1 MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "SPI1 MOSI",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with timer/PWM support.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Timer",
+        "MCO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA9",
+      "position": null,
+      "category": "communication",
+      "function": "USART1 transmit, the board's main serial-programming pin.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "USART1 TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA10",
+      "position": null,
+      "category": "communication",
+      "function": "USART1 receive.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "USART1 RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PA11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also USB D-.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "USB D-",
+        "CAN RX"
+      ],
+      "gotcha": "Shared with the onboard USB peripheral — avoid repurposing if using USB device mode."
+    },
+    {
+      "name": "PA12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also USB D+.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "USB D+",
+        "CAN TX"
+      ],
+      "gotcha": "Same USB caveat as PA11."
+    },
+    {
+      "name": "PA13",
+      "position": null,
+      "category": "special",
+      "function": "SWD debug data line (SWDIO) — used by ST-Link programmers/debuggers.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SWDIO",
+        "Digital I/O"
+      ],
+      "gotcha": "Repurposing as plain GPIO can make the board harder to reprogram via SWD afterward."
+    },
+    {
+      "name": "PA14",
+      "position": null,
+      "category": "special",
+      "function": "SWD debug clock line (SWCLK).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SWCLK",
+        "Digital I/O"
+      ],
+      "gotcha": "Same reprogramming caveat as PA13."
+    },
+    {
+      "name": "PA15",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also SPI1 NSS alternate.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI1 NSS",
+        "JTDI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB0",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB1",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, ADC-capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also SWO trace pin.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI1 SCK (remap)",
+        "JTDO/SWO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI1 MISO (remap)",
+        "JNTRST"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C1 SMBA",
+        "SPI1 MOSI (remap)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB6",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C1 clock line.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C1 SCL",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB7",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C1 data line.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C1 SDA",
+        "Timer"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable I2C1 SCL.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C1 SCL (remap)",
+        "Timer",
+        "CAN RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable I2C1 SDA.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C1 SDA (remap)",
+        "Timer",
+        "CAN TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB10",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C2 clock line.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C2 SCL",
+        "USART3 TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB11",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C2 data line.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C2 SDA",
+        "USART3 RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, SPI2 chip-select.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI2 NSS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, SPI2 clock.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI2 SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB14",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, SPI2 MISO.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI2 MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB15",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, SPI2 MOSI.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI2 MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PC13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, wired to the onboard LED on most Blue Pill boards.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "20 mA (weaker drive than PA/PB pins)",
+      "alternateFunctions": [],
+      "gotcha": "Lower max current than other GPIOs — fine for the onboard LED, weak for driving anything else directly."
+    },
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~300 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "5V input/output depending on power source (USB or external).",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VBAT",
+      "position": null,
+      "category": "power",
+      "function": "Backup battery input for the real-time clock and backup registers.",
+      "voltageRange": "1.8V - 3.3V",
+      "currentLimit": "Very low (backup domain only)",
+      "alternateFunctions": [],
+      "gotcha": "Often left unconnected in hobbyist projects — fine, but the RTC won't survive power loss without it."
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW resets the chip.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "BOOT0",
+      "position": null,
+      "category": "special",
+      "function": "Boot mode select jumper — HIGH at reset boots the built-in system bootloader (for serial flashing) instead of user flash.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The single most common Blue Pill stumbling block: forgetting to set this jumper correctly before flashing leaves the board unresponsive."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Real-time motor/robotics controller",
+      "scenario": "Use the hardware timers for precise multi-channel PWM (motor speed, servo angles) with far tighter timing than an AVR board.",
+      "pinsInvolved": [
+        "PA8",
+        "PA9",
+        "PB6",
+        "PB7"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "USB device emulation",
+      "scenario": "Native USB peripheral lets the chip act as a custom USB device (HID, CDC serial, etc.).",
+      "pinsInvolved": [
+        "PA11",
+        "PA12"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "CAN bus node",
+      "scenario": "Built-in CAN controller makes this a common choice for automotive/industrial CAN bus projects.",
+      "pinsInvolved": [
+        "PA11",
+        "PA12"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Multi-sensor data acquisition",
+      "scenario": "More ADC channels and faster clock than AVR boards suit projects sampling several sensors quickly.",
+      "pinsInvolved": [
+        "PA0",
+        "PA1",
+        "PA2",
+        "PA3"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "ST-Link V2 programmer",
+      "OLED display (SSD1306)"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Due (also ARM-based, but Arduino-ecosystem friendly out of the box)"
+    ],
+    "oftenUpgradedTo": [
+      "Teensy 4.x (similar ARM power, much smoother USB/Arduino IDE experience)"
+    ]
+  }
+}

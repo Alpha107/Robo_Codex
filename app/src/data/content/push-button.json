@@ -1,0 +1,103 @@
+{
+  "identity": {
+    "id": "push-button",
+    "name": "Push Button (Panel Mount)",
+    "category": "Input Devices",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A panel-mount push button is the larger, often illuminated cousin of the tiny tactile switch soldered to a PCB — designed to be mounted through a panel or enclosure wall so a user can press it from outside, commonly seen as arcade buttons, emergency stops, or power switches. Electrically it's just a momentary (or sometimes latching) switch: pressing it connects two terminals together, and like any mechanical switch it needs software debouncing to avoid a single press registering as several rapid triggers due to contact bounce.",
+  "simpleSummary": "A larger panel-mounted button, like the kind you'd see on an arcade machine or emergency stop.",
+  "specifications": {
+    "switchType": "Momentary (default) or latching (push-on/push-off) variants exist",
+    "ratedVoltage": "Varies widely — from low-voltage logic switches to mains-rated panel switches",
+    "illumination": "Many panel buttons include an integrated LED ring/dot, wired separately from the switch contacts",
+    "mounting": "Through a panel cutout, typically secured with a threaded ring or snap-fit"
+  },
+  "pinMap": [
+    {
+      "name": "Terminal 1",
+      "position": null,
+      "category": "digital",
+      "function": "One switch contact — connects to Terminal 2 when pressed.",
+      "voltageRange": "Logic-level or higher depending on button rating",
+      "currentLimit": "Depends on switch rating",
+      "alternateFunctions": [],
+      "gotcha": "Mechanical contact bounce causes a single physical press to often register as several rapid electrical transitions — always debounce in software or hardware."
+    },
+    {
+      "name": "Terminal 2",
+      "position": null,
+      "category": "digital",
+      "function": "Other switch contact.",
+      "voltageRange": "Logic-level or higher",
+      "currentLimit": "Depends on switch rating",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "LED+",
+      "position": null,
+      "category": "power",
+      "function": "On illuminated buttons, the LED's positive terminal — electrically separate from the switch contacts.",
+      "voltageRange": "Matches LED's rated voltage (commonly 12V or 5V variants)",
+      "currentLimit": "~20 mA typical",
+      "alternateFunctions": [],
+      "gotcha": "The LED and the switch are two independent circuits sharing one housing — wiring the LED doesn't make the switch work, and vice versa."
+    },
+    {
+      "name": "LED-",
+      "position": null,
+      "category": "power",
+      "function": "LED negative terminal (illuminated buttons only).",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Enclosure power/reset button",
+      "scenario": "A panel-mounted button for powering on or resetting a project housed in an enclosure.",
+      "pinsInvolved": [
+        "Terminal 1",
+        "Terminal 2"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Arcade-style game controller",
+      "scenario": "Large, satisfying-to-press buttons for a DIY arcade cabinet or game controller.",
+      "pinsInvolved": [
+        "Terminal 1",
+        "Terminal 2",
+        "LED+",
+        "LED-"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Emergency stop switch",
+      "scenario": "A prominent, easy-to-hit button to immediately cut power to a robot or machine.",
+      "pinsInvolved": [
+        "Terminal 1",
+        "Terminal 2"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Relay module"
+    ],
+    "oftenConfusedWith": [
+      "Tactile switch (smaller, PCB-mounted, not panel-mounted)"
+    ],
+    "oftenUpgradedTo": [
+      "Illuminated latching buttons for a persistent on/off visual state"
+    ]
+  }
+}

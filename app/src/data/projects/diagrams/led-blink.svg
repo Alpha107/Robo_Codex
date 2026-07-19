@@ -1,0 +1,45 @@
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <!-- Arduino Uno -->
+  <rect x="30" y="90" width="170" height="130" rx="10" fill="#2f6fae" stroke="#1c1c1e" stroke-width="2"/>
+  <text x="115" y="145" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">Arduino</text>
+  <text x="115" y="166" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">Uno</text>
+
+  <!-- pin 13 stub -->
+  <line x1="200" y1="130" x2="230" y2="130" stroke="#1c1c1e" stroke-width="3"/>
+  <circle cx="200" cy="130" r="4" fill="#1c1c1e"/>
+  <text x="185" y="122" text-anchor="end" fill="#1a1d23" font-size="13" font-weight="600">13</text>
+
+  <!-- GND pin stub -->
+  <line x1="200" y1="190" x2="230" y2="190" stroke="#1c1c1e" stroke-width="3"/>
+  <circle cx="200" cy="190" r="4" fill="#1c1c1e"/>
+  <text x="185" y="182" text-anchor="end" fill="#1a1d23" font-size="13" font-weight="600">GND</text>
+
+  <!-- signal wire: pin13 -> resistor -->
+  <path d="M230,130 H330" fill="none" stroke="#4dabf7" stroke-width="3"/>
+
+  <!-- resistor zig-zag -->
+  <path d="M330,130 l8,-12 l12,24 l12,-24 l12,24 l12,-24 l12,24 l8,-12"
+        fill="none" stroke="#1a1d23" stroke-width="3" stroke-linejoin="round"/>
+  <text x="366" y="105" text-anchor="middle" fill="#1a1d23" font-size="13" font-weight="600">220&#8486;</text>
+
+  <!-- wire resistor -> LED anode -->
+  <path d="M406,130 H440" fill="none" stroke="#4dabf7" stroke-width="3"/>
+
+  <!-- LED symbol (triangle + cathode bar) -->
+  <polygon points="440,110 440,150 478,130" fill="#ff922b" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="478" y1="110" x2="478" y2="150" stroke="#1a1d23" stroke-width="4"/>
+  <!-- light rays -->
+  <line x1="452" y1="98" x2="464" y2="80" stroke="#ff922b" stroke-width="2"/>
+  <line x1="460" y1="98" x2="472" y2="80" stroke="#ff922b" stroke-width="2"/>
+  <text x="459" y="176" text-anchor="middle" fill="#1a1d23" font-size="13" font-weight="600">LED</text>
+
+  <!-- return wire: LED cathode -> ground rail -> Arduino GND -->
+  <path d="M478,150 V230 H230 V190" fill="none" stroke="#1a1d23" stroke-width="3" fill-opacity="0"/>
+  <circle cx="478" cy="150" r="4" fill="#1a1d23"/>
+
+  <!-- legend (stacked to avoid overlapping at any text width) -->
+  <line x1="440" y1="250" x2="470" y2="250" stroke="#4dabf7" stroke-width="3"/>
+  <text x="478" y="255" fill="#5b6270" font-size="12">signal (pin 13)</text>
+  <line x1="440" y1="274" x2="470" y2="274" stroke="#1a1d23" stroke-width="3"/>
+  <text x="478" y="279" fill="#5b6270" font-size="12">ground</text>
+</svg>

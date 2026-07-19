@@ -1,0 +1,157 @@
+{
+  "identity": {
+    "id": "rotary-encoder-control",
+    "title": "Rotary Encoder Control",
+    "tagline": "A knob that spins forever, controlling LED brightness one detent at a time — like a volume dial.",
+    "category": "Displays & Feedback",
+    "difficulty": "Intermediate",
+    "estimatedTime": "30 minutes"
+  },
+  "goal": "Use a rotary encoder (the kind of knob that spins continuously with no end stops, like a volume control) to raise and lower an LED's brightness step by step, with a click of the knob toggling it on or off entirely.",
+  "simpleSummary": "Use a spinning knob to raise, lower, and toggle an LED's brightness.",
+  "howItWorks": "A rotary encoder looks like a potentiometer but works completely differently — it has no fixed range and no wiper voltage to read. Instead, it has two internal switches (CLK and DT) that click on and off slightly out of phase with each other as the knob turns. The specific order those two pins change tells you which direction it's turning: if CLK changes first and DT follows, that's one direction; if DT leads, it's the other. This project reads that phase relationship on every CLK transition to decide whether to increase or decrease brightness by one small step — a fundamentally different (and in some ways simpler) technique than the potentiometer's continuous analogRead(), since it only ever reports relative motion, never an absolute position.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "rotary-encoder",
+      "quantity": 1
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 1,
+      "note": "220Ω resistor for the LED"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 5
+    }
+  ],
+  "circuitDiagramCaption": "Encoder's CLK/DT on D2/D3, push-switch on D4; LED on D9 (PWM).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "rotary-encoder",
+          "pin": "CLK"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rotary-encoder",
+          "pin": "DT"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rotary-encoder",
+          "pin": "SW"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rotary-encoder",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rotary-encoder",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the encoder's CLK to D2, DT to D3, SW to D4, and VCC/GND to 5V/GND.",
+      "detail": "Most breakout boards label these pins clearly; a bare 3-pin encoder without a breakout needs its own pull-up resistors, which most breakout boards already include onboard."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the LED and its 220Ω resistor between D9 and GND, same as PWM LED Fading.",
+      "detail": "D9 needs to be a PWM-capable pin, since brightness here is controlled the same way as that project."
+    }
+  ],
+  "code": [
+    {
+      "filename": "rotary_encoder_control.ino",
+      "language": "arduino",
+      "source": "// Rotary Encoder Control\n// Turning the knob raises/lowers LED brightness; clicking it toggles on/off.\n\nconst int CLK_PIN = 2;\nconst int DT_PIN = 3;\nconst int SW_PIN = 4;\nconst int LED_PIN = 9;\n\nint brightness = 128;\nint lastClkState;\nbool ledOn = true;\nbool lastButtonReading = HIGH;\n\nvoid setup() {\n  pinMode(CLK_PIN, INPUT);\n  pinMode(DT_PIN, INPUT);\n  pinMode(SW_PIN, INPUT_PULLUP);\n  pinMode(LED_PIN, OUTPUT);\n\n  lastClkState = digitalRead(CLK_PIN);\n  applyBrightness();\n}\n\nvoid loop() {\n  // --- Rotation ---\n  int currentClkState = digitalRead(CLK_PIN);\n  if (currentClkState != lastClkState) { // CLK just changed — a detent has moved\n    if (digitalRead(DT_PIN) != currentClkState) {\n      brightness = min(255, brightness + 8); // clockwise\n    } else {\n      brightness = max(0, brightness - 8);   // counter-clockwise\n    }\n    applyBrightness();\n  }\n  lastClkState = currentClkState;\n\n  // --- Push button (toggle on/off) ---\n  bool currentButtonReading = digitalRead(SW_PIN);\n  if (currentButtonReading == LOW && lastButtonReading == HIGH) {\n    ledOn = !ledOn;\n    applyBrightness();\n    delay(30); // debounce\n  }\n  lastButtonReading = currentButtonReading;\n}\n\nvoid applyBrightness() {\n  analogWrite(LED_PIN, ledOn ? brightness : 0);\n}\n",
+      "explanation": "The rotation-reading block is the one genuinely new idea: rather than reading CLK's absolute value, it watches for CLK changing at all, and at that exact moment checks whether DT currently matches CLK's new value or not — that comparison is what reveals direction, not either pin's value in isolation. The button half reuses the exact same edge-detection pattern from Push-Button LED Toggle. applyBrightness() centralizes the actual analogWrite() call so both the rotation and button code paths stay in sync about the LED's true on/off state and current level."
+    }
+  ],
+  "expectedBehavior": "Turning the knob clockwise brightens the LED in small steps, counter-clockwise dims it, and pressing the knob down toggles the LED fully off or back on at its last brightness level.",
+  "troubleshooting": [
+    {
+      "issue": "Brightness changes in the opposite direction from what feels natural.",
+      "fix": "Swap CLK_PIN and DT_PIN in the wiring or code — encoder direction convention varies by breakout board and isn't standardized."
+    },
+    {
+      "issue": "Turning the knob skips steps or occasionally jumps by more than one increment.",
+      "fix": "Mechanical encoders bounce briefly on each detent just like a button does — add a short delay (a few milliseconds) after detecting a change, or check for a hardware debouncing capacitor on your specific breakout board."
+    },
+    {
+      "issue": "Push button doesn't toggle reliably.",
+      "fix": "Confirm SW_PIN is set to INPUT_PULLUP — many encoder click-switches need this exactly like a standalone push button does."
+    }
+  ],
+  "extensions": [
+    "Drive a numeric display (7-Segment or OLED) showing the current brightness value instead of just the LED itself.",
+    "Use the same rotation-reading technique to scroll through a menu of options on an LCD.",
+    "Control a servo's angle with the encoder instead of LED brightness, one degree per detent.",
+    "Add acceleration: turning quickly changes brightness in bigger steps than turning slowly."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "center-of-mass-and-stability",
+    "title": "Center of Mass & Stability",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "Whether a robot tips over comes down to one point staying inside one shape — its center of mass, inside its base of support."
+  },
+  "simpleSummary": "Whether a robot tips over depends on where its combined weight effectively balances (its center of mass) compared to the shape formed by its ground-contact points — keep that point inside that shape, and gravity alone won't tip it.",
+  "keyIdea": "A robot's static stability is determined by whether the straight-down projection of its center of mass stays within its base of support — the polygon formed by its ground-contact points; stepping outside that polygon means it tips.",
+  "overview": "A robot's center of mass is the single effective point where its entire mass balances — computed as the mass-weighted average of every part's own position, with heavier and more distant components (a battery, a motor, an extended arm) pulling that average point toward themselves proportionally. The base of support is the smallest shape enclosing every point where the robot actually touches the ground: two wheels give a line (essentially zero sideways stability margin, which is why a third caster wheel or more wheels matter), four wheels give a rectangle. The core rule of static stability is simple: as long as the center of mass's straight-down projection onto the ground stays within that support polygon, gravity alone cannot tip the robot over. Moving it outside — reaching an arm far to one side, driving up too steep a slope — risks tipping.",
+  "equations": [
+    {
+      "label": "Center of Mass",
+      "expression": "r_cm = (Σ mᵢrᵢ) / (Σ mᵢ)",
+      "meaning": "The center of mass position r_cm is the mass-weighted average of every component's own position rᵢ, weighted by its mass mᵢ — a heavy battery mounted low pulls the overall balance point down and toward itself far more than a lightweight sensor."
+    },
+    {
+      "label": "Static Stability Condition",
+      "expression": "projection of r_cm onto ground ∈ support polygon",
+      "meaning": "The robot remains statically stable exactly as long as the center of mass's vertical projection onto the ground plane falls within the polygon formed by its ground-contact points; stepping outside that polygon means the robot tips."
+    }
+  ],
+  "howItWorks": "Static stability (an object simply sitting still) is necessary but not sufficient for a moving robot. Acceleration, braking, and cornering effectively shift where the load acts through inertial effects — closely related to how a car's weight shifts forward under hard braking — meaning a robot that's perfectly stable while parked can still tip while accelerating hard, braking hard, or cornering fast, if the resulting inertial shift pushes the effective center of mass outside the support polygon even momentarily. This is exactly why legged robots' walking gaits are carefully planned to keep this projected point within whichever feet are actually touching the ground at each instant of the gait cycle — a genuinely central constraint in legged locomotion planning — and why raising a robot's payload higher (raising its center of mass, even with the footprint unchanged) reduces its stability margin, since the same sideways shift now tips the balance point outside the polygon more easily.",
+  "diagramCaption": "As a robot arm reaches further to one side, the combined center of mass slides toward the edge of the support polygon formed by the wheel contact points — cross that boundary, and gravity alone tips the robot over.",
+  "realWorldExamples": [
+    "A robot arm mounted on a mobile base reaching far to one side, risking tipping the whole base if the arm-plus-payload's combined mass shifts the overall center of mass outside the wheelbase's support polygon.",
+    "Wheeled robot designs mounting the heaviest single part (usually the battery) as low and centrally as possible, specifically to keep the center of mass low and centered within the wheel-contact support polygon.",
+    "A legged (quadruped or biped) robot's gait planner explicitly computing and constraining the projected center of mass to stay within the current support polygon of whichever feet are on the ground at each instant."
+  ],
+  "commonMisconceptions": [
+    "\"A wider wheelbase is the only way to improve stability\" — lowering the center of mass (mounting the heaviest components as low as possible) improves stability just as directly, and is often more practical than widening the base.",
+    "\"Static stability analysis is enough for a moving robot\" — inertial effects from acceleration, braking, and cornering can tip an otherwise statically-stable robot, which is why dynamic stability margins matter for anything that moves quickly or carries a raised load.",
+    "\"Only legged robots need to worry about this\" — any wheeled robot with a movable arm, a raised payload, or a high center of mass faces exactly the same tipping risk, just usually with a larger, more forgiving support polygon."
+  ],
+  "relatedComponents": ["lipo-battery", "robot-chassis-kit", "caster-wheel", "servo-bracket-arm-kit"],
+  "relatedProjects": ["mecanum-omnidirectional-robot"],
+  "relatedConcepts": ["robot-dynamics-newton-euler-lagrangian", "differential-drive-kinematics", "holonomic-vs-nonholonomic-robots"]
+}

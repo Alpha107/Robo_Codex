@@ -1,0 +1,167 @@
+{
+  "identity": {
+    "id": "ultrasonic-distance-meter-lcd",
+    "title": "Ultrasonic Distance Meter with LCD",
+    "tagline": "Point it at something, read the distance in centimeters right on a screen.",
+    "category": "Sensors & Automation",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "30 minutes"
+  },
+  "goal": "Build a handheld-style distance meter: an HC-SR04 ultrasonic sensor measures distance to whatever's in front of it, and a 16x2 LCD displays the live reading in centimeters — the first project combining a sensor with a real, human-readable output beyond a single LED.",
+  "simpleSummary": "Build a handheld gadget that measures and displays distance to whatever's in front of it.",
+  "howItWorks": "The HC-SR04 measures distance the way sonar does: it emits a short ultrasonic chirp from its TRIG pin, and its ECHO pin goes HIGH for exactly as long as it takes that chirp's echo to bounce back. Since sound travels at a known, roughly constant speed through air, that elapsed time converts directly to a distance. The LCD in this build uses an I2C \"backpack\" — a small add-on board soldered to the back of the display that lets it be controlled over just two wires (SDA and SCL) instead of the six or more wires a bare LCD normally needs, at the cost of needing one extra library to talk that protocol.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "hc-sr04",
+      "quantity": 1
+    },
+    {
+      "componentId": "lcd1602",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 6
+    }
+  ],
+  "circuitDiagramCaption": "HC-SR04 on D9/D10; LCD on the I2C bus (A4/A5). Both share 5V and GND with the Arduino.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "TRIG"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "ECHO"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A5"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the HC-SR04's VCC to Arduino 5V, GND to GND, TRIG to D9, and ECHO to D10.",
+      "detail": "TRIG and ECHO look identical on the module but do opposite jobs — TRIG is an output from the Arduino's perspective, ECHO is an input."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the LCD's I2C backpack: GND to Arduino GND, VCC to 5V, SDA to A4, and SCL to A5.",
+      "detail": "A4 and A5 are the Uno's dedicated I2C pins — this is a fixed hardware assignment, not a choice, so double-check you're using exactly these two."
+    },
+    {
+      "step": 3,
+      "instruction": "Install the LiquidCrystal_I2C library before uploading, and note the I2C address printed on the backpack (commonly 0x27 or 0x3F).",
+      "detail": "If the screen shows nothing but garbled or solid blocks, the address in your code not matching your specific backpack's actual address is the most common cause."
+    }
+  ],
+  "code": [
+    {
+      "filename": "ultrasonic_distance_meter.ino",
+      "language": "arduino",
+      "source": "#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n\n// Ultrasonic Distance Meter with LCD\n// Displays live HC-SR04 distance readings on a 16x2 I2C LCD.\n\nconst int TRIG_PIN = 9;\nconst int ECHO_PIN = 10;\n\nLiquidCrystal_I2C lcd(0x27, 16, 2); // change 0x27 if your backpack uses a different address\n\nvoid setup() {\n  pinMode(TRIG_PIN, OUTPUT);\n  pinMode(ECHO_PIN, INPUT);\n\n  lcd.init();\n  lcd.backlight();\n  lcd.setCursor(0, 0);\n  lcd.print(\"Distance Meter\");\n  delay(1000);\n}\n\nvoid loop() {\n  long distance = readDistanceCm();\n\n  lcd.clear();\n  lcd.setCursor(0, 0);\n  lcd.print(\"Distance:\");\n  lcd.setCursor(0, 1);\n  lcd.print(distance);\n  lcd.print(\" cm\");\n\n  delay(300); // slow the refresh so the display is readable, not flickering\n}\n\nlong readDistanceCm() {\n  digitalWrite(TRIG_PIN, LOW);\n  delayMicroseconds(2);\n  digitalWrite(TRIG_PIN, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(TRIG_PIN, LOW);\n\n  long duration = pulseIn(ECHO_PIN, HIGH, 30000);\n  if (duration == 0) return -1; // out of range / no echo\n  return duration / 58;\n}\n",
+      "explanation": "readDistanceCm() is the same pulse-timing technique used across every ultrasonic project in this encyclopedia: send a clean trigger pulse, measure how long ECHO stays HIGH, divide by 58 to convert microseconds into centimeters. The main loop simply calls that function repeatedly and reprints the result — lcd.clear() before each update prevents old digits from a longer previous number lingering behind a new, shorter one."
+    }
+  ],
+  "expectedBehavior": "The LCD shows a live, continuously updating distance reading in centimeters as you move your hand or an object in front of the sensor.",
+  "troubleshooting": [
+    {
+      "issue": "LCD shows nothing, or a row of solid blocks.",
+      "fix": "Adjust the small contrast potentiometer on the back of the I2C backpack — a completely maladjusted contrast is by far the most common \"broken\" LCD, and it isn't actually broken."
+    },
+    {
+      "issue": "LCD backlight is on but no text appears.",
+      "fix": "Confirm the I2C address in your code (0x27 in the example) matches your specific backpack — try 0x3F if 0x27 doesn't work, or run an I2C scanner sketch to find it definitively."
+    },
+    {
+      "issue": "Distance reading is always -1 or wildly inconsistent.",
+      "fix": "Check TRIG and ECHO aren't swapped, and that nothing is within a couple of centimeters of the sensor (its practical minimum range) or beyond about 4 meters (its practical maximum)."
+    }
+  ],
+  "extensions": [
+    "Add a buzzer that beeps faster as an object gets closer, turning this into a simple parking-sensor.",
+    "Average several readings together to smooth out noise before displaying.",
+    "Log readings over Serial and graph them using the Arduino IDE's Serial Plotter.",
+    "Combine this exact sensor code with the Car Counter (2x Ultrasonic) project's dual-sensor logic."
+  ]
+}

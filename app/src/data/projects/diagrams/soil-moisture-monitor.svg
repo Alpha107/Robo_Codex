@@ -1,0 +1,28 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="70" width="170" height="120" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="115" y="125" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="115" y="146" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="380" y="40" width="150" height="60" rx="8" fill="#8d6e63" stroke="#1a1d23" stroke-width="2"/>
+  <text x="455" y="65" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Soil Moisture</text>
+  <text x="455" y="83" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Sensor</text>
+
+  <path d="M200,110 H320 V70 H380" fill="none" stroke="#51cf66" stroke-width="3"/>
+  <circle cx="200" cy="110" r="4" fill="#51cf66"/>
+  <text x="210" y="102" font-size="12" font-weight="600" fill="#1a1d23">A0 &#8594; AOUT</text>
+
+  <path d="M200,150 H340" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <circle cx="200" cy="150" r="4" fill="#4dabf7"/>
+  <text x="210" y="168" font-size="12" font-weight="600" fill="#1a1d23">D9</text>
+  <path d="M340,150 l7,-10 l10,20 l10,-20 l10,20 l7,-10" fill="none" stroke="#1a1d23" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M384,150 H410" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <polygon points="410,136 410,164 440,150" fill="#ff922b" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="440" y1="136" x2="440" y2="164" stroke="#1a1d23" stroke-width="4"/>
+  <text x="420" y="182" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1d23">"needs water" LED</text>
+  <path d="M440,164 V210 H200 V170" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="170" r="4" fill="#1a1d23"/>
+  <text x="185" y="164" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">GND</text>
+
+  <text x="280" y="228" text-anchor="middle" fill="#5b6270" font-size="11">Only the probe tips go into soil &#8212;</text>
+  <text x="280" y="244" text-anchor="middle" fill="#5b6270" font-size="11">keep the sensor board itself dry.</text>
+</svg>

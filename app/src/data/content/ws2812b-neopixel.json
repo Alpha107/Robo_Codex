@@ -1,0 +1,103 @@
+{
+  "identity": {
+    "id": "ws2812b-neopixel",
+    "name": "WS2812B / NeoPixel Addressable LED",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A WS2812B ('NeoPixel' is Adafruit's brand name for the same chip) is an RGB LED with its own tiny controller chip built directly into the package, letting hundreds of them be chained on a single data wire — each pixel reads the color data meant for it, then passes the rest down the line to the next pixel. That single-wire chaining is the entire point: no separate wire per LED, no shift registers, just one data pin controlling an entire strip or matrix of individually addressable, full-color pixels. The precise timing this protocol requires means it's typically driven by a dedicated library (FastLED, Adafruit NeoPixel) rather than simple digitalWrite calls.",
+  "simpleSummary": "Individually-controllable color LEDs that can be chained together and run off a single data wire.",
+  "specifications": {
+    "operatingVoltage": "5V (logic and LED power combined on most strips)",
+    "interface": "Single-wire proprietary timing protocol (not SPI/I2C)",
+    "colorDepth": "24-bit RGB (8 bits per channel) per pixel",
+    "currentPerPixel": "Up to ~60 mA at full white brightness — adds up fast across many pixels",
+    "chaining": "Data-in on one pixel connects to data-out of the previous, forming a chain of any length"
+  },
+  "pinMap": [
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Power input, shared across the whole strip/chain.",
+      "voltageRange": "5V",
+      "currentLimit": "Up to ~60mA per pixel at full white — a 60-pixel strip at full brightness can need 3.6A+",
+      "alternateFunctions": [],
+      "gotcha": "Long strips at high brightness need a dedicated power supply, not a microcontroller's onboard 5V pin — undersized power causes dim or flickering far-end pixels and color inaccuracy from voltage drop."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the controlling microcontroller.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DIN",
+      "position": null,
+      "category": "digital",
+      "function": "Data input — receives the precisely-timed single-wire protocol carrying color data for this pixel and everything after it.",
+      "voltageRange": "0-5V, precise timing required",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "On a 3.3V microcontroller (ESP32, etc.), the data signal often needs a level shifter to reliably read as HIGH by the 5V-logic LEDs, especially on longer strips."
+    },
+    {
+      "name": "DOUT",
+      "position": null,
+      "category": "digital",
+      "function": "Data output — passes the remaining color data down the chain to the next pixel.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Addressable LED strip lighting",
+      "scenario": "Animated, individually-colored lighting effects for a room, costume, or vehicle.",
+      "pinsInvolved": [
+        "DIN",
+        "5V",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Robot status indicator",
+      "scenario": "Use color/pattern changes to communicate a robot's internal state (idle, moving, error) at a glance.",
+      "pinsInvolved": [
+        "DIN"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "LED matrix display",
+      "scenario": "Arrange many pixels in a grid for simple graphics, scrolling text, or a VU meter.",
+      "pinsInvolved": [
+        "DIN",
+        "DOUT"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "Dedicated 5V power supply"
+    ],
+    "oftenConfusedWith": [
+      "Standard RGB LEDs (need 3 separate control pins per LED, no chaining/addressing)"
+    ],
+    "oftenUpgradedTo": [
+      "SK9822/APA102 (adds a separate clock line for more consistent timing on very long strips)"
+    ]
+  }
+}

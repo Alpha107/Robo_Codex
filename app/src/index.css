@@ -1,0 +1,63 @@
+:root {
+  color-scheme: dark;
+  --bg: #0f1115;
+  --bg-panel: #171a21;
+  --bg-panel-raised: #1f232c;
+  --border: #2a2f3a;
+  --text: #e6e8ec;
+  --text-dim: #9aa1ac;
+  --accent: #4dabf7;
+  --power: #ff6b6b;
+  --digital: #4dabf7;
+  --analog: #51cf66;
+  --communication: #cc5de8;
+  --special: #adb5bd;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--font-body);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f5f7fa;
+  --bg-panel: #ffffff;
+  --bg-panel-raised: #eef1f6;
+  --border: #dde1e8;
+  --text: #1a1d23;
+  --text-dim: #5b6270;
+  --accent: #1c7ed6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.2s, color 0.2s;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}

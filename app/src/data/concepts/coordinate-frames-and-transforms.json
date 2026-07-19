@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "coordinate-frames-and-transforms",
+    "title": "Coordinate Frames & Transforms",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "Every sensor has its own sense of 'here' — transforms are how you convert between all of them and a shared map."
+  },
+  "simpleSummary": "Every part of a robot has its own local sense of 'here' and 'forward'; a transform is the math that converts a measurement from one part's point of view into another's, so everything can be combined and compared.",
+  "keyIdea": "A coordinate frame transform (a rotation plus a translation) converts a point's coordinates from one reference frame into another; chaining transforms through a tree of frames lets any two frames anywhere on a robot be related to each other.",
+  "overview": "Every sensor on a robot reports data in its own local frame — a LiDAR mounted slightly off-center reports 'obstacle at 2 meters, 30 degrees' relative to its own mounting point and orientation, not the robot's center, and definitely not a fixed world origin. A coordinate frame transform is the mathematical machinery — a rotation plus a translation, usually packaged as a single homogeneous transformation matrix — that converts coordinates measured in one frame into coordinates in another. Real robots have many frames at once: one per sensor, one for the robot's own body center, one for the world or map. Relating any two of them requires chaining the transforms that connect them through a tree structure, which is exactly what ROS's 'tf' (transform) system manages automatically so no individual piece of code has to track it by hand.",
+  "equations": [
+    {
+      "label": "Homogeneous Transform",
+      "expression": "p_A = T_AB · p_B",
+      "meaning": "A point p_B, expressed in frame B's coordinates, is converted to its coordinates p_A in frame A by the transform T_AB, which packages a rotation matrix and a translation vector into one matrix."
+    },
+    {
+      "label": "Chaining Transforms",
+      "expression": "T_AC = T_AB · T_BC",
+      "meaning": "Transforms chain by matrix multiplication: knowing the transform from A to B and from B to C directly gives the transform from A to C, without needing to measure that relationship separately."
+    }
+  ],
+  "howItWorks": "A robot's frames form a tree: a world frame sits at the root, a robot base frame is attached to the world (continuously updated as the robot moves, itself estimated via odometry or SLAM), and every sensor frame is attached rigidly, with a fixed offset, to the base frame. To combine two sensors' data — fusing a LiDAR point with a camera pixel, for instance — both must first be expressed in the same frame, which is done by chaining the transform from each sensor's own frame back to a shared common frame. The fixed sensor-to-body transform (called extrinsic calibration, distinct from the intrinsic camera calibration covered elsewhere on this site) has to be measured accurately, or every downstream calculation silently inherits that error. This is exactly the layer ROS's tf2 library automates: instead of every node manually tracking and chaining every frame relationship by hand, it simply asks 'give me the transform from frame X to frame Y at time T' and gets the answer computed from the whole tree.",
+  "diagramCaption": "A single measured point starts in the sensor's local frame, gets carried through the fixed sensor→base transform, then the moving base→world transform, ending up expressed in world coordinates — the same point, three different numbers, depending on which frame you ask in.",
+  "realWorldExamples": [
+    "Fusing LiDAR and camera data for object detection, which requires accurately transforming points between the LiDAR's frame and the camera's frame before they can be compared.",
+    "A robot arm's inverse kinematics solving for a target expressed in the world frame, needing a chain of transforms down to the base joint frame to actually compute joint angles.",
+    "ROS's tf2 library, purpose-built to track and query this exact tree of frames in real time as a robot moves and its sensors report data."
+  ],
+  "commonMisconceptions": [
+    "\"One frame is enough for a whole robot\" — every rigid sensor mounting point genuinely needs its own frame, since sensors are rarely mounted exactly at the robot's logical center or orientation.",
+    "\"Coordinate transforms only matter for advanced multi-sensor systems\" — even a simple two-wheeled robot needs at minimum a transform between its wheel/body motion and the world frame, which is exactly what odometry computes.",
+    "\"A transform is just a translation (a shift in position)\" — it's a rotation and a translation together; forgetting the rotation half is a common source of subtly wrong sensor fusion."
+  ],
+  "relatedComponents": ["mpu6050", "rplidar"],
+  "relatedProjects": [],
+  "relatedConcepts": ["forward-kinematics", "denavit-hartenberg-parameters", "ros-concepts", "odometry-and-dead-reckoning"]
+}

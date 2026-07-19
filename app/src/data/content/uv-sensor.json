@@ -1,0 +1,120 @@
+{
+  "identity": {
+    "id": "uv-sensor",
+    "name": "UV Index Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This sensor (typified by the ML8511 breakout) uses a UV-sensitive photodiode to output an analog voltage that scales with ultraviolet intensity, covering both UVA and UVB wavelengths. Unlike a photoresistor, which responds to the full visible spectrum, this one is filtered to ignore visible and infrared light almost entirely — which matters because it means the sensor reads close to zero indoors under normal room lighting, even in a brightly lit office, since ordinary LED and fluorescent bulbs emit almost no UV. Meaningful readings require actual sunlight or a dedicated UV source, which trips up a lot of first-time testers who point it at a lamp and conclude the sensor is broken.",
+  "simpleSummary": "A sensor that measures how strong the sun's UV rays are, reading near zero indoors under normal light bulbs.",
+  "specifications": {
+    "operatingVoltage": "3.3-5V",
+    "outputType": "Analog voltage, proportional to UV intensity",
+    "interface": "Analog (requires an ADC input on the microcontroller)",
+    "wavelengthRange": "280-390 nm (covers UVB and UVA)",
+    "outputVoltageRange": "~1V (low UV) up to ~2.8V (very strong midday sun), datasheet curve required to convert to a UV Index number",
+    "responseTime": "A few milliseconds",
+    "enablePin": "EN pin for power-down mode when not sampling"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V",
+      "currentLimit": "~1.5 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output voltage proportional to UV intensity; needs a conversion formula from the datasheet response curve to get an actual UV Index.",
+      "voltageRange": "0-3V roughly",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "Reads near zero indoors under LED or fluorescent bulbs even in a brightly lit room, since those emit almost no UV — this is normal behavior, not a faulty sensor. Meaningful readings need actual sunlight."
+    },
+    {
+      "name": "EN",
+      "position": null,
+      "category": "digital",
+      "function": "Enable pin — pull HIGH to power the sensor, LOW to shut it down and save current.",
+      "voltageRange": "0-3.3V/5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Left floating on some breakouts rather than defaulting HIGH — if readings are always zero, check this pin is actually pulled HIGH before assuming the sensor itself is bad."
+    },
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V reference output on most breakouts, useful as a stable ADC reference voltage.",
+      "voltageRange": "3.3V",
+      "currentLimit": "Low, reference-only",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Wearable sunburn-risk alert",
+      "scenario": "A wrist-worn or clip-on device buzzes or lights up once cumulative UV exposure crosses a threshold for the wearer's skin type.",
+      "pinsInvolved": ["OUT", "VCC", "GND"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Weather station UV Index add-on",
+      "scenario": "Add real-time UV Index alongside temperature/humidity/pressure readings on a home weather station dashboard.",
+      "pinsInvolved": ["OUT", "3V3"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Greenhouse UV monitoring",
+      "scenario": "Track natural UV levels reaching plants through a greenhouse roof to decide whether supplemental grow lighting is needed.",
+      "pinsInvolved": ["OUT", "EN"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Outdoor UV safety sign",
+      "scenario": "Drive a public-facing display (e.g. at a pool or park) that shows the current UV Index and a plain-language risk level.",
+      "pinsInvolved": ["OUT", "VCC", "GND"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "BME280 (for a full outdoor weather station)"
+    ],
+    "oftenConfusedWith": [
+      "LDR/photoresistor (measures visible light brightness, not UV)",
+      "IR flame/proximity sensors (opposite end of the spectrum, unrelated)"
+    ],
+    "oftenUpgradedTo": [
+      "VEML6075 / LTR-390 (digital I2C UV sensors with factory-calibrated UV Index output, no analog conversion math needed)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Testing indoors under a lamp and concluding the sensor is dead — ordinary indoor lighting emits almost no UV, so a near-zero reading indoors is expected, not a fault.",
+    "Testing through a closed window — ordinary glass blocks most UVB, so readings taken behind glass read much lower than the true outdoor UV Index.",
+    "Treating the raw output voltage as the UV Index directly instead of applying the datasheet's linear conversion formula (which includes a zero-intensity offset voltage).",
+    "Touching or scratching the sensing element's surface — the exposed UV-transmissive window is more delicate than an ordinary plastic sensor cover.",
+    "Comparing readings taken at different times of day without accounting for the sun's angle — UV intensity swings dramatically between morning and solar noon even with clear skies."
+  ]
+}

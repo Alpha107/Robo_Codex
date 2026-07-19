@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "extended-unscented-kalman-filter",
+    "title": "Extended & Unscented Kalman Filter",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Advanced",
+    "tagline": "Adapting the Kalman filter's predict-correct idea to real-world systems that aren't neatly linear."
+  },
+  "simpleSummary": "Two different ways of adapting the Kalman filter to work on real systems whose behavior involves curves (like sine and cosine) rather than straight lines — one by approximating the curve with a straight line at each step, the other by testing a few sample points directly on the real curve.",
+  "keyIdea": "The Extended Kalman Filter linearizes a nonlinear system around the current estimate at every step before applying the standard Kalman filter equations, while the Unscented Kalman Filter instead propagates a small set of carefully chosen sample points directly through the true nonlinear model, avoiding linearization altogether.",
+  "overview": "The standard Kalman filter strictly assumes the system's dynamics and measurements are linear — but many real robotic systems are not. A differential-drive robot's heading update involves sine and cosine; a sensor measuring range and bearing to a landmark has an inherently nonlinear relationship to the robot's x-y position; a drone's rotational dynamics are nonlinear in general. Two closely related techniques adapt the Kalman filter's predict-correct structure to handle this. The Extended Kalman Filter (EKF) linearizes the nonlinear functions around the current best estimate at every single timestep, using their first-order derivatives (Jacobian matrices), then applies the ordinary linear Kalman filter equations to that local approximation. The Unscented Kalman Filter (UKF) instead sidesteps linearization entirely: it propagates a small, deterministically chosen set of sample points (called sigma points) directly through the true nonlinear function, then reconstructs a new estimate and uncertainty from how those points actually transformed.",
+  "equations": [
+    {
+      "label": "EKF Linearization (Jacobians)",
+      "expression": "F = ∂f/∂x |x̂,   H = ∂h/∂x |x̂",
+      "meaning": "At each timestep, the EKF computes the Jacobian (matrix of partial derivatives) of the nonlinear process function f and measurement function h, evaluated at the current estimate x̂, then substitutes these local linear approximations directly into the standard Kalman filter equations."
+    },
+    {
+      "label": "UKF Sigma Points (concept)",
+      "expression": "2n + 1 sigma points, propagated through the true f(x)",
+      "meaning": "For an n-dimensional state, the UKF picks 2n+1 specific sample points that capture the current estimate's mean and uncertainty, passes each one through the actual (unmodified) nonlinear function, and rebuilds a new mean and uncertainty from the transformed points — never computing a derivative at all."
+    }
+  ],
+  "howItWorks": "The EKF's linearization is computationally cheap — very similar cost to a standard Kalman filter step, just with an added Jacobian calculation — and works well when the system is only mildly nonlinear, or when the current estimate is already reasonably close to the truth, since the linear approximation is only locally accurate. Its weakness is exactly that locality: for strongly nonlinear systems, or when the estimate starts far from the true state, the linear approximation can be poor enough that the filter's estimate diverges (drifts confidently toward a wrong answer) rather than converging. The UKF avoids this failure mode by never linearizing at all — it evaluates the true nonlinear function directly at its chosen sigma points, which generally captures the real shape of the nonlinearity more accurately, especially for functions that curve sharply. The trade-off is computational: propagating multiple sigma points through the full nonlinear model at every step costs more than a single linearized matrix multiplication, so the UKF's improved accuracy comes at a real computational price that must be weighed against the EKF's cheaper, often perfectly adequate, approximation.",
+  "diagramCaption": "The EKF approximates a nonlinear function with a straight tangent line at the current estimate; the UKF instead passes several sample points directly through the true curved function and rebuilds an estimate from the results.",
+  "realWorldExamples": [
+    "Robot localization using range-and-bearing measurements to known landmarks — a classic nonlinear measurement model that a plain linear Kalman filter cannot handle correctly.",
+    "Drone attitude estimation, where the underlying rotational dynamics (often expressed with quaternions) are inherently nonlinear.",
+    "A differential-drive robot's own motion model, whose heading update genuinely involves sine and cosine of the current heading angle, technically requiring EKF/UKF for fully correct propagation."
+  ],
+  "commonMisconceptions": [
+    "\"EKF and UKF are the same technique with different names\" — they take genuinely different mathematical approaches (derivative-based linearization vs. sample-point propagation), with different accuracy and computational trade-offs.",
+    "\"UKF is always strictly better than EKF\" — the UKF is often more accurate for strongly nonlinear systems, but the EKF is cheaper to compute and frequently good enough for mildly nonlinear systems, making it the more practical choice on constrained hardware.",
+    "\"These filters are only needed for advanced research robots\" — any hobby project doing real localization with nonlinear measurements (like range-and-bearing to a landmark) technically needs one of these, even if many simple projects skip formal filtering and accept the resulting drift."
+  ],
+  "relatedComponents": ["mpu6050", "bno055", "mpu9250", "neo6m-gps"],
+  "relatedProjects": [],
+  "relatedConcepts": ["kalman-filter", "state-space-representation", "particle-filter-monte-carlo-localization", "slam"]
+}

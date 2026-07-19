@@ -1,0 +1,52 @@
+{
+  "identity": {
+    "id": "kalman-filter",
+    "title": "Kalman Filter",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Advanced",
+    "tagline": "The mathematically optimal recipe for blending a model's prediction with a noisy measurement, weighted by how much to trust each."
+  },
+  "simpleSummary": "A recipe for combining what you predicted would happen with what a noisy sensor actually just measured, automatically weighting each by how confident you are in it, to get the best possible estimate.",
+  "keyIdea": "The Kalman filter alternates between predicting the next state using a model and correcting that prediction with a new sensor measurement, automatically weighting the correction by how uncertain the prediction is versus how noisy the measurement is.",
+  "overview": "Given a state-space model of a system and a stream of noisy sensor measurements, the Kalman filter computes the statistically optimal running estimate of that system's true state. It works in a two-step cycle repeated at every timestep: a predict step, which uses the system's own model to project the previous estimate forward in time (and grows the estimate's uncertainty, since predictions alone are never perfectly certain), and an update step, which corrects that prediction using a new sensor measurement, blending the two according to their relative uncertainties. Under the assumption of linear system dynamics and Gaussian (bell-curve-shaped) noise, the Kalman filter is provably the best possible estimator — no other technique using the same information can do better in a mean-squared-error sense. It is also recursive, meaning it only ever needs the previous estimate and its uncertainty, never the full history of past measurements, making it remarkably memory-efficient even on small embedded microcontrollers.",
+  "equations": [
+    {
+      "label": "Predict Step",
+      "expression": "x̂⁻ = A·x̂ + B·u,   P⁻ = A·P·Aᵀ + Q",
+      "meaning": "The state estimate x̂⁻ is projected forward using the system model (A, B) and known input u; its uncertainty (covariance) P⁻ grows, inflated by Q, the assumed process noise (how imperfect the model itself is)."
+    },
+    {
+      "label": "Update Step",
+      "expression": "K = P⁻Cᵀ(CP⁻Cᵀ + R)⁻¹,   x̂ = x̂⁻ + K(z − Cx̂⁻),   P = (I − KC)P⁻",
+      "meaning": "K, the Kalman gain, is computed automatically from the relative sizes of the prediction's uncertainty P⁻ and the measurement noise R; it determines how much the new measurement z corrects the prediction, and the resulting updated uncertainty P is always smaller than either the prediction or measurement alone would give."
+    }
+  ],
+  "howItWorks": "At every timestep, the filter first predicts: using the system's known dynamics model and any known control input, it projects the previous state estimate forward, and — critically — increases the associated uncertainty to reflect that a prediction alone, with no new information, is always somewhat less certain than before. When a new sensor measurement arrives, the update step blends the prediction with that measurement using the Kalman gain, a value computed automatically (not hand-tuned) from the relative uncertainty of the prediction versus the known noise level of the sensor. If the sensor is much noisier than the prediction is uncertain, the gain is small and the filter mostly trusts its own prediction; if the prediction's uncertainty has grown large (perhaps several predict steps have passed with no correcting measurement), the gain is large and the filter mostly trusts the new measurement instead. The result is an updated estimate with lower uncertainty than either the prediction or the raw measurement had on their own — a genuinely better estimate than simply picking one source or naively averaging them. The core limitation is the assumption of linear dynamics; real robotic systems are often nonlinear, which is exactly why the Extended and Unscented Kalman Filter variants exist, adapting this same predict-update structure to nonlinear systems.",
+  "diagramCaption": "The Kalman filter cycle: predict forward (uncertainty grows), then correct with a new measurement weighted by the Kalman gain (uncertainty shrinks), repeating every timestep.",
+  "realWorldExamples": [
+    "Fusing GPS, IMU, and wheel odometry together for a mobile robot's real-time position estimate, exactly as referenced in the GPS Tracker Logger project's underlying technique.",
+    "Smoothing a noisy distance or temperature sensor reading in real time on an embedded microcontroller, without needing to store any history of past readings.",
+    "Attitude (orientation) estimation firmware inside IMU modules, which runs a version of this same predict-correct cycle continuously to keep orientation estimates stable and accurate."
+  ],
+  "commonMisconceptions": [
+    "\"The Kalman filter needs to remember the full history of past measurements\" — it's recursive by design, needing only the previous estimate and its uncertainty, which is exactly what makes it so memory-efficient even on tiny microcontrollers.",
+    "\"The Kalman filter requires powerful hardware\" — a simple linear Kalman filter for basic 1D estimation runs comfortably even on an 8-bit Arduino Uno.",
+    "\"The Kalman filter works on any nonlinear system as-is\" — the standard Kalman filter strictly assumes linear dynamics; genuinely nonlinear systems need the Extended or Unscented Kalman Filter instead."
+  ],
+  "relatedComponents": [
+    "mpu6050",
+    "bno055",
+    "neo6m-gps",
+    "hc-sr04"
+  ],
+  "relatedProjects": [
+    "gps-tracker-logger"
+  ],
+  "relatedConcepts": [
+    "sensor-fusion",
+    "extended-unscented-kalman-filter",
+    "state-space-representation",
+    "particle-filter-monte-carlo-localization",
+    "sensor-noise-and-uncertainty-models"
+  ]
+}

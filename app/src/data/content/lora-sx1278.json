@@ -1,0 +1,168 @@
+{
+  "identity": {
+    "id": "lora-sx1278",
+    "name": "LoRa Module (SX1278/RA-02)",
+    "category": "Communication Modules",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "LoRa trades data rate for range in a way no other module in this encyclopedia does: where an NRF24L01 might reach 100m and a WiFi board a similar distance indoors, a LoRa link can span several kilometers in open terrain, at the cost of a data rate measured in hundreds of bits per second rather than megabits. It shares the SPI interface style of the NRF24L01 but adds a critical regional constraint — LoRa radios are tuned to specific frequency bands (433MHz, 868MHz, or 915MHz depending on the module and region), and using the wrong frequency variant for your country isn't just ineffective, it can be against local radio regulations.",
+  "simpleSummary": "A wireless module built for very long range, at the cost of sending data slowly.",
+  "specifications": {
+    "operatingVoltage": "3.3V (not 5V tolerant)",
+    "interface": "SPI",
+    "frequencyBands": "433MHz, 868MHz, or 915MHz (region/module-dependent — must match local regulations)",
+    "range": "Several km in open line-of-sight conditions",
+    "dataRate": "~0.3kbps - 37.5kbps (much lower than WiFi/Bluetooth/NRF24L01)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~120 mA during transmit bursts",
+      "alternateFunctions": [],
+      "gotcha": "Not 5V tolerant, and transmit current spikes are large enough to need a solid power supply — a weak 3.3V rail causes random resets during transmission."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "NSS",
+      "position": null,
+      "category": "digital",
+      "function": "SPI chip select, active LOW.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI CS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SCK",
+      "position": null,
+      "category": "digital",
+      "function": "SPI clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "MOSI",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data in.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "MISO",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data out.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "RST",
+      "position": null,
+      "category": "special",
+      "function": "Active-LOW hardware reset.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DIO0",
+      "position": null,
+      "category": "digital",
+      "function": "Configurable interrupt output, commonly used to signal 'transmission complete' or 'packet received'.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "ANT",
+      "position": null,
+      "category": "communication",
+      "function": "Antenna connector — a matched external antenna (wire or SMA) is required; without one, range collapses to almost nothing.",
+      "voltageRange": "RF signal",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Never transmit with no antenna attached — it can reflect RF energy back and damage the power amplifier."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Long-range remote sensor network",
+      "scenario": "Report soil moisture, weather, or tank level data from sensors kilometers away from the base station.",
+      "pinsInvolved": [
+        "NSS",
+        "SCK",
+        "MOSI",
+        "MISO",
+        "ANT"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "LoRaWAN IoT device",
+      "scenario": "Join a wider-area LoRaWAN network (e.g. The Things Network) for long-range, low-power IoT connectivity.",
+      "pinsInvolved": [
+        "NSS",
+        "DIO0"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Off-grid emergency messaging",
+      "scenario": "Send short text-style messages between two remote points with no cellular or WiFi infrastructure.",
+      "pinsInvolved": [
+        "NSS",
+        "SCK",
+        "MOSI",
+        "MISO"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Pro Mini",
+      "ESP32"
+    ],
+    "oftenConfusedWith": [
+      "NRF24L01 (much shorter range, much higher data rate)",
+      "HC-12 (simpler UART interface, shorter range)"
+    ],
+    "oftenUpgradedTo": [
+      "Full LoRaWAN gateway hardware for wide-area network deployment"
+    ]
+  }
+}

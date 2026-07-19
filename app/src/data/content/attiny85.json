@@ -1,0 +1,171 @@
+{
+  "identity": {
+    "id": "attiny85",
+    "name": "ATtiny85",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The ATtiny85 isn't a board at all — it's a bare 8-pin DIP microcontroller chip, small and cheap enough to leave embedded permanently in a tiny project where even a Pro Mini feels oversized. It has no onboard USB, no bootloader by default, and needs a separate programmer (an Arduino running as 'Arduino as ISP', or a USB programmer) to load code. In exchange you get an entire AVR microcontroller in a package smaller than a fingernail, popular in boards like the Digispark and in mass-produced blinking-light gadgets.",
+  "simpleSummary": "A tiny, cheap chip-only microcontroller for projects too small to need a full Arduino.",
+  "specifications": {
+    "microcontroller": "ATtiny85 (AVR core)",
+    "operatingVoltage": "2.7V - 5.5V",
+    "clockSpeed": "1 MHz internal (up to 20 MHz with external crystal)",
+    "flashMemory": "8 KB",
+    "sram": "512 Bytes",
+    "eeprom": "512 Bytes",
+    "digitalIOPins": 5,
+    "pwmPins": 3,
+    "analogInputPins": 3,
+    "package": "8-pin DIP (or SOIC surface-mount)",
+    "connector": "None — requires an external ISP programmer"
+  },
+  "pinMap": [
+    {
+      "name": "PB5 (RESET)",
+      "position": null,
+      "category": "special",
+      "function": "Reset pin; pulling LOW resets the chip. Can be reconfigured as a weak digital I/O pin at the cost of losing easy reprogramming.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "ADC0",
+        "Digital I/O (advanced)"
+      ],
+      "gotcha": "Reconfiguring this as a GPIO pin makes the chip much harder to reprogram afterward — a common irreversible-feeling mistake for beginners."
+    },
+    {
+      "name": "PB3 (XTAL1)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, or external crystal input if using one.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC3",
+        "External crystal"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB4 (XTAL2)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, or external crystal input if using one.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "PWM",
+        "External crystal"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PB0 (MOSI)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O; used as MOSI during ISP programming.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI MOSI (programming)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB1 (MISO)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O; used as MISO during ISP programming.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI MISO (programming)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PB2 (SCK)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O; used as SCK during ISP programming.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "SPI SCK (programming)",
+        "I2C"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "2.7V - 5.5V",
+      "currentLimit": "~200 mA total for the chip",
+      "alternateFunctions": [],
+      "gotcha": "Only 5 usable I/O pins total — plan pin budget carefully before starting a project."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Blinking-light gadget",
+      "scenario": "The classic use: a tiny standalone board (like a Digispark) running a simple LED pattern, sold as a complete cheap product.",
+      "pinsInvolved": [
+        "PB0",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Tiny USB gadget (Digispark)",
+      "scenario": "The Digispark board adds USB via software emulation, letting the ATtiny85 act as a simple USB device.",
+      "pinsInvolved": [
+        "PB3",
+        "PB4"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Embedded sensor trigger",
+      "scenario": "Permanently embed in a project that just needs to read one sensor and flip one output (e.g. a moisture-triggered LED).",
+      "pinsInvolved": [
+        "PB2",
+        "PB0",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno (used as an ISP programmer)",
+      "Breadboard"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Pro Mini (has far more pins and easy Serial debugging)"
+    ],
+    "oftenUpgradedTo": [
+      "Arduino Pro Mini (when 5 pins isn't enough)"
+    ]
+  }
+}

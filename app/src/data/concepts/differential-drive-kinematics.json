@@ -1,0 +1,52 @@
+{
+  "identity": {
+    "id": "differential-drive-kinematics",
+    "title": "Differential Drive Kinematics",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "The math behind nearly every simple wheeled robot: how two independent wheel speeds combine into forward motion and turning."
+  },
+  "simpleSummary": "The math for how two independently-driven wheels' speeds combine to move a robot forward, backward, or turn it — spin the wheels at the same speed and it drives straight, spin them at different speeds and it turns.",
+  "keyIdea": "A differential-drive robot's forward speed is the average of its two wheel speeds, and its turning rate is proportional to the difference between them — which is exactly why most simple wheeled robots use two independently-driven wheels rather than a steering mechanism.",
+  "overview": "A differential-drive robot has two wheels mounted on a common axis, each driven by its own independent motor, plus (usually) a passive caster wheel for balance. 'Differential' refers to the difference between the two wheels' speeds, not any physical difference between the wheels themselves. This simple two-motor arrangement, with no separate steering mechanism at all, is capable of driving straight, turning gradually, or even rotating in place — all purely by choosing the two wheel speeds correctly — which is exactly why it's the default drivetrain for the overwhelming majority of hobby wheeled robots, from simple line-followers to robot vacuums.",
+  "equations": [
+    {
+      "label": "Robot Linear Velocity",
+      "expression": "v = r·(ω_R + ω_L) / 2",
+      "meaning": "The robot's forward speed v is the average of the two wheels' surface speeds, where r is wheel radius and ω_R, ω_L are the right and left wheel's angular velocities."
+    },
+    {
+      "label": "Robot Angular Velocity",
+      "expression": "ω = r·(ω_R − ω_L) / L",
+      "meaning": "The robot's turning rate ω is proportional to the difference between the two wheel speeds, divided by L, the track width (the distance between the two wheels)."
+    }
+  ],
+  "howItWorks": "Each wheel's own surface speed is simply its radius times its angular velocity (v_wheel = r·ω_wheel). The robot's overall forward velocity is the average of the two wheels' surface speeds — if both wheels spin identically, the average equals each wheel's speed and the robot drives in a perfectly straight line, since there's no speed difference to cause turning. The robot's turning rate depends entirely on the difference between the two wheel speeds: the larger the difference (relative to how far apart the wheels are), the sharper the turn. A special and very useful case is ω_R = −ω_L (the two wheels spinning at equal speed but opposite directions): the linear velocity term (their average) becomes exactly zero while the angular velocity term (their difference) is at its maximum — the robot rotates precisely in place around the midpoint between its wheels, with zero net forward motion. In practice, robot code works in the opposite direction from these equations: given a desired forward speed and a desired turn rate (often from a joystick, a line-following sensor error, or a path-planning algorithm), the code inverts these two equations to compute the individual left and right wheel speeds (and therefore PWM values) needed to actually produce that combined motion.",
+  "diagramCaption": "Different wheel speeds curve the robot's path around an instantaneous center of curvature; equal wheel speeds drive straight, and equal-and-opposite speeds rotate the robot in place around its own midpoint.",
+  "realWorldExamples": [
+    "This site's Line-Following Robot and Obstacle-Avoidance Robot projects both use exactly this two-motor differential-drive scheme through an L298N motor driver.",
+    "Robot vacuum cleaners (like classic Roomba-style robots) use differential drive, spinning their two wheels independently to navigate and turn in place.",
+    "Electric wheelchairs commonly use differential drive, with independently controlled left and right wheel motors giving full maneuverability without any separate steering linkage."
+  ],
+  "commonMisconceptions": [
+    "\"Each wheel just needs to spin at the target robot speed\" — both wheels' individual speeds must be computed together from both the desired forward speed and the desired turn rate; setting them independently doesn't produce controllable motion.",
+    "\"Differential drive means the two wheels are physically different from each other\" — 'differential' refers to the difference in their speeds (which produces turning), not any physical difference between the wheels themselves.",
+    "\"Differential drive robots can move sideways\" — they cannot; like any standard wheeled robot, they can only drive along the direction the wheels point and turn by curving that direction, unlike a mecanum-wheeled robot."
+  ],
+  "relatedComponents": [
+    "dc-geared-motor",
+    "l298n",
+    "robot-wheel",
+    "robot-chassis-kit"
+  ],
+  "relatedProjects": [
+    "line-following-robot",
+    "obstacle-avoidance-robot"
+  ],
+  "relatedConcepts": [
+    "holonomic-vs-nonholonomic-robots",
+    "odometry-and-dead-reckoning",
+    "degrees-of-freedom-and-workspace",
+    "wheel-slip-traction-and-friction"
+  ]
+}

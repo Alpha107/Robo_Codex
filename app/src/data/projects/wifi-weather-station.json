@@ -1,0 +1,163 @@
+{
+  "identity": {
+    "id": "wifi-weather-station",
+    "title": "WiFi Weather Station",
+    "tagline": "Temperature, humidity, and barometric pressure — on an OLED, and on a webpage from anywhere on your network.",
+    "category": "Smart Home & IoT",
+    "difficulty": "Advanced",
+    "estimatedTime": "45 minutes"
+  },
+  "goal": "Build a more capable version of the Smart Home Sensor Hub using a BME280 sensor instead of a DHT — adding barometric pressure (and a rough altitude estimate) to temperature and humidity, all shown on a local OLED and a WiFi webpage.",
+  "simpleSummary": "Build a home weather station showing temperature, humidity, and pressure — locally and on a webpage.",
+  "howItWorks": "A BME280 measures the same temperature and humidity a DHT sensor does, but communicates over I2C rather than a single proprietary timed-pulse wire, and adds a third measurement a DHT can't provide at all: barometric pressure. That third number is useful on its own (falling pressure often precedes worsening weather), and can also be used to estimate altitude, since air pressure decreases predictably as elevation increases — the same principle behind an aircraft's altimeter. Because both the BME280 and the OLED communicate over I2C, they share the same two wires (SDA/SCL) despite being separate devices, each responding only to messages addressed to its own unique I2C address.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A phone or laptop connected to the same WiFi network as the ESP32"
+  ],
+  "components": [
+    {
+      "componentId": "esp32-devkit",
+      "quantity": 1
+    },
+    {
+      "componentId": "bme280",
+      "quantity": 1
+    },
+    {
+      "componentId": "ssd1306-oled",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 4
+    }
+  ],
+  "circuitDiagramCaption": "BME280 and OLED share the same I2C bus (GPIO21/22) — no separate wiring needed per device.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "bme280",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "3V3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "bme280",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "bme280",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO21 (SDA)"
+        }
+      },
+      {
+        "from": {
+          "componentId": "bme280",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO22 (SCL)"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO21 (SDA)"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO22 (SCL)"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "3V3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the BME280's VCC to 3V3, GND to GND, SDA to GPIO21, and SCL to GPIO22.",
+      "detail": "Double-check your specific breakout is 3.3V-tolerant (most are) before connecting — some bare BME280 chips without a breakout board are 3.3V-only and can be damaged by 5V."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the OLED to the exact same GPIO21 (SDA) and GPIO22 (SCL) pins, plus its own 3V3 and GND.",
+      "detail": "This is the whole point of I2C — both devices genuinely share the same two data wires; you're not choosing between them, you're wiring both to the identical pins."
+    }
+  ],
+  "code": [
+    {
+      "filename": "wifi_weather_station.ino",
+      "language": "arduino",
+      "source": "#include <WiFi.h>\n#include <WebServer.h>\n#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n#include <Adafruit_BME280.h>\n\n// WiFi Weather Station\n// Temperature, humidity, and pressure on an OLED and a local webpage.\n\nconst char* WIFI_SSID = \"YOUR_WIFI_NAME\";\nconst char* WIFI_PASSWORD = \"YOUR_WIFI_PASSWORD\";\nconst float SEA_LEVEL_HPA = 1013.25; // standard reference pressure for altitude estimate\n\nAdafruit_BME280 bme;\nAdafruit_SSD1306 display(128, 64, &Wire, -1);\nWebServer server(80);\n\nvoid setup() {\n  bme.begin(0x76); // try 0x77 if your board doesn't respond on 0x76\n  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);\n\n  Serial.begin(115200);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n  }\n  Serial.print(\"Weather station: http://\");\n  Serial.println(WiFi.localIP());\n\n  server.on(\"/\", handleRoot);\n  server.begin();\n}\n\nvoid loop() {\n  server.handleClient();\n  updateDisplay();\n  delay(1000);\n}\n\nvoid updateDisplay() {\n  display.clearDisplay();\n  display.setTextSize(1);\n  display.setTextColor(SSD1306_WHITE);\n  display.setCursor(0, 0);\n  display.print(\"Temp: \"); display.print(bme.readTemperature(), 1); display.println(\" C\");\n  display.print(\"Humidity: \"); display.print(bme.readHumidity(), 0); display.println(\" %\");\n  display.print(\"Pressure: \"); display.print(bme.readPressure() / 100.0F, 0); display.println(\" hPa\");\n  display.print(\"Altitude: \"); display.print(bme.readAltitude(SEA_LEVEL_HPA), 0); display.println(\" m\");\n  display.display();\n}\n\nvoid handleRoot() {\n  String page = \"<h1>Weather Station</h1>\";\n  page += \"<p>Temperature: \" + String(bme.readTemperature(), 1) + \" &deg;C</p>\";\n  page += \"<p>Humidity: \" + String(bme.readHumidity(), 0) + \" %</p>\";\n  page += \"<p>Pressure: \" + String(bme.readPressure() / 100.0F, 0) + \" hPa</p>\";\n  page += \"<p>Estimated altitude: \" + String(bme.readAltitude(SEA_LEVEL_HPA), 0) + \" m</p>\";\n  page += \"<p><a href='/'>Refresh</a></p>\";\n  server.send(200, \"text/html\", page);\n}\n",
+      "explanation": "bme.readPressure() returns raw pressure in Pascals, which is why it's divided by 100 to display the more familiar hPa (hectopascal) unit used in weather reports. readAltitude() works backwards from that same pressure reading using SEA_LEVEL_HPA as its reference point — since local sea-level pressure genuinely varies day to day with weather, this altitude figure is a reasonable estimate, not a GPS-grade measurement (see the GPS Tracker Logger project for actual satellite-based positioning)."
+    }
+  ],
+  "expectedBehavior": "Both the OLED and the webpage show live temperature, humidity, pressure, and an estimated altitude, refreshing once per second on the display and on each webpage reload.",
+  "troubleshooting": [
+    {
+      "issue": "BME280 fails to initialize / readings are all NaN.",
+      "fix": "Try the alternate I2C address (0x77 instead of 0x76, or vice versa) — BME280 breakout boards commonly ship configured for either."
+    },
+    {
+      "issue": "OLED and BME280 conflict or only one responds.",
+      "fix": "Confirm the two devices have different I2C addresses (they do by default — 0x3C/0x3D for the OLED, 0x76/0x77 for the BME280) — a genuine address collision is rare but would need one device's solder-jumper changed."
+    },
+    {
+      "issue": "Altitude reading is noticeably wrong.",
+      "fix": "This is expected if SEA_LEVEL_HPA doesn't match the actual current sea-level pressure for your location and day — look up the current local pressure reading (many weather apps show this) and update the constant for a more accurate estimate."
+    }
+  ],
+  "extensions": [
+    "Log pressure over time and flag a rapid drop as a simple storm warning.",
+    "Add the DHT-based Smart Home Sensor Hub's light sensor for a more complete environment picture.",
+    "Push readings to an online weather-logging service instead of only a local webpage.",
+    "Average several readings together to smooth out sensor noise before displaying."
+  ]
+}

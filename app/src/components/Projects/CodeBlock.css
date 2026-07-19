@@ -1,0 +1,78 @@
+.code-block {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #12141a;
+}
+
+:root[data-theme='light'] .code-block {
+  background: #1c1f26;
+}
+
+.code-block-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--bg-panel-raised);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-block-filename {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.code-block-copy {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.code-block-copy:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.code-block-pre {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #d4d8e0;
+}
+
+.tok-comment {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.tok-string {
+  color: #51cf66;
+}
+
+.tok-number {
+  color: #ffa94d;
+}
+
+.tok-keyword {
+  color: #4dabf7;
+  font-weight: 600;
+}
+
+.tok-builtin {
+  color: #cc5de8;
+}
+
+.tok-preproc {
+  color: #ffd43b;
+}

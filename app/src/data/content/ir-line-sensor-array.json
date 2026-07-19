@@ -1,0 +1,130 @@
+{
+  "identity": {
+    "id": "ir-line-sensor-array",
+    "name": "IR Line Sensor Array (TCRT5000-based)",
+    "category": "Line Following / Encoders / Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A line-following robot needs to know exactly where a dark line sits relative to its body, not just whether one is present — which is why these sensors are almost always sold as a bar of several TCRT5000 reflectance sensors side by side (commonly 5) rather than a single unit. Each channel works like a miniature IR obstacle sensor: an emitter shines IR down at the floor, a receiver measures how much bounces back, and a comparator turns that into a digital HIGH/LOW for 'line' vs 'no line' at that specific position. Reading all channels together tells the robot not just that it's found the line, but which direction it needs to steer to stay centered on it.",
+  "simpleSummary": "A row of sensors that see a dark line on the floor, so a robot can follow it.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "channels": "Commonly 5 (also available in 3, 4, or 8-channel bars)",
+    "outputType": "Digital per channel (some versions also expose analog per-channel output)",
+    "detectionDistance": "~2-15mm from the surface (close-range only)",
+    "sensitivityAdjustment": "Per-channel trimpots on most boards"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for all sensor channels.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~20 mA per channel active",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT1",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output for the leftmost sensor channel.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Must be held very close to the surface (a few mm) — mounting height that works on one floor surface may need retuning on another."
+    },
+    {
+      "name": "OUT2",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output for sensor channel 2.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT3",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output for the center sensor channel.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT4",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output for sensor channel 4.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT5",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output for the rightmost sensor channel.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Line-following robot",
+      "scenario": "Read all channels to determine steering correction — e.g. if the rightmost sensor sees the line, steer right.",
+      "pinsInvolved": [
+        "OUT1",
+        "OUT2",
+        "OUT3",
+        "OUT4",
+        "OUT5"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Maze-solving robot",
+      "scenario": "Combine line detection with junction/intersection detection for maze navigation algorithms.",
+      "pinsInvolved": [
+        "OUT1",
+        "OUT2",
+        "OUT3",
+        "OUT4",
+        "OUT5"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "L298N motor driver",
+      "2WD robot chassis"
+    ],
+    "oftenConfusedWith": [
+      "Single-channel IR obstacle sensor (presence detection only, not line position)"
+    ],
+    "oftenUpgradedTo": [
+      "Camera-based line following (more robust to lighting/surface variation)"
+    ]
+  }
+}

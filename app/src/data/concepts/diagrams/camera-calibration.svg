@@ -1,0 +1,40 @@
+<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .ray { stroke-dasharray: 6 5; animation: raymove 1s linear infinite; }
+    @keyframes raymove { to { stroke-dashoffset: -22; } }
+    .flash { animation: flashfade 2.4s steps(1) infinite; }
+    @keyframes flashfade { 0%, 20% { opacity: 1; } 30%, 100% { opacity: 0; } }
+  </style>
+
+  <text x="320" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Pinhole Camera Model</text>
+
+  <rect x="40" y="90" width="26" height="26" fill="#e03131" stroke="#1a1d23" stroke-width="1.6"/>
+  <text x="20" y="80" font-size="10.5" fill="#5b6270">3D point (X,Y,Z)</text>
+
+  <circle cx="300" cy="103" r="5" fill="#1a1d23"/>
+  <text x="285" y="130" font-size="10.5" fill="#5b6270">optical center</text>
+
+  <path d="M53,103 H520" stroke="#adb5bd" stroke-width="1.4" stroke-dasharray="4 3"/>
+
+  <line x1="460" y1="30" x2="460" y2="230" stroke="#1a1d23" stroke-width="2.5"/>
+  <text x="466" y="40" font-size="10.5" fill="#1a1d23" font-weight="700">image plane</text>
+
+  <circle cx="460" cy="103" r="5" fill="#4dabf7"/>
+  <text x="470" y="100" font-size="10.5" fill="#1c7ed6" font-weight="700">pixel (u, v)</text>
+
+  <path d="M66,103 L460,103" stroke="#f08c00" stroke-width="2" class="ray"/>
+
+  <text x="320" y="255" text-anchor="middle" font-size="11" fill="#5b6270">Calibration measures focal length &amp; optical center so this mapping can be trusted and reversed.</text>
+
+  <g transform="translate(590,60)">
+    <rect x="0" y="0" width="50" height="50" fill="#ffffff" stroke="#1a1d23" stroke-width="1.6"/>
+    <rect x="0" y="0" width="12.5" height="12.5" fill="#1a1d23"/><rect x="25" y="0" width="12.5" height="12.5" fill="#1a1d23"/>
+    <rect x="12.5" y="12.5" width="12.5" height="12.5" fill="#1a1d23"/><rect x="37.5" y="12.5" width="12.5" height="12.5" fill="#1a1d23"/>
+    <rect x="0" y="25" width="12.5" height="12.5" fill="#1a1d23"/><rect x="25" y="25" width="12.5" height="12.5" fill="#1a1d23"/>
+    <rect x="12.5" y="37.5" width="12.5" height="12.5" fill="#1a1d23"/><rect x="37.5" y="37.5" width="12.5" height="12.5" fill="#1a1d23"/>
+    <rect x="-6" y="-6" width="62" height="62" fill="#ffffff" opacity="0.9" class="flash"/>
+  </g>
+  <text x="615" y="128" text-anchor="middle" font-size="10" fill="#5b6270">calibration: capture</text>
+  <text x="615" y="141" text-anchor="middle" font-size="10" fill="#5b6270">checkerboard from</text>
+  <text x="615" y="154" text-anchor="middle" font-size="10" fill="#5b6270">many angles</text>
+</svg>

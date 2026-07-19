@@ -1,0 +1,82 @@
+{
+  "identity": {
+    "id": "robot-wheel",
+    "name": "Robot Wheel (Standard Hub)",
+    "category": "Structural & Mechanical",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The standard hobby robot wheel pairs a rubber or foam tire (for grip) with a plastic hub shaped to match a D-shaped or knurled motor shaft, so the wheel turns with the shaft rather than slipping around it. Matching wheel diameter, hub bore shape, and motor shaft together matters more than it seems — a wheel that's a fraction of a millimeter off on the D-shaped bore either won't press on at all or will slip under load, and wheel diameter directly affects both the robot's top speed and the torque it has available for climbing or pushing.",
+  "simpleSummary": "The standard rubber-tired wheel that attaches to a hobby gear motor's shaft.",
+  "specifications": {
+    "diameterRange": "Commonly 40-100mm for small hobby robots",
+    "hubTypes": "D-shaft bore, knurled/serrated bore, or set-screw hub collars",
+    "treadMaterial": "Rubber (best grip) or foam (lighter, less grip)",
+    "loadRating": "Varies by wheel — check against total robot weight divided across all wheels"
+  },
+  "pinMap": [
+    {
+      "name": "Hub Bore",
+      "position": null,
+      "category": "special",
+      "function": "The center opening that mates with the motor's output shaft, transferring rotation to the wheel.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "D-shaft bores must match the motor shaft's flat-side orientation and exact dimensions — a mismatched hub either won't seat or will slip in use."
+    },
+    {
+      "name": "Set Screw",
+      "position": null,
+      "category": "special",
+      "function": "On some hub designs, a small screw that clamps the hub onto the shaft for extra grip beyond the shaft's own shape.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Needs periodic checking — vibration from driving can work a set screw loose over time."
+    },
+    {
+      "name": "Tire Tread",
+      "position": null,
+      "category": "special",
+      "function": "The outer contact surface providing traction with the driving surface.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Standard 2WD/4WD robot drive wheels",
+      "scenario": "The default wheel choice for most beginner wheeled robot builds.",
+      "pinsInvolved": [
+        "Hub Bore",
+        "Tire Tread"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Speed vs. torque tuning",
+      "scenario": "Swap wheel diameter to trade top speed for climbing/pushing torque without changing the motor or gearing.",
+      "pinsInvolved": [
+        "Hub Bore"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "DC geared motor",
+      "Robot chassis kit"
+    ],
+    "oftenConfusedWith": [
+      "Mecanum wheels (enable sideways/diagonal movement, not just forward/back)",
+      "Caster wheels (passive support, not driven)"
+    ],
+    "oftenUpgradedTo": [
+      "Omni wheels or mecanum wheels for holonomic (any-direction) movement"
+    ]
+  }
+}

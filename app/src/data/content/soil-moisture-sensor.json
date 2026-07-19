@@ -1,0 +1,93 @@
+{
+  "identity": {
+    "id": "soil-moisture-sensor",
+    "name": "Soil Moisture Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This sensor measures soil moisture indirectly by reading electrical resistance between two exposed metal prongs pushed into the soil — dry soil conducts poorly (high resistance), wet soil conducts well (low resistance). A small comparator board (often the same LM393 style used in the IR obstacle sensor) converts that into both an analog voltage (proportional to moisture level) and a simple digital threshold signal. The prongs corrode over time from constant electrolysis while powered, which is why many guides recommend only powering the probe briefly right before taking a reading rather than leaving it energized continuously.",
+  "simpleSummary": "Two metal prongs that measure how wet the soil around them is.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "outputType": "Analog (moisture level) and digital (threshold, adjustable via onboard trimpot)",
+    "probeMaterial": "Exposed nickel-plated or bare copper prongs",
+    "lifespanNote": "Prongs corrode with prolonged power-on exposure to moist soil"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input to the probe and comparator board.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~15-35 mA",
+      "alternateFunctions": [],
+      "gotcha": "For longer-term deployments, power the sensor only during a brief reading (e.g. via a spare digital pin acting as a switch) rather than continuously, to slow prong corrosion."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AOUT",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output — voltage varies with soil moisture level (exact direction depends on the board, but typically higher moisture reads lower resistance/voltage).",
+      "voltageRange": "0-5V (board-dependent)",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "Absolute readings vary with soil type and prong corrosion — calibrate against 'dry air' and 'in water' readings rather than trusting raw numbers."
+    },
+    {
+      "name": "DOUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital threshold output, adjustable via the onboard trimpot.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Automatic plant watering system",
+      "scenario": "Trigger a water pump or solenoid valve when soil moisture drops below a set threshold.",
+      "pinsInvolved": [
+        "AOUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Garden monitoring dashboard",
+      "scenario": "Log moisture trends over time across multiple sensors in different plant pots.",
+      "pinsInvolved": [
+        "AOUT"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Relay module",
+      "Solenoid valve"
+    ],
+    "oftenConfusedWith": [
+      "Rain sensor (similar resistive-board principle, different application)"
+    ],
+    "oftenUpgradedTo": [
+      "Capacitive soil moisture sensors (no exposed metal prongs, no corrosion issue)"
+    ]
+  }
+}

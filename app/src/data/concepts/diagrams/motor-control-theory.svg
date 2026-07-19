@@ -1,0 +1,29 @@
+<svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .opdot { animation: opmove 3s ease-in-out infinite; }
+    @keyframes opmove { 0%, 100% { offset-distance: 0%; } 50% { offset-distance: 100%; } }
+    .currentfill { animation: currentgrow 3s ease-in-out infinite; }
+    @keyframes currentgrow { 0%, 100% { height: 10px; y: 224px; fill: #2f9e44; } 50% { height: 80px; y: 154px; fill: #e03131; } }
+  </style>
+
+  <text x="300" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">DC Motor Speed-Torque Curve</text>
+
+  <line x1="70" y1="230" x2="500" y2="230" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="70" y1="230" x2="70" y2="50" stroke="#1a1d23" stroke-width="2"/>
+  <text x="510" y="234" font-size="11" fill="#5b6270">load torque</text>
+  <text x="30" y="42" font-size="11" fill="#5b6270">speed</text>
+
+  <path d="M70,70 L470,215" fill="none" stroke="#2f6fae" stroke-width="3"/>
+
+  <circle cx="70" cy="70" r="6" fill="#2f9e44"/>
+  <text x="80" y="65" font-size="10.5" font-weight="700" fill="#2f9e44">free-run (max speed, min current)</text>
+
+  <circle cx="470" cy="215" r="6" fill="#e03131"/>
+  <text x="330" y="255" font-size="10.5" font-weight="700" fill="#e03131">stall point (zero speed, MAX current)</text>
+
+  <circle r="7" fill="#1a1d23" class="opdot" style="offset-path: path('M70,70 L470,215')"/>
+
+  <rect x="520" y="150" width="24" height="84" fill="none" stroke="#1a1d23" stroke-width="1.6"/>
+  <rect x="521" y="224" width="22" height="10" class="currentfill"/>
+  <text x="532" y="142" text-anchor="middle" font-size="9.5" fill="#5b6270">current</text>
+</svg>

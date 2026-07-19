@@ -1,0 +1,161 @@
+{
+  "identity": {
+    "id": "esp32-cam",
+    "name": "ESP32-CAM",
+    "category": "Vision & Imaging",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The ESP32-CAM bolts a small OV2640 camera and a microSD card slot onto a regular ESP32, turning the same low-cost WiFi microcontroller into a self-contained camera that can capture images and stream them over the network — no separate host computer needed the way an OV7670 or Pi Camera requires. The catch that surprises almost everyone the first time: it has no onboard USB-to-serial chip, so uploading code requires an external FTDI/USB-serial adapter wired to specific pins, and a particular boot sequence (holding a GPIO0 pin LOW while resetting) to enter programming mode — a noticeably rougher developer experience than a standard ESP32 dev board.",
+  "simpleSummary": "A WiFi microcontroller with a built-in camera, so it can take and send pictures on its own.",
+  "specifications": {
+    "microcontroller": "ESP32 (dual-core, WiFi + Bluetooth), same as the standard ESP32 DevKit",
+    "camera": "OV2640, up to 2MP (1600x1200)",
+    "storage": "microSD card slot for local image/video storage",
+    "operatingVoltage": "5V input (via external programmer or power pins), 3.3V logic",
+    "connector": "None onboard — requires an external FTDI/USB-serial adapter to program"
+  },
+  "pinMap": [
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Camera + WiFi combined draw can spike over 300mA",
+      "alternateFunctions": [],
+      "gotcha": "A weak or long USB cable from the programmer often can't supply enough current, causing random resets during WiFi transmission or camera capture."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "U0R (RX)",
+      "position": null,
+      "category": "digital",
+      "function": "UART receive, used by the external FTDI programmer to upload code.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "U0T (TX)",
+      "position": null,
+      "category": "digital",
+      "function": "UART transmit, used by the external FTDI programmer.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO0",
+      "position": null,
+      "category": "digital",
+      "function": "Boot mode select — must be pulled LOW while resetting to enter programming mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Boot mode select"
+      ],
+      "gotcha": "The most notorious ESP32-CAM gotcha: forgetting to ground this pin during the exact reset moment is the #1 reason uploads silently fail — many boards need a physical jumper wire moved by hand for every upload."
+    },
+    {
+      "name": "GPIO4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also wired to the onboard flash LED on most boards.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA (LED draws more, driven by a transistor)",
+      "alternateFunctions": [
+        "Flash LED control"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [],
+      "gotcha": "Boot strapping pin — avoid pulling HIGH at boot, same caution as on a standard ESP32."
+    },
+    {
+      "position": null,
+      "name": "GPIO13",
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Active-LOW reset.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "WiFi security camera",
+      "scenario": "Stream a live video feed over WiFi to a browser or phone, with motion-triggered recording to the microSD card.",
+      "pinsInvolved": [
+        "GPIO4",
+        "5V",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Robot vision node",
+      "scenario": "Capture and transmit images from a robot for remote monitoring or simple onboard image processing.",
+      "pinsInvolved": [
+        "GPIO12",
+        "GPIO13"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Doorbell/mailbox camera",
+      "scenario": "Battery or low-power WiFi camera project triggered by a PIR sensor.",
+      "pinsInvolved": [
+        "GPIO4"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "FTDI USB-to-serial adapter",
+      "PIR motion sensor"
+    ],
+    "oftenConfusedWith": [
+      "ESP32 DevKit (no camera, has onboard USB)",
+      "Raspberry Pi Camera Module (needs a full Pi, not standalone)"
+    ],
+    "oftenUpgradedTo": [
+      "ESP32-S3-CAM variants with more RAM/PSRAM for higher resolution processing"
+    ]
+  }
+}

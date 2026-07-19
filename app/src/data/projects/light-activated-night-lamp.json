@@ -1,0 +1,148 @@
+{
+  "identity": {
+    "id": "light-activated-night-lamp",
+    "title": "Light-Activated Night Lamp",
+    "tagline": "A lamp that switches itself on at dusk and off at dawn — no timer, just a light sensor.",
+    "category": "Sensors & Automation",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "25 minutes"
+  },
+  "goal": "Build a lamp that automatically turns on when the room gets dark and off again when it brightens, using a photoresistor (LDR) to sense ambient light — and along the way, learn the single most common analog-sensor wiring pattern in electronics: the voltage divider.",
+  "simpleSummary": "Build a lamp that switches on by itself when the room goes dark.",
+  "howItWorks": "An LDR isn't a sensor with a signal pin of its own — it's just a resistor whose resistance changes with light (low resistance in bright light, high resistance in darkness). On its own, a changing resistance can't be read by an analog input pin, which measures voltage, not resistance directly. The fix is a voltage divider: pair the LDR with a second, fixed resistor in series between 5V and GND, and read the voltage at the midpoint where they meet. As the LDR's resistance changes with light, it changes what fraction of the 5V gets dropped across each resistor — so the midpoint voltage shifts with brightness, and that voltage is exactly what analogRead() can measure. This divider trick isn't unique to LDRs; it's the same underlying idea behind reading a plain resistor-based sensor of almost any kind.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "ldr",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 2,
+      "note": "10kΩ resistor (divider) + 220Ω resistor (LED)"
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 1,
+      "note": "stands in for a real lamp"
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 4
+    }
+  ],
+  "circuitDiagramCaption": "LDR + 10kΩ resistor form a voltage divider read on A0; an LED (or a relay switching a real lamp) is driven from D9.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "ldr",
+          "pin": "Terminal 1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ldr",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0"
+        },
+        "label": "divider midpoint"
+      },
+      {
+        "from": {
+          "componentId": "ldr",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the LDR between Arduino 5V and a breadboard row; wire a 10kΩ resistor between that same row and GND.",
+      "detail": "The order matters for which direction the reading moves: with the LDR on top (toward 5V) as wired here, the midpoint voltage drops as it gets darker — the code below assumes this arrangement."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire that shared row (the divider's midpoint) to Arduino A0.",
+      "detail": "This single point is the whole trick — it's the only new wire this circuit needs beyond a plain LED circuit."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire an LED with its 220Ω resistor between D9 and GND, exactly as in LED Blink.",
+      "detail": "This LED is standing in for a real lamp for safety and simplicity — see the Smart Home Light Automation project for the version that switches an actual mains lamp through a relay, along with the safety precautions that requires."
+    }
+  ],
+  "code": [
+    {
+      "filename": "light_activated_night_lamp.ino",
+      "language": "arduino",
+      "source": "// Light-Activated Night Lamp\n// Turns an LED on when ambient light drops below a threshold.\n\nconst int LDR_PIN = A0;\nconst int LAMP_PIN = 9;\n\n// Adjust this after testing in your actual room lighting — see Troubleshooting.\nconst int DARK_THRESHOLD = 400;\n\nvoid setup() {\n  pinMode(LAMP_PIN, OUTPUT);\n  Serial.begin(9600); // for tuning the threshold — see step 1 below\n}\n\nvoid loop() {\n  int lightLevel = analogRead(LDR_PIN);\n  Serial.println(lightLevel); // watch this in the Serial Monitor while testing\n\n  if (lightLevel > DARK_THRESHOLD) {\n    digitalWrite(LAMP_PIN, HIGH); // dark enough — turn the lamp on\n  } else {\n    digitalWrite(LAMP_PIN, LOW);\n  }\n\n  delay(200);\n}\n",
+      "explanation": "With the LDR wired toward 5V, the midpoint reading rises as it gets darker (the LDR's resistance increases, so it \"blocks\" more of the 5V, pushing the midpoint's share downward toward the resistor's side — reason through the divider carefully if this feels backwards, or just trust the Serial Monitor numbers). DARK_THRESHOLD is a placeholder — analogRead() returns 0-1023, and the actual value that means \"dark enough\" depends entirely on your specific room, LDR, and resistor value, which is why the Serial print is there: to watch the real number in your setup before picking a threshold."
+    }
+  ],
+  "expectedBehavior": "With the Serial Monitor open, the printed number rises as you shade the LDR with your hand and falls under bright light. Once DARK_THRESHOLD is tuned to your room, the LED turns on automatically as the room darkens and off again in daylight.",
+  "troubleshooting": [
+    {
+      "issue": "Lamp is always on or always off regardless of light level.",
+      "fix": "Open the Serial Monitor and watch the raw numbers while covering and uncovering the LDR — if they don't change at all, check the divider wiring; if they change but the lamp doesn't react correctly, adjust DARK_THRESHOLD to sit between your observed bright and dark values."
+    },
+    {
+      "issue": "Lamp flickers on and off right around the threshold.",
+      "fix": "This is normal at the boundary — add hysteresis (a different threshold for turning on vs. off, a small gap between them) so it doesn't react to tiny fluctuations right at the edge."
+    },
+    {
+      "issue": "Reading seems inverted (gets lower in the dark).",
+      "fix": "Your LDR and resistor are likely wired in the opposite order from this build (resistor toward 5V, LDR toward GND) — either swap them, or just flip the comparison operator in the code."
+    }
+  ],
+  "extensions": [
+    "Add hysteresis: use two thresholds instead of one so the lamp doesn't flicker at the boundary.",
+    "Fade the LED in and out with analogWrite() instead of snapping fully on/off (see PWM LED Fading).",
+    "Replace the LED with a relay module driving a real lamp — see Smart Home Light Automation for the safety-conscious version of that upgrade.",
+    "Add a photocell-triggered log of sunrise/sunset times over Serial."
+  ]
+}

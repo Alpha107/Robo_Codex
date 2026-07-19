@@ -1,0 +1,27 @@
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .gapflash { animation: gapflash 1s steps(1) infinite; }
+    @keyframes gapflash { 0%,49% { opacity: 1; } 50%,100% { opacity: 0.15; } }
+  </style>
+
+  <text x="150" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e03131">Before loop closure</text>
+  <path d="M80,220 Q80,100 180,90 Q260,85 250,160 Q245,205 190,215" fill="none" stroke="#4dabf7" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <circle cx="80" cy="220" r="6" fill="#1a1d23"/>
+  <circle cx="190" cy="215" r="6" fill="#e03131"/>
+  <text x="60" y="245" font-size="10" fill="#5b6270">start</text>
+  <text x="150" y="255" font-size="10" fill="#e03131" font-weight="700" class="gapflash">gap from accumulated drift</text>
+  <path d="M80,220 L190,215" stroke="#e03131" stroke-width="1.6" stroke-dasharray="2 2" class="gapflash"/>
+  <circle r="5" fill="#4dabf7">
+    <animateMotion dur="2.6s" repeatCount="indefinite" path="M80,220 Q80,100 180,90 Q260,85 250,160 Q245,205 190,215"/>
+  </circle>
+
+  <line x1="320" y1="0" x2="320" y2="300" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="490" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2f9e44">After loop closure</text>
+  <path d="M410,220 Q410,100 510,90 Q590,85 580,160 Q575,205 410,220" fill="none" stroke="#2f9e44" stroke-width="2.5"/>
+  <circle cx="410" cy="220" r="7" fill="#2f9e44"/>
+  <text x="440" y="245" text-anchor="middle" font-size="10" fill="#2f9e44" font-weight="700">path snaps closed &#8212; whole trajectory corrected</text>
+  <circle r="5" fill="#2f9e44">
+    <animateMotion dur="2.6s" repeatCount="indefinite" path="M410,220 Q410,100 510,90 Q590,85 580,160 Q575,205 410,220"/>
+  </circle>
+</svg>

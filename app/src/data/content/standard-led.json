@@ -1,0 +1,80 @@
+{
+  "identity": {
+    "id": "standard-led",
+    "name": "Standard LED",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The humble LED is usually the very first component anyone wires up, and for good reason: it's simple, forgiving to experiment with, and visually confirms that a circuit works. It only conducts current in one direction (unlike a resistor), so it must be wired the correct way around — the longer lead is positive (anode), the shorter lead (often next to a flat edge on the plastic case) is negative (cathode) — and it always needs a current-limiting resistor in series, since an LED offers almost no resistance of its own and will draw damaging (or fatal-to-the-LED) current directly off a voltage source otherwise.",
+  "simpleSummary": "A small light that turns on when current flows through it — usually the very first part anyone wires up.",
+  "specifications": {
+    "forwardVoltage": "~1.8-2.2V (red/yellow), ~3-3.4V (blue/white/green) — varies by color",
+    "forwardCurrent": "~15-20mA typical for a standard 5mm LED",
+    "polarity": "Polarized — anode (+, longer lead) and cathode (-, shorter lead, flat edge on case)",
+    "package": "Common sizes: 3mm, 5mm through-hole; various SMD sizes"
+  },
+  "pinMap": [
+    {
+      "name": "Anode (+)",
+      "position": null,
+      "category": "power",
+      "function": "Positive terminal — the longer lead on a new LED.",
+      "voltageRange": "Forward voltage drop (~1.8-3.4V depending on color)",
+      "currentLimit": "~15-20 mA (needs a series resistor to enforce this)",
+      "alternateFunctions": [],
+      "gotcha": "Never wire an LED directly across a voltage source without a current-limiting resistor in series — it will draw far more current than rated and burn out almost immediately."
+    },
+    {
+      "name": "Cathode (-)",
+      "position": null,
+      "category": "power",
+      "function": "Negative terminal — the shorter lead, next to a flat edge on the LED's plastic case.",
+      "voltageRange": "0V (ground side)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Wired backwards, an LED simply won't light (it doesn't burn out from reverse voltage within its rated limits) — if an LED does nothing, check polarity before assuming it's broken."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Status indicator",
+      "scenario": "The classic first project — light an LED to confirm a pin can be driven HIGH/LOW.",
+      "pinsInvolved": [
+        "Anode (+)",
+        "Cathode (-)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Simple visual feedback",
+      "scenario": "Indicate a sensor threshold being crossed, a mode change, or an error condition.",
+      "pinsInvolved": [
+        "Anode (+)",
+        "Cathode (-)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "PWM-dimmed mood lighting",
+      "scenario": "Use analogWrite/PWM to vary brightness smoothly rather than simple on/off.",
+      "pinsInvolved": [
+        "Anode (+)"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Resistor (220-330Ω typical for 5V circuits)",
+      "Breadboard"
+    ],
+    "oftenConfusedWith": [
+      "WS2812B/NeoPixel (individually addressable, needs a data protocol, not just voltage)"
+    ],
+    "oftenUpgradedTo": [
+      "WS2812B/NeoPixel for individually addressable multi-color control"
+    ]
+  }
+}

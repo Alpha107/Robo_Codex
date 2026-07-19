@@ -1,0 +1,392 @@
+{
+  "identity": {
+    "id": "raspberry-pi-4",
+    "name": "Raspberry Pi 4 Model B",
+    "category": "Single Board Computer",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Unlike every board in the Microcontrollers category, the Raspberry Pi is a genuine computer: it boots a full Linux operating system from a microSD card, runs a desktop environment, browses the web, and can be SSH'd into like any server. That changes the robotics use case entirely — instead of writing firmware that runs one program forever, you write regular Python/C++ programs on top of an OS with real multitasking, a filesystem, and networking. The tradeoff is that it needs a proper shutdown command before losing power (yanking power can corrupt the SD card) and its 40-pin GPIO header is 3.3V-only with no built-in protection — frying a GPIO pin with 5V is a common and often fatal mistake since, unlike a $2 microcontroller, the whole board is the cost of the mistake.",
+  "simpleSummary": "A full tiny computer that runs Linux, unlike the simpler single-task Arduino boards.",
+  "specifications": {
+    "processor": "Broadcom BCM2711, quad-core Cortex-A72, 1.5 GHz",
+    "operatingVoltage": "5V (board), 3.3V (GPIO logic)",
+    "ram": "1GB / 2GB / 4GB / 8GB LPDDR4 (model-dependent)",
+    "storage": "microSD card (OS boot), USB boot supported",
+    "connectivity": "Gigabit Ethernet, WiFi 802.11ac, Bluetooth 5.0",
+    "usb": "2x USB 3.0, 2x USB 2.0",
+    "video": "2x micro-HDMI (dual 4K supported)",
+    "gpio": "40-pin header, 3.3V logic",
+    "dimensions": "85mm x 56mm",
+    "connector": "USB-C power (5V/3A)"
+  },
+  "pinMap": [
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output (two physical pins, same rail).",
+      "voltageRange": "3.3V",
+      "currentLimit": "~50 mA recommended for external use",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "5V rail, sourced from the USB-C input (two physical pins, same rail).",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on power supply headroom",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference (multiple physical pins, all the same net).",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO2 (SDA1)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Has a fixed onboard pull-up resistor, unlike most other GPIOs."
+    },
+    {
+      "name": "GPIO3 (SCL1)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": "Fixed onboard pull-up, same as GPIO2."
+    },
+    {
+      "name": "GPIO4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "1-Wire (common default)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO14 (TXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART transmit, also used by the Linux serial console by default.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "May be claimed by the OS console — disable serial console in raspi-config to reuse for a project."
+    },
+    {
+      "name": "GPIO15 (RXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Same console caveat as GPIO14."
+    },
+    {
+      "name": "GPIO17",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO18",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM",
+        "I2S"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO27",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO22",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO23",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO24",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO10 (MOSI)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO9 (MISO)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO11 (SCLK)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI SCLK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO8 (CE0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 chip-select 0.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI CE0"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO7 (CE1)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 chip-select 1.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI CE1"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO25",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO19",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM",
+        "I2S"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO16",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO26",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO20",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO21",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Computer-vision robot brain",
+      "scenario": "Run OpenCV or a TensorFlow Lite model on the Pi's CPU to make navigation decisions, then send motor commands out over GPIO to a motor driver.",
+      "pinsInvolved": [
+        "GPIO17",
+        "GPIO18",
+        "GND"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Home automation hub",
+      "scenario": "Run Home Assistant as the central server for a house full of ESP32/ESP8266 sensor nodes.",
+      "pinsInvolved": [],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Network-attached sensor logger",
+      "scenario": "Read I2C sensors and log to a local database, served over the network via a small web dashboard.",
+      "pinsInvolved": [
+        "GPIO2 (SDA1)",
+        "GPIO3 (SCL1)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Retro game emulation / media center",
+      "scenario": "The most common non-robotics use — full Linux plus HDMI output makes it a capable emulation or media box.",
+      "pinsInvolved": [],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi Camera Module",
+      "Arduino Uno (as a real-time I/O co-processor)"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi Pico (a microcontroller, not a computer, no OS)",
+      "Arduino boards (real-time firmware vs general OS)"
+    ],
+    "oftenUpgradedTo": [
+      "Jetson Nano/Orin Nano (when GPU-accelerated AI inference is needed)"
+    ]
+  }
+}

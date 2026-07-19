@@ -1,0 +1,52 @@
+{
+  "identity": {
+    "id": "forward-kinematics",
+    "title": "Forward Kinematics",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "Given every joint angle, calculating exactly where the end of the arm ends up — always solvable, always one answer."
+  },
+  "simpleSummary": "Working out exactly where a robot arm's tip is in space, just from knowing the angle of every joint.",
+  "keyIdea": "Chaining each joint's rotation and each link's length together, one after another from the base outward, directly computes the end-effector's position and orientation — with exactly one correct answer every time.",
+  "overview": "Forward kinematics answers a simple question: given the current angle of every joint in a robot arm, where exactly is the end-effector (the gripper, tool, or tip) in space? It is computed by chaining together each joint's rotation and each link's fixed geometry, one after another, starting from the robot's fixed base and working outward toward the tip. Unlike its counterpart, inverse kinematics, forward kinematics always has exactly one answer and is computed directly — no searching, guessing, or iteration required — because it's simply a sequence of geometric transformations applied in a known order.",
+  "equations": [
+    {
+      "label": "2-Link Planar Arm End-Effector Position",
+      "expression": "x = L₁cos(θ₁) + L₂cos(θ₁+θ₂)\ny = L₁sin(θ₁) + L₂sin(θ₁+θ₂)",
+      "meaning": "For a simple 2-link arm with link lengths L₁, L₂ and joint angles θ₁ (base joint) and θ₂ (elbow joint, measured relative to the first link), these equations directly give the (x, y) position of the end-effector."
+    },
+    {
+      "label": "General Chained Transform",
+      "expression": "T_end = T₁(θ₁) · T₂(θ₂) · ... · Tₙ(θₙ)",
+      "meaning": "For an n-jointed arm, each joint contributes its own transformation matrix (encoding both the joint's rotation and the fixed geometry to the next joint); multiplying them together in order gives the end-effector's full position and orientation relative to the base."
+    }
+  ],
+  "howItWorks": "Each joint in a robot arm connects two links with a known, fixed geometric relationship (link length, and any fixed offset angle between consecutive joint axes). Forward kinematics represents each joint's contribution as a transformation matrix — a combination of a rotation (by the current joint angle) and a translation (along the known link length) — and multiplies these matrices together in sequence, starting from the robot's base frame and ending at the end-effector frame. Because every input (joint angle) maps to exactly one geometric result, this calculation is direct: plug in the angles, multiply the matrices, read off the resulting position and orientation. This is precisely why simulating or visualizing a robot arm in software (or checking that a set of commanded joint angles won't crash the arm into itself or an obstacle) is a forward kinematics problem — it needs no measurement of the actual end-effector position at all, only knowledge of the joint angles and the arm's fixed geometry. The systematic, standardized way of building this chain of transformations for any serial-link arm is called the Denavit-Hartenberg convention.",
+  "diagramCaption": "Forward kinematics chains each joint's rotation and link length from the base outward: knowing θ₁ and θ₂ (plus fixed link lengths L₁, L₂) directly gives the end-effector's (x, y) position.",
+  "realWorldExamples": [
+    "Computing where a robotic arm's gripper actually is in 3D space from its servo angles, to check it won't collide with the table or its own base before moving.",
+    "Animating or simulating a robot arm's pose in software (like a 3D visualization tool) purely from a stream of joint angle values, with no physical arm involved at all.",
+    "Verifying a commanded set of joint angles will place the end-effector within a safe, reachable region before actually sending the command to the servos."
+  ],
+  "commonMisconceptions": [
+    "\"Forward kinematics is roughly as hard as inverse kinematics\" — forward kinematics is direct and always has exactly one solution; inverse kinematics can have zero, one, or infinitely many solutions and often requires iterative numerical methods.",
+    "\"Forward kinematics needs a sensor measuring the actual tip position\" — it computes an expected pose purely from known joint angles and link geometry; no measurement of the end-effector itself is needed.",
+    "\"Forward kinematics equations are the same for every robot\" — the specific equations depend entirely on that robot's own link lengths, joint types, and geometry; a 2-link planar arm's equations look nothing like a 6-DOF industrial arm's."
+  ],
+  "relatedComponents": [
+    "servo-bracket-arm-kit",
+    "mg996r-servo",
+    "sg90-servo",
+    "potentiometer",
+    "rotary-encoder"
+  ],
+  "relatedProjects": [
+    "joystick-pan-tilt-turret"
+  ],
+  "relatedConcepts": [
+    "inverse-kinematics",
+    "denavit-hartenberg-parameters",
+    "jacobians-and-velocity-kinematics",
+    "coordinate-frames-and-transforms"
+  ]
+}

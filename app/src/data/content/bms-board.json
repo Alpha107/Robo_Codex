@@ -1,0 +1,117 @@
+{
+  "identity": {
+    "id": "bms-board",
+    "name": "BMS (Battery Management System) Board",
+    "category": "Power Management",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A BMS is the safety layer that sits between raw lithium cells and the rest of a circuit, continuously watching voltage (and often current and temperature) to cut the connection if a cell gets overcharged, over-discharged, or short-circuited — the exact failure modes that make bare lithium cells dangerous. Single-cell BMS boards are simple pass/fail protection; multi-cell ones add balance wires, tapping each individual cell in a series pack so the BMS can equalize slightly-mismatched cells during charging, keeping the whole pack healthy over time rather than letting one weak cell degrade faster than the rest.",
+  "simpleSummary": "A safety circuit that watches a battery and cuts power if it's being charged or drained dangerously.",
+  "specifications": {
+    "cellCount": "1S (single cell) up to multi-cell series packs (2S, 3S, 4S...), each needing a matching BMS",
+    "protections": "Overcharge, over-discharge, overcurrent/short-circuit, and often over-temperature",
+    "balancing": "Multi-cell BMS boards include balance leads to equalize charge across series-connected cells",
+    "continuousCurrentRating": "Varies widely by board, from a few amps to 100A+ for high-power packs"
+  },
+  "pinMap": [
+    {
+      "name": "B+",
+      "position": null,
+      "category": "power",
+      "function": "Battery pack positive terminal (raw, unprotected side).",
+      "voltageRange": "Matches pack's raw voltage",
+      "currentLimit": "Board-rated continuous current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B-",
+      "position": null,
+      "category": "power",
+      "function": "Battery pack negative terminal (raw side).",
+      "voltageRange": "0V reference",
+      "currentLimit": "Board-rated continuous current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P+",
+      "position": null,
+      "category": "power",
+      "function": "Protected positive output, to the load/charger — passes through the protection MOSFETs.",
+      "voltageRange": "Matches pack voltage when not tripped",
+      "currentLimit": "Board-rated continuous current",
+      "alternateFunctions": [],
+      "gotcha": "P+/P- (protected side) and B+/B- (raw cell side) are NOT the same nets — mixing them up bypasses the protection circuit entirely."
+    },
+    {
+      "name": "P-",
+      "position": null,
+      "category": "power",
+      "function": "Protected negative output.",
+      "voltageRange": "0V reference",
+      "currentLimit": "Board-rated continuous current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Balance Leads",
+      "position": null,
+      "category": "special",
+      "function": "On multi-cell boards, individual taps to each cell's junction point in the series stack, letting the BMS measure and balance each cell separately.",
+      "voltageRange": "Per-cell voltage (~3.0-4.2V each)",
+      "currentLimit": "Very low (sensing/balancing only)",
+      "alternateFunctions": [],
+      "gotcha": "Must connect to the correct junction points in the correct order — a miswired balance lead can give the BMS a wildly wrong per-cell reading and disable protection for that cell."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Safe multi-cell robot battery pack",
+      "scenario": "Protect and balance a series-connected pack of 18650 cells powering a robot.",
+      "pinsInvolved": [
+        "B+",
+        "B-",
+        "P+",
+        "P-",
+        "Balance Leads"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Single-cell LiPo protection",
+      "scenario": "Add basic overcharge/over-discharge protection to a bare single-cell LiPo not already protected internally.",
+      "pinsInvolved": [
+        "B+",
+        "B-",
+        "P+",
+        "P-"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "DIY power bank",
+      "scenario": "Combine a BMS, cells, and a boost converter to build a custom USB power bank.",
+      "pinsInvolved": [
+        "P+",
+        "P-"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "18650 battery holder",
+      "LiPo battery",
+      "TP4056 charging module"
+    ],
+    "oftenConfusedWith": [
+      "TP4056 (charging function only, not general protection during discharge)"
+    ],
+    "oftenUpgradedTo": [
+      "Smart BMS boards with Bluetooth/UART monitoring for detailed per-cell diagnostics"
+    ]
+  }
+}

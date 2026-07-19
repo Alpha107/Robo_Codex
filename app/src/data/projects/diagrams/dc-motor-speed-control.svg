@@ -1,0 +1,40 @@
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="100" width="170" height="140" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="115" y="165" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="115" y="186" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="340" y="100" width="150" height="140" rx="10" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="415" y="165" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">L298N</text>
+  <text x="415" y="185" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Motor Driver</text>
+
+  <circle cx="640" cy="150" r="30" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="640" y="155" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">MOTOR</text>
+
+  <circle cx="640" cy="260" r="26" fill="#c92a2a" stroke="#1a1d23" stroke-width="2"/>
+  <text x="640" y="264" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">BATTERY</text>
+
+  <path d="M200,140 H270 V60 H415 V100" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="200" cy="140" r="4" fill="#4dabf7"/>
+  <text x="210" y="132" font-size="12" font-weight="600" fill="#1a1d23">A0 &#8594; pot wiper (read speed)</text>
+
+  <circle cx="270" cy="60" r="18" fill="#ced4da" stroke="#1a1d23" stroke-width="2"/>
+  <text x="270" y="45" text-anchor="middle" font-size="11" fill="#5b6270">pot</text>
+
+  <path d="M200,180 H320 V145 H340" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="200" cy="180" r="4" fill="#4dabf7"/>
+  <text x="210" y="198" font-size="12" font-weight="600" fill="#1a1d23">D9 &#8594; ENA (speed, PWM)</text>
+
+  <path d="M200,210 H310 V175 H340" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="200" cy="210" r="4" fill="#4dabf7"/>
+  <text x="210" y="225" font-size="11" font-weight="600" fill="#1a1d23">D7/D8 &#8594; IN1/IN2 (direction)</text>
+
+  <path d="M490,140 H640 V120" fill="none" stroke="#e8590c" stroke-width="3"/>
+  <text x="500" y="132" font-size="12" font-weight="600" fill="#1a1d23">OUT1, OUT2</text>
+
+  <path d="M490,220 V260 H614" fill="none" stroke="#c92a2a" stroke-width="3"/>
+  <text x="500" y="245" font-size="12" font-weight="600" fill="#1a1d23">+12V, GND</text>
+
+  <path d="M115,240 V275 H614" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="115" cy="240" r="4" fill="#1a1d23"/>
+  <text x="150" y="293" font-size="12" font-weight="700" fill="#1a1d23">common GND (required!)</text>
+</svg>

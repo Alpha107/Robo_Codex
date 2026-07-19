@@ -1,0 +1,128 @@
+{
+  "identity": {
+    "id": "28byj48-stepper",
+    "name": "28BYJ-48 Stepper Motor + ULN2003 Driver",
+    "category": "Motors & Actuators",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The 28BYJ-48 is the beginner's stepper motor: cheap, slow, and low-torque, but capable of precise, repeatable positioning that a plain DC motor can't do — tell it to turn exactly 45 degrees and it will, every time, with no feedback sensor needed. It's unipolar and needs more current than a microcontroller pin can supply, so it's always sold with a small blue ULN2003 driver board that takes 4 logic-level inputs and switches the motor's coils. The internal ~64:1 gear reduction is why it's simultaneously very precise and very slow — great for a camera pan mechanism, useless for anything needing speed.",
+  "simpleSummary": "A cheap motor that turns in tiny, exact steps instead of spinning freely, so it can go to precise positions.",
+  "specifications": {
+    "operatingVoltage": "5V (common variant, 12V variants also exist)",
+    "stepAngle": "5.625°/64 per motor step (~2048 steps per output shaft revolution after gearing)",
+    "gearRatio": "~64:1",
+    "torque": "Low (a few N·cm) — precise but weak",
+    "driverBoard": "ULN2003 Darlington transistor array (required — cannot be driven directly from a microcontroller pin)"
+  },
+  "pinMap": [
+    {
+      "name": "IN1",
+      "position": null,
+      "category": "digital",
+      "function": "Driver board input controlling coil phase 1.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "Logic-level only (driver board handles motor current)",
+      "alternateFunctions": [],
+      "gotcha": "Stepping sequence matters — driving IN1-IN4 out of the correct order causes the motor to buzz and vibrate without turning."
+    },
+    {
+      "name": "IN2",
+      "position": null,
+      "category": "digital",
+      "function": "Driver board input controlling coil phase 2.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "Logic-level only",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN3",
+      "position": null,
+      "category": "digital",
+      "function": "Driver board input controlling coil phase 3.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "Logic-level only",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN4",
+      "position": null,
+      "category": "digital",
+      "function": "Driver board input controlling coil phase 4.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "Logic-level only",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Driver VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the motor coils, feeds through the ULN2003 board.",
+      "voltageRange": "5V (or 12V variant)",
+      "currentLimit": "~240 mA typical, more at stall",
+      "alternateFunctions": [],
+      "gotcha": "Powering multiple steppers from a microcontroller's onboard 5V pin can brown it out — use a separate supply for more than one."
+    },
+    {
+      "name": "Driver GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the controlling microcontroller.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Camera pan mechanism",
+      "scenario": "Precisely rotate a camera or sensor mount to an exact angle and hold position.",
+      "pinsInvolved": [
+        "IN1",
+        "IN2",
+        "IN3",
+        "IN4"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Small indexing/sorting mechanism",
+      "scenario": "Rotate a small turntable to exact positions for sorting or dispensing.",
+      "pinsInvolved": [
+        "IN1",
+        "IN2",
+        "IN3",
+        "IN4"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Clock or gauge mechanism",
+      "scenario": "Drive an analog-style pointer or clock hand with repeatable precision.",
+      "pinsInvolved": [
+        "IN1",
+        "IN2",
+        "IN3",
+        "IN4"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Raspberry Pi Pico"
+    ],
+    "oftenConfusedWith": [
+      "NEMA 17 (bipolar, far more torque and speed, needs a proper stepper driver)"
+    ],
+    "oftenUpgradedTo": [
+      "NEMA 17 with an A4988/DRV8825 driver, once torque or speed becomes a limitation"
+    ]
+  }
+}

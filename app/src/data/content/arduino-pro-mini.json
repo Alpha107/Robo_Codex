@@ -1,0 +1,350 @@
+{
+  "identity": {
+    "id": "arduino-pro-mini",
+    "name": "Arduino Pro Mini",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Pro Mini strips the Arduino down to just the chip, crystal, regulator, and pin headers — no onboard USB, no bootloader-friendly reset button, nothing that isn't strictly necessary. That makes it the smallest, cheapest way to get a 'real' Arduino into a permanent project, at the cost of needing an external USB-to-serial adapter (an 'FTDI' programmer) every time you want to upload code. It comes in 5V/16MHz and 3.3V/8MHz variants — mixing them up is the single most common Pro Mini mistake, since running 5V logic into a 3.3V board damages it.",
+  "simpleSummary": "A stripped-down Arduino with no USB port, made to be built permanently into a project.",
+  "specifications": {
+    "microcontroller": "ATmega328P",
+    "operatingVoltage": "5V or 3.3V (variant-dependent)",
+    "clockSpeed": "16 MHz (5V variant) or 8 MHz (3.3V variant)",
+    "flashMemory": "32 KB (2 KB used by bootloader)",
+    "sram": "2 KB",
+    "eeprom": "1 KB",
+    "digitalIOPins": 14,
+    "pwmPins": 6,
+    "analogInputPins": 6,
+    "dimensions": "33mm x 18mm",
+    "connector": "None onboard — programmed via external FTDI/USB-serial adapter"
+  },
+  "pinMap": [
+    {
+      "name": "D0 (RX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware serial receive, wired to the FTDI header's TX line.",
+      "voltageRange": "0-5V (or 0-3.3V)",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D1 (TX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware serial transmit.",
+      "voltageRange": "0-5V (or 0-3.3V)",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "External Interrupt 0"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "External Interrupt 1"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI SS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, wired to the onboard LED.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A0",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, 10-bit ADC.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A1",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A2",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A3",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A4",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O",
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A5",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O",
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Main power input — 5V or 3.3V depending on board variant.",
+      "voltageRange": "3.3V or 5V (variant-specific)",
+      "currentLimit": "~150 mA through onboard regulator",
+      "alternateFunctions": [],
+      "gotcha": "Feeding 5V into a 3.3V-variant board will damage it — always check the silkscreen/label before wiring power."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW restarts the running sketch.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DTR",
+      "position": null,
+      "category": "special",
+      "function": "Auto-reset line on the FTDI programming header — the adapter pulses this to reset the chip right before uploading.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "If your FTDI adapter has no DTR pin, you must manually reset the board at the right moment during upload."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Permanent embedded install",
+      "scenario": "Solder directly into a project enclosure where the bulk and cost of a full dev board isn't justified once code is finalized.",
+      "pinsInvolved": [
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Battery-powered sensor node",
+      "scenario": "The 3.3V/8MHz variant draws less current than a full Uno, useful for coin-cell or small-LiPo projects.",
+      "pinsInvolved": [
+        "VCC",
+        "GND",
+        "A0"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Low-cost multi-node robotics swarm",
+      "scenario": "Build several cheap identical nodes (e.g. distributed light sensors) without needing a full board per node.",
+      "pinsInvolved": [
+        "A0",
+        "D2",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "FTDI USB-to-serial adapter",
+      "Arduino Nano"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Nano (has onboard USB, no variant-voltage confusion)"
+    ],
+    "oftenUpgradedTo": [
+      "ATtiny85 (even smaller/cheaper, but far fewer pins and no easy Serial debugging)"
+    ]
+  }
+}

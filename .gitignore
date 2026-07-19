@@ -1,0 +1,6 @@
+# Local Claude Code config (machine/session-specific, not project source)
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db

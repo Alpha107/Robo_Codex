@@ -1,0 +1,92 @@
+{
+  "identity": {
+    "id": "potentiometer",
+    "name": "Potentiometer (Position Feedback)",
+    "category": "Line Following / Encoders / Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A potentiometer is a variable resistor with a wiper that moves across a resistive track as a knob turns — wired as a voltage divider, it turns rotational position directly into an analog voltage a microcontroller can read. Unlike a rotary encoder, its output is absolute (a specific voltage always corresponds to the same physical position) but its rotation range is mechanically limited (usually under 300 degrees, not continuous), which is exactly why hobby servos use an internal potentiometer for position feedback but a rotary encoder is used instead when a knob needs to spin freely.",
+  "simpleSummary": "A knob whose turning position is read as a changing analog voltage.",
+  "specifications": {
+    "resistanceRange": "Commonly 1kΩ - 100kΩ (linear or logarithmic taper)",
+    "rotationRange": "~270-300° mechanical range (single-turn), some multi-turn versions available",
+    "wiring": "3-terminal voltage divider (two ends + wiper)",
+    "outputType": "Analog voltage, proportional to wiper position"
+  },
+  "pinMap": [
+    {
+      "name": "Terminal 1 (End A)",
+      "position": null,
+      "category": "power",
+      "function": "One end of the resistive track, typically wired to a supply voltage or ground.",
+      "voltageRange": "0-5V (circuit-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Wiper",
+      "position": null,
+      "category": "analog",
+      "function": "The sliding contact — outputs a voltage between the two end-terminal voltages, proportional to physical position.",
+      "voltageRange": "0-5V (between the two end terminals)",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "Reading only the wiper without also connecting both end terminals to a defined voltage/ground gives a floating, meaningless reading."
+    },
+    {
+      "name": "Terminal 2 (End B)",
+      "position": null,
+      "category": "power",
+      "function": "Other end of the resistive track.",
+      "voltageRange": "0-5V (circuit-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Manual position/angle input",
+      "scenario": "A physical knob for setting a target angle, speed, or threshold value read by an analog pin.",
+      "pinsInvolved": [
+        "Terminal 1 (End A)",
+        "Wiper",
+        "Terminal 2 (End B)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Servo position feedback (internal)",
+      "scenario": "The exact mechanism a positional hobby servo uses internally to know its own current angle.",
+      "pinsInvolved": [
+        "Wiper"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Volume/brightness manual control",
+      "scenario": "Simple analog control knob for audio volume or LED brightness.",
+      "pinsInvolved": [
+        "Terminal 1 (End A)",
+        "Wiper",
+        "Terminal 2 (End B)"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Servo motor (internal component)"
+    ],
+    "oftenConfusedWith": [
+      "Rotary encoder (relative/unbounded rotation, digital quadrature output instead of analog)"
+    ],
+    "oftenUpgradedTo": [
+      "Rotary encoder for unbounded rotation, or a digital absolute encoder for higher precision"
+    ]
+  }
+}

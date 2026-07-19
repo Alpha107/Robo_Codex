@@ -1,0 +1,25 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="70" width="170" height="120" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="115" y="125" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="115" y="146" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="360" y="70" width="170" height="120" rx="10" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="445" y="120" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">WS2812B</text>
+  <text x="445" y="141" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">LED Strip</text>
+  <text x="445" y="162" text-anchor="middle" fill="#ffffff" font-size="11">(DIN end)</text>
+
+  <path d="M200,100 H360" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <circle cx="200" cy="100" r="4" fill="#1a1d23"/>
+  <text x="280" y="92" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1d23">D6 &#8594; DIN</text>
+
+  <path d="M200,140 H360" stroke="#ff6b6b" stroke-width="3" fill="none"/>
+  <circle cx="200" cy="140" r="4" fill="#1a1d23"/>
+  <text x="280" y="132" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1d23">5V &#8594; 5V</text>
+
+  <path d="M200,180 H360" stroke="#1a1d23" stroke-width="3" fill="none"/>
+  <circle cx="200" cy="180" r="4" fill="#1a1d23"/>
+  <text x="280" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1d23">GND &#8594; GND</text>
+
+  <text x="280" y="222" text-anchor="middle" fill="#5b6270" font-size="11">Longer strips (~8+ LEDs): power from a separate 5V supply,</text>
+  <text x="280" y="238" text-anchor="middle" fill="#5b6270" font-size="11">sharing only GND with the Arduino.</text>
+</svg>

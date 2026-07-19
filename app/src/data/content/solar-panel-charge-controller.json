@@ -1,0 +1,137 @@
+{
+  "identity": {
+    "id": "solar-panel-charge-controller",
+    "name": "Solar Panel + Charge Controller",
+    "category": "Power Management",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This entry is really two physical parts sold and used together: a small hobby-sized solar panel, and a separate charge-controller board that sits between the panel and a rechargeable battery. The panel alone is just an unregulated power source — its open-circuit voltage in bright sun can exceed what a Li-ion/LiPo cell can safely accept, and at night it becomes a path for the battery to drain backward through it. The controller board fixes both problems: it tapers charge current as the battery approaches full (the same constant-current/constant-voltage idea as a TP4056 module, just fed by a variable solar source instead of a steady USB 5V), and it blocks reverse current flow with a diode or MOSFET when the panel isn't producing. Most hobby-tier boards use simple PWM or linear regulation rather than true MPPT, so don't expect lab-grade efficiency in partial sun.",
+  "simpleSummary": "A small solar panel paired with a controller board that safely turns its variable sunlight-powered output into a proper battery charge.",
+  "specifications": {
+    "panelType": "Small hobby polycrystalline or monocrystalline panel",
+    "panelWattage": "1-6W typical for robotics/hobby-sized panels",
+    "openCircuitVoltage": "~5-6V Voc for a 'nominal 5V/6V' panel — well above battery voltage when unloaded in bright sun",
+    "controllerFunction": "Regulates panel output, blocks reverse night-time drain, and tapers charge current as the battery nears full",
+    "regulationMethod": "PWM or simple linear regulation on most hobby boards (rarely true MPPT)",
+    "regulatedOutputVoltage": "Tracks the battery chemistry's safe charge voltage (e.g. 4.2V max for single-cell Li-ion/LiPo)",
+    "maxChargeCurrent": "Panel-dependent, commonly a few hundred mA on small hobby setups",
+    "reverseProtection": "Blocking diode or MOSFET prevents the battery discharging back through the panel at night"
+  },
+  "pinMap": [
+    {
+      "name": "PANEL+",
+      "position": null,
+      "category": "power",
+      "function": "Positive output from the solar panel, feeding into the charge controller's input.",
+      "voltageRange": "0-6V depending on light level (varies continuously through the day)",
+      "currentLimit": "Panel-dependent, typically well under 1A on hobby panels",
+      "alternateFunctions": [],
+      "gotcha": "An unloaded small panel in direct sun can output more than its rated voltage — never wire it straight to a bare LiPo cell without the controller in between."
+    },
+    {
+      "name": "PANEL-",
+      "position": null,
+      "category": "power",
+      "function": "Negative/return connection from the solar panel to the controller.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "BAT+",
+      "position": null,
+      "category": "power",
+      "function": "Battery positive terminal — connects to the cell or pack being charged.",
+      "voltageRange": "3.0-4.2V for a single Li-ion/LiPo cell",
+      "currentLimit": "Charge current, typically a few hundred mA",
+      "alternateFunctions": [],
+      "gotcha": "Many budget controller boards have no low-voltage cutoff on this side — pairing one with an unprotected cell risks over-discharge on cloudy days when charge current can't keep up with a connected load."
+    },
+    {
+      "name": "BAT-",
+      "position": null,
+      "category": "power",
+      "function": "Battery negative terminal.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "LOAD+",
+      "position": null,
+      "category": "power",
+      "function": "Output terminal for powering a device directly off the regulated battery/controller rail.",
+      "voltageRange": "3.0-4.2V, tracking battery voltage",
+      "currentLimit": "Board-dependent, often under 1A",
+      "alternateFunctions": [],
+      "gotcha": "LOAD+ is usually just tied to BAT+ on budget boards — it isn't a separately stabilized rail, so it sags right along with the battery as it discharges."
+    },
+    {
+      "name": "LOAD-",
+      "position": null,
+      "category": "power",
+      "function": "Ground return for the load output.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Solar-powered garden/soil sensor node",
+      "scenario": "Trickle-charge a small LiPo through the day so a low-power sensor node can log soil moisture indefinitely without a wired power supply.",
+      "pinsInvolved": ["PANEL+", "PANEL-", "BAT+", "BAT-"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Off-grid weather station",
+      "scenario": "Power a microcontroller and sensor suite directly from LOAD+/LOAD- while the panel keeps the buffer battery topped up.",
+      "pinsInvolved": ["PANEL+", "PANEL-", "BAT+", "BAT-", "LOAD+", "LOAD-"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Window-sill trickle charger",
+      "scenario": "Keep a standby robot or backup battery pack topped off using ambient daylight through a window, as a slower alternative to a USB charger.",
+      "pinsInvolved": ["PANEL+", "PANEL-", "BAT+", "BAT-"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Solar-assisted mailbox/driveway notifier",
+      "scenario": "Run a remote low-power sensor and radio module entirely off solar + battery where running mains power isn't practical.",
+      "pinsInvolved": ["PANEL+", "PANEL-", "BAT+", "BAT-", "LOAD+", "LOAD-"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Idle-time solar top-up for a small rover",
+      "scenario": "Mount a panel on a robot's chassis so it recovers some charge whenever it's parked in the sun between missions.",
+      "pinsInvolved": ["PANEL+", "PANEL-", "BAT+", "BAT-"],
+      "difficulty": "Advanced (panel placement and weight tradeoffs on a moving platform)"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "tp4056 (USB charging alternative for cloudy days or indoor charging)",
+      "18650 battery holder",
+      "LiPo battery"
+    ],
+    "oftenConfusedWith": [
+      "tp4056 (USB-input charging module vs this solar-input charging module — different input source, similar overcharge-protection role)",
+      "a bare solar panel with no controller at all (offers no overcharge or reverse-drain protection)"
+    ],
+    "oftenUpgradedTo": [
+      "MPPT solar charge controllers for meaningfully better efficiency in partial or changing sunlight"
+    ]
+  },
+  "beginnerMistakes": [
+    "Wiring a raw panel directly to a LiPo cell with no controller in between, risking overvoltage in bright, low-load conditions.",
+    "Expecting linear output as clouds pass or the panel is partially shaded — output can drop far more than the shaded fraction would suggest.",
+    "Sizing a panel too small for the load, so the battery net-drains over a multi-day overcast stretch even though it 'charges' on sunny days.",
+    "Mounting the panel in a fixed spot that gets shaded part of the day instead of accounting for the sun's path.",
+    "Ignoring the controller board's own quiescent current draw, which matters on very small, very low-power systems."
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "identity": {
+    "id": "sharp-gp2y0a21",
+    "name": "Sharp GP2Y0A21 IR Distance Sensor",
+    "category": "Distance & Proximity Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Unlike the simple digital IR obstacle sensor, the GP2Y0A21 gives an actual analog distance reading using triangulation: an internal IR emitter and a position-sensitive detector calculate distance from the angle light returns at, which makes it far less fooled by a target's color or reflectivity than a simple reflectance sensor. The catch is that its output voltage-to-distance relationship is distinctly non-linear (roughly an inverse curve, not a straight line), so converting the analog reading into a distance in centimeters requires a formula or lookup table from the datasheet rather than simple linear scaling.",
+  "simpleSummary": "An analog distance sensor that's less fooled by an object's color than simpler IR sensors.",
+  "specifications": {
+    "operatingVoltage": "4.5V - 5.5V",
+    "measuringRange": "10cm - 80cm",
+    "outputType": "Analog voltage, inversely (non-linearly) related to distance",
+    "current": "~30 mA (has a distinctive spiky current draw pattern)",
+    "responseTime": "~39 ms"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "4.5V - 5.5V",
+      "currentLimit": "~30 mA (spiky waveform)",
+      "alternateFunctions": [],
+      "gotcha": "The current draw has sharp periodic spikes as part of its internal measurement cycle — add a decoupling capacitor close to the sensor if readings look noisy."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Vo",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output voltage, inversely related to distance — higher voltage means closer object.",
+      "voltageRange": "~0.4V (far) to ~3V (close)",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "The voltage-to-distance curve is non-linear — don't scale it linearly, use the datasheet's conversion formula or a lookup table, or readings will be wrong except near the calibration point."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Obstacle-avoiding robot with distance-aware slowing",
+      "scenario": "Slow down proportionally as an obstacle gets closer, rather than a simple stop/go response.",
+      "pinsInvolved": [
+        "Vo",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Cliff/edge detection",
+      "scenario": "Mounted facing down, detect a sudden increase in measured distance indicating a table edge or stairs.",
+      "pinsInvolved": [
+        "Vo"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Servo motor (for sensor sweep)"
+    ],
+    "oftenConfusedWith": [
+      "HC-SR04 (ultrasonic, linear-ish response, cheaper)",
+      "VL53L0X (laser ToF, much higher precision, digital I2C output)"
+    ],
+    "oftenUpgradedTo": [
+      "VL53L0X/VL53L1X for higher precision and a simpler linear digital reading"
+    ]
+  }
+}

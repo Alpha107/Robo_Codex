@@ -1,0 +1,64 @@
+.troubleshooting-hint {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin: 0 0 14px;
+}
+
+.troubleshooting-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.troubleshooting-card {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--power);
+  border-radius: 10px;
+  background: var(--bg-panel);
+  overflow: hidden;
+}
+
+.troubleshooting-card.open {
+  border-left-color: var(--analog);
+}
+
+.troubleshooting-card-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.troubleshooting-card-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-panel-raised);
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.troubleshooting-card.open .troubleshooting-card-icon {
+  background: var(--analog);
+  color: #071019;
+}
+
+.troubleshooting-card-fix {
+  padding: 0 16px 16px 48px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}

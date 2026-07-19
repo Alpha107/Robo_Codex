@@ -1,0 +1,33 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .flow { stroke-dasharray: 6 5; animation: flowmove 1s linear infinite; }
+    @keyframes flowmove { to { stroke-dashoffset: -22; } }
+    .glow { animation: glow 1.3s ease-in-out infinite; }
+    @keyframes glow { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  </style>
+
+  <text x="280" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Publish / Subscribe Messaging</text>
+
+  <rect x="20" y="60" width="140" height="50" rx="7" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="90" y="90" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">IMU Driver</text>
+  <text x="90" y="45" text-anchor="middle" font-size="10" fill="#5b6270">publisher</text>
+
+  <path d="M160,85 H220" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="220,79 234,85 220,91" fill="#1a1d23"/>
+
+  <rect x="234" y="60" width="120" height="50" rx="25" fill="#f08c00" stroke="#1a1d23" stroke-width="2" class="glow"/>
+  <text x="294" y="90" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">/imu/data</text>
+
+  <path d="M354,80 H420" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="420,74 434,80 420,86" fill="#1a1d23"/>
+  <path d="M354,95 Q390,150 420,180" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="412,178 422,182 415,170" fill="#1a1d23"/>
+
+  <rect x="434" y="55" width="120" height="50" rx="7" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <text x="494" y="85" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="700">Stabilizer</text>
+
+  <rect x="434" y="160" width="120" height="50" rx="7" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="494" y="190" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="700">Logger</text>
+
+  <text x="280" y="240" text-anchor="middle" font-size="10.5" fill="#5b6270">Both subscribers get the same data — neither knows the other exists.</text>
+</svg>

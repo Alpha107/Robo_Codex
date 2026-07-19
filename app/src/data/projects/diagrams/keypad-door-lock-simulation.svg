@@ -1,0 +1,35 @@
+<svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="90" width="180" height="180" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="120" y="175" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="120" y="196" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="420" y="30" width="160" height="80" rx="8" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="500" y="65" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">4x4 Membrane</text>
+  <text x="500" y="85" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Keypad</text>
+
+  <rect x="420" y="140" width="160" height="60" rx="8" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <text x="500" y="175" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Servo (lock)</text>
+
+  <circle cx="500" cy="240" r="24" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="500" y="245" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">BUZZ</text>
+
+  <rect x="230" y="290" width="170" height="40" rx="8" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="315" y="315" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">LCD (I2C, A4/A5)</text>
+
+  <path d="M210,110 H420" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="110" r="4" fill="#4dabf7"/>
+  <text x="220" y="102" font-size="12" font-weight="600" fill="#1a1d23">D2-D5 = rows (R1-R4)</text>
+  <text x="220" y="128" font-size="12" font-weight="600" fill="#1a1d23">D6-D9 = columns (C1-C4)</text>
+
+  <path d="M210,175 H420" fill="none" stroke="#ff922b" stroke-width="3"/>
+  <circle cx="210" cy="175" r="4" fill="#ff922b"/>
+  <text x="220" y="167" font-size="12" font-weight="600" fill="#1a1d23">D10 &#8594; servo signal</text>
+
+  <path d="M210,225 H480 V216" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="225" r="4" fill="#4dabf7"/>
+  <text x="220" y="243" font-size="12" font-weight="600" fill="#1a1d23">D11 &#8594; buzzer +</text>
+
+  <path d="M290,290 V250 H210 V255" fill="none" stroke="#cc5de8" stroke-width="3"/>
+  <circle cx="210" cy="255" r="4" fill="#cc5de8"/>
+  <text x="220" y="270" font-size="12" font-weight="600" fill="#1a1d23">A4/A5 &#8594; LCD SDA/SCL</text>
+</svg>

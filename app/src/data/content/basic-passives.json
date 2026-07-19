@@ -1,0 +1,162 @@
+{
+  "identity": {
+    "id": "basic-passives",
+    "name": "Resistors, Capacitors, Diodes & Transistors",
+    "category": "Prototyping Essentials",
+    "image": null,
+    "difficulty": "Beginner",
+    "model3d": null
+  },
+  "overview": "Long before anyone wires up a sensor breakout board, these four humble parts are usually the first 'components' a beginner actually touches. A resistor limits current (the difference between an LED lighting up nicely and burning out instantly). A capacitor stores a small amount of charge and smooths out voltage bumps (why almost every board has a few scattered near its power pins). A diode lets current flow one way only (protecting a circuit from a reversed battery, or catching a motor's voltage spike). A transistor is a tiny electrically-controlled switch (letting a weak microcontroller signal control a stronger current — the same basic idea a relay uses mechanically instead).",
+  "simpleSummary": "The basic electronic parts — resistors, capacitors, diodes, transistors — every beginner circuit is built from.",
+  "specifications": {
+    "resistor": "Rated in ohms (Ω), color-banded to indicate value; common hobby values 220Ω-10kΩ",
+    "capacitor": "Rated in farads (typically µF or pF for hobby use); ceramic (small values, no polarity) or electrolytic (larger values, polarized)",
+    "diode": "Rated by forward voltage drop and max current; LEDs are a specialized light-emitting diode",
+    "transistor": "Rated by max voltage/current and gain; common hobby types include 2N2222 (NPN) and 2N3906 (PNP)"
+  },
+  "pinMap": [
+    {
+      "name": "Resistor Lead 1",
+      "position": null,
+      "category": "special",
+      "function": "One terminal of a resistor — no polarity, can be wired either direction.",
+      "voltageRange": "Passive component",
+      "currentLimit": "Determined by power rating (typically 1/4W for hobby resistors)",
+      "alternateFunctions": [],
+      "gotcha": "Color bands encode the resistance value — misreading them (a very common beginner error) means the 'current limiting' resistor might not limit nearly enough."
+    },
+    {
+      "name": "Resistor Lead 2",
+      "position": null,
+      "category": "special",
+      "function": "Other resistor terminal.",
+      "voltageRange": "Passive component",
+      "currentLimit": "Determined by power rating",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Capacitor Lead (+)",
+      "position": null,
+      "category": "special",
+      "function": "On polarized (electrolytic) capacitors, the positive terminal — usually the longer lead.",
+      "voltageRange": "Up to the capacitor's rated voltage",
+      "currentLimit": "N/A (charge storage, not continuous current)",
+      "alternateFunctions": [],
+      "gotcha": "Wiring an electrolytic capacitor backwards can cause it to heat up, vent, or in extreme cases burst — always check polarity markings (a stripe on the negative side)."
+    },
+    {
+      "name": "Capacitor Lead (-)",
+      "position": null,
+      "category": "special",
+      "function": "Negative terminal on polarized capacitors; ceramic capacitors have no polarity at all.",
+      "voltageRange": "0V reference (polarized types)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Diode Anode",
+      "position": null,
+      "category": "special",
+      "function": "The terminal current flows IN from — conventional current flows anode to cathode only.",
+      "voltageRange": "Forward voltage drop (~0.6-0.7V silicon, ~1.8-3.4V LEDs)",
+      "currentLimit": "Datasheet-rated max forward current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Diode Cathode",
+      "position": null,
+      "category": "special",
+      "function": "The terminal current flows OUT to — marked with a stripe on the diode body.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Reversed diodes simply block current rather than passing it — if a circuit relying on a diode does nothing, check orientation before assuming it's faulty."
+    },
+    {
+      "name": "Transistor Base",
+      "position": null,
+      "category": "special",
+      "function": "The control terminal — a small current/voltage here switches a much larger current between collector and emitter.",
+      "voltageRange": "~0.6-0.7V above emitter to turn on (silicon BJT)",
+      "currentLimit": "Small — typically driven directly from a microcontroller pin",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Transistor Collector",
+      "position": null,
+      "category": "special",
+      "function": "One side of the switched current path.",
+      "voltageRange": "Up to the transistor's rated voltage",
+      "currentLimit": "Datasheet-rated max collector current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Transistor Emitter",
+      "position": null,
+      "category": "special",
+      "function": "Other side of the switched current path.",
+      "voltageRange": "N/A",
+      "currentLimit": "Datasheet-rated max current",
+      "alternateFunctions": [],
+      "gotcha": "Mixing up collector and emitter (an easy mistake, since the package often looks symmetric) usually makes the transistor fail to switch at all rather than working backwards."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Current-limiting an LED",
+      "scenario": "A resistor in series with an LED is the very first circuit most people ever build.",
+      "pinsInvolved": [
+        "Resistor Lead 1",
+        "Resistor Lead 2"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Power supply smoothing",
+      "scenario": "A capacitor across a power rail smooths out small voltage dips and noise.",
+      "pinsInvolved": [
+        "Capacitor Lead (+)",
+        "Capacitor Lead (-)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Motor flyback protection",
+      "scenario": "A diode across a motor or relay coil catches the voltage spike generated when it's switched off, protecting the driving transistor/IC.",
+      "pinsInvolved": [
+        "Diode Anode",
+        "Diode Cathode"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Low-current switch driven by a microcontroller pin",
+      "scenario": "A transistor lets a weak GPIO pin switch a stronger current than the pin itself could supply.",
+      "pinsInvolved": [
+        "Transistor Base",
+        "Transistor Collector",
+        "Transistor Emitter"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard",
+      "Standard LED",
+      "Solenoid"
+    ],
+    "oftenConfusedWith": [
+      "Integrated driver ICs (pre-built versions of what a handful of these discrete parts do together)"
+    ],
+    "oftenUpgradedTo": [
+      "MOSFETs for higher-current switching than a basic BJT transistor comfortably handles"
+    ]
+  }
+}

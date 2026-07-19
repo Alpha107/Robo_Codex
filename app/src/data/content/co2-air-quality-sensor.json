@@ -1,0 +1,131 @@
+{
+  "identity": {
+    "id": "co2-air-quality-sensor",
+    "name": "CO2 / Air Quality Sensor (MH-Z19)",
+    "category": "Environmental Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The MH-Z19 measures actual CO2 concentration using NDIR (non-dispersive infrared) sensing: it shines an infrared source through a small gas sampling chamber and measures how much of a specific wavelength gets absorbed, since CO2 absorbs infrared light in a very predictable, well-characterized band. That's fundamentally different from — and far more trustworthy than — the resistive-element gas sensors (MQ-135 and similar) sometimes marketed as 'CO2 sensors,' which actually respond to a mix of gases and only estimate CO2 indirectly. The tradeoff is warm-up time and a self-calibration routine: the sensor needs its infrared source and optics to thermally stabilize before readings are trustworthy, and it periodically recalibrates its own zero-point assuming it sees fresh outdoor-level air (~400ppm) at least once every so often.",
+  "simpleSummary": "A sensor that measures actual CO2 levels in the air by shining infrared light through a small gas chamber.",
+  "specifications": {
+    "sensingPrinciple": "NDIR (non-dispersive infrared) absorption",
+    "measuringRange": "0-5000 ppm (MH-Z19B variant; other variants go to 2000 or 10000 ppm)",
+    "interface": "UART (default, 9600 baud), PWM output also available",
+    "operatingVoltage": "4.5-5.5V (draws current in pulses driving the infrared source)",
+    "warmUpTime": "~3 minutes minimum before readings are usable; several hours for full thermal/optical stabilization",
+    "accuracy": "±50 ppm + 5% of reading (typical)",
+    "autoCalibration": "ABC (Automatic Baseline Correction) self-recalibrates its zero-point roughly every 24h, assuming it periodically sees fresh outdoor-level air (~400ppm)",
+    "responseTime": "T90 < 120 seconds"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input, feeds the infrared emitter and onboard electronics.",
+      "voltageRange": "5V",
+      "currentLimit": "~60 mA average, higher peaks during IR source pulses",
+      "alternateFunctions": [],
+      "gotcha": "Needs a stable 5V rail — powering it from a microcontroller's onboard 5V pin alongside other current-hungry peripherals can cause current-pulse-related brownouts on cheap regulators."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TX",
+      "position": null,
+      "category": "communication",
+      "function": "UART transmit from the sensor — connects to the microcontroller's RX pin.",
+      "voltageRange": "3.3V logic level (despite 5V power)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "This is the sensor's output — it must go to the microcontroller's RX pin, not its TX pin; crossed TX/RX wiring is the most common reason for 'no data' on first setup."
+    },
+    {
+      "name": "RX",
+      "position": null,
+      "category": "communication",
+      "function": "UART receive into the sensor — connects to the microcontroller's TX pin.",
+      "voltageRange": "3.3V logic level",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PWM",
+      "position": null,
+      "category": "digital",
+      "function": "Alternate CO2 output as a PWM duty cycle, usable without a UART peripheral (e.g. on boards with limited serial ports).",
+      "voltageRange": "0-5V PWM",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["CO2 concentration output (non-UART)"],
+      "gotcha": "Lower resolution and slower to read accurately than the UART interface — fine for a simple threshold alarm, not ideal for logging precise trends."
+    },
+    {
+      "name": "HD",
+      "position": null,
+      "category": "special",
+      "function": "Zero-point calibration pin — holding it LOW for more than 7 seconds forces a manual zero-point (400ppm) calibration.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Only trigger this while the sensor is genuinely sitting in fresh outdoor-level air (~400ppm) — doing it indoors or in a closed room permanently skews every future reading until recalibrated correctly again."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Ventilation automation",
+      "scenario": "Automatically switch on an exhaust fan or open a vent damper when CO2 crosses a threshold (e.g. 1000ppm) in a bedroom or meeting room.",
+      "pinsInvolved": ["TX", "RX", "VCC", "GND"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Classroom/meeting room air quality monitor",
+      "scenario": "Display live CO2 levels with a simple red/yellow/green indicator so occupants know when to open a window.",
+      "pinsInvolved": ["TX", "RX"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Greenhouse CO2 enrichment monitoring",
+      "scenario": "Track CO2 levels in a sealed grow tent where CO2 is deliberately kept above outdoor levels — requires disabling ABC auto-calibration since the tent never sees fresh air.",
+      "pinsInvolved": ["TX", "RX"],
+      "difficulty": "Advanced (ABC must be disabled and never triggered via HD)"
+    },
+    {
+      "title": "STEM demonstration of exhaled breath CO2",
+      "scenario": "Have students breathe near the sensor to visibly demonstrate how quickly exhaled breath (~40,000+ ppm) spikes local CO2 readings.",
+      "pinsInvolved": ["TX", "RX"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "Relay module (fan/vent control)",
+      "SSD1306 OLED (for a live readout)"
+    ],
+    "oftenConfusedWith": [
+      "MQ-135 gas sensor (a resistive sensor that estimates general air quality, not a true calibrated CO2 concentration measurement)"
+    ],
+    "oftenUpgradedTo": [
+      "SCD30 / SCD41 (Sensirion NDIR CO2 sensors with I2C interface and onboard humidity/temperature compensation)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Trusting readings taken in the first few minutes after power-on — the infrared source and optics need time to thermally stabilize, and early readings can be significantly off.",
+    "Triggering a manual zero-point calibration (via HD) indoors — this permanently skews the baseline until it's correctly recalibrated in genuine fresh air.",
+    "Leaving ABC auto-calibration enabled in an environment that never sees outdoor-level fresh air (sealed grow tents, submarines, occupied rooms with poor ventilation) — the sensor slowly recalibrates its zero-point to whatever the 'lowest' level it sees is, silently drifting.",
+    "Crossing the TX/RX wiring — the sensor's TX must go to the microcontroller's RX, a very common first-wiring mistake.",
+    "Powering it from a microcontroller's onboard 5V regulator shared with other high-current peripherals, causing brownouts during the sensor's current pulses."
+  ]
+}

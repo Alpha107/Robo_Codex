@@ -1,0 +1,114 @@
+{
+  "identity": {
+    "id": "smart-home-light-automation",
+    "title": "Smart Home Light Automation",
+    "tagline": "Flip a lamp on or off from any phone on your WiFi, via a web page the ESP32 hosts itself.",
+    "category": "Smart Home & IoT",
+    "difficulty": "Advanced",
+    "estimatedTime": "45 minutes"
+  },
+  "goal": "Control a relay — and through it, a lamp — from a simple web page hosted directly on an ESP32, so any phone or laptop on the same WiFi network can turn it on or off with a tap, no app or cloud account required.",
+  "simpleSummary": "Turn a lamp on or off from your phone's browser, no app needed.",
+  "howItWorks": "The ESP32 is a full WiFi-capable microcontroller, not just a WiFi accessory bolted onto an Arduino — it can run its own tiny web server, serving an actual webpage to anything that visits its IP address on the local network. This project's server responds to two URLs, one that turns the relay on and one that turns it off, and returns a small HTML page with buttons for both. A relay is used to bridge between the ESP32's tiny 3.3V control signal and a completely separate, much higher-power circuit — clicking a button doesn't send meaningful power to the lamp itself; it just closes or opens a mechanical switch inside the relay that the lamp's own separate power circuit runs through.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A phone or laptop connected to the same WiFi network as the ESP32",
+    "Extra care and adult supervision if wiring anything to mains power through the relay"
+  ],
+  "components": [
+    {
+      "componentId": "esp32-devkit",
+      "quantity": 1
+    },
+    {
+      "componentId": "relay-module",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 3
+    }
+  ],
+  "circuitDiagramCaption": "ESP32 GPIO26 drives the relay's IN pin; the relay's COM/NO terminals switch the lamp's own separate power circuit.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "relay-module",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "VIN"
+        }
+      },
+      {
+        "from": {
+          "componentId": "relay-module",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "relay-module",
+          "pin": "IN"
+        },
+        "to": {
+          "componentId": "esp32-devkit",
+          "pin": "GPIO26"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the relay module's VCC to the ESP32's 5V pin, GND to GND, and IN to GPIO26.",
+      "detail": "Most common relay modules' opto-isolated trigger inputs work fine from the ESP32's 3.3V logic level even though the module itself is powered at 5V — check your specific module's documentation if it doesn't respond."
+    },
+    {
+      "step": 2,
+      "instruction": "For learning and testing, wire the relay's COM and NO terminals into a low-voltage DC circuit (like a battery-powered LED strip or a 5V lamp), NOT mains household power.",
+      "detail": "This is the strongly recommended way to build and test this project safely. See the safety note below before considering anything higher voltage."
+    }
+  ],
+  "code": [
+    {
+      "filename": "smart_home_light_automation.ino",
+      "language": "arduino",
+      "source": "#include <WiFi.h>\n#include <WebServer.h>\n\n// Smart Home Light Automation\n// Hosts a tiny web page that toggles a relay over WiFi.\n\nconst char* WIFI_SSID = \"YOUR_WIFI_NAME\";\nconst char* WIFI_PASSWORD = \"YOUR_WIFI_PASSWORD\";\n\nconst int RELAY_PIN = 26;\nbool lampOn = false;\n\nWebServer server(80);\n\nvoid setup() {\n  pinMode(RELAY_PIN, OUTPUT);\n  digitalWrite(RELAY_PIN, LOW);\n\n  Serial.begin(115200);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"Connected! Open this in a browser: http://\");\n  Serial.println(WiFi.localIP());\n\n  server.on(\"/\", handleRoot);\n  server.on(\"/on\", handleOn);\n  server.on(\"/off\", handleOff);\n  server.begin();\n}\n\nvoid loop() {\n  server.handleClient();\n}\n\nvoid handleRoot() {\n  String page = \"<h1>Living Room Lamp</h1>\";\n  page += \"<p>Status: \";\n  page += lampOn ? \"ON\" : \"OFF\";\n  page += \"</p>\";\n  page += \"<p><a href=\\\"/on\\\"><button>Turn ON</button></a> \";\n  page += \"<a href=\\\"/off\\\"><button>Turn OFF</button></a></p>\";\n  server.send(200, \"text/html\", page);\n}\n\nvoid handleOn() {\n  lampOn = true;\n  digitalWrite(RELAY_PIN, HIGH);\n  server.sendHeader(\"Location\", \"/\");\n  server.send(303); // redirect back to the main page\n}\n\nvoid handleOff() {\n  lampOn = false;\n  digitalWrite(RELAY_PIN, LOW);\n  server.sendHeader(\"Location\", \"/\");\n  server.send(303);\n}\n",
+      "explanation": "server.on() registers which function should run for each URL path — visiting \"/\" builds and returns a small HTML page, while \"/on\" and \"/off\" flip the relay pin and then redirect the browser straight back to the main page so the displayed status stays current. server.handleClient(), called every loop, is what actually checks for and responds to incoming requests — without calling it continuously, the web server would never process anything a visiting browser sends it."
+    }
+  ],
+  "expectedBehavior": "After the Arduino IDE's Serial Monitor prints an IP address, visiting that address in any browser on the same WiFi network shows a page with ON/OFF buttons and the lamp's current state, and clicking either immediately switches the relay (and whatever it's controlling).",
+  "troubleshooting": [
+    {
+      "issue": "⚠ Safety: thinking about wiring the relay to an actual mains-voltage lamp.",
+      "fix": "Mains voltage (110-240V depending on your country) can kill. The COM/NO/NC terminals on a relay switching mains power carry that same lethal voltage, fully exposed on a hobbyist breadboard with no enclosure. Build and test this entire project on a low-voltage DC load first (a battery-powered LED strip works well), and only involve a qualified electrician for anything connected to real household wiring — this is not a step to improvise."
+    },
+    {
+      "issue": "ESP32 never connects to WiFi.",
+      "fix": "Double-check the SSID/password constants for typos, and confirm you're connecting to a 2.4GHz network — the ESP32 does not support 5GHz WiFi, a very common first-time gotcha."
+    },
+    {
+      "issue": "Page loads but buttons don't change the relay.",
+      "fix": "Confirm GPIO26 is actually wired to the relay's IN pin, and listen/look for the relay's audible click or onboard LED when toggling — if that itself doesn't happen, it's a wiring issue, not a WiFi/code one."
+    },
+    {
+      "issue": "Relay clicks correctly but the lamp itself doesn't respond.",
+      "fix": "This means the relay's own switching side (COM/NO/NC) isn't wired correctly, which is downstream of everything this code controls — recheck that separate circuit specifically."
+    }
+  ],
+  "extensions": [
+    "Add a physical push button as a manual override alongside the web toggle.",
+    "Add a scheduled on/off time using the ESP32's NTP time sync instead of only manual control.",
+    "Combine with the Smart Home Sensor Hub project so the light turns on automatically based on a light or motion sensor, with the web page as a manual override.",
+    "Add basic authentication to the web page so only people with a password can control the lamp."
+  ]
+}

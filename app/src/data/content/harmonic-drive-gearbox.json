@@ -1,0 +1,139 @@
+{
+  "identity": {
+    "id": "harmonic-drive-gearbox",
+    "name": "Harmonic Drive Gearbox",
+    "category": "Structural & Mechanical",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A harmonic drive (strain wave gear) achieves large reduction ratios in a strikingly compact, lightweight package by flexing a thin-walled steel cup — the flexspline — against a rigid internally-toothed ring — the circular spline — using an elliptical wave generator bearing as the input. Because the flexspline and circular spline teeth are almost always fully meshed across the long axis of the ellipse rather than engaging like a normal spur gear pair, there is essentially zero backlash, which is exactly why these show up in robot arm joints, satellite pointing mechanisms, and surgical robots where positioning error can't be allowed to accumulate through a gear train. The tradeoff for that precision is that the flexspline is a fatigue-limited flexing part with a finite life measured in load cycles, not just a spinning gear, so overtorquing it doesn't just strip teeth — it can propagate a fatigue crack. Harmonic drives are usually specified by frame size and ratio rather than by a single 'gearbox' SKU, and the output flange commonly integrates its own cross-roller bearing so the gearbox itself becomes the joint's main structural bearing.",
+  "simpleSummary": "A compact gearbox that flexes a thin metal cup against a rigid gear ring to get huge, almost-zero-backlash reduction in a small package.",
+  "specifications": {
+    "gearRatio": "100:1 (common range 30:1 to 160:1 depending on frame size)",
+    "ratedOutputTorque": "~40 Nm continuous (size-dependent, e.g. a small ~size-17 frame)",
+    "maxMomentaryTorque": "~85 Nm (roughly 2x rated, brief peak loads only)",
+    "backlash": "< 1 arcmin (effectively zero)",
+    "repeatability": "±15 arcsec",
+    "maxInputSpeed": "3,000-6,500 rpm depending on frame size",
+    "transmissionEfficiency": "70-90%, lower at high ratios and low speed",
+    "weight": "~0.5-1.2 kg for a small robot-joint-scale frame size",
+    "construction": "Wave generator (elliptical bearing) + flexspline (flexible cup, external teeth) + circular spline (rigid ring, internal teeth)"
+  },
+  "pinMap": [
+    {
+      "name": "Input Shaft",
+      "position": null,
+      "category": "special",
+      "function": "Mates to the drive motor's output shaft via the wave generator's elliptical bearing bore; this is the high-speed, low-torque side of the reduction.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The wave generator bore is a tight, keyed or press-fit tolerance to the motor shaft. Forcing an undersized or oversized shaft into it doesn't just wear the bearing — it can distort the elliptical profile the whole gear-meshing action depends on, which shows up later as excess backlash that looks like a defective unit."
+    },
+    {
+      "name": "Output Flange",
+      "position": null,
+      "category": "special",
+      "function": "Bolted face of the flexspline, delivering the reduced-speed, high-torque output to the driven joint or load.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Flange bolts must be torqued in a star (crossing) pattern to spec. Tightening them sequentially around the circle instead pulls the thin flexspline wall slightly oval, and the gearbox will run with audible torque ripple even though it tested perfectly on the bench before mounting."
+    },
+    {
+      "name": "Circular Spline Housing Mounting Bolts",
+      "position": null,
+      "category": "special",
+      "function": "Fixes the rigid, internally-toothed circular spline (the stationary member) to the robot's structural frame.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The circular spline is assumed to be perfectly rigid in the backlash calculation. Bolting it to a frame member with any measurable flex reintroduces compliance that behaves just like backlash downstream — the gearbox itself can still be spec-perfect while the joint 'feels' loose."
+    },
+    {
+      "name": "Lubrication Port",
+      "position": null,
+      "category": "special",
+      "function": "Grease fill/relief point for the flexspline-to-circular-spline tooth mesh on serviceable units.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Using a generic grease instead of the manufacturer-specified harmonic-drive grease raises mesh friction on a part that's already elastically flexing every single revolution — this measurably shortens flexspline fatigue life, not just lubrication interval."
+    },
+    {
+      "name": "Cross Roller Output Bearing",
+      "position": null,
+      "category": "special",
+      "function": "Integrated bearing on many harmonic drive units that supports the output flange's radial and axial (and tilting-moment) loads directly, letting the gearbox double as the joint's main structural bearing.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "This bearing has its own separate moment/radial load rating from the gearbox's torque rating. Mounting a long lever arm or off-axis load on the output flange can overload the bearing and cause premature wear or play even while staying safely within the rated torque number."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Collaborative robot arm joint",
+      "scenario": "Use a harmonic drive at each arm joint so the arm holds a taught position without drifting or 'creeping' the way a backlash-heavy planetary gearbox would under gravity load.",
+      "pinsInvolved": [
+        "Input Shaft",
+        "Output Flange",
+        "Cross Roller Output Bearing"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Compact humanoid or quadruped actuator",
+      "scenario": "Pair a small BLDC motor with a harmonic drive to get high torque density in a joint package small enough to fit inside a hip or shoulder housing.",
+      "pinsInvolved": [
+        "Input Shaft",
+        "Output Flange",
+        "Circular Spline Housing Mounting Bolts"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Precision pan-tilt or telescope mount",
+      "scenario": "Drive a camera or telescope azimuth axis where near-zero backlash means the pointing angle doesn't wander every time direction reverses.",
+      "pinsInvolved": [
+        "Input Shaft",
+        "Output Flange"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Retrofitting a hobby-servo joint for position holding",
+      "scenario": "Swap a backlash-prone hobby gear train for a small harmonic drive on a project arm that needs to hold a precise pose under load without twitching.",
+      "pinsInvolved": [
+        "Input Shaft",
+        "Output Flange",
+        "Circular Spline Housing Mounting Bolts"
+      ],
+      "difficulty": "Advanced (nonstandard motor-to-wave-generator coupling design)"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "BLDC servo motor",
+      "Absolute magnetic or optical encoder",
+      "Robot joint housing / structural bracket",
+      "Motor controller with current (torque) limiting"
+    ],
+    "oftenConfusedWith": [
+      "Planetary gearbox (cheaper, higher backlash, less axial compactness)",
+      "Cycloidal drive (also near-zero backlash, different eccentric-cam mechanism, generally higher torque capacity per size)"
+    ],
+    "oftenUpgradedTo": [
+      "Larger frame-size harmonic drive for higher rated torque",
+      "Integrated actuator unit (motor + encoder + harmonic drive combined in one housing)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Coupling a motor shaft directly to the wave generator bore without matching the specified fit tolerance, distorting the elliptical bearing.",
+    "Tightening output flange bolts sequentially around the circle instead of in a star pattern, inducing flexspline ovaling and torque ripple.",
+    "Exceeding the maximum rated input speed, which overheats and prematurely fatigues the wave generator bearing long before the gear teeth show any wear.",
+    "Bolting the circular spline housing to a non-rigid frame member, silently reintroducing backlash-like compliance that the gearbox itself doesn't have.",
+    "Treating the rated torque as a hard ceiling for momentary loads — repeated momentary overtorque events fatigue the flexspline cumulatively even if each individual event looks 'within spec'."
+  ]
+}

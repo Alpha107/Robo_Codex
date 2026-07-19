@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "degrees-of-freedom-and-workspace",
+    "title": "Degrees of Freedom & Workspace",
+    "category": "Kinematics & Dynamics",
+    "level": "Foundational",
+    "tagline": "Counting the independent ways a robot can move, and mapping out everywhere that motion can actually reach."
+  },
+  "simpleSummary": "Degrees of freedom count the independent ways something can move; workspace is the entire region in space it can actually reach with those movements.",
+  "keyIdea": "The number of independent motions a mechanism has (its degrees of freedom) determines what shapes of workspace — and what combinations of position and orientation — it's physically capable of reaching.",
+  "overview": "A degree of freedom (DOF) is one independent way a body can move — a single joint that rotates contributes one rotational DOF; a free rigid body moving in ordinary 3D space has six total degrees of freedom: three for position (x, y, z) and three for orientation (roll, pitch, yaw). A robot's total DOF is usually the number of independently actuated joints or axes it has. Workspace is the direct consequence of those degrees of freedom combined with the robot's link lengths and joint limits: it's the complete set of positions (and, for a fuller definition, orientations) the robot's end-effector can actually reach. Understanding DOF and workspace together answers the most basic design question for any robot arm or mobile robot: can it actually do the job being asked of it, both mechanically and in terms of reachable space?",
+  "equations": [
+    {
+      "label": "Rigid Body DOF in 3D Space",
+      "expression": "DOF = 3 (position) + 3 (orientation) = 6",
+      "meaning": "A completely free rigid body in 3D space has six degrees of freedom total — three translational and three rotational — which is why a robot arm needs six independently controllable joints to place its end-effector at any arbitrary position and orientation."
+    }
+  ],
+  "howItWorks": "A robot's degrees of freedom set a hard ceiling on what motions it can produce. A 2-DOF planar arm (two rotating joints in a single plane) can only position its end-effector anywhere within a 2D region — it has no way to lift out of that plane or independently control orientation. A robot with exactly 6 DOF (the classic industrial-arm configuration) can, in principle, place its end-effector at any reachable position with any reachable orientation, matching exactly the 6 DOF of a free rigid body. A robot with fewer DOF than the task requires is simply incapable of achieving every combination of position and orientation the task might ask for — no amount of clever control changes that. A robot with more DOF than strictly needed for a task is called kinematically redundant, which sounds wasteful but is often deliberate: the extra freedom lets the same end-effector pose be reached in multiple different arm configurations, useful for dodging obstacles or avoiding awkward joint angles. Workspace itself is rarely a simple shape — link lengths create a maximum reach (an outer boundary) and often a minimum reach too (an inner boundary, from links folding back on themselves), while joint limits carve out further restrictions, so the true reachable workspace of even a simple 2-link arm is typically an annular (donut-like) region rather than a full disc.",
+  "diagramCaption": "A 2-DOF planar arm's reachable workspace is an annular (donut-shaped) region: an outer boundary set by both links fully extended, and an inner boundary set by the links folded back on each other.",
+  "realWorldExamples": [
+    "A hobby servo-bracket robotic arm kit (typically 3-4 DOF) can position its gripper within a workspace region but can't achieve every possible orientation the way a full 6-DOF industrial arm can.",
+    "A mecanum-wheeled robot has 3 usable planar degrees of freedom (x, y, and rotation) despite having four independently driven motors — the wheels are a redundantly-actuated way of achieving those 3 DOF.",
+    "A pan-tilt camera turret has exactly 2 DOF (pan and tilt), which is enough to aim a camera at any direction but not enough to also translate the camera's position."
+  ],
+  "commonMisconceptions": [
+    "\"More degrees of freedom is always better\" — every extra DOF adds cost, weight, and control complexity; the right number is whatever the task actually requires, not the maximum achievable.",
+    "\"Degrees of freedom always equals the number of motors\" — some mechanisms use fewer motors than DOF through mechanical coupling, and some (like mecanum-wheeled robots) intentionally use more motors than the DOF they produce.",
+    "\"Workspace is always a simple circular or spherical shape\" — real workspaces are usually irregular, often with holes or unreachable interior regions caused by joint limits and link geometry folding back on itself."
+  ],
+  "relatedComponents": ["servo-bracket-arm-kit", "mecanum-wheel", "mg996r-servo", "sg90-servo"],
+  "relatedProjects": ["joystick-pan-tilt-turret", "mecanum-omnidirectional-robot"],
+  "relatedConcepts": ["forward-kinematics", "inverse-kinematics", "holonomic-vs-nonholonomic-robots"]
+}

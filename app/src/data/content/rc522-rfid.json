@@ -1,0 +1,157 @@
+{
+  "identity": {
+    "id": "rc522-rfid",
+    "name": "RC522 RFID Reader/Writer",
+    "category": "Communication Modules",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The RC522 reads (and writes) the 13.56MHz RFID cards and key fobs used in countless access-control systems, transit cards, and hobby 'MIFARE Classic' tags, communicating with a microcontroller over SPI. Its single most important gotcha catches nearly every beginner at least once: unlike many sensor breakouts that tolerate a 5V logic bus, the RC522 chip itself is strictly 3.3V — running its SPI lines directly off a 5V Arduino without level shifting risks permanently damaging it, even though the module often works 'well enough' for a while before failing.",
+  "simpleSummary": "A reader that can scan (and write to) RFID cards and key fobs, like the ones used for building access.",
+  "specifications": {
+    "operatingVoltage": "3.3V (logic pins are NOT 5V tolerant)",
+    "interface": "SPI (also supports I2C/UART on some firmware, but SPI is standard)",
+    "frequency": "13.56MHz (ISO 14443A — MIFARE cards/tags)",
+    "readRange": "~3cm typical (card must be held close)",
+    "cardTypes": "MIFARE Classic, Ultralight, and similar 13.56MHz ISO 14443A tags"
+  },
+  "pinMap": [
+    {
+      "name": "SDA (SS)",
+      "position": null,
+      "category": "digital",
+      "function": "SPI chip select.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI CS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SCK",
+      "position": null,
+      "category": "digital",
+      "function": "SPI clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": "Not 5V tolerant — connecting directly to a 5V Arduino's SPI pins without a level shifter risks damaging the chip over time."
+    },
+    {
+      "name": "MOSI",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data in.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": "Not 5V tolerant, same caution as SCK."
+    },
+    {
+      "name": "MISO",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data out.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "IRQ",
+      "position": null,
+      "category": "digital",
+      "function": "Interrupt output, signals when a card enters the field (optional — most projects poll instead).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RST",
+      "position": null,
+      "category": "special",
+      "function": "Active-LOW hardware reset.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Power input — the module's only supported voltage.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~13-26 mA",
+      "alternateFunctions": [],
+      "gotcha": "Despite many tutorials showing it wired to an Arduino Uno's 5V pin (which works because they happen to only power it, not level-shift the data lines), the correct and safe supply is strictly 3.3V."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "RFID access control / door lock",
+      "scenario": "Grant access when a recognized card/tag is scanned, triggering a relay or solenoid lock.",
+      "pinsInvolved": [
+        "SDA (SS)",
+        "SCK",
+        "MOSI",
+        "MISO"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Attendance/check-in system",
+      "scenario": "Log timestamped check-ins as people scan personal RFID cards.",
+      "pinsInvolved": [
+        "SDA (SS)",
+        "MISO"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Inventory/asset tracking",
+      "scenario": "Tag items with RFID stickers and scan them for inventory checks.",
+      "pinsInvolved": [
+        "SDA (SS)",
+        "SCK",
+        "MOSI",
+        "MISO"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Relay module",
+      "Solenoid lock"
+    ],
+    "oftenConfusedWith": [
+      "NFC modules (broader standard, RC522 covers the common MIFARE subset)"
+    ],
+    "oftenUpgradedTo": [
+      "PN532 (adds NFC peer-to-peer and card emulation modes)"
+    ]
+  }
+}

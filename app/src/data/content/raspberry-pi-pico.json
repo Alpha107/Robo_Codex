@@ -1,0 +1,504 @@
+{
+  "identity": {
+    "id": "raspberry-pi-pico",
+    "name": "Raspberry Pi Pico (RP2040)",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Pico is the Raspberry Pi Foundation's first microcontroller board (not a mini Linux computer like the rest of the Pi lineup) built around their own RP2040 chip. Its standout feature is flexibility: almost any GPIO pin can be reassigned to I2C, SPI, UART, or PWM through a programmable pin-mux, instead of those functions being hard-wired to specific pins like on classic AVR Arduinos. It also has two unusual extras: 'PIO' state machines that can bit-bang custom protocols in hardware, and dual cores that can run independent code. No WiFi/Bluetooth on the base Pico (the Pico W variant adds that).",
+  "simpleSummary": "A cheap, fast microcontroller board from the makers of the Raspberry Pi computer.",
+  "specifications": {
+    "microcontroller": "RP2040, dual-core Arm Cortex-M0+, 133 MHz",
+    "operatingVoltage": "3.3V",
+    "inputVoltageRecommended": "5V via USB (VBUS) or 1.8-5.5V via VSYS",
+    "flashMemory": "2 MB (external QSPI flash)",
+    "sram": "264 KB",
+    "digitalIOPins": 26,
+    "adc": "3 usable analog inputs (12-bit), plus an internal temperature sensor channel",
+    "connector": "Micro-USB"
+  },
+  "pinMap": [
+    {
+      "name": "GP0",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O; any GPIO can be mapped to UART/I2C/SPI via the RP2040's flexible pin-mux.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART",
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP1",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART",
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable. Commonly used as I2C SDA by convention.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C SDA",
+        "UART",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable. Commonly used as I2C SCL by convention.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C SCL",
+        "UART",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP14",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP15",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C",
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP16",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI",
+        "I2C",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP17",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI",
+        "I2C",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP18",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP19",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP20",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP21",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP22",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, remappable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "RUN",
+      "position": null,
+      "category": "special",
+      "function": "Reset/enable pin — pulling LOW resets the chip.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GP26 (ADC0)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC0",
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP27 (ADC1)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GP28 (ADC2)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "ADC_VREF",
+      "position": null,
+      "category": "special",
+      "function": "Analog reference voltage for the ADC.",
+      "voltageRange": "3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3V3(OUT)",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output from the onboard regulator.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~300 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3V3_EN",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW disables the onboard 3.3V regulator entirely (powers down the whole board).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Accidentally grounding this pin looks exactly like the board being dead — a common 'why won't it turn on' mistake."
+    },
+    {
+      "name": "VSYS",
+      "position": null,
+      "category": "power",
+      "function": "Main system input voltage, feeds the onboard regulator — the pin to use when powering from a battery.",
+      "voltageRange": "1.8V - 5.5V",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VBUS",
+      "position": null,
+      "category": "power",
+      "function": "Raw 5V from the USB connector (unregulated pass-through).",
+      "voltageRange": "5V (when USB connected)",
+      "currentLimit": "Depends on USB host",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Custom protocol bit-banging with PIO",
+      "scenario": "Drive WS2812B LEDs or other precisely-timed protocols using the RP2040's PIO state machines instead of the CPU.",
+      "pinsInvolved": [
+        "GP0"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Dual-core sensor + control split",
+      "scenario": "Run sensor reading on one core and motor control logic on the other for more deterministic timing.",
+      "pinsInvolved": [
+        "GP26 (ADC0)",
+        "GP16",
+        "GP17"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "USB MIDI or HID device",
+      "scenario": "The Pico can enumerate as a custom USB device, similar to the Arduino Leonardo but with far more processing headroom.",
+      "pinsInvolved": [
+        "GP2",
+        "GP3"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Battery-powered data logger",
+      "scenario": "Power from a LiPo via VSYS and log sensor data to onboard flash.",
+      "pinsInvolved": [
+        "VSYS",
+        "GND",
+        "GP4",
+        "GP5"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "WS2812B NeoPixel LEDs",
+      "SSD1306 OLED display",
+      "DHT22"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi Zero (a full Linux computer, not a microcontroller)",
+      "Raspberry Pi Pico W (adds WiFi/Bluetooth)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi Pico W",
+      "Raspberry Pi Zero 2 W (for projects needing a full OS)"
+    ]
+  }
+}

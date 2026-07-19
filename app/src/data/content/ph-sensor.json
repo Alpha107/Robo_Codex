@@ -1,0 +1,108 @@
+{
+  "identity": {
+    "id": "ph-sensor",
+    "name": "pH Sensor Module",
+    "category": "Environmental Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A pH sensor module is really two parts working together: a glass-bulb probe electrode that generates a tiny voltage proportional to hydrogen-ion concentration (the actual chemistry), and a small interface board that amplifies and filters that millivolt-level signal into a 0-3V-ish analog output a microcontroller's ADC can read. Unlike most sensors in this catalog, the probe is a consumable, not a fixed component — the glass membrane physically degrades over months of use, drifts with temperature, and must be periodically recalibrated against known reference buffer solutions (typically pH 4.0 and pH 7.0) to stay accurate, much like a bathroom scale needs occasional re-zeroing.",
+  "simpleSummary": "A two-part sensor — a glass probe plus an interface board — that measures how acidic or basic a liquid is.",
+  "specifications": {
+    "probeType": "Glass bulb pH electrode (single or double junction)",
+    "measuringRange": "pH 0-14",
+    "outputType": "Analog voltage from the interface board, roughly 0-3V across the pH range",
+    "operatingVoltage": "5V (some boards accept 3.3-5.5V)",
+    "connector": "BNC connector between the probe and interface board",
+    "calibration": "2-point calibration required (pH 4.0 and pH 7.0 buffer solutions; a 3rd point at pH 10.0 improves accuracy further)",
+    "responseTime": "A few seconds to reach a ~90% stable reading",
+    "probeLifespan": "~6-12 months typical with proper storage; shorter if allowed to dry out"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the interface board's amplifier circuitry.",
+      "voltageRange": "5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PO",
+      "position": null,
+      "category": "analog",
+      "function": "Analog pH output voltage, requires a per-probe calibration curve (slope and offset) to convert to an actual pH value — there's no universal conversion formula.",
+      "voltageRange": "0-3V roughly (board-dependent)",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "The voltage-to-pH slope varies probe-to-probe and drifts as the glass electrode ages — a formula copied from someone else's project will be systematically wrong on your probe. Always calibrate with your own buffer solutions."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Hydroponics/aquaponics pH monitoring and dosing",
+      "scenario": "Continuously monitor nutrient solution pH and trigger a peristaltic dosing pump to add pH-up/pH-down solution to keep plants in their optimal range.",
+      "pinsInvolved": ["PO", "VCC", "GND"],
+      "difficulty": "Advanced (closed-loop dosing control)"
+    },
+    {
+      "title": "Aquarium water quality monitoring",
+      "scenario": "Log tank pH over time and alert if it drifts outside a safe range for the fish/coral species being kept.",
+      "pinsInvolved": ["PO"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Soil pH testing",
+      "scenario": "Use a soil-specific probe variant pushed into moist soil to check whether it's suitable for acid-loving vs alkaline-tolerant plants.",
+      "pinsInvolved": ["PO"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Pool/spa water testing automation",
+      "scenario": "Track pool water pH alongside a chlorine sensor to flag when chemical balancing is needed.",
+      "pinsInvolved": ["PO", "VCC", "GND"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Science-fair water quality experiment",
+      "scenario": "Compare pH readings across different water samples (tap, rain, pond) as a hands-on chemistry demonstration.",
+      "pinsInvolved": ["PO"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "Peristaltic dosing pump",
+      "Relay module"
+    ],
+    "oftenConfusedWith": [
+      "TDS/EC (conductivity) sensors (measure dissolved solids/salinity, not acidity)",
+      "Soil moisture sensors (measure water content, not pH)"
+    ],
+    "oftenUpgradedTo": [
+      "Industrial/lab-grade pH probes with temperature-compensated ATC (automatic temperature compensation) circuitry for higher accuracy"
+    ]
+  },
+  "beginnerMistakes": [
+    "Letting the probe tip dry out — the glass bulb must stay wet (stored in pH 4.0 buffer or a dedicated storage solution); a dried-out membrane loses sensitivity, often permanently.",
+    "Skipping calibration entirely and using a generic online conversion formula — every probe has its own slope and offset that drifts with age, so an uncalibrated reading can be off by a full pH point or more.",
+    "Forgetting to recalibrate periodically — even a properly stored probe drifts over weeks to months and needs re-checking against fresh buffer solutions, not just once at first setup.",
+    "Not accounting for temperature — pH readings are temperature-dependent (the Nernst equation), so comparing a cold morning reading to a warm afternoon one without compensation looks like real pH drift when it isn't.",
+    "Leaving the BNC connector between probe and board loosely seated — a poor connection causes noisy, jumpy readings that look like sensor noise but are actually a wiring fault."
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "identity": {
+    "id": "a4988-drv8825",
+    "name": "A4988 / DRV8825 Stepper Driver",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "These two small pin-compatible modules are the reason 3D printers and desktop CNC machines are affordable: each is a complete stepper motor driver — including microstepping logic and current regulation — shrunk onto a breakout small enough to socket directly into a RAMPS-style controller board. The DRV8825 is the newer, slightly more capable sibling (higher current, finer 1/32 microstepping vs the A4988's 1/16), but they share the same pinout and are frequently swapped interchangeably. Both share the single most common beginner mistake in the stepper world: the onboard current-limiting trimpot must be tuned to the specific motor before running it, or the motor overheats (set too high) or skips steps under load (set too low).",
+  "simpleSummary": "A small chip that does the hard work of running a stepper motor, so your microcontroller just says 'step' and 'which way'.",
+  "specifications": {
+    "logicVoltage": "3-5.5V",
+    "motorVoltage": "8-35V (A4988) / 8.2-45V (DRV8825)",
+    "currentPerPhase": "~1.2A continuous (A4988) / ~1.5-2.2A continuous (DRV8825), both with adequate cooling",
+    "microstepping": "Up to 1/16 (A4988) or 1/32 (DRV8825), set via MS1/MS2/(MS3) pins",
+    "currentLimiting": "Onboard trimpot — must be tuned per motor before use"
+  },
+  "pinMap": [
+    {
+      "name": "STEP",
+      "position": null,
+      "category": "digital",
+      "function": "Each rising edge advances the motor by one (micro)step.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DIR",
+      "position": null,
+      "category": "digital",
+      "function": "Sets rotation direction — HIGH/LOW for the two directions.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SLEEP",
+      "position": null,
+      "category": "digital",
+      "function": "Pulling LOW puts the driver in low-power sleep mode, disabling the motor.",
+      "voltageRange": "0-5V logic, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Often tied to RESET and pulled HIGH via a jumper — if left floating LOW, the driver silently does nothing."
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "digital",
+      "function": "Pulling LOW resets the internal step logic to a known state.",
+      "voltageRange": "0-5V logic, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MS1",
+      "position": null,
+      "category": "digital",
+      "function": "Microstep resolution select bit 1.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MS2",
+      "position": null,
+      "category": "digital",
+      "function": "Microstep resolution select bit 2.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "MS3",
+      "position": null,
+      "category": "digital",
+      "function": "Microstep resolution select bit 3 (A4988) — DRV8825 uses this position differently for its extra microstep mode.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ENABLE",
+      "position": null,
+      "category": "digital",
+      "function": "Pulling LOW enables the driver outputs (active LOW, opposite of what the name suggests).",
+      "voltageRange": "0-5V logic, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Named 'ENABLE' but is active-LOW — leaving it floating HIGH disables the driver, a frequent source of confusion."
+    },
+    {
+      "name": "VMOT",
+      "position": null,
+      "category": "power",
+      "function": "Motor power supply input.",
+      "voltageRange": "8-35V (A4988) / 8.2-45V (DRV8825)",
+      "currentLimit": "Size to motor current",
+      "alternateFunctions": [],
+      "gotcha": "Always add a decoupling capacitor (100µF+) across VMOT/GND close to the board, or supply voltage spikes can destroy the driver."
+    },
+    {
+      "name": "1A",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil 1 terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Set by trimpot, up to rated max",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "1B",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil 1 other terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Set by trimpot",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "2A",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil 2 terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Set by trimpot",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "2B",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil 2 other terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Set by trimpot",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VDD",
+      "position": null,
+      "category": "power",
+      "function": "Logic supply, typically the controller board's 5V or 3.3V rail.",
+      "voltageRange": "3-5.5V",
+      "currentLimit": "Low (logic only)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Logic ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "3D printer motion control",
+      "scenario": "One driver per axis (X, Y, Z, extruder) plugged into a RAMPS or similar controller board.",
+      "pinsInvolved": [
+        "STEP",
+        "DIR",
+        "VMOT",
+        "1A",
+        "1B",
+        "2A",
+        "2B"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Desktop CNC machine",
+      "scenario": "Same driving pattern as a 3D printer, for lighter-duty CNC routing/engraving.",
+      "pinsInvolved": [
+        "STEP",
+        "DIR",
+        "MS1",
+        "MS2"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "NEMA 17 stepper motor",
+      "RAMPS/3D printer controller boards"
+    ],
+    "oftenConfusedWith": [
+      "TB6600 (larger, higher current, opto-isolated, screw terminals)"
+    ],
+    "oftenUpgradedTo": [
+      "TB6600 or TMC2208/TMC2209 (quieter operation via advanced current control)"
+    ]
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "identity": {
+    "id": "load-cell-hx711",
+    "name": "Load Cell + HX711 Amplifier",
+    "category": "Force & Torque Sensing",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A load cell is a machined metal bar with strain gauges bonded to a deliberately thinned section, wired as a Wheatstone bridge; loading the bar flexes that section by a few micrometers, unbalancing the bridge by a signal so tiny (millivolt-scale) that it needs a dedicated instrumentation amplifier before any microcontroller can use it. The HX711 is that amplifier: a 24-bit ADC purpose-built for load cells, providing the bridge excitation voltage and reading back the result over a simple two-wire serial interface. Together they're the standard way to add real weight/force sensing to a hobbyist or light-industrial project without buying a full weighing transmitter. The load cell itself only measures force along its intended bending axis — side-loading or off-axis force gives inaccurate readings even within its rated capacity.",
+  "simpleSummary": "A metal bar that flexes very slightly under load, paired with a small board that amplifies that tiny flex into a number your microcontroller can read.",
+  "specifications": {
+    "ratedCapacity": "5 kg (common hobbyist size; also sold in 1 kg-200 kg variants)",
+    "loadCellType": "Single-point bending-beam strain gauge",
+    "excitationVoltage": "5V (supplied by the HX711 board's onboard regulator)",
+    "ratedOutputSensitivity": "~1.0 mV/V typical",
+    "adcResolution": "24-bit (HX711)",
+    "outputDataRate": "10 SPS or 80 SPS, pin-selectable via the RATE pin",
+    "gainSettings": "128 or 64 on channel A, 32 on channel B (set by SCK pulse count)",
+    "hostInterface": "2-wire synchronous serial (DT/SCK) — not I2C or SPI despite the resemblance",
+    "nonlinearity": "±0.03% F.S. typical"
+  },
+  "pinMap": [
+    {
+      "name": "E+",
+      "position": null,
+      "category": "power",
+      "function": "Load cell excitation positive (red wire), supplied by the HX711 board's onboard regulator.",
+      "voltageRange": "~5V DC",
+      "currentLimit": "Low, bridge excitation only",
+      "alternateFunctions": [],
+      "gotcha": "Wire color conventions (red/black/white/green) are common but not universal across manufacturers — connect by checking the specific load cell's datasheet, not by assuming every load cell follows the same colors."
+    },
+    {
+      "name": "E-",
+      "position": null,
+      "category": "power",
+      "function": "Load cell excitation negative / bridge ground (black wire).",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Swapping E+ and E- inverts the bridge excitation and typically produces a consistently negative or saturated reading rather than an obviously 'broken' one — easy to misdiagnose as a bad HX711."
+    },
+    {
+      "name": "S+",
+      "position": null,
+      "category": "analog",
+      "function": "Bridge signal output, positive (green wire) — the millivolt-level signal that changes with load.",
+      "voltageRange": "Millivolt-level differential, referenced to S-",
+      "currentLimit": "N/A (high-impedance analog input)",
+      "alternateFunctions": [],
+      "gotcha": "This wire carries only millivolts of real signal; routing it alongside motor power or PWM wiring induces noise that can swamp the actual signal — keep these leads short and twisted with S-."
+    },
+    {
+      "name": "S-",
+      "position": null,
+      "category": "analog",
+      "function": "Bridge signal output, negative (white wire).",
+      "voltageRange": "Millivolt-level differential, referenced to S+",
+      "currentLimit": "N/A (high-impedance analog input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the HX711 board itself, which internally derives the load cell's excitation voltage from this supply.",
+      "voltageRange": "2.6V - 5.5V",
+      "currentLimit": "~1.5 mA typical",
+      "alternateFunctions": [],
+      "gotcha": "Noise on VCC becomes noise in the excitation voltage and therefore noise in every reading — some 3.3V-only boards behave badly on cheap HX711 clones that expect closer to 5V headroom for a clean excitation reference."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the host microcontroller.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DT",
+      "position": null,
+      "category": "digital",
+      "function": "Serial data output (also labeled DOUT); goes LOW when a new 24-bit conversion result is ready to be clocked out.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [],
+      "gotcha": "Fixed-delay polling instead of catching the falling edge (or an interrupt) means readings under continuous load can be stale or occasionally missed entirely — the HX711 doesn't buffer multiple results."
+    },
+    {
+      "name": "SCK",
+      "position": null,
+      "category": "digital",
+      "function": "Serial clock input; each pulse shifts out one data bit, and the total pulse count (25/26/27) also selects the gain and channel for the next conversion.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "The exact number of clock pulses genuinely matters (25 = gain 128 channel A, 26 = gain 32 channel B, 27 = gain 64 channel A) — most libraries hide this, but a hand-rolled bit-bang routine that gets the pulse count wrong silently reads the wrong channel/gain, not an error."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "DIY digital kitchen/postal scale",
+      "scenario": "Mount a single load cell under a platform and print a live weight readout, calibrating with a known reference mass.",
+      "pinsInvolved": [
+        "E+",
+        "E-",
+        "S+",
+        "S-",
+        "VCC",
+        "GND",
+        "DT",
+        "SCK"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "3D printer filament spool monitor",
+      "scenario": "Weigh the spool continuously to estimate remaining filament length and warn before a print runs out.",
+      "pinsInvolved": [
+        "DT",
+        "SCK",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Robotic gripper contact-force feedback",
+      "scenario": "Bolt a small load cell between a gripper finger and its mount to sense grasp force and prevent crushing delicate objects.",
+      "pinsInvolved": [
+        "E+",
+        "E-",
+        "S+",
+        "S-",
+        "DT",
+        "SCK"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Industrial hopper/bin fill-level by weight",
+      "scenario": "Infer remaining material in a bin from its weight rather than an ultrasonic or optical level sensor, which struggles with dusty or irregular material surfaces.",
+      "pinsInvolved": [
+        "E+",
+        "E-",
+        "S+",
+        "S-",
+        "VCC",
+        "GND",
+        "DT",
+        "SCK"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Four-cell platform scale",
+      "scenario": "Sum four load cells (one per corner) into a single weight reading, requiring per-cell calibration and careful summing to avoid corner-loading errors.",
+      "pinsInvolved": [
+        "E+",
+        "E-",
+        "S+",
+        "S-",
+        "DT",
+        "SCK"
+      ],
+      "difficulty": "Advanced (multi-cell calibration and summing)"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno / ESP32 (bit-banging DT/SCK)",
+      "4-load-cell platform scale kits",
+      "16x2 LCD or OLED (weight readout)"
+    ],
+    "oftenConfusedWith": [
+      "6-axis force/torque sensor (measures a full multi-axis wrench at an interface, vs. this measuring one axis of bending force only)",
+      "Bare strain gauge (just the raw resistive element — this is a complete bridge-plus-amplifier assembly)"
+    ],
+    "oftenUpgradedTo": [
+      "24-bit industrial weighing transmitters with RS-485/Modbus output for direct PLC integration",
+      "6-axis force/torque sensor when off-axis loads or torques also need to be measured, not just one force axis"
+    ]
+  },
+  "beginnerMistakes": [
+    "Not re-taring after any change to mounting hardware — the fixture's own weight biases every reading until zeroed in that exact configuration.",
+    "Briefly exceeding the rated capacity (even by hand-testing) — this can permanently deform the strain-gauge bonding and shift the zero-offset without any visible damage to the bar.",
+    "Running long, unshielded DT/SCK wiring between the HX711 and the microcontroller, which picks up enough noise to corrupt readings — keep this run short, ideally under ~20 cm.",
+    "Assuming the raw ADC-to-real-units calibration factor is a shared constant — it must be calibrated per physical setup (this specific load cell, this specific mounting) with a known reference weight.",
+    "Powering the HX711 from a 3.3V-only regulator without checking headroom — some clone boards produce a noisy or insufficient excitation voltage below about 4.5V."
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "identity": {
+    "id": "orange-pi",
+    "name": "Orange Pi",
+    "category": "Single Board Computer",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Orange Pi boards are the most common Raspberry Pi alternative: similar credit-card size, a similar 40-pin header, often more RAM or a faster SoC for less money — but a much less consistent experience. 'Orange Pi' isn't one board but a whole family from different SoC vendors (Allwinner, Rockchip, and others), so tutorials, GPIO pin functions, and OS image quality vary noticeably between models in a way they simply don't across the tightly-controlled Raspberry Pi lineup. It's a reasonable choice when a project's budget or RAM requirements rule out a Pi, as long as you're prepared to do more of your own troubleshooting.",
+  "simpleSummary": "A Raspberry-Pi-like mini computer, often cheaper or faster but less consistent to use.",
+  "specifications": {
+    "processor": "Varies by model (commonly Allwinner or Rockchip, quad-core Cortex-A53, ~1.8 GHz)",
+    "operatingVoltage": "5V (board), 3.3V (GPIO logic)",
+    "ram": "1GB - 8GB (model-dependent)",
+    "storage": "microSD, some models add eMMC",
+    "connectivity": "Gigabit Ethernet; WiFi/Bluetooth on some models only",
+    "usb": "Mix of USB 2.0/3.0 (model-dependent)",
+    "video": "HDMI",
+    "gpio": "40-pin header, Raspberry-Pi-like layout (pin functions vary by model — verify against that specific board's documentation)",
+    "dimensions": "~85mm x 55mm (varies by model)",
+    "connector": "Micro-USB or USB-C (model-dependent)"
+  },
+  "pinMap": [
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "5V rail from the power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "I2C SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line — physical position generally matches Pi layout, but always confirm against the specific model's pinout diagram.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "The single biggest Orange Pi gotcha: assuming a Raspberry Pi pinout diagram applies exactly. It often doesn't."
+    },
+    {
+      "name": "I2C SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "UART TX",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "UART RX",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SPI MOSI",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SPI MISO",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SPI SCK",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO A",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O bank.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [
+        "PWM (some pins)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO B",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O bank.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Budget Linux robotics brain",
+      "scenario": "Where a project's cost target rules out a genuine Raspberry Pi 4/5.",
+      "pinsInvolved": [
+        "I2C SDA",
+        "I2C SCL"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Home media server / NAS",
+      "scenario": "Models with SATA or higher RAM variants are popular for small self-hosted servers.",
+      "pinsInvolved": [],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Generic I2C/SPI sensor breakouts"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi (tighter hardware/software consistency, larger community)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi 4/5 (for projects that outgrow tolerance for inconsistent documentation)"
+    ]
+  }
+}

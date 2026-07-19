@@ -1,0 +1,126 @@
+{
+  "identity": {
+    "id": "led-blink",
+    "title": "LED Blink (Hello World)",
+    "tagline": "The first circuit every electronics student builds — one LED, one resistor, one blink.",
+    "category": "Beginner Electronics",
+    "difficulty": "Beginner",
+    "estimatedTime": "15 minutes"
+  },
+  "goal": "Wire up a single LED and make it blink on and off once every second, entirely under your own code's control. This is the electronics equivalent of printing \"Hello, World\" — small, but it proves your whole toolchain (wiring, code upload, and power) actually works before you build anything more ambitious.",
+  "simpleSummary": "The classic first project: make a single LED blink on and off every second.",
+  "howItWorks": "An LED only lets current flow one direction, and it only lights up within a narrow current range — feed it too much and it burns out instantly, which is why it's never wired directly across a power source. The resistor in series with it exists purely to limit that current to a safe level. The Arduino's digital pin acts like a simple switch under your program's control: when your code sets the pin HIGH, it outputs 5V and current flows through the resistor and LED to ground, lighting it; when the code sets it LOW, the pin drops to 0V and the LED goes dark. The 'blinking' is nothing more than that switch flipping on a timer inside a loop that repeats forever.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 1,
+      "note": "220Ω resistor (current-limiting)"
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 2
+    }
+  ],
+  "circuitDiagramCaption": "Arduino pin 13 → 220Ω resistor → LED anode → LED cathode → GND.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D13"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Place the LED on the breadboard, straddling the center gap.",
+      "detail": "Look closely at the LED's two legs: one is longer than the other. The long leg is the anode (positive, current goes in here); the short leg is the cathode (negative, current comes out here). Getting this backwards is the single most common beginner mistake — an LED wired backwards simply won't light, but it isn't damaged."
+    },
+    {
+      "step": 2,
+      "instruction": "Insert the resistor so one leg shares a breadboard row with the LED's long leg (anode).",
+      "detail": "Resistors have no polarity — they work the same no matter which way round you place them. Any value between about 150Ω and 330Ω works fine for a standard LED at 5V; 220Ω is the common default."
+    },
+    {
+      "step": 3,
+      "instruction": "Run a jumper wire from the resistor's other leg to Arduino digital pin 13.",
+      "detail": "Pin 13 is a convenient default because most Arduino Uno boards have a built-in LED already wired to it, so you can sanity-check your code even before the external circuit is finished."
+    },
+    {
+      "step": 4,
+      "instruction": "Run a second jumper wire from the LED's short leg (cathode) to Arduino GND.",
+      "detail": "Every circuit needs a complete loop back to ground — without this wire, no current can flow no matter how the rest is wired."
+    },
+    {
+      "step": 5,
+      "instruction": "Double-check LED polarity and resistor placement before connecting the Arduino's USB cable.",
+      "detail": "It only takes a few seconds and it's the check that saves you from a \"why won't this light up\" debugging session."
+    }
+  ],
+  "code": [
+    {
+      "filename": "led_blink.ino",
+      "language": "arduino",
+      "source": "// LED Blink — the \"Hello World\" of electronics.\n// Blinks an LED wired to digital pin 13 once every second.\n\nconst int LED_PIN = 13; // change this if you wired the LED to a different pin\n\nvoid setup() {\n  pinMode(LED_PIN, OUTPUT); // tell the Arduino this pin will send power OUT, not read it\n}\n\nvoid loop() {\n  digitalWrite(LED_PIN, HIGH); // turn the LED on (pin outputs 5V)\n  delay(1000);                 // wait 1000 milliseconds (1 second)\n  digitalWrite(LED_PIN, LOW);  // turn the LED off (pin outputs 0V)\n  delay(1000);                 // wait 1 second before repeating\n}\n",
+      "explanation": "setup() runs once and configures pin 13 as an OUTPUT — without this line the pin defaults to being an input and digitalWrite won't reliably drive the LED. loop() then runs forever: turn on, wait a second, turn off, wait a second, repeat. delay() is the simplest possible timing tool in Arduino — it pauses the entire program, which is fine here since there's nothing else for the board to do."
+    }
+  ],
+  "expectedBehavior": "The LED turns on for one second, then off for one second, repeating indefinitely as long as the Arduino has power. If you're using pin 13, the board's built-in LED (right next to the USB port) will blink in sync with your external one.",
+  "troubleshooting": [
+    {
+      "issue": "LED doesn't light up at all.",
+      "fix": "Check the LED's orientation first — flip it around if you're not sure which leg is which, it can't be damaged by testing this way. Then confirm the resistor and both jumper wires are in the same breadboard rows as the component legs they're meant to connect to; a single row off is enough to break the circuit."
+    },
+    {
+      "issue": "LED stays on permanently instead of blinking.",
+      "fix": "Double-check the code actually uploaded successfully (the Arduino IDE shows \"Done uploading\"), and that you selected the correct board and COM port before uploading."
+    },
+    {
+      "issue": "LED is very dim.",
+      "fix": "Check the resistor value — a much larger resistor (like 10kΩ) will noticeably dim the LED. Read the color bands or use a multimeter if unsure."
+    },
+    {
+      "issue": "Nothing happens and the IDE shows an upload error.",
+      "fix": "This is almost always a board/port selection issue in the Arduino IDE, not a wiring problem — recheck Tools > Board and Tools > Port."
+    }
+  ],
+  "extensions": [
+    "Change the delay values to make it blink faster or slower.",
+    "Add a second LED on a different pin and alternate them for a \"back and forth\" effect.",
+    "Replace delay() with millis()-based timing so the LED can blink without freezing the rest of the program — the standard next step once you add a second task.",
+    "Swap the fixed delay for a potentiometer reading (see the DC Motor Speed Control project) to control blink speed with a knob."
+  ]
+}

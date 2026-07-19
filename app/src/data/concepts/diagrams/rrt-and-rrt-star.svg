@@ -1,0 +1,31 @@
+<svg viewBox="0 0 480 315" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .growpath { stroke-dasharray: 460; animation: growdraw 3s ease-in-out infinite; }
+    @keyframes growdraw { 0% { stroke-dashoffset: 460; } 65%, 100% { stroke-dashoffset: 0; } }
+    .goalpulse { animation: goalpulse 3s ease-in-out infinite; }
+    @keyframes goalpulse { 0%, 60% { opacity: 0.3; } 70%, 100% { opacity: 1; } }
+  </style>
+
+  <text x="240" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">RRT: A Randomly-Growing Tree</text>
+
+  <rect x="40" y="45" width="400" height="220" fill="none" stroke="#dde1e8" stroke-width="1.5"/>
+  <rect x="180" y="110" width="60" height="70" fill="#5b6270"/>
+
+  <circle cx="80" cy="220" r="7" fill="#1a1d23"/>
+  <g stroke="#adb5bd" stroke-width="1.6" fill="none">
+    <path d="M80,220 L120,190 L110,150 L150,220 M120,190 L160,170 L200,200 L240,180 M160,170 L140,120 M240,180 L280,150 L320,170 M280,150 L300,100 M320,170 L360,140 L400,90"/>
+  </g>
+  <g fill="#5b6270">
+    <circle cx="120" cy="190" r="3"/><circle cx="110" cy="150" r="3"/><circle cx="150" cy="220" r="3"/>
+    <circle cx="160" cy="170" r="3"/><circle cx="200" cy="200" r="3"/><circle cx="140" cy="120" r="3"/>
+    <circle cx="240" cy="180" r="3"/><circle cx="280" cy="150" r="3"/><circle cx="320" cy="170" r="3"/>
+    <circle cx="300" cy="100" r="3"/><circle cx="360" cy="140" r="3"/>
+  </g>
+  <path d="M80,220 L120,190 L160,170 L240,180 L280,150 L320,170 L360,140 L400,90" fill="none" stroke="#2f9e44" stroke-width="3" class="growpath"/>
+  <circle cx="400" cy="90" r="8" fill="#e03131" class="goalpulse"/>
+  <text x="365" y="75" font-size="10.5" fill="#e03131" font-weight="700">goal</text>
+  <text x="55" y="240" font-size="10.5" fill="#1a1d23" font-weight="700">start</text>
+
+  <text x="240" y="288" text-anchor="middle" font-size="10" fill="#5b6270">Thin gray branches are the random tree; the green path</text>
+  <text x="240" y="301" text-anchor="middle" font-size="10" fill="#5b6270">is the one that reached the goal.</text>
+</svg>

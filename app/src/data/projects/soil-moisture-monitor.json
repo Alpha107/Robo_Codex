@@ -1,0 +1,143 @@
+{
+  "identity": {
+    "id": "soil-moisture-monitor",
+    "title": "Soil Moisture Monitor",
+    "tagline": "A plant that tells you when it's thirsty, via an LED instead of wilting.",
+    "category": "Sensors & Automation",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "20 minutes"
+  },
+  "goal": "Stick a probe into a plant's soil and light an LED the moment it dries out past a comfortable threshold — a genuinely useful little gadget, and a straightforward second example (after the Light-Activated Night Lamp) of reading an analog sensor and reacting to a threshold.",
+  "simpleSummary": "Stick a probe in a plant's soil and light an LED when it needs water.",
+  "howItWorks": "The two exposed probes on a soil moisture sensor form a simple resistance measurement: dry soil conducts electricity poorly, wet soil conducts it much better. The sensor's onboard circuit converts that resistance into an analog voltage on its AOUT pin, which analogRead() reads as a number from 0 to 1023. Unlike the rain sensor's simplified digital output, this project reads that raw analog value directly, which means the code — not a fixed onboard comparator — decides exactly what \"too dry\" means, and can be tuned freely for a specific plant or soil type.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A potted plant (or a cup of soil) to test the probe in"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "soil-moisture-sensor",
+      "quantity": 1
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 1,
+      "note": "220Ω resistor for the LED"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 4
+    }
+  ],
+  "circuitDiagramCaption": "Sensor's analog output (AOUT) on A0; \"needs water\" LED on D9.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "soil-moisture-sensor",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "soil-moisture-sensor",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "soil-moisture-sensor",
+          "pin": "AOUT"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the sensor's VCC to Arduino 5V, GND to GND, and AOUT to A0.",
+      "detail": "This project deliberately uses AOUT (the raw analog reading) rather than DOUT, so the code can define its own moisture threshold instead of relying on the sensor board's onboard potentiometer."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the LED and its 220Ω resistor between D9 and GND, same as LED Blink.",
+      "detail": "Nothing new here — this is the same LED circuit used throughout the beginner projects."
+    },
+    {
+      "step": 3,
+      "instruction": "Insert only the two metal probes into the soil, keeping the sensor's small circuit board above the surface and dry.",
+      "detail": "The bare probes corrode over time when constantly powered in wet soil — see Troubleshooting for a simple fix if you're leaving this running long-term."
+    }
+  ],
+  "code": [
+    {
+      "filename": "soil_moisture_monitor.ino",
+      "language": "arduino",
+      "source": "// Soil Moisture Monitor\n// Lights an LED when soil moisture drops below a threshold.\n\nconst int SENSOR_PIN = A0;\nconst int LED_PIN = 9;\n\n// Lower analogRead() values usually mean WETTER soil on these sensors.\n// Tune this after watching real readings — see Troubleshooting.\nconst int DRY_THRESHOLD = 600;\n\nvoid setup() {\n  pinMode(LED_PIN, OUTPUT);\n  Serial.begin(9600);\n}\n\nvoid loop() {\n  int moistureLevel = analogRead(SENSOR_PIN);\n  Serial.println(moistureLevel);\n\n  if (moistureLevel > DRY_THRESHOLD) {\n    digitalWrite(LED_PIN, HIGH); // too dry — needs water\n  } else {\n    digitalWrite(LED_PIN, LOW);\n  }\n\n  delay(1000);\n}\n",
+      "explanation": "Same threshold pattern as the Light-Activated Night Lamp project: read a raw analog value, print it while tuning, and compare it against a constant that represents \"time to act.\" On most of these resistive sensors, a higher reading means less conductivity, which means drier soil — but confirm this against your own sensor's actual behavior in the Serial Monitor rather than assuming, since some sensor variants report the opposite direction."
+    }
+  ],
+  "expectedBehavior": "The LED stays off in moist soil and turns on once the sensor dries out past the DRY_THRESHOLD value, which you tune to match your specific plant's soil and the sensor's real-world range.",
+  "troubleshooting": [
+    {
+      "issue": "Reading never changes no matter how wet or dry the soil is.",
+      "fix": "Confirm both probes are actually inserted into the soil (not just one), and that AOUT — not DOUT — is wired to A0."
+    },
+    {
+      "issue": "LED logic seems backwards (on when wet, off when dry).",
+      "fix": "Flip the comparison operator, or confirm your specific sensor board's polarity by watching raw Serial values while manually wetting and drying the probes."
+    },
+    {
+      "issue": "Sensor corrodes or reads increasingly inaccurately after days of continuous use.",
+      "fix": "This is a well-known issue with resistive soil sensors left constantly powered — power the sensor from a digital pin instead of a permanent 5V connection, and only turn it on for the brief moment it takes a reading."
+    }
+  ],
+  "extensions": [
+    "Power the sensor intermittently from a digital output pin instead of a constant 5V rail to reduce probe corrosion over time.",
+    "Add a small water pump (via a relay) that runs automatically when soil is too dry.",
+    "Display the live moisture percentage on an LCD instead of a simple LED threshold.",
+    "Combine with the Rain Alarm project so outdoor plants skip a scheduled watering if it's already rained."
+  ]
+}

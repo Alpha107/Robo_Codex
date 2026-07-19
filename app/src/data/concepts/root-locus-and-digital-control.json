@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "root-locus-and-digital-control",
+    "title": "Root Locus & Digital Control",
+    "category": "Control Theory",
+    "level": "Advanced",
+    "tagline": "Watching stability change as you turn up a gain, and facing the reality that every real controller only checks in at discrete ticks, not continuously."
+  },
+  "simpleSummary": "A way of visually seeing exactly how a system's stability changes as you turn up a gain, plus the reality that every real microcontroller-based controller only checks and reacts at discrete ticks rather than truly continuously.",
+  "keyIdea": "Root locus plots how a closed-loop system's poles move through the s-plane as a single gain is varied, revealing exactly which gain values keep the system stable; digital control adapts continuous-time theory to systems that only sample and act at discrete time steps — which is what every microcontroller-based controller actually does.",
+  "overview": "Root locus is a design tool that builds directly on Stability, Poles & Bode Plots and PID Control: rather than picking gains by trial and error, it plots exactly how the closed-loop poles move through the complex plane as one gain (like a PID's Kp) increases from zero, letting an engineer directly see the range of gain values that keep every pole stable versus the exact point one crosses into instability. Everything covered under transfer functions, root locus, and PID so far has quietly assumed continuous time — but every microcontroller-based controller actually samples its sensor and updates its output only at discrete ticks, not continuously. Digital control theory adapts the same ideas to this reality using the z-transform, the discrete-time counterpart of the Laplace transform, and surfaces genuinely new practical concerns unique to sampling.",
+  "equations": [
+    {
+      "label": "Root Locus Characteristic Equation",
+      "expression": "1 + K·G(s)·H(s) = 0",
+      "meaning": "The root locus is the set of paths traced by the roots of this equation as the gain K varies from 0 to infinity — each point on a branch is a closed-loop pole location for that specific gain value."
+    },
+    {
+      "label": "Continuous-to-Discrete Mapping",
+      "expression": "z = e^(sT)",
+      "meaning": "T is the sampling period; this maps the continuous s-domain onto the discrete z-domain, letting stability and design tools built for continuous systems be adapted correctly to sampled, digital ones."
+    }
+  ],
+  "howItWorks": "Reading a root locus plot: each branch starts at an open-loop pole (where K = 0) and moves through the complex plane as K increases, tracing toward a zero or off toward infinity; the specific gain value at which a branch crosses from the stable left-half-plane into the right-half-plane is exactly the maximum gain that keeps the system stable — read directly off the plot instead of discovered by trial and error on real hardware. On the digital side: an Arduino running a PID loop inside its main loop() function is already, whether or not the programmer thinks of it this way, a digital — discrete-time, sampled — controller, not a true continuous one. Most hobby-level PID implementations get away with treating their sample rate as 'fast enough to approximate continuous,' which works fine as long as that rate is comfortably faster than the system's own dynamics. It stops being a safe assumption for fast-moving systems (a drone's stabilization loop) or a genuinely slow sample rate — a discretized version of a perfectly good continuous design can become unstable if sampled too slowly, and there's a hard theoretical limit (the Nyquist rate) on how slow sampling can go before fast changes in the signal are lost entirely.",
+  "diagramCaption": "As gain K increases, a closed-loop pole traces a path through the s-plane; it starts stable (green, left half), but past a critical gain value it crosses the imaginary axis into the unstable right half (red) — the root locus shows exactly where that crossing happens.",
+  "realWorldExamples": [
+    "Using a root locus plot in control design software to pick a PID gain that guarantees a specific settling time and overshoot, rather than tuning by trial and error on real hardware.",
+    "Recognizing that an Arduino running a PID loop inside loop() is already a digital, sampled controller by definition, regardless of how continuous the surrounding code looks.",
+    "A fast drone flight controller needing an explicitly discrete-time control design, since its dynamics are fast enough that treating the sample rate as 'basically continuous' would give measurably wrong stability predictions."
+  ],
+  "commonMisconceptions": [
+    "\"Root locus and Bode plots show completely different information\" — they're two different visual windows onto the same underlying stability information (pole locations), much like the relationship between transfer functions and state-space representation.",
+    "\"Code running on a microcontroller is continuous control, since the code 'runs continuously'\" — the control loop updates only once per iteration at a specific rate, which is discrete/sampled control by definition, regardless of how the surrounding code is structured.",
+    "\"Digital control only matters for very fast or very advanced systems\" — any sampled controller is technically a digital control system; it's specifically the design analysis that becomes essential (not optional) once the sample rate isn't comfortably faster than the system's own dynamics."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": ["dc-motor-speed-control"],
+  "relatedConcepts": ["stability-poles-bode-plots", "pid-control", "transfer-functions-laplace-basics"]
+}

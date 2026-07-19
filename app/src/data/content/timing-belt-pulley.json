@@ -1,0 +1,84 @@
+{
+  "identity": {
+    "id": "timing-belt-pulley",
+    "name": "Timing Belt & Pulley",
+    "category": "Structural & Mechanical",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A timing belt has evenly-spaced teeth molded into it that mesh with matching teeth on a pulley, transmitting rotational motion without slipping the way a plain flat belt or friction drive would — critical in CNC machines and 3D printers, where a single skipped tooth means a positioning error baked permanently into whatever's being made. This pairing is how a stepper motor's rotation becomes precise linear motion along an axis: the motor turns a pulley, the belt is clamped to a moving carriage, and the carriage travels a distance calculated exactly from the belt's tooth pitch and the pulley's tooth count.",
+  "simpleSummary": "A toothed belt and pulley set that transmits motion precisely without slipping, as used in 3D printers.",
+  "specifications": {
+    "commonProfile": "GT2 (2mm tooth pitch) is the standard in 3D printers/hobby CNC",
+    "beltWidth": "Commonly 6mm or 9mm for hobby-scale machines",
+    "pulleyToothCount": "Commonly 16-20 teeth for small motor pulleys",
+    "material": "Rubber/polyurethane belt with fiberglass or steel tension cords; aluminum or plastic pulleys"
+  },
+  "pinMap": [
+    {
+      "name": "Belt Teeth",
+      "position": null,
+      "category": "special",
+      "function": "The molded teeth that mesh with the pulley, providing slip-free motion transfer.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Belt tension matters as much as tooth engagement — too loose causes skipped teeth/backlash, too tight adds friction and wears the belt and bearings faster."
+    },
+    {
+      "name": "Pulley Bore",
+      "position": null,
+      "category": "special",
+      "function": "Center hole mounting the pulley to a motor shaft, usually with a set screw.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Idler Pulley Mount",
+      "position": null,
+      "category": "special",
+      "function": "A free-spinning pulley (often just a bearing) at the opposite end of the belt path, providing tension and a return path.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "3D printer / CNC axis motion",
+      "scenario": "Convert a stepper motor's rotation into precise linear carriage motion along X/Y axes.",
+      "pinsInvolved": [
+        "Belt Teeth",
+        "Pulley Bore",
+        "Idler Pulley Mount"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Robotic arm joint drive",
+      "scenario": "Transmit motor torque to a joint located some distance away from the motor itself.",
+      "pinsInvolved": [
+        "Belt Teeth",
+        "Pulley Bore"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "NEMA 17 stepper motor",
+      "Ball bearings",
+      "Aluminum extrusion"
+    ],
+    "oftenConfusedWith": [
+      "Plain friction belts (can slip, no positional precision)"
+    ],
+    "oftenUpgradedTo": [
+      "Ball screws for even higher precision and rigidity in CNC applications"
+    ]
+  }
+}

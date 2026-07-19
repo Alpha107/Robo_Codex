@@ -1,0 +1,197 @@
+{
+  "identity": {
+    "id": "rs485-modbus-module",
+    "name": "RS-485 / Modbus Module",
+    "category": "Communication Modules",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This breakout wraps an RS-485 transceiver chip (typically MAX485-class) that converts a microcontroller's single-ended UART signal into a differential pair (A/B) robust enough to run reliably over hundreds of meters of cable in electrically noisy industrial settings, something a plain TTL/USB serial link simply cannot do. RS-485 itself is just the electrical layer; Modbus RTU is the message format most commonly layered on top of it, turning the raw differential wire into a request/response protocol that industrial VFDs, PLCs, sensors, and weighing transmitters widely support. Because the transceiver is half-duplex, the module needs a direction-control pin (DE/RE) to switch between driving the bus and listening to it — get that timing wrong and transmission and reception both start behaving strangely even though the wiring is correct.",
+  "simpleSummary": "A board that turns a microcontroller's serial port into a long-distance, noise-resistant two-wire bus that industrial equipment understands.",
+  "specifications": {
+    "transceiverChip": "MAX485 (5V) or SP3485/MAX3485-class (3.3V variant)",
+    "protocolLayer": "RS-485 differential half-duplex electrical layer, commonly carrying Modbus RTU messages",
+    "maxChipBaudRate": "up to 2.5 Mbps at short distance (chip limit)",
+    "practicalModbusBaudRates": "9600-115200 bps typical",
+    "maxCableLength": "~1200 m at low baud rates (100 kbps or less, per RS-485 spec)",
+    "maxNodesPerSegment": "up to 32 standard-load transceivers (more with reduced-load or repeater ICs)",
+    "terminationResistor": "120 ohm required at both physical ends of the bus",
+    "operatingVoltage": "5V (MAX485) or 3.3V (SP3485/MAX3485 variant)",
+    "duplexMode": "Half-duplex — DE/RE control pins select transmit or receive; the module cannot do both at once"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the transceiver chip.",
+      "voltageRange": "5V or 3.3V depending on board variant",
+      "currentLimit": "~10-30 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the host microcontroller.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RO",
+      "position": null,
+      "category": "digital",
+      "function": "Receiver Output — the module's UART-side output, connects to the host's RX pin.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [],
+      "gotcha": "On this UART-facing side the wiring is straightforward (RO to host RX, no crossing needed beyond the normal TX/RX pairing) — the actual gotchas live on the A/B differential side, and it's easy to over-think this pin by treating it like the differential pair."
+    },
+    {
+      "name": "DI",
+      "position": null,
+      "category": "digital",
+      "function": "Driver Input — the host's TX pin drives this to send data onto the bus.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "This pin is only actually driven onto the bus while DE is HIGH — writing bytes here without asserting DE first sends nothing, and it's easy to mistake for a dead module rather than a missing enable signal."
+    },
+    {
+      "name": "DE",
+      "position": null,
+      "category": "digital",
+      "function": "Driver Enable, active HIGH — puts the transceiver into transmit mode.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "Dropping DE back LOW the instant the buffer empties, before the last byte has fully shifted out of the UART (including its stop bit), truncates the last byte on the wire — a classic 'reads work fine, writes are flaky' symptom. Use a TX-complete flag or a short guard delay, not just a buffer-empty check."
+    },
+    {
+      "name": "RE",
+      "position": null,
+      "category": "digital",
+      "function": "Receiver Enable, active LOW — puts the transceiver into receive mode; often tied to the same pin as DE on simple breakouts.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "If your board brings DE and RE out separately (rather than tying them together), forgetting to drive RE during a transaction leaves it floating and can cause bus contention or garbled reception."
+    },
+    {
+      "name": "A",
+      "position": null,
+      "category": "communication",
+      "function": "Non-inverting RS-485 differential bus line (sometimes labeled D+).",
+      "voltageRange": "RS-485 differential levels",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "D+"
+      ],
+      "gotcha": "A/B labeling isn't standardized across manufacturers (A/B vs D+/D- vs non-inverting/inverting) — two 'compatible' RS-485 devices from different vendors wired purely by label sometimes end up swapped; if the bus is dead with everything else correct, try swapping A and B on one node."
+    },
+    {
+      "name": "B",
+      "position": null,
+      "category": "communication",
+      "function": "Inverting RS-485 differential bus line (sometimes labeled D-), paired with A.",
+      "voltageRange": "RS-485 differential levels",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "D-"
+      ],
+      "gotcha": "Missing the 120 ohm termination resistors at the two physical bus ends (not at every node) causes reflections that only show up at higher baud rates or longer cable runs — a short bench setup can mask this problem entirely and pass every test until it's deployed."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Modbus RTU polling of an industrial VFD",
+      "scenario": "Poll a variable-frequency drive's speed and status registers from a Raspberry Pi or PLC over Modbus RTU to control a conveyor motor.",
+      "pinsInvolved": [
+        "A",
+        "B",
+        "DI",
+        "RO",
+        "DE",
+        "RE"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Long-distance greenhouse/farm sensor bus",
+      "scenario": "Chain multiple field sensor nodes over a bus spanning hundreds of meters, something a plain TTL serial link couldn't reach reliably.",
+      "pinsInvolved": [
+        "A",
+        "B",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Robot arm base-to-controller long cable run",
+      "scenario": "Replace a noise-prone single-ended UART link between a moving robot base and a fixed controller cabinet with a differential RS-485 link.",
+      "pinsInvolved": [
+        "A",
+        "B",
+        "DI",
+        "RO",
+        "DE",
+        "RE"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Multi-station weighing system",
+      "scenario": "Aggregate several load-cell weighing transmitters onto one bus so a single controller can poll each station's weight in turn.",
+      "pinsInvolved": [
+        "A",
+        "B",
+        "DI",
+        "RO",
+        "DE",
+        "RE"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Legacy industrial equipment retrofit",
+      "scenario": "Bridge an old motor drive or HMI that only speaks Modbus RTU into a modern Arduino- or PLC-based control system.",
+      "pinsInvolved": [
+        "A",
+        "B",
+        "DI",
+        "RO",
+        "DE",
+        "RE"
+      ],
+      "difficulty": "Intermediate-Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino / ESP32 (UART)",
+      "PLC",
+      "Variable frequency drive (VFD)",
+      "Load-cell weighing transmitters"
+    ],
+    "oftenConfusedWith": [
+      "CAN bus module — also a differential multi-drop bus electrically, but CAN has built-in bitwise arbitration, CRC error detection, and automatic retransmission with no single bus master, while RS-485/Modbus RTU is strictly master-polled request/response with no collision handling of its own",
+      "Plain TTL/USB serial — point-to-point only, limited to a few meters, with no multi-drop capability at all"
+    ],
+    "oftenUpgradedTo": [
+      "Industrial Modbus TCP/Ethernet gateways for longer-distance or higher-throughput network integration",
+      "CAN bus for applications needing real-time multi-master arbitration instead of polled request/response"
+    ]
+  },
+  "beginnerMistakes": [
+    "Forgetting termination resistors at the two physical bus ends, which only causes problems at longer cable runs or higher baud rates.",
+    "Never driving DE/RE at all (leaving the module always in receive mode), so it can hear the bus but never actually transmit onto it.",
+    "Dropping DE back LOW before the last transmitted byte has fully shifted out, truncating the end of every frame.",
+    "Assuming A/B labeling is universal across brands and wiring by label alone instead of testing, when the actual convention varies by manufacturer.",
+    "Treating the link like plain UART text instead of proper Modbus RTU framing — Modbus RTU requires a specific silent interval (~3.5 character times) between frames that generic serial code doesn't provide on its own."
+  ]
+}

@@ -1,0 +1,30 @@
+<svg viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <text x="310" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Forward Kinematics: angles in &#8594; position out</text>
+
+  <line x1="100" y1="230" x2="560" y2="230" stroke="#dde1e8" stroke-width="1.5"/>
+  <line x1="100" y1="230" x2="100" y2="60" stroke="#dde1e8" stroke-width="1.5"/>
+  <text x="565" y="234" font-size="10" fill="#5b6270">x</text>
+  <text x="95" y="55" font-size="10" fill="#5b6270">y</text>
+
+  <circle cx="100" cy="230" r="6" fill="#1a1d23"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 100 230; -18 100 230; 0 100 230; 0 100 230" dur="4s" repeatCount="indefinite" keyTimes="0;0.35;0.7;1"/>
+    <line x1="100" y1="230" x2="260" y2="130" stroke="#1a1d23" stroke-width="7" stroke-linecap="round"/>
+    <text x="165" y="170" font-size="11" fill="#5b6270">L&#8321;</text>
+    <circle cx="260" cy="130" r="6" fill="#1a1d23"/>
+
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="0 260 130; 22 260 130; 0 260 130; 0 260 130" dur="4s" repeatCount="indefinite" keyTimes="0;0.35;0.7;1"/>
+      <line x1="260" y1="130" x2="440" y2="170" stroke="#5b6270" stroke-width="7" stroke-linecap="round"/>
+      <text x="335" y="140" font-size="11" fill="#5b6270">L&#8322;</text>
+      <circle cx="440" cy="170" r="8" fill="#e03131"/>
+    </g>
+  </g>
+
+  <text x="450" y="255" text-anchor="middle" font-size="11" fill="#5b6270">x = L&#8321;cos&#952;&#8321; + L&#8322;cos(&#952;&#8321;+&#952;&#8322;)</text>
+  <text x="450" y="270" text-anchor="middle" font-size="11" fill="#5b6270">y = L&#8321;sin&#952;&#8321; + L&#8322;sin(&#952;&#8321;+&#952;&#8322;)</text>
+
+  <rect x="60" y="290" width="500" height="40" rx="8" fill="#f4f6f9" stroke="#dde1e8" stroke-width="1.4"/>
+  <text x="310" y="315" text-anchor="middle" font-size="10.5" fill="#5b6270">Same two angles always give the same (x, y) &#8212; the arm is just tracing a few example poses here.</text>
+</svg>

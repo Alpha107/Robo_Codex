@@ -1,0 +1,106 @@
+{
+  "identity": {
+    "id": "lcd1602",
+    "name": "16x2 Character LCD (I2C)",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The 16x2 LCD (16 characters per line, 2 lines — a 20x4 version with more room also exists) is the classic way to give a project a text readout without needing a full graphics display. Wired directly, it needs a demanding 6+ control pins and a contrast-adjustment potentiometer; almost everyone instead uses a small I2C 'backpack' board soldered to the back, which reduces the whole interface to just two wires (SDA/SCL) plus power, at the cost of needing to know the backpack's I2C address and a library that speaks to it.",
+  "simpleSummary": "A small screen that displays two lines of text, a simple way to show readouts without a full display.",
+  "specifications": {
+    "operatingVoltage": "5V (backpack logic), display itself is 5V",
+    "interface": "I2C via backpack (raw display uses a parallel interface without one)",
+    "characterGrid": "16 columns x 2 rows (20x4 variant also common)",
+    "backlight": "Usually adjustable/switchable via the backpack",
+    "contrastAdjustment": "Trimpot on the I2C backpack board"
+  },
+  "pinMap": [
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "5V",
+      "currentLimit": "~20-40 mA depending on backlight state",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line (via the backpack).",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line (via the backpack).",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": "Common I2C backpack addresses are 0x27 or 0x3F — if the display shows nothing but backlight is on, an I2C scanner sketch is the fastest way to find the actual address."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Sensor readout display",
+      "scenario": "Show live temperature, humidity, or other sensor readings without needing a computer connected.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Menu-driven device interface",
+      "scenario": "Combine with a rotary encoder or buttons to build a simple menu system for a standalone device.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Status/debug display",
+      "scenario": "Show system status or debug values during development without needing Serial Monitor.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Rotary encoder"
+    ],
+    "oftenConfusedWith": [
+      "OLED display (higher resolution graphics, not just fixed-grid characters)"
+    ],
+    "oftenUpgradedTo": [
+      "OLED display (SSD1306) for graphics, custom fonts, and better contrast"
+    ]
+  }
+}

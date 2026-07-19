@@ -1,0 +1,82 @@
+{
+  "identity": {
+    "id": "tactile-switch",
+    "name": "Tactile Switch (6mm Momentary)",
+    "category": "Input Devices",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This little 4-legged square switch with a distinctive audible/tactile click is probably the single most-used input component in hobby electronics — soldered directly onto breadboards and PCBs everywhere from reset buttons to game controllers. Its four legs are actually only two electrical connections: each side's two legs are permanently joined together (purely for mechanical stability when soldered), so it doesn't matter which of a pair you use, but the two pairs must go to different signal nets or the switch will read as permanently closed.",
+  "simpleSummary": "The small clicky button soldered onto nearly every circuit board and breadboard project.",
+  "specifications": {
+    "switchType": "Momentary, normally-open",
+    "actuationForce": "Light, tactile click feedback",
+    "ratedVoltage": "Typically rated for low-voltage logic circuits (12V/50mA or similar)",
+    "footprint": "Standard 6mm square THT package fits standard breadboard hole spacing"
+  },
+  "pinMap": [
+    {
+      "name": "Pin 1/2 (Side A)",
+      "position": null,
+      "category": "digital",
+      "function": "Both legs on one side of the switch — internally joined, electrically identical to each other.",
+      "voltageRange": "Logic-level",
+      "currentLimit": "~50 mA",
+      "alternateFunctions": [],
+      "gotcha": "All four legs look identical, but only diagonal pairs (or the two on each 'side') are internally bridged — check orientation, since bridging the wrong pair can make the switch appear stuck closed."
+    },
+    {
+      "name": "Pin 3/4 (Side B)",
+      "position": null,
+      "category": "digital",
+      "function": "Both legs on the other side of the switch — internally joined, connects to Side A when pressed.",
+      "voltageRange": "Logic-level",
+      "currentLimit": "~50 mA",
+      "alternateFunctions": [],
+      "gotcha": "Needs a pull-up or pull-down resistor (or the microcontroller's internal pull-up) so the input reads a defined level when not pressed, rather than floating."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Reset/mode button",
+      "scenario": "A simple momentary input for resetting state or cycling through modes.",
+      "pinsInvolved": [
+        "Pin 1/2 (Side A)",
+        "Pin 3/4 (Side B)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Game controller buttons",
+      "scenario": "Multiple tactile switches wired as action buttons for a DIY game controller.",
+      "pinsInvolved": [
+        "Pin 1/2 (Side A)",
+        "Pin 3/4 (Side B)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Keypad matrix input",
+      "scenario": "Arranged in a grid with diode isolation to build a custom button matrix with fewer pins than one-per-button.",
+      "pinsInvolved": [
+        "Pin 1/2 (Side A)",
+        "Pin 3/4 (Side B)"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard",
+      "Arduino Uno",
+      "Pull-up/pull-down resistor"
+    ],
+    "oftenConfusedWith": [
+      "Panel-mount push button (larger, mounted through an enclosure wall)"
+    ],
+    "oftenUpgradedTo": [
+      "Membrane keypad for many inputs without dozens of individual switches"
+    ]
+  }
+}

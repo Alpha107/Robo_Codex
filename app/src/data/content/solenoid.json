@@ -1,0 +1,83 @@
+{
+  "identity": {
+    "id": "solenoid",
+    "name": "Solenoid (Push-Pull Electromagnet)",
+    "category": "Motors & Actuators",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A solenoid is the simplest possible actuator: a coil of wire around a metal plunger that snaps in (or out, in 'pull' variants) the instant current flows, and springs back the moment it's cut. There's no positioning, no speed control, no direction control — just a fast, forceful on/off motion, which is exactly why they're used for locks, pinball kickers, valves, and vibration/tapping mechanisms. The one spec that catches beginners off guard is duty cycle: many solenoids will overheat and burn out if held energized continuously rather than pulsed, since the coil is only rated for brief activations.",
+  "simpleSummary": "A coil that snaps a metal rod in or out the instant power is applied — the simplest possible actuator.",
+  "specifications": {
+    "operatingVoltage": "5V, 6V, 12V, or 24V (model-dependent)",
+    "actionType": "Push or pull (model-dependent), momentary or latching",
+    "force": "Model-dependent, typically a few Newtons for small hobby solenoids",
+    "dutyCycle": "Often limited (e.g. 'max 15% duty cycle') — check the datasheet before holding it energized continuously",
+    "current": "Can spike well above steady-state draw at the moment of activation"
+  },
+  "pinMap": [
+    {
+      "name": "Coil+",
+      "position": null,
+      "category": "power",
+      "function": "One coil terminal; energizing the coil actuates the plunger.",
+      "voltageRange": "Model-rated voltage (5-24V)",
+      "currentLimit": "Model-dependent, often several hundred mA to a few amps",
+      "alternateFunctions": [],
+      "gotcha": "Most hobby solenoids are not polarity-sensitive (they're just an electromagnet coil), but always check — latching types often are."
+    },
+    {
+      "name": "Coil-",
+      "position": null,
+      "category": "power",
+      "function": "Other coil terminal.",
+      "voltageRange": "Model-rated voltage",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": "Coils generate a voltage spike when de-energized — a flyback diode across the coil is essential to protect the driving transistor/relay."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Electronic door lock",
+      "scenario": "Energize briefly to retract a locking pin, de-energize to let a spring re-lock.",
+      "pinsInvolved": [
+        "Coil+",
+        "Coil-"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Pinball-style kicker/bumper",
+      "scenario": "Fast, forceful momentary push for a game mechanism.",
+      "pinsInvolved": [
+        "Coil+",
+        "Coil-"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Braille cell / haptic tapper",
+      "scenario": "An array of small solenoids providing physical tactile feedback.",
+      "pinsInvolved": [
+        "Coil+",
+        "Coil-"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Relay modules",
+      "Flyback diode",
+      "Transistor driver circuit"
+    ],
+    "oftenConfusedWith": [
+      "Linear actuators (controllable position/speed, not just snap-action on/off)"
+    ],
+    "oftenUpgradedTo": [
+      "Linear actuator (when controllable position is needed instead of a snap action)"
+    ]
+  }
+}

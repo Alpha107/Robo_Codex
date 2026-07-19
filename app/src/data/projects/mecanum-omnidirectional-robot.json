@@ -1,0 +1,544 @@
+{
+  "identity": {
+    "id": "mecanum-omnidirectional-robot",
+    "title": "Mecanum Omnidirectional Robot",
+    "tagline": "Four special wheels let this robot strafe sideways and drive diagonally — no turning required.",
+    "category": "Robots & Motion",
+    "difficulty": "Advanced",
+    "estimatedTime": "100 minutes"
+  },
+  "goal": "Build a four-wheeled robot using mecanum wheels that can drive forward, backward, and sideways — even diagonally — without ever needing to turn its body, by independently spinning four motors at carefully calculated speeds and directions.",
+  "simpleSummary": "Build a robot that can drive sideways and diagonally, not just forward and back.",
+  "howItWorks": "A mecanum wheel looks unusual because it is: instead of one continuous tire surface, it has a set of small rollers mounted at 45° around its circumference, each free to spin on its own axis. When the wheel itself turns, those angled rollers redirect part of the driving force sideways instead of purely forward — on their own, a single mecanum wheel would just skid diagonally. The trick only works with four of them arranged in a mirrored X pattern (front-left and rear-right rollers angled one way, front-right and rear-left the other) and driven independently: spin all four the same direction and their sideways forces cancel out, leaving pure forward motion; spin the front-left and rear-right pair backward while the other pair goes forward, and the forward/backward forces cancel instead, leaving pure sideways strafing. Every other combination in between produces diagonal motion. This project implements exactly that mixing math — reading one joystick and calculating four different, independently-signed motor speeds from its two axes.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A separate battery pack for four motors",
+    "Small Phillips screwdriver for chassis assembly"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "l298n",
+      "quantity": 2,
+      "note": "one drives the front motor pair, one drives the rear pair"
+    },
+    {
+      "componentId": "dc-geared-motor",
+      "quantity": 4,
+      "note": "front-left, front-right, rear-left, rear-right"
+    },
+    {
+      "componentId": "mecanum-wheel",
+      "quantity": 4,
+      "note": "left-side and right-side wheels are mirror-image rollers — check orientation"
+    },
+    {
+      "componentId": "robot-chassis-kit",
+      "quantity": 1
+    },
+    {
+      "componentId": "joystick-module",
+      "quantity": 1
+    },
+    {
+      "componentId": "lipo-battery",
+      "quantity": 1,
+      "note": "4 motors draw significantly more current than a 2-wheel build — size accordingly"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "a full assortment — this build uses ~20"
+    }
+  ],
+  "circuitDiagramCaption": "One L298N per motor pair (front / rear); joystick feeds the Arduino, which computes all four motors' mixed speeds.",
+  "assembly3D": {
+    "placements": [
+      {
+        "componentId": "robot-chassis-kit",
+        "position": [0, 0.02, 0]
+      },
+      {
+        "componentId": "mecanum-wheel",
+        "instance": 0,
+        "position": [0.55, 0.31, 0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Front-Left Wheel"
+      },
+      {
+        "componentId": "mecanum-wheel",
+        "instance": 1,
+        "position": [0.55, 0.31, -0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Front-Right Wheel"
+      },
+      {
+        "componentId": "mecanum-wheel",
+        "instance": 2,
+        "position": [-0.8, 0.31, 0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Rear-Left Wheel"
+      },
+      {
+        "componentId": "mecanum-wheel",
+        "instance": 3,
+        "position": [-0.8, 0.31, -0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Rear-Right Wheel"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 0,
+        "position": [0.4, 0.16, 0.25],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "Front-Left Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 1,
+        "position": [0.4, 0.16, -0.25],
+        "rotation": [0, -1.5707963267948966, 0],
+        "label": "Front-Right Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 2,
+        "position": [-0.65, 0.16, 0.25],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "Rear-Left Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 3,
+        "position": [-0.65, 0.16, -0.25],
+        "rotation": [0, -1.5707963267948966, 0],
+        "label": "Rear-Right Motor"
+      },
+      {
+        "componentId": "l298n",
+        "instance": 0,
+        "position": [0.25, 0.3, 0.22],
+        "label": "L298N \"A\" (front pair)"
+      },
+      {
+        "componentId": "l298n",
+        "instance": 1,
+        "position": [0.25, 0.3, -0.22],
+        "label": "L298N \"B\" (rear pair)"
+      },
+      {
+        "componentId": "arduino-uno-r3",
+        "position": [-0.2, 0.275, 0]
+      },
+      {
+        "componentId": "joystick-module",
+        "position": [-0.2, 0.34, 0.3]
+      },
+      {
+        "componentId": "lipo-battery",
+        "position": [-0.2, 0.39, -0.3]
+      }
+    ],
+    "connections": [
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT3",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT4",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 2
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 2
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT3",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 3
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT4",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 3
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN3",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D7"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN4",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENB",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D12"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D13"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN3",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A2"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN4",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENB",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VRx"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0"
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VRy"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "GND",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        },
+        "label": "shared ground"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Mount all four mecanum wheels, making sure the roller angles form an X pattern when viewed from above — the two wheels on the left side are mirror images of the two on the right.",
+      "detail": "This is the single easiest mistake to make in this entire build: mecanum wheels are handed (left/right specific), and mounting one on the wrong side makes correct strafing physically impossible no matter how correct your code is. Check the roller angle direction printed on the wheel or documented by its seller before mounting."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the front-left and front-right motors to L298N \"A\"'s OUT1/OUT2 and OUT3/OUT4.",
+      "detail": "Grouping motors onto driver boards by front/rear pairing (rather than left/right) is an arbitrary wiring choice made here for tidiness — the code addresses all four motors independently regardless of which physical board they're wired to."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the rear-left and rear-right motors to L298N \"B\"'s OUT1/OUT2 and OUT3/OUT4.",
+      "detail": "Same pattern as step 2, on the second driver board."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire L298N \"A\": IN1/IN2 to D2/D3, ENA to D5, IN3/IN4 to D4/D7, ENB to D6.",
+      "detail": "This covers the front-left motor (IN1/IN2/ENA) and front-right motor (IN3/IN4/ENB)."
+    },
+    {
+      "step": 5,
+      "instruction": "Wire L298N \"B\": IN1/IN2 to D8/D12, ENA to D10, IN3/IN4 to D13/A2, ENB to D11.",
+      "detail": "This covers the rear-left motor (IN1/IN2/ENA) and rear-right motor (IN3/IN4/ENB). A2 is being used here as a plain digital output pin, which analog pins on an Uno support."
+    },
+    {
+      "step": 6,
+      "instruction": "Wire the joystick's VCC/GND to 5V/GND, VRx to A0, VRy to A1.",
+      "detail": "Same joystick wiring as the Joystick Pan-Tilt Turret project."
+    },
+    {
+      "step": 7,
+      "instruction": "Connect the battery to both L298N boards' +12V and GND terminals, and connect that shared ground to the Arduino's GND.",
+      "detail": "Four motors draw meaningfully more current than two — use a battery pack actually rated for that combined draw, not just whatever was on hand for a 2-motor build."
+    }
+  ],
+  "code": [
+    {
+      "filename": "mecanum_omnidirectional_robot.ino",
+      "language": "arduino",
+      "source": "// Mecanum Omnidirectional Robot\n// Mixes one joystick's X/Y into four independent, correctly-signed motor speeds.\n\n// Front-left motor (L298N \"A\", channel A)\nconst int FL_IN1 = 2, FL_IN2 = 3, FL_EN = 5;\n// Front-right motor (L298N \"A\", channel B)\nconst int FR_IN1 = 4, FR_IN2 = 7, FR_EN = 6;\n// Rear-left motor (L298N \"B\", channel A)\nconst int RL_IN1 = 8, RL_IN2 = 12, RL_EN = 10;\n// Rear-right motor (L298N \"B\", channel B)\nconst int RR_IN1 = 13, RR_IN2 = A2, RR_EN = 11;\n\nconst int VRX_PIN = A0;\nconst int VRY_PIN = A1;\nconst int DEAD_ZONE = 60; // ignore small drift around joystick center\n\nvoid setup() {\n  int pins[] = {FL_IN1, FL_IN2, FR_IN1, FR_IN2, RL_IN1, RL_IN2, RR_IN1, RR_IN2,\n                FL_EN, FR_EN, RL_EN, RR_EN};\n  for (int i = 0; i < 12; i++) {\n    pinMode(pins[i], OUTPUT);\n  }\n}\n\nvoid loop() {\n  // Rescale joystick readings to a signed -255..255 range, centered on 0.\n  int x = map(analogRead(VRX_PIN), 0, 1023, -255, 255);\n  int y = map(analogRead(VRY_PIN), 0, 1023, -255, 255);\n\n  if (abs(x) < DEAD_ZONE) x = 0;\n  if (abs(y) < DEAD_ZONE) y = 0;\n\n  // Classic mecanum mixing: forward/back (Y) affects all wheels the same way;\n  // strafe (X) affects diagonal pairs with opposite sign.\n  int frontLeft  = constrain(y + x, -255, 255);\n  int frontRight = constrain(y - x, -255, 255);\n  int rearLeft   = constrain(y - x, -255, 255);\n  int rearRight  = constrain(y + x, -255, 255);\n\n  driveMotor(FL_IN1, FL_IN2, FL_EN, frontLeft);\n  driveMotor(FR_IN1, FR_IN2, FR_EN, frontRight);\n  driveMotor(RL_IN1, RL_IN2, RL_EN, rearLeft);\n  driveMotor(RR_IN1, RR_IN2, RR_EN, rearRight);\n}\n\n// Drives one motor at a signed speed: positive = forward, negative = reverse.\nvoid driveMotor(int in1, int in2, int enPin, int signedSpeed) {\n  if (signedSpeed >= 0) {\n    digitalWrite(in1, HIGH);\n    digitalWrite(in2, LOW);\n  } else {\n    digitalWrite(in1, LOW);\n    digitalWrite(in2, HIGH);\n  }\n  analogWrite(enPin, abs(signedSpeed));\n}\n",
+      "explanation": "The four mixing lines are the entire concept of this project distilled into code: notice frontLeft and rearRight share the same formula (y + x), and frontRight and rearLeft share the other (y - x) — those are exactly the two diagonal pairs whose rollers are mirror images of each other. Pushing the joystick purely sideways (y = 0) makes two motors spin forward and the other two spin in reverse, which is precisely the combination that cancels forward force and adds sideways force. driveMotor() is a small helper that converts one signed speed value into the direction-pins-plus-PWM pattern every other motor project in this encyclopedia uses, just parameterized so it can be called once per wheel instead of repeated four times by hand."
+    }
+  ],
+  "expectedBehavior": "Pushing the joystick forward/back drives straight forward/back. Pushing it purely left/right makes the robot slide sideways without rotating. Diagonal joystick positions produce diagonal movement — all without the robot's body ever needing to turn to face its direction of travel.",
+  "troubleshooting": [
+    {
+      "issue": "Robot drives forward/back correctly but won't strafe sideways — it just rotates in place instead.",
+      "fix": "One or more mecanum wheels is very likely mounted on the wrong side (rollers angled the wrong way for that position) — this is a mechanical assembly issue, not a code or wiring bug, and is the single most common problem in mecanum builds."
+    },
+    {
+      "issue": "One wheel spins the wrong direction relative to the other three during a straight drive.",
+      "fix": "Swap that motor's two wires at its L298N OUT terminals, exactly as with any other motor-driver project."
+    },
+    {
+      "issue": "Robot drifts diagonally when commanded to go straight.",
+      "fix": "Small manufacturing differences between individual motors are common — add a per-motor calibration multiplier (e.g. 0.95 for a slightly-too-fast motor) in driveMotor() to compensate."
+    },
+    {
+      "issue": "Nothing moves, or only some motors respond.",
+      "fix": "Check both L298N boards independently for shared ground with the Arduino and adequate battery power — with two driver boards, it's easy to correctly wire one and overlook the same connection on the other."
+    }
+  ],
+  "extensions": [
+    "Add joystick rotation (via a second axis or the joystick's press button) so the robot can spin in place in addition to strafing.",
+    "Add per-wheel speed calibration constants to correct for real-world motor-to-motor variation.",
+    "Combine with the Obstacle-Avoidance Robot's ultrasonic sensor for a robot that can sidestep an obstacle instead of just stopping.",
+    "Replace manual joystick control with Bluetooth or RF433 commands, following the pattern from those RC car projects."
+  ]
+}

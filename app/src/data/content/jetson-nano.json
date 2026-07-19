@@ -1,0 +1,299 @@
+{
+  "identity": {
+    "id": "jetson-nano",
+    "name": "NVIDIA Jetson Nano",
+    "category": "Single Board Computer",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Jetson Nano looks like a Raspberry Pi at a glance — similar 40-pin header, similar ports — but its reason for existing is the large heatsink-covered module in the middle: a genuine GPU with hundreds of CUDA cores, capable of running real-time object detection and other neural-network inference locally instead of offloading to the cloud. That makes it the board of choice for vision-heavy robotics (a robot that needs to actually recognize what it's looking at) rather than general-purpose computing. Two practical gotchas trip up newcomers: there's no built-in WiFi (you need a USB dongle or M.2 card), and Jetson's GPIO library addresses pins by physical header position ('BOARD' numbering) by default, not the GPIO/BCM numbers Raspberry Pi tutorials use — copy-pasting Pi pin numbers directly onto a Jetson usually addresses the wrong pin. The newer Orin Nano is a substantially faster successor aimed at the same niche.",
+  "simpleSummary": "A small computer with a real graphics chip built in, made for running AI and vision programs.",
+  "specifications": {
+    "processor": "Quad-core Arm Cortex-A57, 1.43 GHz",
+    "gpu": "128-core NVIDIA Maxwell GPU (CUDA-capable)",
+    "operatingVoltage": "5V (board), 3.3V (GPIO logic)",
+    "ram": "4 GB LPDDR4",
+    "storage": "microSD card",
+    "connectivity": "Gigabit Ethernet (no built-in WiFi — requires USB or M.2 adapter)",
+    "usb": "4x USB 3.0, 1x Micro-USB (power/flashing)",
+    "video": "HDMI + DisplayPort",
+    "camera": "2x MIPI CSI-2 camera connectors (stereo vision capable)",
+    "gpio": "40-pin header, Raspberry Pi form-factor, 3.3V logic",
+    "connector": "Barrel jack (5V/4A) or Micro-USB (5V/2A, limited)"
+  },
+  "pinMap": [
+    {
+      "name": "Pin 1 (3V3)",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~50 mA recommended",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 2 (5V)",
+      "position": null,
+      "category": "power",
+      "function": "5V rail from the power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply headroom",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 6 (GND)",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 3 (I2C SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Referenced by physical pin number in Jetson.GPIO, not by a GPIO/BCM number like on a Pi."
+    },
+    {
+      "name": "Pin 5 (I2C SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 8 (UART TX)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 10 (UART RX)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 15",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 18",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 19 (SPI MOSI)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 21 (SPI MISO)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 23 (SPI SCK)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 24 (SPI CE0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI chip-select.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI CE0"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 29",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 31",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 32",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 33",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Real-time object detection robot",
+      "scenario": "Run a YOLO or SSD-MobileNet model at usable frame rates to let a robot recognize and react to objects, unlike a Pi which would need cloud offload for the same task.",
+      "pinsInvolved": [
+        "Pin 32",
+        "Pin 33"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Stereo-vision depth sensing",
+      "scenario": "Use both CSI camera ports for a stereo camera rig to estimate depth without a dedicated depth sensor.",
+      "pinsInvolved": [],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Autonomous navigation stack",
+      "scenario": "Run a full perception + planning stack (e.g. ROS2 with a vision pipeline) that would be too slow on a Pi's CPU alone.",
+      "pinsInvolved": [
+        "Pin 8 (UART TX)",
+        "Pin 10 (UART RX)"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "USB or CSI cameras",
+      "Arduino (as a real-time motor-control co-processor)"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi 4 (similar form factor, no GPU acceleration)"
+    ],
+    "oftenUpgradedTo": [
+      "Jetson Orin Nano (significantly faster GPU and CPU in a similar footprint)"
+    ]
+  }
+}

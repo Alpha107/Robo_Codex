@@ -1,0 +1,33 @@
+<svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .fillbar { animation: fillgrow 2.4s ease-in-out infinite; }
+    @keyframes fillgrow { 0%, 100% { width: 2px; } 50% { width: 40px; } }
+  </style>
+
+  <text x="140" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a1d23">Desktop Computer</text>
+  <rect x="40" y="45" width="200" height="40" rx="6" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="140" y="70" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">Application</text>
+  <rect x="40" y="90" width="200" height="40" rx="6" fill="#4dabf7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="140" y="115" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">Operating System</text>
+  <rect x="40" y="135" width="200" height="90" rx="6" fill="#dde6f0" stroke="#1a1d23" stroke-width="2"/>
+  <text x="140" y="160" text-anchor="middle" font-size="11" fill="#1a1d23">Hardware</text>
+  <text x="140" y="176" text-anchor="middle" font-size="10" fill="#5b6270">gigabytes of RAM</text>
+  <rect x="60" y="188" width="160" height="14" fill="none" stroke="#1a1d23" stroke-width="1.4"/>
+  <rect x="61" y="189" width="2" height="12" fill="#e03131" class="fillbar"/>
+  <text x="140" y="216" text-anchor="middle" font-size="9" fill="#5b6270">2KB app barely registers</text>
+
+  <line x1="280" y1="0" x2="280" y2="300" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="420" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a1d23">Embedded Microcontroller</text>
+  <rect x="320" y="45" width="200" height="40" rx="6" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="420" y="70" text-anchor="middle" fill="#ffffff" font-size="11.5" font-weight="700">Your Program</text>
+  <text x="420" y="102" text-anchor="middle" font-size="10.5" fill="#e03131" font-weight="700">(no OS &#8212; runs directly on hardware)</text>
+  <rect x="320" y="115" width="200" height="110" rx="6" fill="#dde6f0" stroke="#1a1d23" stroke-width="2"/>
+  <text x="420" y="145" text-anchor="middle" font-size="11" fill="#1a1d23">Hardware</text>
+  <text x="420" y="161" text-anchor="middle" font-size="10" fill="#e03131" font-weight="700">just kilobytes of RAM</text>
+  <rect x="340" y="172" width="160" height="14" fill="none" stroke="#1a1d23" stroke-width="1.4"/>
+  <rect x="341" y="173" width="2" height="12" fill="#e03131" class="fillbar"/>
+  <text x="420" y="200" text-anchor="middle" font-size="9" fill="#5b6270">the same 2KB app fills the whole budget</text>
+
+  <text x="280" y="260" text-anchor="middle" font-size="10" fill="#5b6270">Same-size code, wildly different fraction of available memory used.</text>
+</svg>

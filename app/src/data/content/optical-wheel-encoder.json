@@ -1,0 +1,97 @@
+{
+  "identity": {
+    "id": "optical-wheel-encoder",
+    "name": "Optical Wheel Encoder",
+    "category": "Line Following / Encoders / Feedback",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This pairs a slotted disc (mounted on a motor shaft or wheel axle) with a small IR emitter/receiver module that straddles it — as the disc spins, its slots alternately let light through and block it, producing a pulse train the microcontroller can count. Counting pulses over time gives speed; counting total pulses gives distance traveled, closing the loop that an open-loop DC motor alone can't provide (a DC motor has no idea how far it's actually turned — it just knows the voltage applied to it). Two-channel ('quadrature') versions add a second sensor offset from the first, letting software also determine rotation direction, not just speed.",
+  "simpleSummary": "A sensor that counts wheel or shaft rotations by watching light pass through a slotted disc.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "outputType": "Digital pulse train (single-channel) or quadrature pulses (dual-channel, adds direction sensing)",
+    "resolution": "Depends on slot count on the disc (common range: 20-100 slots per revolution)",
+    "sensingPrinciple": "IR emitter/receiver pair interrupted by a slotted disc"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the IR emitter/receiver pair.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~10-20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT A",
+      "position": null,
+      "category": "digital",
+      "function": "Primary pulse output — one pulse per slot passing through the sensor.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Interrupt (recommended)"
+      ],
+      "gotcha": "At high wheel speeds, pulses arrive fast enough that polling in the main loop misses some — use a hardware interrupt pin to count reliably."
+    },
+    {
+      "name": "OUT B",
+      "position": null,
+      "category": "digital",
+      "function": "Second pulse output, phase-offset from OUT A on quadrature (2-channel) encoders — comparing the two determines rotation direction.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Interrupt (recommended)"
+      ],
+      "gotcha": "Only present on 2-channel/quadrature versions — single-channel encoders can measure speed but not direction."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Closed-loop wheeled robot odometry",
+      "scenario": "Track exact distance traveled and correct for wheel slip/motor variance between left and right wheels.",
+      "pinsInvolved": [
+        "OUT A",
+        "OUT B"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Precise motor speed control (PID)",
+      "scenario": "Feed real-time speed feedback into a PID control loop for accurate speed regulation.",
+      "pinsInvolved": [
+        "OUT A"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "DC geared motor",
+      "L298N motor driver",
+      "Arduino Uno"
+    ],
+    "oftenConfusedWith": [
+      "Rotary encoder (a manual control knob, not a motor-feedback sensor)",
+      "Hall effect sensor (can serve a similar speed-sensing role using a magnet instead of a slotted disc)"
+    ],
+    "oftenUpgradedTo": [
+      "Magnetic absolute encoders for higher precision and no optical-alignment sensitivity"
+    ]
+  }
+}

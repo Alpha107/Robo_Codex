@@ -1,0 +1,24 @@
+<svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .draw { stroke-dasharray: 340; animation: drawline 3.4s linear infinite; }
+    @keyframes drawline { from { stroke-dashoffset: 340; } to { stroke-dashoffset: 0; } }
+  </style>
+
+  <text x="150" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e03131">Uncalibrated gyro (stationary)</text>
+  <line x1="40" y1="220" x2="270" y2="220" stroke="#1a1d23" stroke-width="1.5"/>
+  <line x1="40" y1="220" x2="40" y2="60" stroke="#1a1d23" stroke-width="1.5"/>
+  <text x="20" y="65" font-size="10" fill="#5b6270">heading</text>
+  <text x="255" y="235" font-size="10" fill="#5b6270">time</text>
+  <path d="M40,215 Q150,180 260,90" fill="none" stroke="#e03131" stroke-width="2.5" class="draw"/>
+  <text x="150" y="255" text-anchor="middle" font-size="10.5" fill="#e03131">heading drifts even at rest &#8212; pure bias</text>
+
+  <line x1="300" y1="0" x2="300" y2="280" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="450" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2f9e44">Calibrated gyro (stationary)</text>
+  <line x1="340" y1="220" x2="570" y2="220" stroke="#1a1d23" stroke-width="1.5"/>
+  <line x1="340" y1="220" x2="340" y2="60" stroke="#1a1d23" stroke-width="1.5"/>
+  <text x="320" y="65" font-size="10" fill="#5b6270">heading</text>
+  <text x="555" y="235" font-size="10" fill="#5b6270">time</text>
+  <path d="M340,200 Q450,198 560,201" fill="none" stroke="#2f9e44" stroke-width="2.5" class="draw"/>
+  <text x="450" y="255" text-anchor="middle" font-size="10.5" fill="#2f9e44">heading stays flat &#8212; bias subtracted out</text>
+</svg>

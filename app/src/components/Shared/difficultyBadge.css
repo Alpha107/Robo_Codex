@@ -1,0 +1,43 @@
+.difficulty-badge {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+.difficulty-beginner {
+  background: rgba(81, 207, 102, 0.14);
+  color: #69db7c;
+}
+
+.difficulty-foundational {
+  background: rgba(77, 171, 247, 0.14);
+  color: #4dabf7;
+}
+
+.difficulty-intermediate {
+  background: rgba(255, 212, 59, 0.14);
+  color: #ffd43b;
+}
+
+.difficulty-advanced {
+  background: rgba(255, 107, 107, 0.14);
+  color: #ff8787;
+}
+
+:root[data-theme='light'] .difficulty-beginner {
+  background: rgba(47, 158, 68, 0.12);
+  color: #2f9e44;
+}
+
+:root[data-theme='light'] .difficulty-intermediate {
+  background: rgba(240, 160, 0, 0.14);
+  color: #b8860b;
+}
+
+:root[data-theme='light'] .difficulty-advanced {
+  background: rgba(224, 49, 49, 0.12);
+  color: #c92a2a;
+}

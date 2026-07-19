@@ -1,0 +1,28 @@
+<svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .flow { stroke-dasharray: 6 5; animation: flowmove 1s linear infinite; }
+    @keyframes flowmove { to { stroke-dashoffset: -22; } }
+    .reward { animation: rewardfloat 2s ease-out infinite; }
+    @keyframes rewardfloat { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-14px); } }
+  </style>
+
+  <text x="280" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">The Reinforcement Learning Loop</text>
+
+  <rect x="60" y="90" width="160" height="70" rx="8" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="140" y="130" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Agent</text>
+
+  <rect x="340" y="90" width="160" height="70" rx="8" fill="#8d6e63" stroke="#1a1d23" stroke-width="2"/>
+  <text x="420" y="130" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Environment</text>
+
+  <path d="M220,110 H340" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="340,104 354,110 340,116" fill="#1a1d23"/>
+  <text x="280" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1d23">action</text>
+
+  <path d="M340,145 H220" stroke="#2f9e44" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="220,139 206,145 220,151" fill="#2f9e44"/>
+  <text x="280" y="165" text-anchor="middle" font-size="11" font-weight="700" fill="#2f9e44">state, reward</text>
+  <text x="280" y="185" text-anchor="middle" font-size="13" font-weight="700" fill="#2f9e44" class="reward">+1</text>
+
+  <text x="280" y="230" text-anchor="middle" font-size="10.5" fill="#5b6270">The agent adjusts its policy using the reward, over many repeated cycles.</text>
+  <text x="280" y="247" text-anchor="middle" font-size="10" fill="#5b6270">Example: +1 reward for a quadruped's forward progress, large penalty for falling over.</text>
+</svg>

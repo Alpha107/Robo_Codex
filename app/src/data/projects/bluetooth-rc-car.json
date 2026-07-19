@@ -1,0 +1,361 @@
+{
+  "identity": {
+    "id": "bluetooth-rc-car",
+    "title": "Bluetooth RC Car",
+    "tagline": "Drive a small robot car from your phone — no custom app, just a Bluetooth terminal.",
+    "category": "Robots & Motion",
+    "difficulty": "Advanced",
+    "estimatedTime": "75 minutes"
+  },
+  "goal": "Build a two-wheeled car that's driven wirelessly from a smartphone over Bluetooth, using single-character commands (forward, back, left, right, stop) sent from any generic Bluetooth serial app — turning the Line-Following Robot's exact chassis and motor wiring into something you steer yourself instead of something that steers itself.",
+  "simpleSummary": "Drive a robot car from your phone over Bluetooth, sending simple forward/back/turn commands.",
+  "howItWorks": "The HC-05 module is, from the Arduino's point of view, nothing more exotic than a wireless wire: whatever character a paired phone app sends over Bluetooth shows up on the HC-05's serial output exactly as if it had been typed into the Serial Monitor, and vice versa. This project uses SoftwareSerial to create a second serial channel on two ordinary digital pins, dedicated to talking to the HC-05, so the Arduino's main USB serial connection stays free for debugging. The car itself reuses precisely the same L298N direction/speed wiring and motor-control functions as the Line-Following Robot — the only thing that changes is where the \"which way to go\" decision comes from: a phone's button press over Bluetooth, instead of a line sensor's reading.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A Bluetooth serial terminal app on your phone (e.g. \"Serial Bluetooth Terminal\" on Android)",
+    "Small Phillips screwdriver for chassis assembly"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "hc05-bluetooth",
+      "quantity": 1
+    },
+    {
+      "componentId": "l298n",
+      "quantity": 1
+    },
+    {
+      "componentId": "dc-geared-motor",
+      "quantity": 2,
+      "note": "left + right drive wheels"
+    },
+    {
+      "componentId": "robot-chassis-kit",
+      "quantity": 1
+    },
+    {
+      "componentId": "robot-wheel",
+      "quantity": 2
+    },
+    {
+      "componentId": "caster-wheel",
+      "quantity": 1,
+      "note": "rear support wheel"
+    },
+    {
+      "componentId": "lipo-battery",
+      "quantity": 1,
+      "note": "or any 6-12V pack matching your motors"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 14 wires"
+    }
+  ],
+  "circuitDiagramCaption": "HC-05 talks to the Arduino over SoftwareSerial (D10/D11); everything downstream of the Arduino is identical to the Line-Following Robot's motor wiring.",
+  "assembly3D": {
+    "placements": [
+      {
+        "componentId": "robot-chassis-kit",
+        "position": [0, 0.02, 0]
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 0,
+        "position": [-0.8, 0.31, 0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Left Wheel"
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 1,
+        "position": [-0.8, 0.31, -0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Right Wheel"
+      },
+      {
+        "componentId": "caster-wheel",
+        "position": [0.55, 0.22, 0]
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 0,
+        "position": [-0.65, 0.16, 0.25],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "Left Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 1,
+        "position": [-0.65, 0.16, -0.25],
+        "rotation": [0, -1.5707963267948966, 0],
+        "label": "Right Motor"
+      },
+      {
+        "componentId": "l298n",
+        "position": [-0.15, 0.3, 0]
+      },
+      {
+        "componentId": "arduino-uno-r3",
+        "position": [0.3, 0.275, 0.25]
+      },
+      {
+        "componentId": "lipo-battery",
+        "position": [0.3, 0.39, -0.25]
+      },
+      {
+        "componentId": "hc05-bluetooth",
+        "position": [0.6, 0.35, 0]
+      }
+    ],
+    "connections": [
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENB"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT3"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT4"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc05-bluetooth",
+          "pin": "TXD"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc05-bluetooth",
+          "pin": "RXD"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc05-bluetooth",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc05-bluetooth",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        },
+        "label": "shared ground"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Build the chassis exactly as in the Line-Following Robot: mount both motors and wheels, attach the caster wheel, and wire the motors to the L298N's OUT1/OUT2 and OUT3/OUT4.",
+      "detail": "If you've already built that project, this entire stage is identical — only the \"brain\" deciding direction changes."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire Arduino D2 → L298N IN1, D3 → IN2, D4 → IN3, D5 → IN4, D6 → ENA, D9 → ENB.",
+      "detail": "Same direction/speed pin pattern used throughout this encyclopedia's motor-driver projects, just on a fresh set of pin numbers to keep clear of the Bluetooth wiring."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the HC-05's TXD to Arduino D10, and RXD to Arduino D11.",
+      "detail": "Notice this is crossed — the module's transmit pin goes to the pin the code treats as its receive pin, and vice versa, exactly like any serial connection between two devices."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the HC-05's VCC to Arduino 5V and GND to GND.",
+      "detail": "Some HC-05 boards' RXD pin technically expects 3.3V logic and can be sensitive to the Arduino's 5V signal over long-term use — a simple voltage divider (two resistors) on that one wire is a common precaution, though many boards tolerate 5V fine in practice."
+    },
+    {
+      "step": 5,
+      "instruction": "Connect the battery to the L298N's +12V/GND, and connect that ground to Arduino GND.",
+      "detail": "The same non-negotiable shared-ground rule as every motor-driver project here."
+    },
+    {
+      "step": 6,
+      "instruction": "Pair your phone with the HC-05 (default pairing code is usually 1234 or 0000) and install any generic Bluetooth serial terminal app.",
+      "detail": "You don't need a custom app for this project — any app that sends plain text characters over a Bluetooth serial connection works, since the Arduino is just watching for single letters."
+    }
+  ],
+  "code": [
+    {
+      "filename": "bluetooth_rc_car.ino",
+      "language": "arduino",
+      "source": "#include <SoftwareSerial.h>\n\n// Bluetooth RC Car\n// Drives a 2-motor chassis from single-character Bluetooth commands:\n// F = forward, B = backward, L = left, R = right, S = stop.\n\nSoftwareSerial bluetooth(10, 11); // RX, TX\n\nconst int IN1 = 2, IN2 = 3; // left motor\nconst int IN3 = 4, IN4 = 5; // right motor\nconst int ENA = 6, ENB = 9; // speed (PWM)\n\nconst int SPEED = 180; // 0-255\n\nvoid setup() {\n  bluetooth.begin(9600); // HC-05's default baud rate\n\n  pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);\n  pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);\n  pinMode(ENA, OUTPUT); pinMode(ENB, OUTPUT);\n\n  stopMotors();\n}\n\nvoid loop() {\n  if (bluetooth.available()) {\n    char command = bluetooth.read();\n\n    switch (command) {\n      case 'F': driveForward(); break;\n      case 'B': driveBackward(); break;\n      case 'L': pivotLeft();    break;\n      case 'R': pivotRight();   break;\n      case 'S': stopMotors();   break;\n    }\n  }\n}\n\nvoid driveForward() {\n  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);\n  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid driveBackward() {\n  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);\n  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid pivotLeft() {\n  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);\n  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid pivotRight() {\n  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);\n  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid stopMotors() {\n  analogWrite(ENA, 0);\n  analogWrite(ENB, 0);\n}\n",
+      "explanation": "bluetooth.available() checks whether a new character has arrived without blocking the rest of the program while waiting — the car simply keeps doing whatever it was last told until a new command interrupts it. The switch statement is a direct lookup from received character to motor function, and every motor function itself is the same set of direction/speed writes used across every other motor-driver project in this encyclopedia — nothing about the actual driving logic is new here, only the source of the commands."
+    }
+  ],
+  "expectedBehavior": "Sending F, B, L, R, or S from a Bluetooth terminal app immediately drives the car forward, backward, pivots it left or right, or stops it — continuing that action until a new command arrives.",
+  "troubleshooting": [
+    {
+      "issue": "Phone can't find or pair with the HC-05.",
+      "fix": "Confirm the module has power (its LED should blink, rapidly when unpaired) and that you're searching in your phone's Bluetooth settings, not inside a specific app, for the initial pairing."
+    },
+    {
+      "issue": "Commands are received (LED activity) but the car doesn't move correctly.",
+      "fix": "This is the same troubleshooting as any L298N-driven build — check shared ground between Arduino and L298N, and that no ENA/ENB jumper caps are left in place overriding the PWM speed control."
+    },
+    {
+      "issue": "Car responds to some letters but not others.",
+      "fix": "Confirm your terminal app is sending exactly the single uppercase characters expected (F, B, L, R, S) — some apps add extra characters like a newline that won't match the switch statement but also won't break anything, so this is usually a typo in the app's button configuration, not a code bug."
+    },
+    {
+      "issue": "Bluetooth connection drops or lags noticeably.",
+      "fix": "Move closer — HC-05's practical range is often shorter (a few meters) than its rated range, especially indoors with walls between the phone and car."
+    }
+  ],
+  "extensions": [
+    "Add a speed command (e.g. digits 1-9 sent before a direction) instead of one fixed SPEED value.",
+    "Build a simple custom phone app (e.g. with MIT App Inventor) with actual on-screen direction buttons instead of a raw text terminal.",
+    "Combine with the Obstacle-Avoidance Robot's ultrasonic sensor as a safety override that stops the car regardless of commands if it's about to hit something.",
+    "Compare this build directly against the RF433 Remote-Control Car project — same driving logic, completely different wireless link."
+  ]
+}

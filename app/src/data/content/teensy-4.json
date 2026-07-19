@@ -1,0 +1,400 @@
+{
+  "identity": {
+    "id": "teensy-4",
+    "name": "Teensy 4.0",
+    "category": "Microcontroller Board",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Teensy boards pack an absurd amount of processing power into a footprint smaller than a stick of gum — the 4.0 runs its ARM Cortex-M7 at 600 MHz, making it one of the fastest hobbyist-programmable boards available, and it's fully usable straight from the Arduino IDE via the Teensyduino add-on. It has no bootloader button and no bare programming header exposed by default; instead it uses its own USB-based loader utility. Most pins support several hardware peripherals simultaneously (multiple UARTs, SPI buses, I2C buses, and very high-frequency PWM), which is exactly the kind of headroom demanding real-time robotics or audio-processing projects need.",
+  "simpleSummary": "A tiny but extremely fast microcontroller board, usable straight from the Arduino IDE.",
+  "specifications": {
+    "microcontroller": "NXP iMXRT1062, Arm Cortex-M7, 600 MHz",
+    "operatingVoltage": "3.3V (most pins are 5V-tolerant as inputs)",
+    "flashMemory": "2 MB",
+    "sram": "1 MB (plus additional tightly-coupled memory)",
+    "digitalIOPins": 40,
+    "analogInputPins": "up to 14 (shared with some digital pins)",
+    "dimensions": "35mm x 18mm",
+    "connector": "Micro-USB"
+  },
+  "pinMap": [
+    {
+      "name": "0",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default UART1 RX.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "UART RX",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "1",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default UART1 TX.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "UART TX",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with PWM.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with PWM.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with PWM.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with PWM.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with high-speed PWM.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default UART2 RX.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "UART RX",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default UART2 TX.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "UART TX",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with PWM.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default SPI chip-select.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "SPI CS",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default SPI MOSI.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "SPI MOSI",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default SPI MISO.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "SPI MISO",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, default SPI SCK, wired to the onboard LED.",
+      "voltageRange": "0-3.3V, 5V-tolerant",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "SPI SCK",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "14 (A0)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "15 (A1)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input, default I2C SCL.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "16 (A2)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input, default I2C SDA.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "17 (A3)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "18 (A4)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input, alternate I2C SDA.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "19 (A5)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input, alternate I2C SCL.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "20 (A6)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "21 (A7)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "22 (A8)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "23 (A9)",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O or analog input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "~10 mA",
+      "alternateFunctions": [
+        "ADC",
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~250 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "5V input from USB or external supply.",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Real-time audio synthesis/processing",
+      "scenario": "The Teensy Audio Library plus this chip's raw speed make it a favorite for DIY synthesizers and effects pedals.",
+      "pinsInvolved": [
+        "11",
+        "12",
+        "13"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "High-speed sensor fusion for robotics",
+      "scenario": "Combine multiple IMUs, encoders, and motor controllers with tight real-time control loops that would choke a slower AVR board.",
+      "pinsInvolved": [
+        "15 (A1)",
+        "16 (A2)",
+        "18 (A4)",
+        "19 (A5)"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Custom USB device",
+      "scenario": "Native USB with configurable device types (MIDI, HID, serial, and more) via Teensyduino's USB Type menu.",
+      "pinsInvolved": [],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "MPU6050",
+      "SD card module"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Due (also 32-bit, but slower and lower-level toolchain support)"
+    ],
+    "oftenUpgradedTo": [
+      "Teensy 4.1 (adds Ethernet and more I/O)"
+    ]
+  }
+}

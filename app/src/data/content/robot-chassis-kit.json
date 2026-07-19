@@ -1,0 +1,104 @@
+{
+  "identity": {
+    "id": "robot-chassis-kit",
+    "name": "Robot Chassis Kit (2WD/4WD)",
+    "category": "Structural & Mechanical",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A chassis kit is the structural starting point for almost every wheeled hobby robot: a pre-cut acrylic or plastic base plate with mounting holes already positioned for a couple of common gear motors, a caster wheel for balance, and usually a second deck plate for stacking a microcontroller, battery, and breadboard on top. Buying one instead of designing custom brackets from scratch removes an entire category of early mechanical-design problems, letting a first robotics project focus on the electronics and code rather than on getting motor mounting geometry right.",
+  "simpleSummary": "A ready-made plastic base plate with motors and wheels attached, the starting frame for a wheeled robot.",
+  "specifications": {
+    "material": "Acrylic or ABS plastic, laser-cut or injection molded",
+    "driveConfiguration": "2WD (two driven wheels + caster) or 4WD (four driven wheels, no caster needed)",
+    "typicalSize": "~15-25cm footprint for small hobby chassis",
+    "mountingPattern": "Pre-drilled holes sized for standard TT gear motors and M3 screws"
+  },
+  "pinMap": [
+    {
+      "name": "Motor Mount (Left)",
+      "position": null,
+      "category": "special",
+      "function": "Pre-drilled mounting position for the left drive motor, sized for standard TT gear motor tabs.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Motor mount hole spacing varies slightly between chassis brands — verify your specific gear motor fits before drilling anything new."
+    },
+    {
+      "name": "Motor Mount (Right)",
+      "position": null,
+      "category": "special",
+      "function": "Pre-drilled mounting position for the right drive motor.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Caster Mount",
+      "position": null,
+      "category": "special",
+      "function": "Mounting position for a caster wheel (2WD chassis only) providing a third point of balance.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Deck Standoffs",
+      "position": null,
+      "category": "special",
+      "function": "Threaded standoff posts for mounting a second deck plate above the main chassis, for stacking electronics.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Component Mounting Holes",
+      "position": null,
+      "category": "special",
+      "function": "General-purpose holes across the plate for zip-tying or screwing down a battery holder, driver board, or breadboard.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "First wheeled robot build",
+      "scenario": "The standard starting platform for line-following, obstacle-avoidance, or Bluetooth-controlled robot projects.",
+      "pinsInvolved": [
+        "Motor Mount (Left)",
+        "Motor Mount (Right)",
+        "Caster Mount"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Sensor payload platform",
+      "scenario": "Stack a second deck with additional sensors/electronics above the base motor/battery layer.",
+      "pinsInvolved": [
+        "Deck Standoffs"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "DC geared motor",
+      "Caster wheel",
+      "Wheels",
+      "L298N motor driver"
+    ],
+    "oftenConfusedWith": [
+      "3D-printed custom chassis (more design flexibility, more upfront effort)"
+    ],
+    "oftenUpgradedTo": [
+      "Custom-designed 3D-printed or laser-cut chassis once specific sensor/mounting needs outgrow a generic kit"
+    ]
+  }
+}

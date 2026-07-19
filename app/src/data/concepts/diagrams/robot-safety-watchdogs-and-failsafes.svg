@@ -1,0 +1,33 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .bar { animation: watchdog 4s linear infinite; }
+    @keyframes watchdog {
+      0%   { width: 220px; fill: #2f9e44; }
+      35%  { width: 30px;  fill: #2f9e44; }
+      36%  { width: 220px; fill: #2f9e44; }
+      70%  { width: 30px;  fill: #f08c00; }
+      85%  { width: 0px;   fill: #e03131; }
+      100% { width: 0px;   fill: #e03131; }
+    }
+    .heart { animation: heartbeat 4s linear infinite; }
+    @keyframes heartbeat { 0%,68% { opacity: 1; } 69%,100% { opacity: 0.15; } }
+    .alarm { animation: alarmflash 0.5s ease-in-out infinite; }
+    @keyframes alarmflash { 0%,100% { opacity: 0; } 50% { opacity: 1; } }
+  </style>
+
+  <text x="280" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Watchdog Timer: Safe State on Lost Heartbeat</text>
+
+  <text x="60" y="60" font-size="11" font-weight="700" fill="#1a1d23">watchdog timer</text>
+  <rect x="60" y="70" width="220" height="24" fill="none" stroke="#1a1d23" stroke-width="2"/>
+  <rect x="60" y="70" width="220" height="24" class="bar"/>
+
+  <text x="60" y="130" font-size="11" font-weight="700" fill="#1a1d23" class="heart">&#9829; main loop heartbeat (resets timer)</text>
+
+  <g transform="translate(400,80)">
+    <rect x="-40" y="-20" width="80" height="40" rx="8" fill="#e03131" class="alarm"/>
+    <text x="0" y="6" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" class="alarm">SAFE STOP</text>
+  </g>
+
+  <text x="280" y="180" text-anchor="middle" font-size="10.5" fill="#5b6270">While the main loop keeps beating, the timer keeps resetting.</text>
+  <text x="280" y="194" text-anchor="middle" font-size="10.5" fill="#5b6270">If the loop hangs, the heartbeat stops, the timer runs out, and the robot is forced safe.</text>
+</svg>

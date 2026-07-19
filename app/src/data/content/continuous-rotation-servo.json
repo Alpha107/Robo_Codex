@@ -1,0 +1,87 @@
+{
+  "identity": {
+    "id": "continuous-rotation-servo",
+    "name": "Continuous Rotation Servo",
+    "category": "Motors & Actuators",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Physically, a continuous rotation servo looks identical to a standard hobby servo and uses the exact same 3-wire PWM signal — but internally its position-sensing potentiometer has been removed or disconnected, so instead of driving to a fixed angle and holding, the same PWM pulse now controls speed and direction, spinning continuously like a geared motor. That makes it a popular 'motor plus built-in driver' shortcut for simple wheeled robots: no separate motor driver IC needed, just plug into a PWM pin the same way you would for a normal servo. The tradeoff is that it has no positional feedback at all — you can't ask it 'what angle are you at,' only 'spin this fast, this direction.'",
+  "simpleSummary": "A servo motor modified to spin continuously like a wheel motor instead of stopping at an angle.",
+  "specifications": {
+    "operatingVoltage": "4.8V - 6V (typical hobby range)",
+    "controlSignal": "PWM, 50 Hz, same as a standard servo",
+    "neutralPulse": "~1.5ms (stop)",
+    "speedControl": "Pulse width above/below neutral controls speed and direction, not angle",
+    "rotationRange": "Continuous (360°, unlimited)",
+    "weight": "~9-55 g depending on size/torque class"
+  },
+  "pinMap": [
+    {
+      "name": "Signal (orange/yellow wire)",
+      "position": null,
+      "category": "communication",
+      "function": "PWM pulse — width above ~1.5ms spins one direction, below spins the other, with speed proportional to distance from neutral.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (control input)",
+      "alternateFunctions": [],
+      "gotcha": "Unlike a positional servo, sending write(90) with the Arduino Servo library does NOT mean '90 degrees' — it means 'stop' (or close to it); the exact stop point usually needs manual calibration per unit."
+    },
+    {
+      "name": "VCC (red wire)",
+      "position": null,
+      "category": "power",
+      "function": "Motor power input.",
+      "voltageRange": "4.8V - 6V",
+      "currentLimit": "Depends on load, can spike under stall",
+      "alternateFunctions": [],
+      "gotcha": "Same multi-servo power rule as any hobby servo — don't power more than one directly from a microcontroller's 5V pin."
+    },
+    {
+      "name": "GND (brown/black wire)",
+      "position": null,
+      "category": "power",
+      "function": "Ground return.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Simple wheeled robot drive wheel",
+      "scenario": "Skip a separate motor driver entirely — wire two continuous rotation servos straight to PWM pins for a simple differential-drive robot.",
+      "pinsInvolved": [
+        "Signal (orange/yellow wire)",
+        "VCC (red wire)",
+        "GND (brown/black wire)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Conveyor or rotating display",
+      "scenario": "Continuous, speed-controllable rotation without needing an H-bridge motor driver.",
+      "pinsInvolved": [
+        "Signal (orange/yellow wire)",
+        "VCC (red wire)",
+        "GND (brown/black wire)"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Wheels",
+      "Robot chassis kits"
+    ],
+    "oftenConfusedWith": [
+      "Standard positional servos (SG90/MG996R) — same wiring, completely different control behavior"
+    ],
+    "oftenUpgradedTo": [
+      "DC geared motor + motor driver (more torque/speed control options, at the cost of needing a separate driver IC)"
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "identity": {
+    "id": "vibration-motor",
+    "name": "Vibration Motor (Coin/Pancake)",
+    "category": "Motors & Actuators",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This is the tiny 'buzz' motor found in phones, game controllers, and wearables: a flat, coin-shaped DC motor with an intentionally off-center (eccentric) weight on its shaft, so spinning the shaft makes the whole motor shake instead of just rotating smoothly. It's technically called an ERM (Eccentric Rotating Mass) motor, and electrically it's the simplest possible motor to drive — two wires, no direction/polarity requirement worth caring about, apply DC voltage and it vibrates, remove it and it stops. Because it's so small and low-power, it's almost always driven through a transistor or a dedicated haptic driver chip rather than directly off a microcontroller pin, and because the vibration comes from a physically spinning unbalanced mass, there's an inherent spin-up/spin-down lag — it can't produce an instant, sharply-defined 'tap' the way a more expensive LRA (Linear Resonant Actuator) haptic motor can.",
+  "simpleSummary": "A tiny coin-shaped motor with an off-center weight that makes it buzz and shake instead of spin smoothly, the same kind used in phones for vibration alerts.",
+  "specifications": {
+    "ratedVoltage": "3V DC (typical), operable ~2-4V",
+    "startVoltage": "~2.0-2.5V (minimum to overcome static friction and begin spinning)",
+    "ratedCurrent": "~60-90 mA at rated voltage",
+    "ratedSpeed": "~9,000-12,000 RPM",
+    "diameter": "8mm - 12mm (common coin/pancake sizes)",
+    "thickness": "~3-4mm",
+    "responseTime": "Tens of milliseconds spin-up/spin-down lag (mechanical, due to rotating mass inertia)",
+    "lifespan": "Typically rated for a few hundred to a few thousand hours of continuous operation"
+  },
+  "pinMap": [
+    {
+      "name": "Motor+",
+      "position": null,
+      "category": "power",
+      "function": "One motor terminal; applying DC voltage across the two leads spins the eccentric mass and produces vibration.",
+      "voltageRange": "2-4V DC (3V rated)",
+      "currentLimit": "~60-90 mA at rated voltage, higher briefly at stall/startup",
+      "alternateFunctions": [],
+      "gotcha": "It's not meaningfully polarity-sensitive — swapping the leads just reverses spin direction, which does not change the vibration effect at all, unlike a normal DC motor driving a mechanism."
+    },
+    {
+      "name": "Motor-",
+      "position": null,
+      "category": "power",
+      "function": "Other motor terminal.",
+      "voltageRange": "2-4V DC",
+      "currentLimit": "~60-90 mA at rated voltage",
+      "alternateFunctions": [],
+      "gotcha": "Driving it directly from a microcontroller GPIO pin can exceed the pin's safe output current on some boards — a small transistor or MOSFET driver is the safer, standard way to switch it, especially for PWM intensity control."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Haptic notification alert",
+      "scenario": "Buzz briefly to signal an incoming notification, button press confirmation, or alarm on a wearable or handheld device.",
+      "pinsInvolved": ["Motor+", "Motor-"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "PWM-controlled intensity feedback",
+      "scenario": "Drive the motor through a transistor with a PWM signal to vary vibration intensity, e.g. stronger buzz as a proximity sensor gets closer to an obstacle.",
+      "pinsInvolved": ["Motor+", "Motor-"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Silent alarm clock / sleep wearable",
+      "scenario": "Wake the wearer with vibration instead of sound, avoiding disturbing others nearby.",
+      "pinsInvolved": ["Motor+", "Motor-"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Anti-jamming vibration for hoppers/feeders",
+      "scenario": "Mount against a small parts hopper or vibratory feeder bowl to shake loose stuck material, running continuously or in short bursts.",
+      "pinsInvolved": ["Motor+", "Motor-"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Accessibility feedback device",
+      "scenario": "Provide tactile feedback for visually-impaired-assist devices, translating sensor readings (like distance or direction) into distinguishable buzz patterns.",
+      "pinsInvolved": ["Motor+", "Motor-"],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Transistor/MOSFET driver circuit",
+      "LiPo battery",
+      "Microcontroller (Arduino Nano, ATtiny85, etc.)"
+    ],
+    "oftenConfusedWith": [
+      "solenoid (a snap-action linear electromagnet producing a single discrete push/pull, not continuous rotational buzz)",
+      "LRA - Linear Resonant Actuator (a different haptic technology: a mass on a spring driven at its resonant frequency by an AC-like signal, giving sharper, faster-responding 'taps' than this motor's spin-up/spin-down buzz)"
+    ],
+    "oftenUpgradedTo": [
+      "LRA haptic motor with a dedicated haptic driver chip, for crisper, faster, more precisely-timed tactile feedback"
+    ]
+  },
+  "beginnerMistakes": [
+    "Driving it directly from a microcontroller pin without a transistor, risking exceeding the pin's safe current rating, especially if several are used at once.",
+    "Expecting a sharp, instant 'tap' — the spinning eccentric mass has real mechanical spin-up/spin-down lag, so rapid on/off pulses blur together instead of feeling distinct.",
+    "Running it continuously at full voltage in a battery-powered wearable without considering that ~60-90 mA is a meaningful continuous drain on a small coin-cell or thin LiPo.",
+    "Mounting it loosely or with soft adhesive — the vibration effect depends on the motor's housing being firmly coupled to whatever it's meant to shake; a loose mount just rattles instead of transmitting vibration."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "identity": {
+    "id": "ldr",
+    "name": "LDR (Light-Dependent Resistor)",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "An LDR (also called a photoresistor or CdS cell) is about as simple as sensors get: its resistance changes based on how much light hits it — high resistance in the dark, low resistance in bright light. It has no polarity, no datasheet timing protocol, and no digital interface at all; it's a passive component, not a smart sensor. To actually read it with a microcontroller's analog input, it has to be wired into a voltage divider with a fixed resistor, so light level shows up as a changing voltage rather than a directly readable resistance.",
+  "simpleSummary": "A simple part whose resistance changes with light — bright light lets more current through.",
+  "specifications": {
+    "resistanceRange": "~1kΩ (bright light) to 1MΩ+ (darkness), varies by model",
+    "responseTime": "Slow compared to photodiodes/phototransistors (tens to hundreds of ms)",
+    "wiring": "Requires a voltage-divider resistor to produce a readable analog voltage",
+    "polarity": "None — it's a passive resistor, can be wired either way"
+  },
+  "pinMap": [
+    {
+      "name": "Terminal 1",
+      "position": null,
+      "category": "analog",
+      "function": "One leg of the resistive element. Paired with a fixed resistor (commonly 10kΩ) to form a voltage divider read by an analog input.",
+      "voltageRange": "Passive component — voltage depends on divider circuit",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "By itself, an LDR doesn't produce a voltage — it just changes resistance. A common beginner mistake is wiring it directly to an analog pin expecting a reading, without the divider resistor."
+    },
+    {
+      "name": "Terminal 2",
+      "position": null,
+      "category": "analog",
+      "function": "Other leg of the resistive element — no polarity, interchangeable with Terminal 1.",
+      "voltageRange": "Passive component",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Automatic night light",
+      "scenario": "Turn on an LED automatically once ambient light drops below a threshold.",
+      "pinsInvolved": [
+        "Terminal 1",
+        "Terminal 2"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Light-following robot",
+      "scenario": "Compare readings from two or more LDRs to steer a robot toward (or away from) a light source.",
+      "pinsInvolved": [
+        "Terminal 1",
+        "Terminal 2"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Ambient-light-aware display brightness",
+      "scenario": "Adjust a display or LED strip's brightness based on room lighting conditions.",
+      "pinsInvolved": [
+        "Terminal 1",
+        "Terminal 2"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "10kΩ resistor (voltage divider)",
+      "Arduino Uno"
+    ],
+    "oftenConfusedWith": [
+      "Phototransistors/photodiodes (faster response, more consistent characteristics)"
+    ],
+    "oftenUpgradedTo": [
+      "A dedicated digital light sensor (e.g. BH1750) for calibrated lux readings over I2C"
+    ]
+  }
+}

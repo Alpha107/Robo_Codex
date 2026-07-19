@@ -1,0 +1,113 @@
+{
+  "identity": {
+    "id": "tp4056",
+    "name": "TP4056 LiPo Charging Module",
+    "category": "Power Management",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The TP4056 chip implements exactly the constant-current-then-constant-voltage charge profile a lithium cell needs, and this small breakout board wraps it with a USB input connector and status LEDs, turning 'safely charge a LiPo/Li-ion cell' into 'plug in a USB cable.' Many boards on the market add a second chip (commonly a DW01 plus a small MOSFET) providing basic over-discharge, overcharge, and short-circuit protection on the battery output — worth checking for specifically, since a bare TP4056-only board handles charging safely but does nothing to protect the battery during discharge.",
+  "simpleSummary": "A small board that safely charges a lithium battery from a USB cable.",
+  "specifications": {
+    "inputVoltage": "5V via Micro-USB or USB-C",
+    "chargeCurrent": "Adjustable via a resistor (many boards fixed around 1A)",
+    "chargeProfile": "Constant current, then constant voltage at 4.2V — standard Li-ion/LiPo profile",
+    "protectionCircuit": "Present on boards with the extra DW01+MOSFET chip; absent on bare TP4056-only boards"
+  },
+  "pinMap": [
+    {
+      "name": "IN+ (USB)",
+      "position": null,
+      "category": "power",
+      "function": "5V power input, typically via the onboard USB connector.",
+      "voltageRange": "5V",
+      "currentLimit": "~1A typical",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN-",
+      "position": null,
+      "category": "power",
+      "function": "Input ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B+",
+      "position": null,
+      "category": "power",
+      "function": "Battery positive terminal — connects directly to the cell being charged.",
+      "voltageRange": "3.0-4.2V",
+      "currentLimit": "Charge current (often ~1A)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B-",
+      "position": null,
+      "category": "power",
+      "function": "Battery negative terminal.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "On protected boards, B- runs through the protection MOSFET, not straight to ground — don't assume B- and OUT- are the same net on protected variants."
+    },
+    {
+      "name": "OUT+",
+      "position": null,
+      "category": "power",
+      "function": "Output to the load (present on protected boards) — passes battery power through the protection circuit.",
+      "voltageRange": "3.0-4.2V",
+      "currentLimit": "Board-dependent, often a few amps",
+      "alternateFunctions": [],
+      "gotcha": "Only present on protected boards — bare TP4056-only modules have no separate load output and no discharge protection at all."
+    },
+    {
+      "name": "OUT-",
+      "position": null,
+      "category": "power",
+      "function": "Output ground (protected boards only).",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "USB-rechargeable project battery",
+      "scenario": "Add USB charging to any LiPo/Li-ion-powered project without designing a custom charge circuit.",
+      "pinsInvolved": [
+        "IN+ (USB)",
+        "B+",
+        "B-"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Safe battery-powered device with load protection",
+      "scenario": "Use a protected-variant board's OUT+/OUT- to power a load while guarding against over-discharge.",
+      "pinsInvolved": [
+        "OUT+",
+        "OUT-"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "18650 battery holder",
+      "LiPo battery"
+    ],
+    "oftenConfusedWith": [
+      "Standalone BMS boards (protection-only, no charging capability)"
+    ],
+    "oftenUpgradedTo": [
+      "Multi-cell balance-charging modules for packs with more than one cell in series"
+    ]
+  }
+}

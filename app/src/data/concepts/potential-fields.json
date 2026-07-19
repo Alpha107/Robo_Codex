@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "potential-fields",
+    "title": "Potential Fields",
+    "category": "Motion Planning & Navigation",
+    "level": "Intermediate",
+    "tagline": "Treating the goal as a pull and every obstacle as a push, then just following the combined direction moment to moment."
+  },
+  "simpleSummary": "Imagining the goal pulling the robot toward it like gravity, and every obstacle pushing it away like a repelling force, then just moving in whatever direction those combined pushes and pulls point at each instant.",
+  "keyIdea": "The potential fields method assigns an attractive pull toward the goal and a repulsive push away from each nearby obstacle, then computes the robot's next move as the combined direction of these virtual forces — fast and reactive, but prone to getting stuck in local minima.",
+  "overview": "Imagine the goal as the bottom of a valley, pulling the robot downhill toward it, and every obstacle as a hill, pushing the robot away whenever it gets close. Summing these virtual attractive and repulsive forces at the robot's current position gives a single combined direction to move in right now, recalculated continuously as the robot moves. This makes potential fields extremely fast and reactive — no search or lookahead planning is needed at all, unlike Dijkstra, A*, or RRT — which makes it well suited to real-time obstacle avoidance on robots with limited onboard computation. Its major weakness is the local minima problem: the robot can get stuck at a point where the attractive and repulsive forces exactly cancel out, even though that point isn't the actual goal.",
+  "equations": [
+    {
+      "label": "Attractive Potential",
+      "expression": "U_att(q) = ½·k_att·‖q − q_goal‖²",
+      "meaning": "Grows with distance from the goal q_goal, like a bowl-shaped valley centered on it — creating a force that always pulls the robot directly toward the goal."
+    },
+    {
+      "label": "Repulsive Potential",
+      "expression": "U_rep(q) = ½·k_rep·(1/d(q) − 1/d₀)²  for d(q) < d₀, else 0",
+      "meaning": "Grows sharply as the distance d(q) to the nearest obstacle shrinks below an influence radius d₀ — creating a force that pushes the robot away, but only once it's close enough to matter."
+    }
+  ],
+  "howItWorks": "At every instant, the robot computes the combined gradient (steepest-descent direction) of the total potential — the sum of the attractive potential toward the goal and every nearby obstacle's repulsive potential — and simply moves in that direction. Because this is a purely local, instantaneous calculation with no lookahead or search involved, it's extremely cheap to compute in real time, repeated continuously as the robot moves through the environment. The serious weakness is that the robot can become trapped at a local minimum: a position where the attractive pull toward the goal and the repulsive push from nearby obstacles happen to exactly cancel out, producing zero net force, even though that position is not the actual goal. This classically happens directly behind a concave, U-shaped obstacle facing the goal — the robot approaches, gets pulled into the 'pocket,' and has no net force pushing it back out, unable to reach the true goal without additional escape logic like a random perturbation or temporarily switching to a different planning method.",
+  "diagramCaption": "The goal acts like a valley pulling the robot in, while each obstacle acts like a hill pushing it away; the robot's actual path follows the combined direction of these forces at every instant.",
+  "realWorldExamples": [
+    "Real-time reactive obstacle avoidance on resource-constrained robots, combining a virtual pull toward a target waypoint with a push from nearby ultrasonic or IR sensor readings — similar in spirit to this site's Obstacle-Avoidance Robot project, though implemented there through simpler direct sensor rules.",
+    "Drone swarm coordination, using repulsive potential fields between drones themselves alongside an attractive pull toward a formation target, to maintain safe spacing while moving together.",
+    "Simple mobile robot navigation demonstrations in academic robotics courses, since potential fields are conceptually simple and fast to implement compared to full path search."
+  ],
+  "commonMisconceptions": [
+    "\"Potential fields always find a valid path to the goal\" — the local minima problem means the robot can genuinely get stuck and never reach the goal, despite one existing, without additional escape strategies.",
+    "\"Potential fields require expensive computation like full path search\" — the opposite is true; being a cheap, purely local, real-time calculation is its main advantage, and also exactly why it lacks the global guarantees full path search provides.",
+    "\"Potential fields plan an entire route in advance\" — they compute only the immediate next direction to move, recalculated continuously; there is no advance planning or lookahead involved at all."
+  ],
+  "relatedComponents": ["hc-sr04", "ir-obstacle-sensor", "sharp-gp2y0a21"],
+  "relatedProjects": ["obstacle-avoidance-robot"],
+  "relatedConcepts": ["obstacle-avoidance-strategies", "path-planning-overview", "rrt-and-rrt-star"]
+}

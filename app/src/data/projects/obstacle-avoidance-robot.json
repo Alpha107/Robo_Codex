@@ -1,0 +1,417 @@
+{
+  "identity": {
+    "id": "obstacle-avoidance-robot",
+    "title": "Obstacle-Avoidance Robot",
+    "tagline": "A robot that drives forward until something's in the way, then looks both directions to decide where to turn.",
+    "category": "Robots & Motion",
+    "difficulty": "Advanced",
+    "estimatedTime": "90 minutes"
+  },
+  "goal": "Build a two-wheeled robot that drives forward freely, detects obstacles ahead of it with an ultrasonic sensor, and — instead of just turning blindly — sweeps that sensor left and right on a servo to actually measure which direction has more open space before choosing which way to steer.",
+  "simpleSummary": "Build a robot that stops, looks both ways, and steers around things in its path.",
+  "howItWorks": "An ultrasonic sensor measures distance the same way a bat does: it sends out a short, inaudible chirp and precisely times how long it takes the echo to come back. Sound travels at a known, roughly constant speed, so that round-trip time converts directly into a distance. The robot polls this distance constantly while driving forward; the moment it drops below a safe threshold, something is in the way. Rather than just picking a turn direction at random, this build mounts the sensor on a servo — a motor that holds a precise angle instead of spinning continuously — so the robot can pause, swing the sensor to look left, take a reading, swing it to look right, take another reading, and steer toward whichever side actually has more room. This is the same sense-decide-act loop every autonomous robot runs, just at a very small scale.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A separate battery pack for the motors",
+    "Small Phillips screwdriver for chassis assembly"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "hc-sr04",
+      "quantity": 1,
+      "note": "mounted on the servo horn"
+    },
+    {
+      "componentId": "sg90-servo",
+      "quantity": 1,
+      "note": "sweeps the sensor left/right"
+    },
+    {
+      "componentId": "l298n",
+      "quantity": 1
+    },
+    {
+      "componentId": "dc-geared-motor",
+      "quantity": 2,
+      "note": "left + right drive wheels"
+    },
+    {
+      "componentId": "robot-chassis-kit",
+      "quantity": 1
+    },
+    {
+      "componentId": "robot-wheel",
+      "quantity": 2
+    },
+    {
+      "componentId": "caster-wheel",
+      "quantity": 1,
+      "note": "rear support wheel"
+    },
+    {
+      "componentId": "18650-holder",
+      "quantity": 1,
+      "note": "or any 6-12V battery pack matching your motors"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "a full assortment — this build uses ~14"
+    }
+  ],
+  "circuitDiagramCaption": "The sensor rides on the servo so it can look in more than one direction; everything else follows the same Arduino → L298N → motors pattern as the Line-Following Robot.",
+  "assembly3D": {
+    "placements": [
+      {
+        "componentId": "robot-chassis-kit",
+        "position": [0, 0.02, 0]
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 0,
+        "position": [-0.8, 0.31, 0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Left Wheel"
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 1,
+        "position": [-0.8, 0.31, -0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Right Wheel"
+      },
+      {
+        "componentId": "caster-wheel",
+        "position": [0.55, 0.22, 0]
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 0,
+        "position": [-0.65, 0.16, 0.25],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "Left Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 1,
+        "position": [-0.65, 0.16, -0.25],
+        "rotation": [0, -1.5707963267948966, 0],
+        "label": "Right Motor"
+      },
+      {
+        "componentId": "l298n",
+        "position": [-0.15, 0.3, 0]
+      },
+      {
+        "componentId": "arduino-uno-r3",
+        "position": [0.3, 0.275, 0.25]
+      },
+      {
+        "componentId": "18650-holder",
+        "position": [0.3, 0.47, -0.25]
+      },
+      {
+        "componentId": "sg90-servo",
+        "position": [0.65, 0.35, 0],
+        "rotation": [0, 1.5707963267948966, 0]
+      },
+      {
+        "componentId": "hc-sr04",
+        "position": [0.65, 0.52, 0],
+        "label": "Ultrasonic (on servo horn)"
+      }
+    ],
+    "connections": [
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "Signal (orange/yellow wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "VCC (red wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "GND (brown/black wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "TRIG"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D7"
+        }
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "ECHO"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENB"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT3"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT4"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "18650-holder",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "18650-holder",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        },
+        "label": "shared ground"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Mount both drive motors and wheels to the chassis, and attach the caster wheel at the rear, exactly as in the Line-Following Robot build.",
+      "detail": "If you've already built that project, this entire mechanical stage is identical — only the sensor and its wiring change."
+    },
+    {
+      "step": 2,
+      "instruction": "Attach the servo to the front of the chassis facing forward, then push the HC-SR04 onto (or zip-tie it to) the servo's horn so the sensor physically swings when the servo turns.",
+      "detail": "Center the servo's horn at 90° (its resting middle position) before attaching the sensor, so \"straight ahead\" in code actually points the sensor straight ahead in real life."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the servo: signal wire → Arduino D9, power wire → Arduino 5V, ground wire → Arduino GND.",
+      "detail": "A single SG90 draws modest current, so powering it from the Arduino's own 5V pin is fine here — if you ever add a second, larger, or continuously-loaded servo, give it its own regulated 5V supply instead."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the HC-SR04: VCC → Arduino 5V, GND → Arduino GND, TRIG → Arduino D7, ECHO → Arduino D6.",
+      "detail": "TRIG and ECHO are easy to mix up since they're adjacent pins on the module — TRIG is the one the Arduino sends a pulse OUT on, ECHO is the one it listens on."
+    },
+    {
+      "step": 5,
+      "instruction": "Wire each motor's two terminals to the L298N's OUT1/OUT2 (left) and OUT3/OUT4 (right).",
+      "detail": "As before: if a motor spins the wrong way later, fix it by swapping its two wires here rather than touching any code."
+    },
+    {
+      "step": 6,
+      "instruction": "Wire Arduino D2 → L298N IN1, D3 → IN2, D4 → IN3, D5 → IN4, and D10 → ENA, D11 → ENB.",
+      "detail": "Same role as the Line-Following Robot's motor wiring, just moved to different pin numbers to keep them clear of the sensor and servo pins used in this project."
+    },
+    {
+      "step": 7,
+      "instruction": "Connect the battery's positive lead to L298N +12V and negative lead to L298N GND, then connect Arduino GND to that same ground rail.",
+      "detail": "The shared-ground rule applies here exactly as it does in every motor-driver circuit: skip it, and the Arduino's control signals won't mean anything to the L298N."
+    },
+    {
+      "step": 8,
+      "instruction": "Power the Arduino from a portable USB battery bank (or the L298N's regulated 5V output) instead of a laptop, then place the robot somewhere with open space and a few obstacles to test against.",
+      "detail": "Test it somewhere forgiving first — a hallway with soft-cornered furniture, not a staircase — while you're still tuning the safe-distance threshold."
+    }
+  ],
+  "code": [
+    {
+      "filename": "obstacle_avoidance_robot.ino",
+      "language": "arduino",
+      "source": "#include <Servo.h>\n\n// Obstacle-Avoidance Robot\n// Drives forward until an obstacle is closer than SAFE_DISTANCE_CM, then\n// sweeps the ultrasonic sensor left and right to pick the more open side.\n\nconst int TRIG_PIN = 7;\nconst int ECHO_PIN = 6;\nconst int SERVO_PIN = 9;\n\nconst int IN1 = 2; // left motor direction\nconst int IN2 = 3;\nconst int IN3 = 4; // right motor direction\nconst int IN4 = 5;\nconst int ENA = 10; // left motor speed (PWM)\nconst int ENB = 11; // right motor speed (PWM)\n\nconst int SAFE_DISTANCE_CM = 25;\nconst int BASE_SPEED = 150; // 0-255\n\nServo sensorServo;\n\nvoid setup() {\n  pinMode(TRIG_PIN, OUTPUT);\n  pinMode(ECHO_PIN, INPUT);\n  pinMode(IN1, OUTPUT);\n  pinMode(IN2, OUTPUT);\n  pinMode(IN3, OUTPUT);\n  pinMode(IN4, OUTPUT);\n  pinMode(ENA, OUTPUT);\n  pinMode(ENB, OUTPUT);\n\n  sensorServo.attach(SERVO_PIN);\n  sensorServo.write(90); // look straight ahead\n  delay(300);\n}\n\nvoid loop() {\n  long distanceAhead = readDistanceCm();\n\n  if (distanceAhead > SAFE_DISTANCE_CM) {\n    driveForward(BASE_SPEED);\n    return;\n  }\n\n  // Something's in the way: stop, back off slightly, then look around.\n  stopMotors();\n  delay(150);\n  driveBackward(BASE_SPEED);\n  delay(300);\n  stopMotors();\n\n  long leftDistance = lookDirection(150);\n  long rightDistance = lookDirection(30);\n  sensorServo.write(90); // recenter before driving again\n  delay(200);\n\n  if (leftDistance > rightDistance) {\n    pivotLeft(BASE_SPEED);\n  } else {\n    pivotRight(BASE_SPEED);\n  }\n  delay(400);\n  stopMotors();\n}\n\n// Swings the sensor to the given servo angle, waits for it to physically\n// arrive, and returns the distance reading from that direction.\nlong lookDirection(int angle) {\n  sensorServo.write(angle);\n  delay(300);\n  return readDistanceCm();\n}\n\n// Sends a 10-microsecond trigger pulse and times the echo. HC-SR04 measures\n// round-trip time in microseconds; dividing by 58 converts that to centimeters.\nlong readDistanceCm() {\n  digitalWrite(TRIG_PIN, LOW);\n  delayMicroseconds(2);\n  digitalWrite(TRIG_PIN, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(TRIG_PIN, LOW);\n\n  long duration = pulseIn(ECHO_PIN, HIGH, 30000); // 30ms timeout ~5m max range\n  if (duration == 0) return 999; // no echo received = treat as clear\n  return duration / 58;\n}\n\nvoid driveForward(int speed) {\n  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);\n  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);\n  analogWrite(ENA, speed);\n  analogWrite(ENB, speed);\n}\n\nvoid driveBackward(int speed) {\n  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);\n  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);\n  analogWrite(ENA, speed);\n  analogWrite(ENB, speed);\n}\n\nvoid pivotLeft(int speed) {\n  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);\n  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);\n  analogWrite(ENA, speed);\n  analogWrite(ENB, speed);\n}\n\nvoid pivotRight(int speed) {\n  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);\n  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);\n  analogWrite(ENA, speed);\n  analogWrite(ENB, speed);\n}\n\nvoid stopMotors() {\n  analogWrite(ENA, 0);\n  analogWrite(ENB, 0);\n}\n",
+      "explanation": "The main loop is a straightforward sense-decide-act cycle: as long as the path ahead is clear, keep driving forward. The moment it isn't, the robot stops, backs off a little so it has room to pivot without bumping whatever it detected, then calls lookDirection() twice — once swinging the servo to 150° (left) and once to 30° (right) — comparing the two readings to decide which way actually has more open space, rather than always turning the same direction. readDistanceCm() is the same pulse-timing technique used by every ultrasonic-sensor project: send a clean 10-microsecond trigger pulse, then measure how long the echo pin stays HIGH and convert that time to centimeters."
+    }
+  ],
+  "expectedBehavior": "The robot drives forward in open space. As it approaches an obstacle within about 25cm, it stops, backs up slightly, sweeps its sensor left and right, and turns toward whichever side had more clearance — then continues forward again, repeating this indefinitely.",
+  "troubleshooting": [
+    {
+      "issue": "Robot ignores obstacles and drives straight into them.",
+      "fix": "Confirm TRIG and ECHO aren't swapped, and try printing the distance reading over Serial to confirm it's actually changing as you move your hand in front of the sensor."
+    },
+    {
+      "issue": "Robot stops constantly even in open space.",
+      "fix": "SAFE_DISTANCE_CM may be set too high for your room, or the sensor may be picking up reflections off the floor if it's angled downward — check the servo's mounting angle."
+    },
+    {
+      "issue": "Servo twitches or resets randomly.",
+      "fix": "This is almost always a power issue — the servo is drawing a brief current spike that browns out the Arduino. Try powering the Arduino from a separate supply than the motors, and add a small capacitor across the servo's power leads if it persists."
+    },
+    {
+      "issue": "Robot always turns the same direction regardless of the actual obstacle layout.",
+      "fix": "Check that the servo is physically reaching both 30° and 150° without hitting a mechanical limit or the chassis itself, and that lookDirection() is returning different values for each — print both distances over Serial to confirm."
+    },
+    {
+      "issue": "Motors behave correctly on their own but not when the servo runs at the same time.",
+      "fix": "This is usually a shared power-supply current limitation, not a wiring or code bug — the servo and motors briefly competing for current from the same battery. Confirm your battery pack can supply enough current for the motors plus the servo simultaneously."
+    }
+  ],
+  "extensions": [
+    "Take three readings (left, center, right) instead of two, so the robot can recognize a dead end and reverse instead of turning into a wall on both sides.",
+    "Log distance readings over Serial and plot them to tune SAFE_DISTANCE_CM more precisely for your specific space.",
+    "Replace the fixed pivot delay with encoder feedback (see the Optical Wheel Encoder / Rotary Encoder components) for a more precise, repeatable turn angle.",
+    "Combine this project's sensor-sweep decision logic with the Line-Following Robot's steering code for a robot that follows a line but reroutes around obstacles blocking it."
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "identity": {
+    "id": "rf433-pair",
+    "name": "RF 433MHz Transmitter/Receiver Pair",
+    "category": "Communication Modules",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "These are about as bare-bones as wireless modules get: two separate tiny boards (one transmitter, one receiver), each with no microcontroller, no protocol, no addressing, and no error checking — the transmitter just broadcasts whatever digital signal it's given as raw ASK/OOK radio pulses, and the receiver spits out whatever it picks up, noise included. That means unlike an HC-12 or NRF24L01, all the packetization and error-detection work has to happen in software (commonly via a library like RC-Switch), but the tradeoff is an extremely cheap way to send simple on/off style commands — exactly like the remote for a garage door or wireless doorbell, which is precisely what these modules are often salvaged from or designed to mimic.",
+  "simpleSummary": "A very basic pair of radio modules for sending simple signals wirelessly, with no smarts built in.",
+  "specifications": {
+    "operatingVoltageTX": "3-12V (higher voltage generally gives more range)",
+    "operatingVoltageRX": "5V",
+    "modulation": "ASK/OOK (on-off keying) — no built-in packetization or error correction",
+    "range": "~50-100m open air with a proper antenna, much less with a short/no antenna",
+    "dataRate": "Low — a few kbps at most, and unreliable without a tolerant encoding scheme"
+  },
+  "pinMap": [
+    {
+      "name": "TX DATA",
+      "position": null,
+      "category": "digital",
+      "function": "Transmitter's digital input — whatever HIGH/LOW pattern is applied here is broadcast as radio pulses.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TX VCC",
+      "position": null,
+      "category": "power",
+      "function": "Transmitter power input.",
+      "voltageRange": "3-12V",
+      "currentLimit": "~9-40 mA depending on voltage",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TX GND",
+      "position": null,
+      "category": "power",
+      "function": "Transmitter ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TX ANT",
+      "position": null,
+      "category": "communication",
+      "function": "Antenna connection — typically just a length of wire cut to a specific length for the 433MHz wavelength.",
+      "voltageRange": "RF signal",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Range without a properly-sized antenna wire can drop to just a few centimeters — this is the most common 'why doesn't this work' issue with these modules."
+    },
+    {
+      "name": "RX DATA",
+      "position": null,
+      "category": "digital",
+      "function": "Receiver's digital output — outputs whatever it picks up, including noise when no signal is present.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "With no transmitter active, this pin doesn't sit cleanly LOW — it outputs random noise, so software must use a proper decoding scheme (like RC-Switch) rather than treating raw transitions as valid data."
+    },
+    {
+      "name": "RX VCC",
+      "position": null,
+      "category": "power",
+      "function": "Receiver power input.",
+      "voltageRange": "5V",
+      "currentLimit": "~4 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RX GND",
+      "position": null,
+      "category": "power",
+      "function": "Receiver ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Simple wireless remote control",
+      "scenario": "Send basic on/off commands to a remote relay (e.g. wireless light switch) using the RC-Switch library.",
+      "pinsInvolved": [
+        "TX DATA",
+        "RX DATA"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Garage door / gate remote clone",
+      "scenario": "Capture and replay a fixed-code remote's signal (for compatible legacy systems only).",
+      "pinsInvolved": [
+        "RX DATA"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Relay module"
+    ],
+    "oftenConfusedWith": [
+      "HC-12 (has its own onboard protocol handling, far more reliable)"
+    ],
+    "oftenUpgradedTo": [
+      "HC-12 or NRF24L01 for reliable, addressable communication instead of raw broadcast"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+<svg viewBox="0 0 820 480" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="40" y="30" width="200" height="70" rx="8" fill="#1c7ed6" stroke="#1a1d23" stroke-width="2"/>
+  <text x="140" y="60" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">HC-05</text>
+  <text x="140" y="80" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Bluetooth Module</text>
+
+  <rect x="40" y="150" width="200" height="160" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="140" y="225" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">Arduino</text>
+  <text x="140" y="246" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">Uno</text>
+
+  <rect x="360" y="150" width="180" height="160" rx="10" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="450" y="220" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">L298N</text>
+  <text x="450" y="240" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Motor Driver</text>
+
+  <rect x="630" y="110" width="150" height="70" rx="8" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="705" y="151" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Left Motor</text>
+
+  <rect x="630" y="260" width="150" height="70" rx="8" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="705" y="301" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Right Motor</text>
+
+  <rect x="360" y="360" width="180" height="60" rx="8" fill="#c92a2a" stroke="#1a1d23" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Battery (6&#8211;12V)</text>
+
+  <path d="M140,100 V150" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="140" cy="100" r="4" fill="#4dabf7"/>
+  <text x="150" y="130" fill="#1a1d23" font-size="12" font-weight="600">TXD/RXD &#8594; D10/D11</text>
+  <text x="150" y="146" fill="#5b6270" font-size="11">(SoftwareSerial)</text>
+
+  <path d="M240,230 H360" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="240" cy="230" r="4" fill="#4dabf7"/>
+  <text x="250" y="222" fill="#1a1d23" font-size="11" font-weight="600">IN1-4, ENA, ENB</text>
+  <text x="152" y="305" fill="#5b6270" font-size="11">D2&#8211;D5 = direction</text>
+  <text x="152" y="321" fill="#5b6270" font-size="11">D6/D9 = speed (PWM)</text>
+
+  <path d="M540,185 H630" fill="none" stroke="#e8590c" stroke-width="3"/>
+  <text x="548" y="177" fill="#1a1d23" font-size="12" font-weight="600">OUT1, OUT2</text>
+
+  <path d="M540,295 H630" fill="none" stroke="#e8590c" stroke-width="3"/>
+  <text x="548" y="287" fill="#1a1d23" font-size="12" font-weight="600">OUT3, OUT4</text>
+
+  <path d="M430,360 V310" fill="none" stroke="#c92a2a" stroke-width="3"/>
+  <text x="345" y="340" text-anchor="end" fill="#1a1d23" font-size="12" font-weight="600">+12V</text>
+
+  <path d="M140,310 V440 H360" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <path d="M470,360 V310" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <text x="150" y="440" fill="#1a1d23" font-size="12" font-weight="700">common GND (required!)</text>
+
+  <line x1="600" y1="400" x2="630" y2="400" stroke="#4dabf7" stroke-width="3"/>
+  <text x="638" y="405" fill="#5b6270" font-size="12">signal</text>
+  <line x1="600" y1="422" x2="630" y2="422" stroke="#e8590c" stroke-width="3"/>
+  <text x="638" y="427" fill="#5b6270" font-size="12">motor power</text>
+  <line x1="600" y1="444" x2="630" y2="444" stroke="#1a1d23" stroke-width="3"/>
+  <text x="638" y="449" fill="#5b6270" font-size="12">ground</text>
+</svg>

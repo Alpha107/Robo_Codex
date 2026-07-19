@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "denavit-hartenberg-parameters",
+    "title": "Denavit-Hartenberg Parameters",
+    "category": "Kinematics & Dynamics",
+    "level": "Advanced",
+    "tagline": "A standardized 4-number recipe per joint that makes forward kinematics mechanical and reusable for any robot arm."
+  },
+  "simpleSummary": "A standard, agreed-upon way of describing any robot arm's joint geometry using exactly four numbers per joint, so forward kinematics can be computed the same systematic way for any arm design.",
+  "keyIdea": "By placing coordinate frames on each joint according to a fixed set of rules, any serial-link robot arm's geometry can be fully described with just four parameters per joint, turning forward kinematics into a mechanical, repeatable calculation.",
+  "overview": "Computing forward kinematics by deriving each joint's geometric transformation from scratch, by hand, for every new robot design is slow and error-prone. The Denavit-Hartenberg (DH) convention solves this by defining a standardized rule for placing a coordinate frame at each joint — the joint axis becomes the frame's z-axis, and the x-axis is defined along the common perpendicular (common normal) between consecutive joint axes. Following these placement rules means only exactly four numbers are needed to fully describe the geometric relationship between any two consecutive joints, rather than the six generally needed to describe an arbitrary 3D transformation. This is why the DH convention became the standard way robotics textbooks, courses, and much simulation software describe a robot arm's kinematics — a robot's entire geometry reduces to one compact table.",
+  "equations": [
+    {
+      "label": "The Four DH Parameters",
+      "expression": "a, α, d, θ",
+      "meaning": "a = link length (distance along the common normal between consecutive joint axes); α = link twist (angle between the joint axes about that common normal); d = link offset (distance along the joint axis); θ = joint angle (rotation about the joint axis — the variable for a revolute joint)."
+    },
+    {
+      "label": "Per-Joint Transformation Matrix",
+      "expression": "Aᵢ = Rot_z(θᵢ) · Trans_z(dᵢ) · Trans_x(aᵢ) · Rot_x(αᵢ)",
+      "meaning": "Each joint's contribution to forward kinematics is this fixed sequence of four elementary transformations, built directly from its four DH parameters — multiplying these matrices together from base to tip gives the full forward kinematics chain."
+    }
+  ],
+  "howItWorks": "For each joint i, the four DH parameters describe its relationship to the previous joint entirely: aᵢ is how far apart the two joint axes are (measured along their common perpendicular), αᵢ is the twist angle between those two axes, dᵢ is how far the frame origin is offset along the joint's own axis, and θᵢ is the actual joint angle (the one variable that changes as a revolute joint rotates; for a prismatic/sliding joint it would instead be d that varies). Building a table of these four values for every joint in a robot, from base to tip, fully and unambiguously describes the entire arm's geometry. Forward kinematics then becomes purely mechanical: each row of the table produces one fixed-form transformation matrix, and multiplying all of them together in order gives the complete end-effector pose relative to the base — no per-robot custom derivation needed once the table is built. A genuinely common source of real confusion is that there are actually two slightly different DH conventions in use (commonly called 'standard DH' and 'modified DH'), which assign frames in subtly different orders; mixing the two up produces a table that looks almost right but computes a subtly wrong kinematic chain, a classic real-world debugging trap.",
+  "diagramCaption": "Two consecutive joint axes (z-axes) connected by the common normal a — the link length — with the twist angle α between the axes; θ is the variable joint rotation and d is the offset along the axis.",
+  "realWorldExamples": [
+    "Describing a 6-DOF industrial robot arm's complete kinematics to a simulation or motion-planning tool purely as a DH parameter table, rather than custom geometry code.",
+    "Robotics courses and textbooks worldwide use DH tables as the standard homework and exam format for arm kinematics problems.",
+    "Robot description formats used by simulation and planning software encode kinematic chain information equivalent to a DH table, even when the file format itself looks different."
+  ],
+  "commonMisconceptions": [
+    "\"DH parameters are the only correct way to do forward kinematics\" — they are a widely-used standardized convention, not the only mathematically valid approach; other formulations (like the product-of-exponentials method) exist and are used in some modern robotics contexts.",
+    "\"There is just one DH convention\" — there are two distinct variants in real use, standard DH and modified DH, with different frame-assignment rules; mixing them up is a genuinely common source of subtly wrong kinematics.",
+    "\"DH parameters describe the whole robot at once\" — each row describes only the relationship between one joint and the next; the full kinematic chain comes only from multiplying every joint's transformation together in sequence."
+  ],
+  "relatedComponents": ["servo-bracket-arm-kit"],
+  "relatedProjects": [],
+  "relatedConcepts": ["forward-kinematics", "inverse-kinematics", "jacobians-and-velocity-kinematics"]
+}

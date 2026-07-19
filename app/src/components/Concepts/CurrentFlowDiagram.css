@@ -1,0 +1,87 @@
+.flow-diagram {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-panel);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.flow-loop {
+  position: relative;
+  width: 280px;
+  height: 140px;
+  border: 3px solid var(--border);
+  border-radius: 4px;
+}
+
+.flow-node {
+  position: absolute;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--bg-panel);
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.flow-node-top-left {
+  top: -9px;
+  left: 8px;
+  color: var(--power);
+}
+
+.flow-node-top-right {
+  top: -9px;
+  right: 8px;
+}
+
+.flow-node-bottom-right {
+  bottom: -9px;
+  right: 8px;
+  color: var(--accent);
+}
+
+.flow-node-bottom-left {
+  bottom: -9px;
+  left: 8px;
+}
+
+.flow-dot {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--power);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--power) 70%, transparent);
+  offset-path: path('M 0,0 L 280,0 L 280,140 L 0,140 Z');
+  animation: flow-move 4s linear infinite;
+}
+
+@keyframes flow-move {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.flow-diagram-caption {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  text-align: center;
+  max-width: 480px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-dot {
+    animation: none;
+  }
+}

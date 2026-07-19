@@ -1,0 +1,126 @@
+{
+  "identity": {
+    "id": "buzzer-alarm-tune-player",
+    "title": "Buzzer Alarm / Tune Player",
+    "tagline": "Press a button, hear a tune — your first sound-generating circuit.",
+    "category": "Beginner Electronics",
+    "difficulty": "Beginner",
+    "estimatedTime": "20 minutes"
+  },
+  "goal": "Wire up a piezo buzzer and play a short melody when a button is pressed, using Arduino's built-in tone() function — the standard way to make any Arduino project beep, chirp, or play music without any extra driver hardware.",
+  "simpleSummary": "Press a button and play a little tune or beep through a buzzer.",
+  "howItWorks": "A piezo buzzer makes sound by vibrating a small ceramic disc at a specific frequency — feed it a 440Hz square wave and it produces something close to a musical A note. Arduino's tone() function generates exactly that: a square wave at whatever frequency you specify, on any digital pin, for as long as you tell it to. A \"tune\" is nothing more than a sequence of tone() calls at different frequencies (notes) with different durations — the same button-edge-detection idea from Push-Button LED Toggle triggers the sequence to start.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "buzzer",
+      "quantity": 1
+    },
+    {
+      "componentId": "push-button",
+      "quantity": 1
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 4
+    }
+  ],
+  "circuitDiagramCaption": "Button on D2 (with internal pull-up); buzzer on D8. Both share the same ground.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "push-button",
+          "pin": "Terminal 1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "push-button",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the button between D2 and GND, exactly as in Push-Button LED Toggle.",
+      "detail": "Same wiring, same INPUT_PULLUP approach — this project reuses that exact pattern as its trigger."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the buzzer's two leads between D8 and GND.",
+      "detail": "If your buzzer has a marked + lead, connect it to D8; passive buzzers (the more common kind in starter kits) usually aren't polarity-sensitive at all."
+    }
+  ],
+  "code": [
+    {
+      "filename": "buzzer_tune_player.ino",
+      "language": "arduino",
+      "source": "// Buzzer Alarm / Tune Player\n// Plays a short melody once each time the button is pressed.\n\nconst int BUTTON_PIN = 2;\nconst int BUZZER_PIN = 8;\n\nbool lastButtonReading = HIGH;\n\n// A tiny melody: each pair is {note frequency in Hz, duration in ms}.\n// 0 Hz = a rest (silence).\nint melody[][2] = {\n  {262, 200}, // C4\n  {294, 200}, // D4\n  {330, 200}, // E4\n  {0,   100}, // rest\n  {330, 200}, // E4\n  {294, 200}, // D4\n  {262, 400}, // C4 (held)\n};\nconst int NOTE_COUNT = 7;\n\nvoid setup() {\n  pinMode(BUTTON_PIN, INPUT_PULLUP);\n  pinMode(BUZZER_PIN, OUTPUT);\n}\n\nvoid loop() {\n  bool currentReading = digitalRead(BUTTON_PIN);\n\n  if (currentReading == LOW && lastButtonReading == HIGH) {\n    playMelody();\n  }\n\n  lastButtonReading = currentReading;\n}\n\nvoid playMelody() {\n  for (int i = 0; i < NOTE_COUNT; i++) {\n    int frequency = melody[i][0];\n    int duration = melody[i][1];\n\n    if (frequency > 0) {\n      tone(BUZZER_PIN, frequency, duration);\n    } else {\n      noTone(BUZZER_PIN);\n    }\n    delay(duration + 30); // small gap so consecutive notes are distinguishable\n  }\n  noTone(BUZZER_PIN);\n}\n",
+      "explanation": "melody[][2] stores the whole tune as a simple table of (frequency, duration) pairs rather than as one long chain of repeated tone() calls, which makes the tune easy to edit or replace. playMelody() walks that table note by note, calling tone() to start each note and waiting slightly longer than its duration before moving to the next — that small gap is what makes back-to-back same-pitch notes sound like two notes instead of one long one."
+    }
+  ],
+  "expectedBehavior": "Each button press plays a short 7-note melody once through, then stays silent until pressed again — pressing again mid-tune restarts it from the beginning.",
+  "troubleshooting": [
+    {
+      "issue": "No sound at all.",
+      "fix": "Confirm the buzzer is a piezo type driven by tone() and not a self-oscillating \"active\" buzzer that only needs HIGH/LOW (those buzz at one fixed pitch regardless of tone()'s frequency argument, and can sound distorted if driven with tone())."
+    },
+    {
+      "issue": "Sound is very quiet.",
+      "fix": "Piezo buzzers are naturally quiet without a resonant enclosure — this is normal, not a wiring fault. Mounting it against a hollow surface noticeably amplifies it."
+    },
+    {
+      "issue": "Melody keeps replaying instead of playing once per press.",
+      "fix": "Confirm the edge-detection logic (checking for HIGH-to-LOW transition) is intact and you haven't accidentally changed it to just check == LOW every loop."
+    }
+  ],
+  "extensions": [
+    "Add a second, different melody triggered by a second button.",
+    "Replace the fixed melody with a rising-pitch \"alarm\" sound triggered by a sensor (e.g. the Rain Alarm or Soil Moisture Monitor project) instead of a button.",
+    "Add a passive buzzer duet: two buzzers on two pins playing harmony notes.",
+    "Read the melody from Serial input instead of a hardcoded array, so you can type new tunes without re-uploading."
+  ]
+}

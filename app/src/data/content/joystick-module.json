@@ -1,0 +1,114 @@
+{
+  "identity": {
+    "id": "joystick-module",
+    "name": "Analog Joystick Module",
+    "category": "Input Devices",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This module is really just two potentiometers mechanically coupled at right angles to a single stick, plus a tactile switch triggered by pressing the stick straight down — moving the stick along one axis turns one potentiometer, moving along the other axis turns the second, and both are read as ordinary analog voltages. Center position doesn't read as a clean 0V/mid-voltage on most modules due to minor mechanical variance, which is why almost every joystick project starts with a quick calibration step reading the resting X/Y values before interpreting movement.",
+  "simpleSummary": "A stick you tilt in any direction, read by a microcontroller as two simple analog values.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "axes": "2 (X and Y), each a separate potentiometer",
+    "outputType": "Analog voltage per axis, plus a digital button press output",
+    "restingPosition": "Approximately mid-range voltage on both axes, but rarely exact — calibrate per unit"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input to both potentiometers.",
+      "voltageRange": "3.3-5V",
+      "currentLimit": "~2 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VRx",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output for the X-axis potentiometer.",
+      "voltageRange": "0-5V (board-dependent)",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "Resting (centered) voltage is rarely exactly mid-scale — read and store the resting value at startup rather than assuming a fixed center point."
+    },
+    {
+      "name": "VRy",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output for the Y-axis potentiometer.",
+      "voltageRange": "0-5V (board-dependent)",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SW",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output for the integrated push-button, triggered by pressing the stick down (active LOW on most modules).",
+      "voltageRange": "0-5V digital, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Push button"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robot/RC vehicle manual control",
+      "scenario": "Two-axis directional control for driving a robot or steering a vehicle.",
+      "pinsInvolved": [
+        "VRx",
+        "VRy"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Camera pan/tilt control",
+      "scenario": "Manually aim a camera or turret using X/Y stick position mapped to two servos.",
+      "pinsInvolved": [
+        "VRx",
+        "VRy"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Game controller input",
+      "scenario": "Analog movement control for a DIY game controller, with the push button as an extra action button.",
+      "pinsInvolved": [
+        "VRx",
+        "VRy",
+        "SW"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "SG90 servo motor"
+    ],
+    "oftenConfusedWith": [
+      "Rotary encoder (single-axis rotation, not 2D directional)"
+    ],
+    "oftenUpgradedTo": [
+      "Hall-effect joysticks (contactless, no potentiometer wear over time)"
+    ]
+  }
+}

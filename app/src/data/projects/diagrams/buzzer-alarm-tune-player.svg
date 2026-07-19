@@ -1,0 +1,35 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="70" width="170" height="120" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="115" y="125" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="115" y="146" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <!-- Button -->
+  <line x1="200" y1="100" x2="230" y2="100" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="100" r="4" fill="#1a1d23"/>
+  <text x="185" y="93" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">D2</text>
+  <path d="M230,100 H280" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <rect x="280" y="85" width="60" height="30" rx="4" fill="#adb5bd" stroke="#1a1d23" stroke-width="2"/>
+  <text x="310" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1d23">SW</text>
+  <path d="M340,100 H460 V150" stroke="#1a1d23" stroke-width="3" fill="none"/>
+  <circle cx="460" cy="100" r="4" fill="#1a1d23"/>
+  <text x="352" y="93" font-size="11" fill="#5b6270">other leg &#8594; GND (INPUT_PULLUP)</text>
+
+  <!-- Buzzer -->
+  <line x1="200" y1="180" x2="230" y2="180" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="180" r="4" fill="#1a1d23"/>
+  <text x="185" y="173" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">D8</text>
+  <path d="M230,180 H360" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <circle cx="380" cy="180" r="22" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="380" y="185" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">BUZZ</text>
+  <path d="M380,202 V150 H460" stroke="#1a1d23" stroke-width="3" fill="none"/>
+  <circle cx="460" cy="150" r="4" fill="#1a1d23"/>
+
+  <line x1="460" y1="150" x2="460" y2="100" stroke="#1a1d23" stroke-width="3"/>
+
+  <text x="480" y="130" font-size="12" font-weight="600" fill="#1a1d23">shared GND</text>
+
+  <line x1="30" y1="230" x2="60" y2="230" stroke="#4dabf7" stroke-width="3"/>
+  <text x="68" y="235" fill="#5b6270" font-size="12">signal</text>
+  <line x1="150" y1="230" x2="180" y2="230" stroke="#1a1d23" stroke-width="3"/>
+  <text x="188" y="235" fill="#5b6270" font-size="12">ground</text>
+</svg>

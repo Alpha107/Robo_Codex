@@ -1,0 +1,252 @@
+{
+  "identity": {
+    "id": "industrial-plc",
+    "name": "Industrial PLC",
+    "category": "Single Board Computer",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A Programmable Logic Controller is built for a completely different job than a hobbyist microcontroller board: instead of running an Arduino-style sketch or a general-purpose OS, it executes a deterministic scan cycle — read all inputs, run the logic program once, write all outputs, repeat — programmed under the IEC 61131-3 standard, most commonly as ladder logic, a language deliberately designed to look like the relay wiring diagrams the electricians who maintain factory floors already read. Every I/O terminal is typically opto-isolated with several kV of isolation between the field wiring and the internal logic, so a wiring mistake or a voltage spike out on the factory floor doesn't take down the controller, and the whole unit clips onto a standard 35mm DIN rail inside a control cabinet and is conformally coated to survive vibration, dust, and temperature swings for 24/7 unattended operation over years, not the occasional afternoon of a hobby project. The practical upshot for someone used to microcontroller boards: there's no 'flashing a sketch' — logic is downloaded to the PLC and runs immediately on power-up with no boot sequence to wait through, inputs and outputs are wired to screw terminals rather than jumper wires, and a failed field device or short is expected and designed around rather than something that risks bricking the controller.",
+  "simpleSummary": "A ruggedized, DIN-rail-mounted industrial controller programmed with ladder logic instead of code, built to run factory equipment reliably around the clock.",
+  "specifications": {
+    "programmingStandard": "IEC 61131-3 (Ladder Logic, Function Block Diagram, Structured Text, and others)",
+    "scanCycleTime": "~1 ms per 1,000 instructions (typical, program-dependent)",
+    "digitalInputs": "8-16 opto-isolated 24V DC inputs",
+    "digitalOutputs": "8x relay or transistor outputs, ~2A per point typical",
+    "analogIO": "2-4 channels, 0-10V or 4-20mA, 12-16 bit resolution",
+    "powerInput": "24V DC typical (some models 100-240V AC)",
+    "mounting": "35mm top-hat DIN rail clip",
+    "communication": "RS-485 (Modbus RTU) and Ethernet (Modbus TCP / OPC UA / EtherNet-IP depending on model)",
+    "operatingTempRange": "-20°C to 60°C, conformally coated for factory-floor reliability",
+    "ioIsolation": "Opto-isolated I/O, several kV isolation rating between field wiring and internal logic"
+  },
+  "pinMap": [
+    {
+      "name": "24V DC Power In (L+)",
+      "position": null,
+      "category": "power",
+      "function": "Main 24V DC logic power input for the controller itself.",
+      "voltageRange": "24V DC (typically 20.4-28.8V accepted)",
+      "currentLimit": "~200-500 mA for the controller logic supply",
+      "alternateFunctions": [],
+      "gotcha": "Logic power and I/O field power are frequently separate circuits on the same unit. Wiring only this terminal and assuming the input/output terminals are also powered is a common first-time mistake — the status LED lights up fine while every output stays dead."
+    },
+    {
+      "name": "24V DC Power In (M)",
+      "position": null,
+      "category": "power",
+      "function": "0V reference (common) for the 24V DC power input.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "This common must be tied to the same 0V reference as every connected field device. Floating or separately-grounded supplies across a panel create ground loops that show up as noisy analog input readings, not an obvious wiring fault."
+    },
+    {
+      "name": "Protective Earth (PE)",
+      "position": null,
+      "category": "power",
+      "function": "Chassis/functional earth terminal, bonding the enclosure to the panel's protective earth.",
+      "voltageRange": "Earth reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Skipping this terminal is easy to overlook because the PLC powers up and runs fine anyway — but it leaves the enclosure floating relative to earth, increasing susceptibility to noise-induced faults and, on AC-input models, is a genuine shock hazard."
+    },
+    {
+      "name": "Digital Input Common (DI COM)",
+      "position": null,
+      "category": "digital",
+      "function": "Common return terminal shared by the digital input block.",
+      "voltageRange": "0-24V DC",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Whether this common is wired sourcing (PNP) or sinking (NPN) determines which terminal a field sensor's output actually needs to land on. Wiring an NPN sensor into a block configured for PNP logic reads as stuck ON or stuck OFF, not as a fault code."
+    },
+    {
+      "name": "Digital Input 0 (DI0)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose opto-isolated 24V DC digital input, one of several identical input points (DI0-DI7).",
+      "voltageRange": "24V DC nominal",
+      "currentLimit": "Input impedance limited, ~5-7 mA sink/source",
+      "alternateFunctions": [],
+      "gotcha": "Inputs are opto-isolated and rated for 24V DC only. Mistaking this for a relay-rated terminal and connecting 120/240V AC directly destroys the input's isolation circuitry — a mistake that's easy to make coming from equipment where every terminal looks similar."
+    },
+    {
+      "name": "Digital Input 1 (DI1)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose opto-isolated 24V DC digital input.",
+      "voltageRange": "24V DC nominal",
+      "currentLimit": "Input impedance limited, ~5-7 mA sink/source",
+      "alternateFunctions": [],
+      "gotcha": "Contact bounce on a mechanical switch wired here can register as multiple transitions within a single scan cycle if the ladder program doesn't debounce it. Unlike a microcontroller sketch, PLC debouncing is typically done with an on-delay timer block in the logic, not in a driver library."
+    },
+    {
+      "name": "Digital Input 2 (DI2)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose opto-isolated 24V DC digital input.",
+      "voltageRange": "24V DC nominal",
+      "currentLimit": "Input impedance limited, ~5-7 mA sink/source",
+      "alternateFunctions": [],
+      "gotcha": "Long field wiring runs to this terminal act as antennas for EMI in a motor/VFD-heavy environment. Unshielded twisted pair over more than a few meters is a common source of input chatter that isn't a wiring error so much as an EMI problem needing shielded cable."
+    },
+    {
+      "name": "Digital Input 3 (DI3)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose opto-isolated 24V DC digital input.",
+      "voltageRange": "24V DC nominal",
+      "currentLimit": "Input impedance limited, ~5-7 mA sink/source",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Digital Output 0 (DO0 - Relay)",
+      "position": null,
+      "category": "digital",
+      "function": "Relay output point, one of several, switching field loads under ladder-logic control.",
+      "voltageRange": "Up to 250V AC / 30V DC depending on relay rating",
+      "currentLimit": "~2A resistive typical per point",
+      "alternateFunctions": [],
+      "gotcha": "Relay outputs are rated for a maximum steady-state switching current but are not rated for the inrush of a motor or contactor coil at that same steady-state figure. Switching an inductive load directly without a flyback diode or RC snubber slowly welds the relay contacts closed."
+    },
+    {
+      "name": "Digital Output 1 (DO1 - Relay)",
+      "position": null,
+      "category": "digital",
+      "function": "Relay output point, switching field loads under ladder-logic control.",
+      "voltageRange": "Up to 250V AC / 30V DC depending on relay rating",
+      "currentLimit": "~2A resistive typical per point",
+      "alternateFunctions": [],
+      "gotcha": "PLC outputs typically hold their last commanded state through certain fault conditions depending on the configured fault mode. Assuming an output always fails safe (off) without checking that configuration is a real safety-system mistake, not just a software nuance."
+    },
+    {
+      "name": "Analog Input (AI0, 4-20mA)",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input channel accepting a 4-20mA current-loop signal from a field transmitter (e.g. a pressure or level sensor).",
+      "voltageRange": "4-20mA current loop (or 0-10V on voltage-configured channels)",
+      "currentLimit": "N/A (current-loop input)",
+      "alternateFunctions": [
+        "0-10V voltage input (jumper/software selectable on some models)"
+      ],
+      "gotcha": "Wiring a 0-10V voltage-output sensor into a channel still configured for 4-20mA current mode reads a clipped, nonsensical value instead of throwing an obvious error — the channel's mode has to match the transmitter's wiring, not just its measurement range."
+    },
+    {
+      "name": "RS-485 Port (Modbus RTU)",
+      "position": null,
+      "category": "communication",
+      "function": "Serial multidrop bus for connecting field devices (VFDs, sensors, HMIs) using the Modbus RTU protocol.",
+      "voltageRange": "N/A (differential serial signal)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Modbus RTU over RS-485 needs termination resistors at both physical ends of the daisy chain and a common reference ground. Omitting termination on a longer run causes intermittent, hard-to-reproduce communication timeouts rather than a hard failure."
+    },
+    {
+      "name": "Ethernet Port (Modbus TCP)",
+      "position": null,
+      "category": "communication",
+      "function": "Ethernet port for Modbus TCP, OPC UA, or EtherNet/IP communication with a SCADA system, HMI, or engineering workstation.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Many industrial PLCs ship with a static factory-default IP address rather than DHCP. Plugging directly into a plant network without first matching the subnet is a common 'why can't I see the PLC' first-connection problem."
+    },
+    {
+      "name": "DIN Rail Mounting Clip",
+      "position": null,
+      "category": "special",
+      "function": "Spring-loaded clip on the back of the enclosure that snaps onto standard 35mm top-hat DIN rail for tool-less mounting inside a control cabinet.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Conveyor belt sequencing control",
+      "scenario": "Sequence multiple conveyor sections and diverters in a factory cell using ladder logic driven by photoeye and limit switch inputs.",
+      "pinsInvolved": [
+        "Digital Input 0 (DI0)",
+        "Digital Input 1 (DI1)",
+        "Digital Output 0 (DO0 - Relay)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Robot cell safety interlock",
+      "scenario": "Monitor a light curtain and cage door switches, cutting power to a robot arm's enable circuit through the PLC's outputs whenever the safety perimeter is breached.",
+      "pinsInvolved": [
+        "Digital Input 2 (DI2)",
+        "Digital Input 3 (DI3)",
+        "Digital Output 1 (DO1 - Relay)"
+      ],
+      "difficulty": "Advanced (safety-rated logic)"
+    },
+    {
+      "title": "Retrofitting relay logic control panel",
+      "scenario": "Replace a rack of aging electromechanical relays and timers with a single PLC running equivalent ladder logic, reducing panel wiring and maintenance.",
+      "pinsInvolved": [
+        "Digital Input Common (DI COM)",
+        "Digital Output 0 (DO0 - Relay)",
+        "Digital Output 1 (DO1 - Relay)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Coordinating pneumatic actuators",
+      "scenario": "Sequence multiple pneumatic cylinders in an assembly fixture based on part-present sensors, using timers and interlocks in ladder logic.",
+      "pinsInvolved": [
+        "Digital Input 0 (DI0)",
+        "Digital Output 0 (DO0 - Relay)",
+        "Digital Output 1 (DO1 - Relay)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "SCADA-integrated monitoring station",
+      "scenario": "Report process variables like tank level (via the 4-20mA analog input) and equipment status up to a SCADA/HMI system over Modbus TCP.",
+      "pinsInvolved": [
+        "Analog Input (AI0, 4-20mA)",
+        "Ethernet Port (Modbus TCP)"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Robot cell E-stop and interlocking with a robot controller",
+      "scenario": "Pair with a robotic arm's controller over RS-485/Modbus to arbitrate start permissives, E-stop chains, and cycle-complete handshakes between the PLC and the robot.",
+      "pinsInvolved": [
+        "RS-485 Port (Modbus RTU)",
+        "Digital Input 3 (DI3)",
+        "Digital Output 1 (DO1 - Relay)"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "HMI touchscreen panel",
+      "Variable frequency drive (VFD)",
+      "Inductive proximity sensors / limit switches",
+      "Contactors and relays"
+    ],
+    "oftenConfusedWith": [
+      "Arduino / microcontroller dev boards (superficially similar I/O concept, utterly different programming model and reliability rating)",
+      "Industrial PC (runs a full general-purpose OS, used for HMI/data logging rather than deterministic real-time control)"
+    ],
+    "oftenUpgradedTo": [
+      "Modular rack PLC with expansion I/O modules for larger machine control",
+      "PLC plus a supervisory SCADA system for plant-wide monitoring"
+    ]
+  },
+  "beginnerMistakes": [
+    "Wiring only the logic power terminals and assuming the I/O terminal block is powered too, then wondering why every output stays dead.",
+    "Mismatching PNP (sourcing) and NPN (sinking) wiring conventions between a field sensor and the input common configuration.",
+    "Skipping RS-485 termination resistors, causing intermittent Modbus communication timeouts that are hard to reproduce.",
+    "Assuming outputs always fail to a safe (off) state without checking the configured fault mode, a real safety-system gap.",
+    "Connecting an AC field signal directly to a DC-only opto-isolated input, destroying the isolation circuitry."
+  ]
+}

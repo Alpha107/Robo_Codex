@@ -1,0 +1,84 @@
+{
+  "identity": {
+    "id": "voltage-regulator",
+    "name": "Voltage Regulator (7805 / AMS1117)",
+    "category": "Power Management",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The 7805 (fixed 5V output, TO-220 package) and AMS1117 (fixed 3.3V is common, small SOT-223 package) are linear regulators — the simplest possible way to get a clean, stable voltage from a higher, less-stable input: just three pins, no switching, no inductor. The tradeoff for that simplicity is heat: a linear regulator burns off the entire input-to-output voltage difference as heat proportional to current draw, so regulating 12V down to 5V at any real current gets the small metal tab genuinely hot — a buck converter does the same job far more efficiently, but with more components and complexity.",
+  "simpleSummary": "A simple 3-pin part that turns a rough input voltage into a clean, steady one, like 5V or 3.3V.",
+  "specifications": {
+    "outputVoltage7805": "Fixed 5V",
+    "outputVoltageAMS1117": "Commonly fixed 3.3V (adjustable versions also exist)",
+    "maxCurrent": "~1A (7805, heatsink-dependent), ~800mA (AMS1117)",
+    "dropoutVoltage": "~2V (7805, needs input at least 2V above output); ~1.1V (AMS1117 low-dropout)",
+    "package": "TO-220 (7805, with metal tab for heatsinking), SOT-223 (AMS1117)"
+  },
+  "pinMap": [
+    {
+      "name": "IN",
+      "position": null,
+      "category": "power",
+      "function": "Unregulated voltage input.",
+      "voltageRange": "7805: ~7-25V; AMS1117: ~4.75-12V",
+      "currentLimit": "Depends on load and required output current",
+      "alternateFunctions": [],
+      "gotcha": "Input must exceed the output voltage by at least the dropout voltage, or the output sags below its rated value."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared between input and output.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT",
+      "position": null,
+      "category": "power",
+      "function": "Regulated fixed-voltage output.",
+      "voltageRange": "7805: 5V; AMS1117: commonly 3.3V",
+      "currentLimit": "~1A (7805) or ~800mA (AMS1117), heatsink/package dependent",
+      "alternateFunctions": [],
+      "gotcha": "At real currents, the voltage difference times the current becomes heat — a 7805 dropping 12V to 5V at 500mA dissipates 3.5W, hot enough to need a heatsink."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Simple fixed-voltage power supply",
+      "scenario": "Generate a clean 5V or 3.3V rail from a higher unregulated battery or wall-adapter voltage for low-current logic circuits.",
+      "pinsInvolved": [
+        "IN",
+        "GND",
+        "OUT"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Breadboard power supply module",
+      "scenario": "The classic beginner breadboard power supply board is usually built around one of these chips.",
+      "pinsInvolved": [
+        "IN",
+        "OUT"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard",
+      "9V battery"
+    ],
+    "oftenConfusedWith": [
+      "LM2596 buck converter (switching, far more efficient at higher currents, needs more components)"
+    ],
+    "oftenUpgradedTo": [
+      "LM2596 or similar switching regulator once heat/efficiency becomes a real concern"
+    ]
+  }
+}

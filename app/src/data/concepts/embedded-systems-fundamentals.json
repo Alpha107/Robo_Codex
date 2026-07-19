@@ -1,0 +1,37 @@
+{
+  "identity": {
+    "id": "embedded-systems-fundamentals",
+    "title": "Embedded Systems Fundamentals",
+    "category": "Software & Systems",
+    "level": "Foundational",
+    "tagline": "The design habits that come with running code on small, resource-limited hardware instead of a full desktop computer."
+  },
+  "simpleSummary": "The particular design habits needed when running code on small, limited hardware like an Arduino — tiny memory, often no operating system at all, and direct control over the hardware itself.",
+  "keyIdea": "Embedded systems run on hardware with tightly limited memory and processing power, often with no full operating system at all, requiring different programming habits than desktop software: careful memory use, direct hardware register access, and close attention to real-time constraints.",
+  "overview": "Embedded programming differs from desktop or server software in a few fundamental ways. Memory is severely limited — kilobytes rather than gigabytes; an Arduino Uno, for instance, has just 2KB of SRAM to work with, compared to the gigabytes available on an ordinary computer. There is often no operating system at all: code runs directly on the bare hardware (sometimes called 'bare metal' programming), with the program itself entirely responsible for everything an OS would normally handle. Direct hardware access — writing to specific hardware registers to configure a timer's exact behavior, for example — is common, rather than calling a generic OS-provided API. And embedded systems very frequently control physical hardware in real time, tying this topic closely to real-time systems concepts.",
+  "equations": [],
+  "howItWorks": "These constraints shape real, practical programming habits. Memory management must be careful and deliberate: dynamic memory allocation that could fragment or exhaust a tiny, fixed memory pool over a device's long unattended lifetime is generally avoided in favor of fixed-size buffers and static allocation decided at compile time. A library or dependency's memory and processing footprint matters immensely on tiny hardware in a way it never would on a desktop computer, where an extra few megabytes is essentially free. Direct register manipulation offers a lower-level, faster, and more precise alternative to convenient library functions whenever exact timing or an otherwise-unsupported hardware feature demands it. Hobby platforms like Arduino intentionally hide much of this complexity behind convenient functions (digitalWrite, analogRead, and similar), making embedded programming approachable for beginners — while professional embedded work frequently requires dropping down to this lower, more direct level for the performance or hardware capabilities those convenient abstractions don't expose.",
+  "diagramCaption": "A desktop computer runs an application on top of a full operating system with abundant memory; an embedded microcontroller typically runs its program directly on the bare hardware, with only kilobytes of memory to work with.",
+  "realWorldExamples": [
+    "An Arduino Uno running a simple sensor-reading loop entirely without any operating system, directly on bare hardware.",
+    "A professional embedded engineer configuring a microcontroller's timer registers directly for microsecond-precise PWM generation that a generic library function couldn't achieve.",
+    "A battery-powered embedded sensor node written to fit entirely within a few kilobytes of RAM, deliberately avoiding any dynamic memory allocation over its months-long unattended deployment lifetime."
+  ],
+  "commonMisconceptions": [
+    "\"Embedded programming is basically the same as regular desktop programming, just on smaller hardware\" — the resource constraints and lack of an OS create genuinely different habits and real failure modes (memory exhaustion, fragmentation) that desktop developers rarely have to think about at all.",
+    "\"You always need to write low-level register code for embedded projects\" — for many hobby and even professional purposes, higher-level libraries and frameworks are perfectly adequate; dropping to register-level code is only needed for specific performance or capability requirements those libraries don't cover.",
+    "\"More powerful embedded boards make these constraints irrelevant\" — even a relatively capable board like an STM32 or Teensy still has real, fixed resource limits that matter far more than on a desktop computer, just at a higher ceiling than an 8-bit Arduino."
+  ],
+  "relatedComponents": [
+    "arduino-uno-r3",
+    "attiny85",
+    "stm32-blue-pill",
+    "teensy-4"
+  ],
+  "relatedProjects": [],
+  "relatedConcepts": [
+    "real-time-systems-basics",
+    "ros-concepts",
+    "robot-safety-watchdogs-and-failsafes"
+  ]
+}

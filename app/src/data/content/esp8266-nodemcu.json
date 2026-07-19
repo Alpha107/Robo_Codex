@@ -1,0 +1,264 @@
+{
+  "identity": {
+    "id": "esp8266-nodemcu",
+    "name": "ESP8266 (NodeMCU)",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The ESP8266 was the board that first made 'a WiFi microcontroller for a few dollars' mainstream, years before the ESP32 existed. The NodeMCU dev board wraps the bare ESP8266 module with a USB-serial chip and a friendlier set of silkscreen pin labels (D0-D8) — but those labels are a trap: D1 is not GPIO1, it's GPIO5. Every NodeMCU pinout diagram has to be read carefully because the printed 'D' number and the actual GPIO number used in code are two different numbering systems.",
+  "simpleSummary": "The original cheap WiFi microcontroller that made internet-connected projects affordable.",
+  "specifications": {
+    "microcontroller": "Tensilica L106, single-core, 80/160 MHz",
+    "operatingVoltage": "3.3V",
+    "wireless": "WiFi 802.11 b/g/n only (no Bluetooth)",
+    "flashMemory": "4 MB (typical)",
+    "sram": "~50 KB usable",
+    "digitalIOPins": "~11 usable GPIO",
+    "analogInputPins": 1,
+    "connector": "Micro-USB"
+  },
+  "pinMap": [
+    {
+      "name": "D0",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO16). Can wake the chip from deep sleep.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "Deep-sleep wake"
+      ],
+      "gotcha": "No PWM/interrupt support, unlike the other D-pins — easy to forget since it looks identical on the silkscreen."
+    },
+    {
+      "name": "D1",
+      "position": null,
+      "category": "communication",
+      "function": "General-purpose I/O, common default for I2C SCL (actual chip pin: GPIO5).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "communication",
+      "function": "General-purpose I/O, common default for I2C SDA (actual chip pin: GPIO4).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO0), also a boot-mode strapping pin.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "Boot mode select"
+      ],
+      "gotcha": "Must be HIGH at boot; a pull-down here prevents the board from starting normally."
+    },
+    {
+      "name": "D4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO2), wired to the onboard LED on most boards.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "Boot mode strapping"
+      ],
+      "gotcha": "Must be HIGH at boot."
+    },
+    {
+      "name": "D5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO14), common SPI clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO12), common SPI MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO13), common SPI MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O (actual chip pin: GPIO15), a boot-mode strapping pin.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI SS",
+        "Boot mode strapping"
+      ],
+      "gotcha": "Must be LOW at boot — the opposite requirement of D3/D4. A pull-up here breaks booting."
+    },
+    {
+      "name": "RX (D9)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware serial receive (actual chip pin: GPIO3).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "TX (D10)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware serial transmit (actual chip pin: GPIO1).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A0",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, 10-bit ADC, 0-3.3V thanks to an onboard voltage divider (the raw ESP8266 chip pin only accepts 0-1V).",
+      "voltageRange": "0-3.3V (board level)",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [],
+      "gotcha": "Only one analog input on the whole board — budget carefully if a project needs multiple analog sensors."
+    },
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~600 mA",
+      "alternateFunctions": [],
+      "gotcha": "WiFi transmit spikes can brown out a weak supply, same as the ESP32."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "5V input, feeds the onboard regulator.",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RST",
+      "position": null,
+      "category": "special",
+      "function": "Reset pin, active LOW.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "EN",
+      "position": null,
+      "category": "special",
+      "function": "Chip enable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "WiFi light/relay switch",
+      "scenario": "The original 'IoT light switch' board — control a relay from a phone or web dashboard over WiFi.",
+      "pinsInvolved": [
+        "D1",
+        "D2",
+        "3V3",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Weather station uploading to the web",
+      "scenario": "Read a BME280 over I2C and push readings to a cloud dashboard on a timer.",
+      "pinsInvolved": [
+        "D1",
+        "D2",
+        "3V3",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "ESPHome / Home Assistant sensor node",
+      "scenario": "Flash with ESPHome for a no-code integration into a home automation setup.",
+      "pinsInvolved": [
+        "D5",
+        "D6",
+        "D7"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Relay modules",
+      "DHT22",
+      "OLED display (SSD1306)"
+    ],
+    "oftenConfusedWith": [
+      "ESP32 (adds Bluetooth, dual-core, more pins, no D-number/GPIO mismatch)"
+    ],
+    "oftenUpgradedTo": [
+      "ESP32 DevKit"
+    ]
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "identity": {
+    "id": "pwm-led-fading",
+    "title": "PWM LED Fading",
+    "tagline": "Same LED circuit as before — this time it breathes in and out instead of snapping on/off.",
+    "category": "Beginner Electronics",
+    "difficulty": "Beginner",
+    "estimatedTime": "15 minutes"
+  },
+  "goal": "Take the exact same LED-and-resistor circuit from LED Blink and make it fade smoothly up to full brightness and back down, instead of just switching fully on or off — your first hands-on look at PWM (Pulse Width Modulation), the technique behind almost every \"variable\" output on a microcontroller.",
+  "simpleSummary": "Make an LED smoothly fade brighter and dimmer instead of just flicking on/off.",
+  "howItWorks": "An Arduino digital pin is fundamentally binary — it's either outputting 0V or 5V, nothing in between. So how does analogWrite() make an LED look dimmer? It cheats, very fast: instead of holding the pin fully HIGH, it switches the pin on and off hundreds of times per second, and varies the fraction of time it's ON versus OFF within each cycle (the 'duty cycle'). A duty cycle of 100% looks identical to full HIGH; 10% looks dim; 0% looks off. The switching happens so quickly that neither your eye nor the LED's brief on/off response can keep up, so what you perceive is smooth brightness in between — the same trick that controls motor speed (see DC Motor Speed Control) and servo position under the hood.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 1,
+      "note": "220Ω resistor"
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 2
+    }
+  ],
+  "circuitDiagramCaption": "Identical circuit to LED Blink, but on a PWM-capable pin (marked with a ~ on the Arduino Uno's silkscreen).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the LED and resistor exactly as in LED Blink, but connect the resistor to pin D9 instead of D13.",
+      "detail": "PWM only works on pins marked with a ~ on the board (3, 5, 6, 9, 10, 11 on an Uno) — pin 13 doesn't support it, which is the one thing that's different from the first project."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the LED's cathode to GND, same as before.",
+      "detail": "Nothing else about the circuit changes — this project is entirely about the code."
+    }
+  ],
+  "code": [
+    {
+      "filename": "pwm_led_fading.ino",
+      "language": "arduino",
+      "source": "// PWM LED Fading\n// Smoothly fades an LED up to full brightness and back down using analogWrite().\n\nconst int LED_PIN = 9; // must be a PWM (~) pin\n\nvoid setup() {\n  // no pinMode() call needed for analogWrite() on most boards, but it's\n  // harmless and good habit to include it explicitly:\n  pinMode(LED_PIN, OUTPUT);\n}\n\nvoid loop() {\n  // fade up: 0 (off) to 255 (full brightness)\n  for (int brightness = 0; brightness <= 255; brightness++) {\n    analogWrite(LED_PIN, brightness);\n    delay(8);\n  }\n\n  // fade down: 255 back to 0\n  for (int brightness = 255; brightness >= 0; brightness--) {\n    analogWrite(LED_PIN, brightness);\n    delay(8);\n  }\n}\n",
+      "explanation": "analogWrite() takes a value from 0 (always off) to 255 (always on) and handles the actual PWM switching internally — you never touch the underlying on/off timing yourself. The two for loops simply walk that value up and then back down one step at a time, with a short delay between each step slow enough for the human eye to perceive as a smooth fade rather than an instant jump."
+    }
+  ],
+  "expectedBehavior": "The LED continuously breathes: brightening smoothly from off to full over about two seconds, then dimming back down to off, repeating indefinitely.",
+  "troubleshooting": [
+    {
+      "issue": "LED just blinks abruptly instead of fading.",
+      "fix": "Double check you're using analogWrite(), not digitalWrite() — and that the pin is one of the PWM-capable ones (marked with ~)."
+    },
+    {
+      "issue": "Fade looks jerky/stepped rather than smooth.",
+      "fix": "Reduce the delay(8) value slightly, or confirm you're stepping brightness by 1 each time rather than in larger jumps."
+    },
+    {
+      "issue": "Compiler error mentioning the pin.",
+      "fix": "You've likely picked a non-PWM pin — double check your board's pinout diagram for which pins support analogWrite()."
+    }
+  ],
+  "extensions": [
+    "Fade three LEDs (red/green/blue, or a proper RGB LED) independently to mix custom colors.",
+    "Drive the brightness from a potentiometer reading instead of a fixed loop (see Servo Pan Sweep for the analogRead() pattern).",
+    "Replace the linear fade with an eased curve (e.g. brightness = brightness*brightness/255) for a more natural-looking pulse.",
+    "Use this exact fading technique to control a motor's speed instead of an LED's brightness — see DC Motor Speed Control."
+  ]
+}

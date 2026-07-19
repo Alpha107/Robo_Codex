@@ -1,0 +1,28 @@
+{
+  "identity": {
+    "id": "robot-safety-watchdogs-and-failsafes",
+    "title": "Robot Safety, Watchdogs & Fail-Safes",
+    "category": "Software & Systems",
+    "level": "Foundational",
+    "tagline": "Making sure a robot fails safely — stops, holds, shuts down — instead of dangerously, when something goes wrong."
+  },
+  "simpleSummary": "The safety mechanisms that make sure a robot stops or holds safely — rather than keeps going dangerously — when something goes wrong: a frozen program, a lost wireless connection, a sensor returning nonsense.",
+  "keyIdea": "A robot's safety layer — watchdog timers, connection-loss timeouts, and fail-safe defaults — is specifically designed to detect that something has gone wrong and force the robot into a known-safe state, rather than assuming the normal control logic will always work correctly.",
+  "overview": "Hoping the code doesn't have bugs is not a safety strategy. Real safety comes from mechanisms that operate independently of, and don't rely on, the normal control logic working correctly — because the entire point is handling the case where it doesn't. A watchdog timer is a separate hardware or software timer that must be periodically reset by the main program to prove it's still running correctly; if the main loop hangs (an infinite loop, a crash, getting stuck waiting on a sensor) and stops resetting it, the watchdog timer expires and forces a safety action — typically a hardware reset of the microcontroller or cutting motor power. Its value is exactly that it doesn't care why the main program stopped responding, only that it did, which means it works even for failure modes nobody predicted in advance.",
+  "equations": [],
+  "howItWorks": "Most microcontrollers, including the AVR chips used in an Arduino Uno, have a dedicated hardware watchdog timer peripheral specifically for this purpose — independent of the main CPU's program execution, so it keeps counting even if the main program is completely hung or crashed. That hardware independence is exactly what makes it trustworthy as a last-resort safety net, since a purely software-based check running inside the same hung program obviously can't help if that program itself is the thing that's stuck. A remote-controlled or networked robot needs a closely related mechanism: a heartbeat or communication timeout, expecting a periodic signal from the controller and triggering a safe stop if none arrives within a timeout window, rather than continuing to execute its last received command forever if the connection drops. A third layer is designing fail-safe defaults: making a system's default, unpowered, or error state inherently the safe one — a motor stops when power is cut rather than running at full speed, a robot arm holds position or goes limp on error rather than blindly continuing its last motion — so the safe outcome is the path of least resistance, not something that has to be actively and correctly triggered by more code that could itself have bugs. Sensor sanity checking rounds this out: an ultrasonic sensor returning an impossible reading (zero, or wildly beyond its rated range) should be treated as a fault rather than trusted and acted on literally, since acting on clearly invalid sensor data is itself a common real source of erratic or dangerous robot behavior.",
+  "diagramCaption": "During normal operation, the main loop's heartbeat keeps resetting the watchdog timer before it runs out; if the loop hangs and the heartbeat stops, the timer depletes and forces the robot into a safe state.",
+  "realWorldExamples": [
+    "An Arduino-based robot configured with its built-in watchdog timer, forcing a full reset if the main loop hasn't checked in within a couple of seconds, protecting against a hung sensor read locking up the whole robot indefinitely.",
+    "This site's Bluetooth RC Car and RF433 Remote-Control Car projects both needing a signal-loss timeout so the car stops if the connection to the controller drops, rather than continuing to execute its last received command forever.",
+    "An industrial robot arm's physical emergency-stop button, deliberately wired to cut motor power directly at the hardware level rather than through software, so it works even if the control software has completely frozen."
+  ],
+  "commonMisconceptions": [
+    "\"Well-tested code doesn't need a watchdog or fail-safe layer\" — safety mechanisms exist specifically for failure modes that weren't anticipated or fully tested, including hardware glitches and genuinely novel bugs; testing reduces bugs, it doesn't eliminate the need for independent safety nets.",
+    "\"A software-only safety check is just as good as a hardware watchdog\" — a software check running in the same program that might hang can't help if that exact program is what's hung; genuine safety independence requires the safety mechanism to keep operating even when the normal control logic has failed.",
+    "\"Fail-safes are only needed for industrial or dangerous robots\" — even a small hobby remote-control car benefits from stopping on connection loss rather than driving forward blindly into whatever's in front of it."
+  ],
+  "relatedComponents": ["arduino-uno-r3", "hc05-bluetooth", "rf433-pair", "push-button"],
+  "relatedProjects": ["bluetooth-rc-car", "rf433-remote-control-car"],
+  "relatedConcepts": ["real-time-systems-basics", "embedded-systems-fundamentals", "sensor-noise-and-uncertainty-models"]
+}

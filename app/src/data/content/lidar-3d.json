@@ -1,0 +1,135 @@
+{
+  "identity": {
+    "id": "lidar-3d",
+    "name": "3D LiDAR (Spinning)",
+    "category": "Distance & Proximity Sensors",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A 2D LiDAR like the RPLIDAR spins one laser in a flat circle, producing a single 360-degree slice through the world. A 3D LiDAR spins a whole vertical stack of laser/detector channels instead of just one — commonly 16, 32, or 64 of them, each fixed at a slightly different vertical angle — so every rotation sweeps out a full 3D point cloud rather than one flat plane. That's what lets a self-driving car or outdoor robot tell the difference between a curb, an overhanging branch, and a person, none of which a flat 2D scan plane can distinguish. The tradeoff is real: it needs a proper power supply (not USB), a Gigabit Ethernet link to move hundreds of thousands of points per second, and a genuinely powerful onboard computer to do anything useful with the resulting data volume.",
+  "simpleSummary": "A spinning sensor with a whole stack of lasers instead of just one, building a full 3D map instead of a flat 2D scan.",
+  "specifications": {
+    "channels": "16 laser channels (typical entry-level 3D LiDAR channel count)",
+    "rotationRate": "5-20 Hz, configurable",
+    "range": "Up to 100m, reflectivity-dependent",
+    "verticalFOV": "±15° (30° total spread across all channels)",
+    "horizontalFOV": "360°, full rotation every scan",
+    "pointsPerSecond": "~300,000 points/sec",
+    "angularResolution": "~0.1-0.4° horizontal, ~2° vertical channel spacing",
+    "interface": "Gigabit Ethernet (UDP point cloud stream) + separate power/GPS interconnect",
+    "powerConsumption": "~8-12W @ 9-32V DC"
+  },
+  "pinMap": [
+    {
+      "name": "Power+",
+      "position": null,
+      "category": "power",
+      "function": "DC power input to the spinning head's motor and internal electronics.",
+      "voltageRange": "9-32V DC (wide input typical of automotive/industrial LiDAR)",
+      "currentLimit": "~0.5-1A depending on rotation rate",
+      "alternateFunctions": [],
+      "gotcha": "Current draw spikes noticeably at spin-up as the motor overcomes static friction to reach target RPM — a supply sized only for steady-state draw can brown out on startup."
+    },
+    {
+      "name": "Power-/GND",
+      "position": null,
+      "category": "power",
+      "function": "Power return / ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Ethernet",
+      "position": null,
+      "category": "communication",
+      "function": "Streams the raw point cloud as UDP packets over 100Base-T/Gigabit Ethernet to the host computer.",
+      "voltageRange": "N/A (Ethernet PHY signaling)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The data rate is high enough that a flaky switch, a WiFi-to-Ethernet bridge, or a cheap unmanaged hub can silently drop UDP packets, showing up as visible gaps or missing sectors in the point cloud rather than an obvious error."
+    },
+    {
+      "name": "GPS/PPS Sync",
+      "position": null,
+      "category": "special",
+      "function": "Optional GPS input used to precisely timestamp each rotation (via the PPS pulse) for synchronizing multiple sensors or georeferencing outdoor scans.",
+      "voltageRange": "3.3-5V logic, model-dependent",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "PPS timestamp sync"
+      ],
+      "gotcha": "Leaving this unconnected still works for a single sensor, but a rig combining this LiDAR with a second LiDAR or a camera will accumulate subtle frame-to-frame timing drift without it, corrupting sensor fusion."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Autonomous ground vehicle 3D SLAM",
+      "scenario": "Build and localize within a full 3D map of an outdoor environment, distinguishing curbs, overhangs, and obstacles a flat 2D scan would miss entirely.",
+      "pinsInvolved": [
+        "Ethernet",
+        "Power+",
+        "Power-/GND"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Off-road/agricultural terrain mapping",
+      "scenario": "Sweep a field or job site to build an elevation and vegetation-density map from the 3D point cloud.",
+      "pinsInvolved": [
+        "Ethernet"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Drone 3D obstacle avoidance",
+      "scenario": "Detect obstacles above and below the flight plane (wires, branches, overhangs) that a single horizontal scan plane can't see.",
+      "pinsInvolved": [
+        "Ethernet",
+        "Power+"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Multi-sensor object detection/classification",
+      "scenario": "Fuse the point cloud with camera imagery to classify detected objects (pedestrian, vehicle, cyclist) for path planning.",
+      "pinsInvolved": [
+        "Ethernet",
+        "GPS/PPS Sync"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "As-built facility 3D scanning",
+      "scenario": "Static or slow-moving sweep to capture a warehouse or construction site as a georeferenced 3D point cloud.",
+      "pinsInvolved": [
+        "Ethernet",
+        "GPS/PPS Sync"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Jetson Nano",
+      "ROS/ROS2 navigation stack",
+      "GPS/IMU module"
+    ],
+    "oftenConfusedWith": [
+      "RPLIDAR (spins a single laser in one flat plane, giving a 2D scan; this sensor spins a whole vertical stack of lasers, giving a full 3D point cloud every rotation)",
+      "Intel RealSense D435i (a depth camera has a narrow ~90° forward-facing view and ~10m range using stereo image matching; this sees the full 360° around the vehicle out to 100m+ using direct laser time-of-flight)"
+    ],
+    "oftenUpgradedTo": [
+      "Solid-state/MEMS LiDAR (no spinning parts, higher long-term reliability, narrower FOV per unit but no mechanical wear)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Sizing the power supply for steady-state draw only, missing the startup current spike as the head spins up.",
+    "Mounting height/tilt miscalculated so the near-field scan clips the ground plane, flooding the point cloud with 'ground' returns.",
+    "Not filtering ground-plane points out before obstacle detection, causing normal floor/road texture to register as false obstacles.",
+    "Running the data link over a WiFi bridge instead of direct Ethernet, dropping packets under load.",
+    "Underestimating the raw data volume — logging or processing 300,000 points/sec naively can overwhelm a modest onboard computer."
+  ]
+}

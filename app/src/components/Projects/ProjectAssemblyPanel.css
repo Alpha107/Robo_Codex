@@ -1,0 +1,129 @@
+.project-assembly-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-assembly-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-assembly-tabs {
+  display: inline-flex;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.assembly-tab {
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.assembly-tab.is-active {
+  background: var(--accent);
+  color: #0f1115;
+}
+
+.assembly-explode-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.assembly-explode-btn.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.project-assembly-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 16px;
+  align-items: start;
+}
+
+.assembly-part-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 480px;
+  box-sizing: border-box;
+}
+
+.assembly-part-card h3 {
+  margin: 10px 0 4px;
+}
+
+.assembly-part-card-category {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #0f1115;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.assembly-part-card-note {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.assembly-part-card-qty {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+.assembly-part-card-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.assembly-part-card-link:hover {
+  text-decoration: underline;
+}
+
+.assembly-part-card-empty {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.project-assembly-caption {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .project-assembly-body {
+    grid-template-columns: 1fr;
+  }
+
+  .assembly-part-card {
+    min-height: 0;
+  }
+}

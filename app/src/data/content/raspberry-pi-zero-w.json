@@ -1,0 +1,358 @@
+{
+  "identity": {
+    "id": "raspberry-pi-zero-w",
+    "name": "Raspberry Pi Zero W",
+    "category": "Single Board Computer",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Zero W shrinks the Raspberry Pi down to credit-card-sliver size and a fraction of the price of a Pi 4, while still booting the same full Linux OS and exposing the same 40-pin GPIO layout. The processor is much slower (a single ARM11 core versus the Pi 4's quad-core), so it's a poor fit for anything computer-vision-heavy, but it's the board of choice for projects that need 'a real Linux computer' in the smallest, cheapest possible form — USB gadget emulation, low-power sensor hubs, or retro handhelds. The GPIO header usually ships unpopulated (bare holes, no pins) and needs to be soldered before use.",
+  "simpleSummary": "A shrunk-down, cheaper Raspberry Pi computer that still runs the full Linux OS.",
+  "specifications": {
+    "processor": "Broadcom BCM2835, single-core ARM11, 1 GHz",
+    "operatingVoltage": "5V (board), 3.3V (GPIO logic)",
+    "ram": "512 MB",
+    "storage": "microSD card",
+    "connectivity": "WiFi 802.11n (single-band), Bluetooth 4.1",
+    "usb": "1x Micro-USB OTG (data), 1x Micro-USB (power only)",
+    "video": "Mini-HDMI",
+    "gpio": "40-pin unpopulated header, 3.3V logic",
+    "dimensions": "65mm x 30mm",
+    "connector": "Micro-USB (power)"
+  },
+  "pinMap": [
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~50 mA recommended",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "5V rail from the power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply headroom",
+      "alternateFunctions": [],
+      "gotcha": "This tiny board has very little power headroom — high-draw peripherals often need a powered USB hub."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO2 (SDA1)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO3 (SCL1)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "1-Wire (common default)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO14 (TXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO15 (RXD)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO17",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO18",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO27",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO22",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO23",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO10 (MOSI)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 MOSI.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO9 (MISO)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 MISO.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO11 (SCLK)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 clock.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI SCLK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO8 (CE0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI0 chip-select.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "SPI CE0"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO25",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO19",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, hardware PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO16",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO26",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO20",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO21",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "16 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "USB gadget emulation",
+      "scenario": "The OTG USB port lets the Zero pretend to be a USB keyboard, Ethernet adapter, or mass storage device — used for network-invasive pentesting tools and PiKVM-style remote control boxes.",
+      "pinsInvolved": [],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Tiny WiFi sensor hub",
+      "scenario": "Read a couple of I2C sensors and serve the data over WiFi from the smallest possible Linux footprint.",
+      "pinsInvolved": [
+        "GPIO2 (SDA1)",
+        "GPIO3 (SCL1)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Time-lapse / low-power camera",
+      "scenario": "Pair with the Camera Module for a low-power, low-cost time-lapse or security camera project.",
+      "pinsInvolved": [],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi Camera Module",
+      "PiKVM-style HATs"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi Pico (microcontroller, no OS, unrelated architecture despite the similar name)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi Zero 2 W (same size, quad-core, much faster)",
+      "Raspberry Pi 4 (when more performance/ports are needed)"
+    ]
+  }
+}

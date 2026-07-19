@@ -1,0 +1,71 @@
+{
+  "identity": {
+    "id": "perfboard",
+    "name": "Perfboard / Stripboard",
+    "category": "Prototyping Essentials",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Once a breadboard circuit is working and needs to survive being moved, bumped, or left running unattended, it usually gets rebuilt on perfboard — a rigid board with the same 0.1-inch hole grid as a breadboard, but meant for soldering rather than plugging in. Plain perfboard has isolated copper pads at each hole (every connection needs a wire or solder bridge); stripboard instead has continuous copper strips running the length of the board, which speeds up circuits that need several components in a row but requires cutting the strip wherever two points on the same strip need to be electrically separate.",
+  "simpleSummary": "A solderable board with the same hole layout as a breadboard, for making a working circuit permanent.",
+  "specifications": {
+    "holeSpacing": "0.1 inch (2.54mm), matching breadboard and standard header pin spacing",
+    "perfboardType": "Isolated copper pad per hole — every connection needs a wire or solder joint",
+    "stripboardType": "Continuous copper strips along one axis — faster for in-line connections, needs strip-cutting for isolation",
+    "material": "Fiberglass (FR4) or phenolic resin substrate with copper cladding"
+  },
+  "pinMap": [
+    {
+      "name": "Pad/Strip",
+      "position": null,
+      "category": "special",
+      "function": "An individual copper contact point (perfboard) or a segment of a continuous copper strip (stripboard) where component leads are soldered.",
+      "voltageRange": "Whatever is soldered to it",
+      "currentLimit": "Depends on copper trace width/thickness — thin traces limit current more than a breadboard's spring clips would suggest",
+      "alternateFunctions": [],
+      "gotcha": "On stripboard, forgetting to cut a strip where two things need to be electrically separate is one of the most common 'why is this shorted' debugging sessions in DIY electronics."
+    },
+    {
+      "name": "Mounting Hole",
+      "position": null,
+      "category": "special",
+      "function": "Corner holes (on boards that include them) for physically mounting the board into an enclosure.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Permanent version of a breadboard prototype",
+      "scenario": "Rebuild a working breadboard circuit into a soldered, vibration-resistant form for actual use.",
+      "pinsInvolved": [
+        "Pad/Strip"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Small custom shield/hat",
+      "scenario": "Build a simple custom add-on board for a microcontroller when a full PCB isn't justified.",
+      "pinsInvolved": [
+        "Pad/Strip",
+        "Mounting Hole"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard (as a prototyping predecessor)",
+      "Basic passives"
+    ],
+    "oftenConfusedWith": [
+      "Breadboard (solderless, temporary, not a permanent solution)"
+    ],
+    "oftenUpgradedTo": [
+      "Custom-designed PCB for a production-quality, more compact, and more reliable final product"
+    ]
+  }
+}

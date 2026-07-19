@@ -1,0 +1,47 @@
+.project-assembly-2d {
+  background: var(--bg-panel);
+  border-radius: 12px;
+  padding: 12px;
+  height: 480px;
+  min-height: 480px;
+  box-sizing: border-box;
+}
+
+.project-assembly-2d-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.project-assembly-2d-wire {
+  stroke: #ffb454;
+  stroke-width: 0.035;
+  stroke-dasharray: 0.08 0.06;
+}
+
+.project-assembly-2d-part {
+  cursor: pointer;
+  outline: none;
+}
+
+.project-assembly-2d-part rect {
+  fill: color-mix(in srgb, var(--part-color) 22%, var(--bg-panel-raised));
+  stroke: var(--part-color);
+  stroke-width: 0.03;
+  transition: fill 0.15s ease, stroke-width 0.15s ease;
+}
+
+.project-assembly-2d-part:hover rect,
+.project-assembly-2d-part:focus-visible rect {
+  fill: color-mix(in srgb, var(--part-color) 40%, var(--bg-panel-raised));
+}
+
+.project-assembly-2d-part.is-selected rect {
+  stroke-width: 0.06;
+  fill: color-mix(in srgb, var(--part-color) 50%, var(--bg-panel-raised));
+}
+
+.project-assembly-2d-part text {
+  fill: var(--text);
+  font-family: var(--font-body);
+  pointer-events: none;
+}

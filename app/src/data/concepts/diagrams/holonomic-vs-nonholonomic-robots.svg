@@ -1,0 +1,25 @@
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <text x="150" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e03131">Non-holonomic: needs to maneuver</text>
+  <rect x="120" y="220" width="46" height="30" rx="5" fill="#e03131" stroke="#1a1d23" stroke-width="2" opacity="0.85"/>
+  <text x="180" y="240" font-size="10.5" fill="#e03131">target (directly to the side)</text>
+  <path d="M143,130 q-50,50 0,90" fill="none" stroke="#5b6270" stroke-width="2" stroke-dasharray="5 3"/>
+  <path d="M143,130 q60,40 0,90" fill="none" stroke="#5b6270" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="60" y="180" font-size="10" fill="#5b6270">multi-step</text>
+  <text x="60" y="193" font-size="10" fill="#5b6270">maneuver</text>
+  <rect x="-23" y="-15" width="46" height="30" rx="5" fill="#2f6fae" stroke="#1a1d23" stroke-width="2">
+    <animateMotion dur="3s" repeatCount="indefinite" rotate="auto" path="M143,130 q-50,50 0,90 q60,-40 0,-90"/>
+  </rect>
+
+  <line x1="320" y1="0" x2="320" y2="300" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="480" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2f9e44">Holonomic: moves directly</text>
+  <rect x="450" y="220" width="46" height="30" rx="5" fill="#2f9e44" stroke="#1a1d23" stroke-width="2" opacity="0.85"/>
+  <path d="M473,160 V220" stroke="#2f9e44" stroke-width="3"/>
+  <polygon points="465,210 473,224 481,210" fill="#2f9e44"/>
+  <text x="490" y="195" font-size="10.5" fill="#2f9e44">single straight motion</text>
+  <rect x="-23" y="-15" width="46" height="30" rx="5" fill="#2f6fae" stroke="#1a1d23" stroke-width="2">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M473,145 V220 V145"/>
+  </rect>
+
+  <text x="480" y="270" text-anchor="middle" font-size="10.5" fill="#5b6270">mecanum/omni rollers allow direct sideways slip</text>
+</svg>

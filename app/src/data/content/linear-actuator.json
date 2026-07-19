@@ -1,0 +1,95 @@
+{
+  "identity": {
+    "id": "linear-actuator",
+    "name": "Linear Actuator",
+    "category": "Motors & Actuators",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A linear actuator converts a motor's rotation into straight-line push/pull motion using an internal lead screw, so instead of a spinning shaft you get a rod that extends and retracts. The simplest versions wire up exactly like a DC motor — two wires, reverse polarity to reverse direction — while more expensive versions add built-in limit switches (to stop automatically at full extension/retraction) or a position-feedback potentiometer for precise intermediate stopping points. Key specs to match to the job are stroke length (how far it travels), force rating (how much it can push/pull), and speed (mm/s) — a common beginner mistake is picking one whose force rating is too low for the actual load once friction and gravity are accounted for.",
+  "simpleSummary": "A motor that pushes and pulls a rod in a straight line, instead of just spinning.",
+  "specifications": {
+    "operatingVoltage": "12V or 24V (most common)",
+    "strokeLength": "50mm - 500mm+ (model-dependent)",
+    "forceRating": "50N - 6000N+ depending on model",
+    "speed": "5mm/s - 50mm/s depending on model (faster usually means less force)",
+    "feedback": "None (basic), or built-in limit switches / potentiometer (advanced models)"
+  },
+  "pinMap": [
+    {
+      "name": "Motor+",
+      "position": null,
+      "category": "power",
+      "function": "Motor power terminal; polarity determines extend vs retract direction.",
+      "voltageRange": "12V or 24V",
+      "currentLimit": "Model-dependent, often several amps under load",
+      "alternateFunctions": [],
+      "gotcha": "Needs a motor driver/relay rated for the actuator's stall current — actuators draw much more current when pushing against resistance or reaching the end of travel."
+    },
+    {
+      "name": "Motor-",
+      "position": null,
+      "category": "power",
+      "function": "Other motor power terminal.",
+      "voltageRange": "12V or 24V",
+      "currentLimit": "Model-dependent",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Potentiometer Wiper",
+      "position": null,
+      "category": "analog",
+      "function": "On feedback-equipped models, an analog voltage proportional to rod position.",
+      "voltageRange": "0-5V (typical)",
+      "currentLimit": "N/A (sensing only)",
+      "alternateFunctions": [
+        "Position feedback"
+      ],
+      "gotcha": "Only present on feedback-equipped variants — basic actuators have just the two motor wires."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Adjustable-height mechanism",
+      "scenario": "Raise/lower a platform, camera mount, or robotic stand to a set position.",
+      "pinsInvolved": [
+        "Motor+",
+        "Motor-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Automated hatch or door",
+      "scenario": "Push a hatch or panel open/closed, using built-in limit switches to stop automatically at each end.",
+      "pinsInvolved": [
+        "Motor+",
+        "Motor-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Precision positioning with feedback",
+      "scenario": "Use the potentiometer feedback variant to stop at a specific intermediate extension, not just fully open/closed.",
+      "pinsInvolved": [
+        "Motor+",
+        "Motor-",
+        "Potentiometer Wiper"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Relay modules",
+      "L298N motor driver"
+    ],
+    "oftenConfusedWith": [
+      "Solenoids (fast on/off push, not controllable position)"
+    ],
+    "oftenUpgradedTo": [
+      "Servo-driven linear stages (much higher precision, higher cost)"
+    ]
+  }
+}

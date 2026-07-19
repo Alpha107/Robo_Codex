@@ -1,0 +1,161 @@
+{
+  "identity": {
+    "id": "ov7670",
+    "name": "OV7670 Camera Module",
+    "category": "Vision & Imaging",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The OV7670 is a genuinely low-level camera module: it doesn't compress images or offer a simple 'give me a JPEG' interface — it streams raw pixel data continuously over an 8-bit parallel bus alongside clock and sync signals, meaning the receiving microcontroller has to actively capture pixels in real time as they arrive. That makes it a poor match for a plain Arduino Uno (not enough pins or speed) and a natural fit for boards with more I/O and processing headroom, like an STM32 or an FPGA. Camera settings (resolution, color format, exposure) are configured separately over SCCB, a two-wire protocol nearly identical to I2C.",
+  "simpleSummary": "A basic camera chip that streams raw pixel data directly, needing the microcontroller to capture it live.",
+  "specifications": {
+    "operatingVoltage": "3.3V",
+    "resolution": "VGA (640x480) max",
+    "outputFormat": "Raw parallel data — RGB565, YUV, or raw Bayer, no onboard JPEG compression",
+    "configInterface": "SCCB (2-wire, I2C-like)",
+    "dataInterface": "8-bit parallel data bus + PCLK/VSYNC/HREF timing signals"
+  },
+  "pinMap": [
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~60-90 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SIOC",
+      "position": null,
+      "category": "communication",
+      "function": "SCCB clock line (configuration interface, similar to I2C SCL).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SCCB clock"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SIOD",
+      "position": null,
+      "category": "communication",
+      "function": "SCCB data line (configuration interface, similar to I2C SDA).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SCCB data"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "VSYNC",
+      "position": null,
+      "category": "digital",
+      "function": "Frame sync — marks the start of a new video frame.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "HREF",
+      "position": null,
+      "category": "digital",
+      "function": "Line/row sync — marks valid pixel data within a row.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PCLK",
+      "position": null,
+      "category": "digital",
+      "function": "Pixel clock — one pulse per pixel byte transferred on the data bus.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Capturing this data reliably requires either DMA or a very tight interrupt loop — a plain Arduino Uno cannot keep up with the pixel clock rate at full resolution."
+    },
+    {
+      "name": "D0-D7",
+      "position": null,
+      "category": "digital",
+      "function": "8-bit parallel pixel data bus.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Active-LOW hardware reset.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PWDN",
+      "position": null,
+      "category": "special",
+      "function": "Power-down control — HIGH puts the sensor into low-power standby.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "FPGA-based image processing",
+      "scenario": "Common teaching example for capturing and processing raw video frames in FPGA coursework.",
+      "pinsInvolved": [
+        "PCLK",
+        "VSYNC",
+        "HREF",
+        "D0-D7"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "STM32-based low-level vision project",
+      "scenario": "Capture frames via DMA on an STM32's camera interface peripheral for simple onboard image processing.",
+      "pinsInvolved": [
+        "PCLK",
+        "VSYNC",
+        "HREF",
+        "D0-D7"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "STM32 Blue Pill",
+      "FPGA development boards"
+    ],
+    "oftenConfusedWith": [
+      "ESP32-CAM (handles the capture complexity onboard, exposes a simple higher-level API)"
+    ],
+    "oftenUpgradedTo": [
+      "ESP32-CAM or Raspberry Pi Camera Module for a much simpler capture pipeline"
+    ]
+  }
+}

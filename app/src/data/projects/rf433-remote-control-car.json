@@ -1,0 +1,460 @@
+{
+  "identity": {
+    "id": "rf433-remote-control-car",
+    "title": "RF433 Remote-Control Car",
+    "tagline": "A dedicated joystick remote and a driven car, talking over plain 433MHz radio — no phone required.",
+    "category": "Robots & Motion",
+    "difficulty": "Advanced",
+    "estimatedTime": "90 minutes"
+  },
+  "goal": "Build a genuine two-piece remote-control system: a handheld transmitter with its own Arduino and joystick, and a separate car with its own Arduino, motor driver, and receiver — communicating over a cheap 433MHz radio link instead of Bluetooth or a wire.",
+  "simpleSummary": "Build a two-part remote control car using a cheap long-range radio instead of Bluetooth.",
+  "howItWorks": "Unlike the Bluetooth RC Car (which pairs an existing phone to a single Arduino), this project uses two separate microcontrollers that have never met each other except through radio: a transmitter Arduino reads the joystick and broadcasts a small labeled packet of data continuously, and a receiver Arduino listens for that packet and acts on whatever it last received. RF433 transmitter/receiver pairs are extremely simple radios — they have no built-in addressing, pairing, or error-correction of their own, which is why this project uses the RadioHead library's RH_ASK driver to add basic packet framing and error-checking on top of the raw radio link, rather than trying to send meaningful data over it directly.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A second Arduino for the handheld transmitter",
+    "Small Phillips screwdriver for chassis assembly"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 2,
+      "note": "one for the remote, one for the car"
+    },
+    {
+      "componentId": "rf433-pair",
+      "quantity": 1,
+      "note": "TX on the remote, RX on the car"
+    },
+    {
+      "componentId": "joystick-module",
+      "quantity": 1,
+      "note": "on the remote"
+    },
+    {
+      "componentId": "l298n",
+      "quantity": 1,
+      "note": "on the car"
+    },
+    {
+      "componentId": "dc-geared-motor",
+      "quantity": 2,
+      "note": "car's left + right drive wheels"
+    },
+    {
+      "componentId": "robot-chassis-kit",
+      "quantity": 1
+    },
+    {
+      "componentId": "robot-wheel",
+      "quantity": 2
+    },
+    {
+      "componentId": "caster-wheel",
+      "quantity": 1
+    },
+    {
+      "componentId": "lipo-battery",
+      "quantity": 1,
+      "note": "powers the car; the remote can run from a USB battery bank or a 9V battery"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "a full assortment across both units"
+    }
+  ],
+  "circuitDiagramCaption": "Two independent builds linked only by radio: a remote (joystick + TX) and a car (RX + L298N + motors + battery).",
+  "assembly3D": {
+    "placements": [
+      {
+        "componentId": "robot-chassis-kit",
+        "position": [0, 0.02, 0]
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 0,
+        "position": [-0.8, 0.31, 0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Left Wheel"
+      },
+      {
+        "componentId": "robot-wheel",
+        "instance": 1,
+        "position": [-0.8, 0.31, -0.3],
+        "rotation": [1.5707963267948966, 0, 0],
+        "label": "Right Wheel"
+      },
+      {
+        "componentId": "caster-wheel",
+        "position": [0.55, 0.22, 0]
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 0,
+        "position": [-0.65, 0.16, 0.25],
+        "rotation": [0, 1.5707963267948966, 0],
+        "label": "Left Motor"
+      },
+      {
+        "componentId": "dc-geared-motor",
+        "instance": 1,
+        "position": [-0.65, 0.16, -0.25],
+        "rotation": [0, -1.5707963267948966, 0],
+        "label": "Right Motor"
+      },
+      {
+        "componentId": "l298n",
+        "position": [-0.15, 0.3, 0]
+      },
+      {
+        "componentId": "arduino-uno-r3",
+        "instance": 0,
+        "position": [0.3, 0.275, 0.25],
+        "label": "Arduino (Car)"
+      },
+      {
+        "componentId": "lipo-battery",
+        "position": [0.3, 0.39, -0.25]
+      },
+      {
+        "componentId": "rf433-pair",
+        "position": [0.6, 0.33, 0],
+        "label": "RF433 Receiver"
+      },
+      {
+        "componentId": "arduino-uno-r3",
+        "instance": 1,
+        "position": [-3.2, 0.015, 0],
+        "label": "Arduino (Remote)"
+      },
+      {
+        "componentId": "joystick-module",
+        "position": [-3.2, 0.08, 0.5],
+        "label": "Remote Joystick"
+      }
+    ],
+    "connections": [
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VRx"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "joystick-module",
+          "pin": "VRy"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A1",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "rf433-pair",
+          "pin": "TX DATA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D12",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "rf433-pair",
+          "pin": "TX VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "rf433-pair",
+          "pin": "TX GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENB"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT3"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT4"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B",
+          "instance": 1
+        }
+      },
+      {
+        "from": {
+          "componentId": "rf433-pair",
+          "pin": "RX DATA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D12",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "rf433-pair",
+          "pin": "RX VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "rf433-pair",
+          "pin": "RX GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND",
+          "instance": 0
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lipo-battery",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND",
+          "instance": 0
+        },
+        "label": "shared ground"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "On the remote's Arduino, wire the joystick's VCC/GND to 5V/GND, VRx to A0, VRy to A1.",
+      "detail": "Same joystick wiring as Joystick Pan-Tilt Turret."
+    },
+    {
+      "step": 2,
+      "instruction": "On the remote's Arduino, wire the RF433 transmitter module's DATA pin to D12, VCC to 5V, and GND to GND.",
+      "detail": "Transmitter modules typically have an antenna pad or a short wire leg — a simple ~17cm straight wire soldered there noticeably improves range over no antenna at all."
+    },
+    {
+      "step": 3,
+      "instruction": "On the car, build the chassis and motor wiring exactly as in the Line-Following Robot: motors to L298N OUT1-4, Arduino D2-D5 to IN1-4, D6/D9 to ENA/ENB, battery to +12V/GND, and that ground shared with the car's Arduino.",
+      "detail": "Identical motor-driver wiring to every other L298N-based project in this encyclopedia."
+    },
+    {
+      "step": 4,
+      "instruction": "On the car's Arduino, wire the RF433 receiver module's DATA pin to D12, VCC to 5V, GND to GND.",
+      "detail": "Receiver modules are pickier about power stability than transmitters — a small capacitor across its VCC/GND can help if readings seem unreliable."
+    },
+    {
+      "step": 5,
+      "instruction": "Install the RadioHead library (search \"RadioHead\" in the Arduino Library Manager) on both Arduinos before uploading their respective sketches.",
+      "detail": "Each Arduino gets a different sketch — don't upload the same code to both."
+    }
+  ],
+  "code": [
+    {
+      "filename": "remote_transmitter.ino",
+      "language": "arduino",
+      "source": "#include <RH_ASK.h>\n#include <SPI.h> // required by RadioHead even though this project doesn't use SPI directly\n\n// RF433 Remote — Transmitter\n// Reads the joystick and continuously broadcasts a direction command.\n\nRH_ASK driver; // defaults to DATA on pin 12\n\nconst int VRX_PIN = A0;\nconst int VRY_PIN = A1;\n\nvoid setup() {\n  driver.init();\n}\n\nvoid loop() {\n  char command = commandFromJoystick();\n  driver.send((uint8_t *)&command, 1);\n  driver.waitPacketSent();\n  delay(100); // send ~10 times per second\n}\n\nchar commandFromJoystick() {\n  int x = analogRead(VRX_PIN);\n  int y = analogRead(VRY_PIN);\n\n  if (y > 700) return 'F';\n  if (y < 300) return 'B';\n  if (x > 700) return 'R';\n  if (x < 300) return 'L';\n  return 'S'; // centered = stop\n}\n",
+      "explanation": "commandFromJoystick() collapses the joystick's two continuous axis readings down to the same single-letter command vocabulary (F/B/L/R/S) used by the Bluetooth RC Car project, just decided locally on the remote instead of typed into a phone app. driver.send() hands that one character to RadioHead, which wraps it with framing and a checksum before it goes out over the raw radio link — sending it repeatedly, ~10 times a second, means the car always has a very recent command even though this simple radio link has no acknowledgment of receipt."
+    },
+    {
+      "filename": "car_receiver.ino",
+      "language": "arduino",
+      "source": "#include <RH_ASK.h>\n#include <SPI.h>\n\n// RF433 Remote — Car Receiver\n// Drives the motors according to the last valid command received.\n\nRH_ASK driver;\n\nconst int IN1 = 2, IN2 = 3;\nconst int IN3 = 4, IN4 = 5;\nconst int ENA = 6, ENB = 9;\nconst int SPEED = 180;\n\nconst unsigned long COMMAND_TIMEOUT_MS = 500; // stop if no command arrives for this long\nunsigned long lastCommandAt = 0;\n\nvoid setup() {\n  driver.init();\n\n  pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);\n  pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);\n  pinMode(ENA, OUTPUT); pinMode(ENB, OUTPUT);\n}\n\nvoid loop() {\n  uint8_t buffer[1];\n  uint8_t bufferLength = sizeof(buffer);\n\n  if (driver.recv(buffer, &bufferLength)) {\n    lastCommandAt = millis();\n    applyCommand((char)buffer[0]);\n  }\n\n  // Safety: if the remote goes out of range or is turned off, stop driving\n  // rather than continuing the last command forever.\n  if (millis() - lastCommandAt > COMMAND_TIMEOUT_MS) {\n    stopMotors();\n  }\n}\n\nvoid applyCommand(char command) {\n  switch (command) {\n    case 'F': driveForward(); break;\n    case 'B': driveBackward(); break;\n    case 'L': pivotLeft();    break;\n    case 'R': pivotRight();   break;\n    case 'S': stopMotors();   break;\n  }\n}\n\nvoid driveForward() {\n  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);\n  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid driveBackward() {\n  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);\n  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid pivotLeft() {\n  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);\n  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid pivotRight() {\n  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);\n  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);\n  analogWrite(ENA, SPEED); analogWrite(ENB, SPEED);\n}\n\nvoid stopMotors() {\n  analogWrite(ENA, 0);\n  analogWrite(ENB, 0);\n}\n",
+      "explanation": "driver.recv() checks for a freshly arrived, checksum-valid packet without blocking, similar in spirit to the Bluetooth car's bluetooth.available(). The COMMAND_TIMEOUT_MS safety check is the one genuinely new idea compared to the Bluetooth version: because this simple radio link can silently drop packets or lose range with no notification, the car deliberately stops itself if half a second passes without a fresh command, rather than barreling ahead forever on the last instruction it happened to receive."
+    }
+  ],
+  "expectedBehavior": "Moving the remote's joystick in any direction drives the car the same way in real time; releasing the joystick back to center stops it. Walking the remote out of range, or turning it off, causes the car to stop within half a second rather than continuing blindly.",
+  "troubleshooting": [
+    {
+      "issue": "Car never responds to the remote at all.",
+      "fix": "Confirm both modules have an antenna wire (even a short straight wire helps enormously over none), and that both sketches were uploaded to the correct Arduino — mixing up transmitter and receiver code is an easy first mistake."
+    },
+    {
+      "issue": "Car responds erratically or randomly changes direction.",
+      "fix": "This is usually radio interference from other 433MHz devices nearby (garage door remotes, weather stations) — RH_ASK's checksum should reject most garbage, but very strong nearby interference can still overwhelm short-range hobby modules."
+    },
+    {
+      "issue": "Range is much shorter than expected.",
+      "fix": "Add a proper ~17cm antenna wire to both modules if you haven't already — this single change is by far the biggest range improvement available on these modules."
+    },
+    {
+      "issue": "Car doesn't stop when the remote is turned off.",
+      "fix": "Confirm COMMAND_TIMEOUT_MS logic is intact in the receiver sketch — without it, the car has no way to know the remote has gone away and will simply continue its last command."
+    }
+  ],
+  "extensions": [
+    "Add a second joystick axis or button on the remote for variable speed instead of one fixed SPEED.",
+    "Add a status LED on the car that blinks when it hasn't received a command recently (before the timeout triggers a full stop).",
+    "Upgrade to nRF24L01 modules for two-way communication, so the remote could receive telemetry (like battery level) back from the car.",
+    "Compare this build directly against the Bluetooth RC Car project — same driving logic, completely different wireless link and range/reliability trade-offs."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "sensor-fusion",
+    "title": "Sensor Fusion",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Intermediate",
+    "tagline": "Combining several imperfect sensors so their weaknesses cancel out, instead of trusting any single one alone."
+  },
+  "simpleSummary": "Combining readings from several different sensors to get one estimate that's more accurate and reliable than any single sensor could give by itself.",
+  "keyIdea": "Different sensors tend to fail in different, complementary ways — combining them intelligently, accounting for each one's particular strengths and weaknesses, produces a better estimate than trusting any single sensor alone.",
+  "overview": "No single sensor is good at everything. A gyroscope tracks fast rotation cleanly in the short term but slowly drifts off over time; an accelerometer can sense a stable long-term reference (gravity) but is noisy from moment to moment and easily confused by real acceleration; GPS gives an accurate long-term position but updates slowly and doesn't work indoors; wheel odometry updates quickly but drifts. Sensor fusion is the general practice of combining readings from multiple sensors — often ones with exactly these kinds of complementary strengths and weaknesses — into a single estimate that's better than any one sensor could produce alone. This ranges from genuinely simple techniques (a weighted blend of two sensors) up to statistically rigorous methods like the Kalman filter, which explicitly accounts for each sensor's known noise characteristics when deciding how much to trust it.",
+  "equations": [
+    {
+      "label": "Complementary Filter (simple orientation fusion)",
+      "expression": "angle = α·(angle + gyro·dt) + (1−α)·(accel_angle)",
+      "meaning": "A simple, widely-used fusion technique for orientation: mostly trust the gyroscope's short-term rate integration (fast, smooth, but drifting), while continuously pulling the estimate back toward the accelerometer's long-term reference (noisy instant-to-instant, but drift-free on average). α is typically close to 1 (e.g. 0.98)."
+    }
+  ],
+  "howItWorks": "The key insight behind sensor fusion is that sensor errors are often complementary in a specific, exploitable sense: one sensor is accurate over short timescales but accumulates error over long timescales, while another is noisy instant-to-instant but has no long-term drift at all. A complementary filter exploits this directly with simple weighted blending, tuned by hand. A statistically principled approach — the Kalman filter and its variants — instead explicitly models each sensor's expected noise level (how much to trust it) and each sensor's relationship to the quantity actually being estimated, then mathematically computes the optimal way to combine them, updating that blend continuously as new measurements arrive. Sensor fusion isn't limited to combining sensors that measure the exact same quantity two different ways, either — a full 9-DOF orientation estimate (from an accelerometer, gyroscope, and magnetometer) genuinely needs all three sensors fused together, since no single one of them can determine full 3D orientation alone. The overarching goal in every case is the same: produce a combined estimate whose error is smaller (and whose failure modes are better understood) than what any individual sensor could offer on its own.",
+  "diagramCaption": "Multiple imperfect sensors, each with different strengths and weaknesses, feed into a fusion algorithm that weighs them appropriately to produce one combined, more reliable estimate.",
+  "realWorldExamples": [
+    "IMU modules like the BNO055 or MPU9250 internally fuse accelerometer, gyroscope, and magnetometer readings into a single stable orientation estimate.",
+    "A self-driving car fusing camera, LiDAR, radar, GPS, and wheel odometry together, since each sensor is strong in situations where the others are weak (e.g. radar working in fog where cameras struggle).",
+    "A drone fusing barometer altitude readings, GPS position, and IMU motion data together for stable altitude and position hold, since no single one of those sensors alone is both fast and drift-free."
+  ],
+  "commonMisconceptions": [
+    "\"More sensors is automatically better\" — that's only true if the fusion accounts correctly for each sensor's actual error characteristics; a poorly fused or miscalibrated extra sensor can make the combined estimate worse than a single good sensor alone.",
+    "\"Sensor fusion just means averaging the sensors together\" — naive averaging ignores that different sensors deserve different amounts of trust depending on their known noise and drift characteristics, which is exactly what more principled fusion techniques account for.",
+    "\"Sensor fusion is just another name for the Kalman filter\" — the Kalman filter is one (very common and mathematically rigorous) fusion technique, but simpler methods like complementary filters, and more complex ones like particle filters, are also sensor fusion."
+  ],
+  "relatedComponents": ["mpu6050", "bno055", "mpu9250", "neo6m-gps", "dht11-dht22", "bme280"],
+  "relatedProjects": ["smart-home-sensor-hub", "wifi-weather-station", "gps-tracker-logger"],
+  "relatedConcepts": ["kalman-filter", "extended-unscented-kalman-filter", "odometry-and-dead-reckoning"]
+}

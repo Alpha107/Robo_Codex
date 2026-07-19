@@ -1,0 +1,107 @@
+{
+  "identity": {
+    "id": "ssd1306-oled",
+    "name": "OLED Display (SSD1306, 0.96\")",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This tiny display packs real graphics capability — arbitrary pixels, custom fonts, simple animations, small bitmaps — into a screen the size of a fingernail, using OLED pixels that emit their own light rather than needing a backlight. That makes contrast excellent and power draw proportional to how many pixels are actually lit (a mostly-black screen sips very little power), a genuine advantage over an LCD's fixed backlight draw. It talks over I2C (some variants also support SPI) and is driven by the widely-supported SSD1306 controller chip, which nearly every graphics library (Adafruit_SSD1306, u8g2) has first-class support for.",
+  "simpleSummary": "A tiny, crisp screen that can show real graphics, text, and simple animations.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V (breakout boards commonly include a regulator)",
+    "interface": "I2C (default), SPI on some variants",
+    "resolution": "128x64 pixels (0.96\" common size; 128x32 also available)",
+    "displayType": "Monochrome OLED (no backlight needed, self-emitting pixels)",
+    "defaultI2CAddress": "0x3C (commonly)"
+  },
+  "pinMap": [
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~20 mA typical, varies with lit pixel count",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V/5V (breakout-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V/5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Multiple I2C devices sharing a bus with this display must all use different addresses — the SSD1306 defaults to 0x3C, occasionally 0x3D."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Compact status/graphics display",
+      "scenario": "Show small graphics, icons, or animations in addition to text — something a character LCD can't do.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Wearable/small-enclosure project display",
+      "scenario": "The small size fits projects where a full LCD would be too bulky.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Simple data visualization",
+      "scenario": "Draw basic graphs/waveforms of sensor data over time.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "BME280"
+    ],
+    "oftenConfusedWith": [
+      "16x2 LCD (fixed character grid only, no arbitrary graphics)"
+    ],
+    "oftenUpgradedTo": [
+      "Larger color TFT/IPS displays for richer graphics"
+    ]
+  }
+}

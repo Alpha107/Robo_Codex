@@ -1,0 +1,72 @@
+{
+  "identity": {
+    "id": "jumper-wires",
+    "name": "Jumper Wires",
+    "category": "Prototyping Essentials",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Jumper wires are the connective tissue of every breadboard circuit, and they come in three end-type combinations that matter more than beginners initially expect: Male-to-Male (a solid pin on each end, for breadboard-to-breadboard connections), Male-to-Female (a pin on one end, a socket on the other, for connecting a breadboard to a header pin like an Arduino's), and Female-to-Female (a socket on both ends, for connecting two existing header pins together, e.g. two sensor breakout boards). Picking the wrong end-type is a common source of 'my circuit isn't working' confusion — a male end won't grip another male end at all.",
+  "simpleSummary": "Small wires used to connect parts together on a breadboard.",
+  "specifications": {
+    "endTypes": "Male-Male (M-M), Male-Female (M-F), Female-Female (F-F)",
+    "wireGauge": "Typically 22-26 AWG for hobby jumper wires",
+    "lengthOptions": "Commonly sold in multiple lengths (10cm, 20cm, 30cm) in assorted color packs",
+    "currentRating": "Light-duty — fine for logic signals and small sensor currents, not motor-level current"
+  },
+  "pinMap": [
+    {
+      "name": "Male End",
+      "position": null,
+      "category": "special",
+      "function": "A solid metal pin, designed to insert into a breadboard hole or a female header socket.",
+      "voltageRange": "Whatever is connected",
+      "currentLimit": "Light-duty, a few hundred mA typical for thin hobby wire",
+      "alternateFunctions": [],
+      "gotcha": "A male end cannot make a connection with another male end — check both ends of a wire before assuming a connection should work."
+    },
+    {
+      "name": "Female End",
+      "position": null,
+      "category": "special",
+      "function": "A socket/receptacle end, designed to slide over a male header pin (like those on an Arduino or a breakout board).",
+      "voltageRange": "Whatever is connected",
+      "currentLimit": "Light-duty",
+      "alternateFunctions": [],
+      "gotcha": "Female ends can sometimes make a loose or intermittent connection on worn pins — a wire that 'sometimes works' is often a female-end fit issue, not a code bug."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Breadboard circuit wiring",
+      "scenario": "Connect components on a breadboard to each other and to a microcontroller.",
+      "pinsInvolved": [
+        "Male End",
+        "Female End"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Sensor breakout board connections",
+      "scenario": "Connect two boards' header pins directly using F-F wires without a breadboard in between.",
+      "pinsInvolved": [
+        "Female End"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard",
+      "Arduino Uno",
+      "Any sensor breakout board"
+    ],
+    "oftenConfusedWith": [
+      "Solid-core hookup wire (for permanent soldered connections, not breadboard-friendly)"
+    ],
+    "oftenUpgradedTo": [
+      "Custom-length soldered wiring or a PCB for a finalized, permanent project"
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "identity": {
+    "id": "push-button-led-toggle",
+    "title": "Push-Button LED Toggle",
+    "tagline": "Press once to turn the LED on, press again to turn it off — reading a button correctly.",
+    "category": "Beginner Electronics",
+    "difficulty": "Beginner",
+    "estimatedTime": "20 minutes"
+  },
+  "goal": "Wire up a push button that toggles an LED's on/off state with each press — not \"on while held,\" but actually flipping state each time, which is the first project that requires the code to remember something between loop() iterations.",
+  "simpleSummary": "Press a button once to turn an LED on, press again to turn it off.",
+  "howItWorks": "A push button is really just a switch that closes a connection while you're pressing it. Read naively, that only tells you whether it's being held down right now — useful, but not enough to build a toggle, which needs to know the moment a press begins so it can flip the LED state exactly once per press, not continuously while held. That requires the code to remember the button's previous reading and compare it to the current one on every loop, only acting when it changes from \"not pressed\" to \"pressed.\" This project also introduces Arduino's built-in pull-up resistors: rather than wiring an external resistor to hold the input pin at a known level when the button isn't pressed, INPUT_PULLUP does it internally, so the pin reads HIGH when idle and LOW the instant the button connects it to ground.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "standard-led",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 1,
+      "note": "220Ω resistor for the LED"
+    },
+    {
+      "componentId": "push-button",
+      "quantity": 1
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 3
+    }
+  ],
+  "circuitDiagramCaption": "Button between D2 and GND (using the Arduino's internal pull-up); LED + resistor on D13 to GND.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "push-button",
+          "pin": "Terminal 1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "push-button",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Anode (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D13"
+        }
+      },
+      {
+        "from": {
+          "componentId": "standard-led",
+          "pin": "Cathode (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire one leg of the push button to Arduino D2, and the other leg to GND.",
+      "detail": "Because the code will use INPUT_PULLUP, there's no external resistor needed for the button itself — just these two wires."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the LED and its 220Ω resistor in series between Arduino D13 and GND, same as in LED Blink.",
+      "detail": "Any digital pin works, but D13 conveniently mirrors the Arduino's onboard LED again."
+    },
+    {
+      "step": 3,
+      "instruction": "Double-check the button is straddling the breadboard's center gap (if it has 4 legs, not 2) so its two sides aren't accidentally shorted together.",
+      "detail": "Most tactile push buttons have 4 legs that are internally paired — the two legs on the same side are always connected, which trips people up until they check with a multimeter or the datasheet once."
+    }
+  ],
+  "code": [
+    {
+      "filename": "push_button_toggle.ino",
+      "language": "arduino",
+      "source": "// Push-Button LED Toggle\n// Each press flips the LED's on/off state — not \"on while held.\"\n\nconst int BUTTON_PIN = 2;\nconst int LED_PIN = 13;\n\nbool ledState = false;\nbool lastButtonReading = HIGH; // HIGH = not pressed, thanks to INPUT_PULLUP\n\nvoid setup() {\n  pinMode(BUTTON_PIN, INPUT_PULLUP);\n  pinMode(LED_PIN, OUTPUT);\n}\n\nvoid loop() {\n  bool currentReading = digitalRead(BUTTON_PIN);\n\n  // A press is the MOMENT the reading changes from HIGH to LOW —\n  // not every loop where it happens to read LOW.\n  if (currentReading == LOW && lastButtonReading == HIGH) {\n    ledState = !ledState;\n    digitalWrite(LED_PIN, ledState);\n    delay(30); // crude debounce — see the Rotary Encoder project for a cleaner approach\n  }\n\n  lastButtonReading = currentReading;\n}\n",
+      "explanation": "lastButtonReading is the whole trick here: by remembering what the pin read on the previous loop, the code can detect the exact transition from \"not pressed\" to \"pressed\" and act on it exactly once, instead of toggling the LED dozens of times per second while the button is held (loop() runs far faster than a human can release a button). The 30ms delay after a detected press is a simple way to ignore the tiny electrical bounce/vibration a mechanical switch produces the instant its contacts touch."
+    }
+  ],
+  "expectedBehavior": "The LED starts off. Each press of the button flips it: on, then off, then on again, regardless of how long each press is held.",
+  "troubleshooting": [
+    {
+      "issue": "LED toggles multiple times per single press.",
+      "fix": "This is switch bounce — the mechanical contacts vibrate for a few milliseconds when pressed. Increase the debounce delay slightly, or see the Rotary Encoder Control project for a more robust debouncing approach."
+    },
+    {
+      "issue": "Nothing happens when pressing the button.",
+      "fix": "Confirm the button is oriented so you're bridging its two independent sides, not two legs that are already internally connected — try rotating it 90° on the breadboard."
+    },
+    {
+      "issue": "LED is always on or never responds correctly.",
+      "fix": "Confirm pinMode for the button is INPUT_PULLUP, not INPUT — without the pull-up, the pin \"floats\" and reads randomly when the button isn't pressed."
+    }
+  ],
+  "extensions": [
+    "Add a second button that resets the LED to off regardless of its current state.",
+    "Extend the toggle logic to cycle through three states (off, dim, bright) instead of just two.",
+    "Combine this debounced-press pattern with the Digital Dice project's random-roll trigger.",
+    "Track and print the number of times the button has been pressed since power-on."
+  ]
+}

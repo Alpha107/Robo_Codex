@@ -1,0 +1,168 @@
+{
+  "identity": {
+    "id": "gps-tracker-logger",
+    "title": "GPS Tracker Logger",
+    "tagline": "Live latitude, longitude, and speed, decoded from satellite signals and shown on a tiny screen.",
+    "category": "Smart Home & IoT",
+    "difficulty": "Intermediate",
+    "estimatedTime": "35 minutes"
+  },
+  "goal": "Read live position data from a NEO-6M GPS module and display latitude, longitude, and speed on an OLED — the same underlying technique behind dedicated GPS trackers and any project that needs to know where it physically is.",
+  "simpleSummary": "Read your live location from a GPS module and show it on a small screen.",
+  "howItWorks": "A GPS module doesn't calculate its own position from scratch — it listens to precisely-timed signals from multiple satellites simultaneously and calculates position from the tiny differences in when each signal arrives, then reports the result as a continuous stream of standardized text sentences (the NMEA format) over a plain serial connection. Those sentences are dense and not meant to be read directly (a typical one looks like a cryptic string of comma-separated numbers), which is why this project uses the TinyGPS++ library to parse them into plain latitude, longitude, and speed values. Because the GPS module needs its own serial connection separate from the Arduino's USB/programming serial port, this project uses SoftwareSerial to create a second, dedicated channel just for talking to it.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "Clear view of the sky (or a window) — GPS modules can take a minute or two to get their first fix"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "neo6m-gps",
+      "quantity": 1
+    },
+    {
+      "componentId": "ssd1306-oled",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 6
+    }
+  ],
+  "circuitDiagramCaption": "GPS module on a SoftwareSerial pair (D3/D4); OLED on the I2C bus (A4/A5).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "neo6m-gps",
+          "pin": "TXD"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "neo6m-gps",
+          "pin": "RXD"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "neo6m-gps",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "neo6m-gps",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "ssd1306-oled",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A5"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the GPS module's TXD to Arduino D4, RXD to D3, VCC to 5V, and GND to GND.",
+      "detail": "As with any serial connection between two devices, this is crossed — the module's transmit pin goes to the pin the code treats as its receive pin."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the OLED's GND to GND, VCC to 5V, SDA to A4, and SCL to A5.",
+      "detail": "Same OLED wiring pattern used across every I2C-display project in this encyclopedia."
+    },
+    {
+      "step": 3,
+      "instruction": "Position the GPS module's antenna with a clear, unobstructed view of the sky — a window ledge works, a fully enclosed indoor room usually does not.",
+      "detail": "This is the step most likely to make the project seem broken when it isn't — see Troubleshooting for how long a first \"cold start\" fix realistically takes."
+    }
+  ],
+  "code": [
+    {
+      "filename": "gps_tracker_logger.ino",
+      "language": "arduino",
+      "source": "#include <SoftwareSerial.h>\n#include <TinyGPS++.h>\n#include <Wire.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_SSD1306.h>\n\n// GPS Tracker Logger\n// Parses NEO-6M NMEA sentences and displays position + speed on an OLED.\n\nSoftwareSerial gpsSerial(4, 3); // RX, TX\nTinyGPSPlus gps;\nAdafruit_SSD1306 display(128, 64, &Wire, -1);\n\nvoid setup() {\n  gpsSerial.begin(9600); // NEO-6M's default baud rate\n  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);\n  display.setTextColor(SSD1306_WHITE);\n}\n\nvoid loop() {\n  // Feed every incoming byte to the parser — a full sentence can arrive\n  // across many loop() iterations, a character or two at a time.\n  while (gpsSerial.available() > 0) {\n    gps.encode(gpsSerial.read());\n  }\n\n  if (gps.location.isUpdated()) {\n    updateDisplay();\n  }\n}\n\nvoid updateDisplay() {\n  display.clearDisplay();\n  display.setTextSize(1);\n  display.setCursor(0, 0);\n\n  display.print(\"Lat: \");\n  display.println(gps.location.lat(), 6);\n\n  display.print(\"Lng: \");\n  display.println(gps.location.lng(), 6);\n\n  display.print(\"Speed: \");\n  display.print(gps.speed.kmph(), 1);\n  display.println(\" km/h\");\n\n  display.print(\"Satellites: \");\n  display.println(gps.satellites.value());\n\n  display.display();\n}\n",
+      "explanation": "gps.encode() is fed one raw byte at a time from the module's serial stream, and internally accumulates those bytes into complete NMEA sentences, silently discarding anything malformed — this is why the read loop runs on every single pass rather than waiting for a whole line at once. gps.location.isUpdated() only returns true once a fresh, complete position sentence has actually been parsed, which avoids redrawing the OLED with the exact same numbers dozens of times per second between real updates."
+    }
+  ],
+  "expectedBehavior": "Outdoors (or near a window) with a clear sky view, the OLED shows live latitude, longitude, speed, and the number of satellites currently in view, updating every time a new position sentence arrives — typically about once per second once a fix is established.",
+  "troubleshooting": [
+    {
+      "issue": "No data at all / satellite count stays at 0 for a long time.",
+      "fix": "A GPS module's very first \"cold start\" fix can genuinely take 30 seconds to a few minutes outdoors with clear sky view — this is normal satellite-almanac download behavior, not a fault. It won't get a fix at all fully indoors."
+    },
+    {
+      "issue": "OLED shows nothing.",
+      "fix": "Same I2C address/wiring troubleshooting as every other OLED-based project in this encyclopedia."
+    },
+    {
+      "issue": "Position updates but seems inaccurate by tens of meters.",
+      "fix": "This is normal for consumer-grade GPS modules like the NEO-6M — expect roughly 2.5-5 meter accuracy under good conditions, not survey-grade precision."
+    }
+  ],
+  "extensions": [
+    "Log a full track (a list of lat/lng points over time) to an SD card instead of only showing the current position.",
+    "Add a geofence alert that triggers a buzzer if the tracked position leaves a defined area.",
+    "Combine with the Smart Home Sensor Hub's WiFi web server pattern to view live position from a phone browser instead of only the OLED.",
+    "Calculate and display distance traveled by summing the distance between consecutive fixes."
+  ]
+}

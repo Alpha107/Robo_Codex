@@ -1,0 +1,263 @@
+{
+  "identity": {
+    "id": "microbit",
+    "name": "BBC micro:bit (v2)",
+    "category": "Microcontroller Board",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The micro:bit was designed for classrooms first, hardware hobbyists second — it ships with a 5x5 LED matrix, two buttons, a compass, an accelerometer, and (on v2) a speaker and microphone all built in, so a first project needs zero extra components. Instead of pin headers, it has a distinctive gold-plated edge connector: five large ring pads (for easy crocodile-clip or banana-plug connections) plus 20 smaller contacts for more advanced breakout boards. It's usually programmed visually (MakeCode blocks) or in Python before students graduate to C++/Arduino-style boards.",
+  "simpleSummary": "A classroom-friendly microcontroller that already has lights, buttons, and sensors built in.",
+  "specifications": {
+    "microcontroller": "Nordic nRF52833, Arm Cortex-M4 with FPU, 64 MHz",
+    "operatingVoltage": "3V",
+    "wireless": "Bluetooth Low Energy + NFC",
+    "flashMemory": "512 KB",
+    "sram": "128 KB",
+    "builtInSensors": "Accelerometer, compass, microphone, light/temperature sensing via the LED matrix",
+    "display": "5x5 red LED matrix",
+    "connector": "Micro-USB, plus a JST 2xAAA battery connector"
+  },
+  "pinMap": [
+    {
+      "name": "P0",
+      "position": null,
+      "category": "analog",
+      "function": "Large ring pad; general-purpose I/O, analog input, and touch-sensitive.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA (15 mA on a few pins)",
+      "alternateFunctions": [
+        "Analog input",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P1",
+      "position": null,
+      "category": "analog",
+      "function": "Large ring pad; general-purpose I/O, analog input, and touch-sensitive.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "Analog input",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P2",
+      "position": null,
+      "category": "analog",
+      "function": "Large ring pad; general-purpose I/O, analog input, and touch-sensitive.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "Analog input",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P3",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin; general-purpose I/O, also drives an LED matrix column internally.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "LED matrix column"
+      ],
+      "gotcha": "Using this pin for external wiring while the LED display is active can cause visible flicker or unexpected LED states."
+    },
+    {
+      "name": "P4",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin; general-purpose I/O, also drives an LED matrix column internally.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "LED matrix column"
+      ],
+      "gotcha": "Same LED-matrix sharing caveat as P3."
+    },
+    {
+      "name": "P5",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin, wired to Button A.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "Button A input"
+      ],
+      "gotcha": "Reading this as a general I/O pin also picks up Button A presses."
+    },
+    {
+      "name": "P6",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin; general-purpose I/O, also drives an LED matrix column internally.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "LED matrix column"
+      ],
+      "gotcha": "Same LED-matrix sharing caveat as P3."
+    },
+    {
+      "name": "P7",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin; general-purpose I/O, also drives an LED matrix column internally.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "LED matrix column"
+      ],
+      "gotcha": "Same LED-matrix sharing caveat as P3."
+    },
+    {
+      "name": "P8",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin; general-purpose I/O, not shared with the display.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "P9",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin; general-purpose I/O, also drives an LED matrix column internally.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "LED matrix column"
+      ],
+      "gotcha": "Same LED-matrix sharing caveat as P3."
+    },
+    {
+      "name": "P10",
+      "position": null,
+      "category": "analog",
+      "function": "Edge pin; general-purpose I/O, analog input, also drives an LED matrix column internally.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "Analog input",
+        "LED matrix column"
+      ],
+      "gotcha": "Same LED-matrix sharing caveat as P3."
+    },
+    {
+      "name": "P11",
+      "position": null,
+      "category": "digital",
+      "function": "Edge pin, wired to Button B.",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "Button B input"
+      ],
+      "gotcha": "Reading this as a general I/O pin also picks up Button B presses."
+    },
+    {
+      "name": "P19 (SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "External I2C clock line (also used internally for the accelerometer/compass).",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "P20 (SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "External I2C data line (also used internally for the accelerometer/compass).",
+      "voltageRange": "0-3V",
+      "currentLimit": "5 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "3V",
+      "position": null,
+      "category": "power",
+      "function": "Large ring pad; regulated 3V output for external sensors/actuators.",
+      "voltageRange": "3V",
+      "currentLimit": "~90 mA total",
+      "alternateFunctions": [],
+      "gotcha": "Low current budget — a motor or bright LED strip will need a separate power source."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Large ring pad; common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "First programmable device for a classroom",
+      "scenario": "Use MakeCode's block editor to scroll text, react to shake gestures, or play simple games on the LED matrix — no extra hardware needed.",
+      "pinsInvolved": [],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Crocodile-clip physical computing",
+      "scenario": "Clip wires directly to the P0/P1/P2/3V/GND ring pads to build simple circuits (e.g. a banana keyboard) with no soldering.",
+      "pinsInvolved": [
+        "P0",
+        "P1",
+        "P2",
+        "3V",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Bluetooth-connected wearable",
+      "scenario": "Use the built-in BLE radio to send accelerometer data to a phone app.",
+      "pinsInvolved": [],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "External sensor breakout via edge connector",
+      "scenario": "Mount on a breakout board to access all 25 edge pins for I2C sensors or multiple servos.",
+      "pinsInvolved": [
+        "P19 (SCL)",
+        "P20 (SDA)",
+        "3V",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Edge connector breakout board",
+      "Crocodile clip leads"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Uno (text-based C++ only, no built-in sensors/display)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi Pico (more raw I/O, no built-in sensors/display)"
+    ]
+  }
+}

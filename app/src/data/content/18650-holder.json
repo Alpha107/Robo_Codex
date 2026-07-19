@@ -1,0 +1,82 @@
+{
+  "identity": {
+    "id": "18650-holder",
+    "name": "18650 Battery Holder",
+    "category": "Power Management",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The 18650 is a standard-sized cylindrical lithium-ion cell (18mm diameter, 65mm length — hence the name) reused from laptop battery packs and flashlights, and this holder gives it spring-loaded contacts and solder tabs so it can be wired into a project without soldering directly to the battery itself. Holders come in single-cell and multi-cell (2/4-cell) versions wired in series or parallel; using multiple cells safely, especially in series, generally calls for a matching BMS to keep the cells balanced and protected — mixing old and new cells or different capacity cells in a series pack is a common way to shorten pack life or create safety issues.",
+  "simpleSummary": "A little holder that lets you snap in a rechargeable battery (shaped like a fat AA) without any soldering.",
+  "specifications": {
+    "cellSize": "18650 standard (18mm x 65mm cylindrical cells)",
+    "contactType": "Spring-loaded button contacts, solder-tab or wire leads",
+    "configurations": "Single-cell, or multi-cell holders wired in series/parallel",
+    "cellVoltageNote": "The holder itself has no electronics — voltage/protection depends entirely on the cell and any BMS used"
+  },
+  "pinMap": [
+    {
+      "name": "Positive (+)",
+      "position": null,
+      "category": "power",
+      "function": "Positive terminal, contacting the cell's button end.",
+      "voltageRange": "3.0-4.2V per cell (bare, unprotected)",
+      "currentLimit": "Depends on the cell's discharge rating",
+      "alternateFunctions": [],
+      "gotcha": "The holder provides zero protection circuitry — an unprotected cell wired straight to a load has no over-discharge or short-circuit protection at all."
+    },
+    {
+      "name": "Negative (-)",
+      "position": null,
+      "category": "power",
+      "function": "Negative terminal, contacting the cell's flat end.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Inserting a cell backwards is usually physically prevented by the spring/tab shapes, but always double-check polarity markings before wiring downstream electronics."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Swappable-battery robot power",
+      "scenario": "Let a robot's battery be quickly swapped for a charged spare rather than waiting for an onboard recharge.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Multi-cell portable power pack",
+      "scenario": "Combine several 18650 cells in series/parallel (with a matching BMS) for higher voltage or capacity.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Flashlight/portable device power",
+      "scenario": "The original common use case these cells and holders come from.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "18650 Li-ion cells",
+      "BMS protection board",
+      "TP4056 charging module"
+    ],
+    "oftenConfusedWith": [
+      "LiPo pouch cells (flexible, different form factor, often already include protection)"
+    ],
+    "oftenUpgradedTo": [
+      "Pre-assembled protected battery packs for simpler, safer integration"
+    ]
+  }
+}

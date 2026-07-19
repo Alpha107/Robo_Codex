@@ -1,0 +1,103 @@
+{
+  "identity": {
+    "id": "mq-gas-sensor",
+    "name": "MQ-2 / MQ-135 Gas Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "MQ-series sensors detect gases using a heated tin-dioxide element whose electrical resistance changes when specific gases pass over it — the MQ-2 is tuned for combustible gas/smoke (LPG, methane, smoke), while the MQ-135 targets general air quality gases (CO2, ammonia, benzene, and other pollutants). Both share the same core gotcha: the heating element needs a warm-up ('burn-in') period — anywhere from a couple of minutes to 24-48 hours for a brand-new sensor — before readings stabilize, and the raw analog output is a relative resistance change, not a calibrated gas concentration, so getting an actual PPM figure requires per-sensor calibration against the datasheet's response curves.",
+  "simpleSummary": "A sensor that detects gases like smoke or CO2 in the air.",
+  "specifications": {
+    "operatingVoltage": "5V (heater requires this specifically — not 3.3V compatible)",
+    "warmupTime": "Minutes (basic stabilization) up to 24-48 hours (full sensor burn-in for new units)",
+    "outputType": "Analog (resistance-based, proportional to gas concentration) and digital (threshold, trimpot-adjustable)",
+    "targetGasesMQ2": "LPG, propane, methane, smoke, hydrogen",
+    "targetGasesMQ135": "CO2, ammonia (NH3), benzene, alcohol, general air quality"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input, also feeds the internal heating element.",
+      "voltageRange": "5V",
+      "currentLimit": "~150 mA (mostly the heater)",
+      "alternateFunctions": [],
+      "gotcha": "The heater draws meaningfully more current than most beginner sensors — don't power multiple gas sensors directly from a microcontroller's 5V pin."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AOUT",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output proportional to gas concentration (as a resistance-ratio signal, not a calibrated PPM value).",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": "Don't trust the raw voltage as an absolute PPM reading without calibrating against the sensor's datasheet curve for the specific gas of interest."
+    },
+    {
+      "name": "DOUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital threshold output, adjustable via the onboard trimpot.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Gas leak / smoke alarm",
+      "scenario": "MQ-2 configured to trigger an alert when combustible gas or smoke crosses a threshold.",
+      "pinsInvolved": [
+        "DOUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Indoor air quality monitor",
+      "scenario": "MQ-135 tracking general air quality trends for a smart-home dashboard.",
+      "pinsInvolved": [
+        "AOUT"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Ventilation automation",
+      "scenario": "Automatically switch on a fan or vent when air quality readings degrade.",
+      "pinsInvolved": [
+        "AOUT",
+        "DOUT"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Relay module",
+      "Buzzer"
+    ],
+    "oftenConfusedWith": [
+      "Flame sensors (detect fire's IR signature, not gas composition)"
+    ],
+    "oftenUpgradedTo": [
+      "Calibrated digital air-quality sensors (e.g. CCS811, SGP30) for actual PPM-accurate readings"
+    ]
+  }
+}

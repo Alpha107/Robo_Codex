@@ -1,0 +1,40 @@
+{
+  "identity": {
+    "id": "feedforward-control",
+    "title": "Feedforward Control",
+    "category": "Control Theory",
+    "level": "Intermediate",
+    "tagline": "Reacting to what you already know is coming, instead of only reacting once an error shows up."
+  },
+  "simpleSummary": "Using what you already know about a system to compute most of the needed control action in advance, so feedback only has to clean up small leftover errors instead of doing all the work.",
+  "keyIdea": "Feedforward computes a control action directly from a known model or reference signal ahead of time, complementing feedback control, which can only react after an error has already appeared.",
+  "overview": "Feedback control (like PID) is fundamentally reactive: it does nothing until an error already exists, then works to shrink it. This is fine for handling unpredictable disturbances, but it's an inherently inefficient way to handle predictable, known parts of a system's behavior — like gravity constantly pulling down on a robot arm, or the fact that reaching a new target position requires accelerating and then decelerating. Feedforward control adds a second term, computed directly from a model of the system and the known reference (not from error), that supplies most of the needed control action proactively. Feedback then only has to correct the smaller residual error left over from whatever the model didn't capture exactly — disturbances, friction, or small modeling inaccuracies.",
+  "equations": [
+    {
+      "label": "Combined Control Law",
+      "expression": "u(t) = u_ff(t) + u_fb(t)",
+      "meaning": "The total control output is the sum of a feedforward term u_ff (computed from a system model and the reference signal, independent of error) and a feedback term u_fb (typically PID, computed from the error)."
+    },
+    {
+      "label": "Gravity Compensation Example",
+      "expression": "u_ff = m·g·L·cos(θ)",
+      "meaning": "For a robot arm joint of mass m and length L at angle θ, this feedforward torque term counteracts gravity's pull directly, computed from the arm's known physical parameters rather than waiting for the arm to visibly sag."
+    }
+  ],
+  "howItWorks": "Because feedback only responds to error, and error by definition only appears after something has already gone slightly wrong, a feedback-only controller is always playing catch-up. Feedforward flips this: if you know your system's physics well enough (or its reference trajectory in advance), you can calculate the bulk of the necessary control effort before any error occurs, then let feedback handle only the remainder — model inaccuracies, unexpected disturbances, friction that doesn't perfectly match the model. A classic example is gravity compensation on a robot arm joint: instead of waiting for the arm to droop under its own weight and then having a PID controller yank it back up, a feedforward term computes the torque needed to hold the arm's known mass at its current angle and applies it immediately, so the PID feedback loop only has to correct for whatever the gravity model got slightly wrong. Another common use is velocity/acceleration feedforward in trajectory tracking: rather than only commanding a target position and letting feedback discover it needs to accelerate, the controller feeds forward the reference trajectory's known velocity and acceleration directly, dramatically reducing tracking lag (often called following error) in fast-moving systems like CNC machines and 3D printers.",
+  "diagramCaption": "Feedforward computes a control contribution directly from the reference signal (top path, no error needed), while feedback computes a correction from the measured error (bottom path); both sum together to drive the plant.",
+  "realWorldExamples": [
+    "Gravity compensation on a multi-joint robot arm, where each joint's feedforward torque counteracts the arm's own weight before feedback ever needs to react to sag.",
+    "A pan-tilt camera turret feeding forward a known target trajectory (not just a static target angle) so the servo tracks smoothly instead of always lagging slightly behind.",
+    "3D printer extruder control feeding forward the upcoming print speed change to push filament ahead of time, avoiding the brief under-extrusion a purely reactive controller would cause.",
+    "CNC machine tool path following, where velocity and acceleration feedforward dramatically reduces the position lag (following error) that a PID-only system would otherwise show on fast curves."
+  ],
+  "commonMisconceptions": [
+    "\"Feedforward can completely replace feedback\" — feedforward requires an accurate model; any unmodeled disturbance or inaccuracy still needs feedback to correct it, so the two are almost always used together, not as alternatives.",
+    "\"Feedforward is an advanced technique only needed in high-end industrial systems\" — it's used anywhere a system's behavior is partly predictable, including hobby-level robot arms and camera gimbals.",
+    "\"Feedforward makes tuning easier\" — it actually adds its own tuning burden (getting the model right), traded off against reduced reliance on feedback gains; it's a different kind of complexity, not simply less complexity."
+  ],
+  "relatedComponents": ["sg90-servo", "mg996r-servo", "servo-bracket-arm-kit"],
+  "relatedProjects": ["joystick-pan-tilt-turret", "servo-pan-sweep"],
+  "relatedConcepts": ["pid-control", "open-loop-vs-closed-loop-control", "model-predictive-control-intro"]
+}

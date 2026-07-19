@@ -1,0 +1,168 @@
+{
+  "identity": {
+    "id": "tft-color-lcd",
+    "name": "TFT Color LCD (ILI9341, SPI)",
+    "category": "Displays & Feedback",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The ILI9341 drives a 240x320 full-color TFT LCD over SPI, which is a genuine step up from the catalog's simpler displays in both wiring complexity and capability. The 16x2 character LCD only shows fixed text glyphs, and the SSD1306 OLED is monochrome and I2C-simple with just 4 wires; this display needs 8+ connections including a dedicated chip-select (CS), data/command (DC), and reset line, because SPI doesn't have I2C's built-in addressing scheme — the DC pin is what tells the controller whether the next byte is a command or pixel data. The payoff for that extra wiring is speed: SPI commonly runs at tens of MHz versus I2C's ~100kHz-1MHz, so full-screen color redraws and smooth animation are practical here in a way they simply aren't on an I2C display.",
+  "simpleSummary": "A full-color screen that needs more wires than a simple OLED but redraws far faster because it uses SPI instead of I2C.",
+  "specifications": {
+    "controllerChip": "ILI9341",
+    "interface": "SPI (4-wire SPI plus separate CS, DC, and RESET control lines)",
+    "resolution": "240 x 320 pixels",
+    "colorDepth": "16-bit color (65,536 colors); 18-bit supported on some configurations",
+    "displayType": "TFT LCD — needs a backlight, unlike a self-emitting OLED",
+    "operatingVoltage": "3.3V logic (many breakouts accept 5V input via an onboard regulator/level shifter)",
+    "touchscreen": "Many breakouts include a resistive touch overlay (XPT2046 controller) sharing the SPI bus with its own chip-select line",
+    "spiClockSpeed": "Up to ~40-80 MHz effective, vs roughly 100kHz-1MHz for a typical I2C display"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the display panel and controller logic.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~80-120 mA with backlight on",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CS",
+      "position": null,
+      "category": "digital",
+      "function": "SPI chip-select, active LOW — selects this device on a shared SPI bus.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Unlike an I2C display, which just needs a unique bus address, every SPI device on a shared bus needs its own dedicated CS line — forgetting this and tying CS permanently LOW breaks any other SPI device sharing the bus."
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "digital",
+      "function": "Active-LOW hardware reset for the display controller.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Easy to mix up with DC in a rushed wiring job since both are simple digital lines near each other on the header — swapping them produces a garbled or blank screen that looks like a driver/library problem."
+    },
+    {
+      "name": "DC",
+      "position": null,
+      "category": "digital",
+      "function": "Data/Command select — tells the controller whether the current SPI byte is a command or pixel data.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "This pin has no equivalent on I2C displays like the SSD1306 (where command/data is signaled inside the I2C protocol itself) — it's the single most common thing missed when adapting example code written for an I2C display."
+    },
+    {
+      "name": "SDI",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data input to the display (MOSI from the microcontroller's perspective).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["SPI MOSI"],
+      "gotcha": null
+    },
+    {
+      "name": "SCK",
+      "position": null,
+      "category": "digital",
+      "function": "SPI clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["SPI SCLK"],
+      "gotcha": "Running near the top of the supported clock range over long breadboard jumper wires causes visible glitching or tearing — keep wiring short or reduce the SPI clock speed if the image looks corrupted."
+    },
+    {
+      "name": "LED",
+      "position": null,
+      "category": "power",
+      "function": "Backlight control — must be tied HIGH (or PWM-driven for dimming) for anything to be visible on screen.",
+      "voltageRange": "0-3.3V/5V (board-dependent)",
+      "currentLimit": "~20-50 mA",
+      "alternateFunctions": ["PWM brightness control"],
+      "gotcha": "The single most common 'my new display doesn't work' report is actually correct SPI initialization with the backlight pin left unconnected — the controller is drawing the image fine, it's just invisible."
+    },
+    {
+      "name": "SDO",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data output from the display (MISO), used to read back status/ID registers rather than for normal drawing.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["SPI MISO"],
+      "gotcha": "Often left unconnected in simple projects since most drawing libraries never read from the display — fine to omit unless the code specifically needs to query the controller."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robot status/telemetry dashboard",
+      "scenario": "Show battery level, sensor readings, and current behavior state as full-color graphics and gauges rather than plain text.",
+      "pinsInvolved": ["CS", "DC", "RESET", "SDI", "SCK", "LED"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Camera preview display",
+      "scenario": "Stream a live low-res preview from an ESP32-CAM or Pi camera module onto the screen for framing/aiming shots.",
+      "pinsInvolved": ["CS", "DC", "SDI", "SCK"],
+      "difficulty": "Advanced (frame-rate-limited by SPI throughput)"
+    },
+    {
+      "title": "Touchscreen GUI menu system",
+      "scenario": "Use a breakout with the resistive touch overlay to build a simple settings/navigation menu without physical buttons.",
+      "pinsInvolved": ["CS", "DC", "RESET", "SDI", "SCK", "SDO"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Animated companion-robot face",
+      "scenario": "Draw simple animated eyes or expressions that change with robot state, leveraging fast SPI refresh for smooth motion an OLED or character LCD can't match.",
+      "pinsInvolved": ["CS", "DC", "RESET", "SDI", "SCK"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Live sensor waveform plotting",
+      "scenario": "Plot a scrolling graph of sensor data (accelerometer, distance, temperature) in real time, taking advantage of the high SPI refresh rate for smooth waveform redraws.",
+      "pinsInvolved": ["CS", "DC", "SDI", "SCK"],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "ESP32-CAM",
+      "MPU6050 (for animated tilt-responsive graphics)"
+    ],
+    "oftenConfusedWith": [
+      "SSD1306 OLED (monochrome, I2C, only 4 wires, much slower full-frame redraws)",
+      "16x2 character LCD (fixed text-only grid, no arbitrary graphics)"
+    ],
+    "oftenUpgradedTo": [
+      "Higher-resolution IPS TFT/AMOLED displays with faster QSPI interfaces for richer UI work"
+    ]
+  },
+  "beginnerMistakes": [
+    "Leaving the LED (backlight) pin unconnected and assuming the display or code is broken when the screen is actually drawing correctly but invisible.",
+    "Swapping the DC and RESET pins, since both are simple adjacent digital lines that look interchangeable at a glance.",
+    "Forgetting this display needs its own dedicated CS line, unlike the I2C displays in this catalog that just need a bus address — sharing SPI with another device without separate CS lines breaks both.",
+    "Running long breadboard jumper wires at the display's maximum SPI clock speed, causing visible tearing or garbled pixels that look like a software bug.",
+    "Assuming touch and display share one chip-select — the resistive touch controller (XPT2046) on touchscreen variants needs its own separate CS pin from the display's CS."
+  ]
+}

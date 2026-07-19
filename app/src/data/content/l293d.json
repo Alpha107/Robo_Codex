@@ -1,0 +1,194 @@
+{
+  "identity": {
+    "id": "l293d",
+    "name": "L293D Motor Driver IC",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The L293D does the same basic job as an L298N — two H-bridge channels for driving DC motors — but comes as a plain 16-pin DIP chip you can push straight into a breadboard, rather than a pre-assembled module with screw terminals. Its current rating is much lower (fine for small hobby motors, not for anything beefy), but it has one genuine advantage baked in: built-in flyback diodes on every output, protecting the chip from the voltage spikes a motor generates when it's switched off. It's also the chip underneath the classic Arduino Motor Shield.",
+  "simpleSummary": "A chip that lets a microcontroller control two DC motors, in a plug-into-breadboard form.",
+  "specifications": {
+    "channels": "2 (drives 2 DC motors, or 1 bipolar stepper)",
+    "package": "16-pin DIP (or SOIC surface-mount)",
+    "logicVoltage": "4.5V - 7V (VCC1)",
+    "motorVoltage": "4.5V - 36V (VCC2)",
+    "currentPerChannel": "600 mA continuous, 1.2A peak",
+    "flybackDiodes": "Built in (no external protection diodes needed)"
+  },
+  "pinMap": [
+    {
+      "name": "1,2EN",
+      "position": null,
+      "category": "digital",
+      "function": "Enable pin for channel 1 (motor A) — must be HIGH for outputs 1Y/2Y to respond to inputs.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [
+        "PWM (for speed control)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "1A",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input for motor A, paired with 2A.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "2A",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input for motor A, paired with 1A.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "1Y",
+      "position": null,
+      "category": "power",
+      "function": "Motor A output terminal 1.",
+      "voltageRange": "Up to VCC2",
+      "currentLimit": "600 mA continuous",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "2Y",
+      "position": null,
+      "category": "power",
+      "function": "Motor A output terminal 2.",
+      "voltageRange": "Up to VCC2",
+      "currentLimit": "600 mA continuous",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3,4EN",
+      "position": null,
+      "category": "digital",
+      "function": "Enable pin for channel 2 (motor B).",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "3A",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input for motor B, paired with 4A.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "4A",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input for motor B, paired with 3A.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3Y",
+      "position": null,
+      "category": "power",
+      "function": "Motor B output terminal 1.",
+      "voltageRange": "Up to VCC2",
+      "currentLimit": "600 mA continuous",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "4Y",
+      "position": null,
+      "category": "power",
+      "function": "Motor B output terminal 2.",
+      "voltageRange": "Up to VCC2",
+      "currentLimit": "600 mA continuous",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VCC1",
+      "position": null,
+      "category": "power",
+      "function": "Logic supply voltage for the chip's internal control circuitry.",
+      "voltageRange": "4.5V - 7V",
+      "currentLimit": "Low (logic only)",
+      "alternateFunctions": [],
+      "gotcha": "Easy to confuse with VCC2 — VCC1 is logic power, VCC2 is motor power, and they're often different voltages."
+    },
+    {
+      "name": "VCC2",
+      "position": null,
+      "category": "power",
+      "function": "Motor supply voltage, switched through to the outputs.",
+      "voltageRange": "4.5V - 36V",
+      "currentLimit": "Depends on external supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground pins (multiple, also serve as the chip's heat-dissipation path).",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The GND pins double as the thermal path out of the chip — leave adequate copper/ventilation around them in a permanent build."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Breadboard-prototyped small robot",
+      "scenario": "Drive two small motors directly from a breadboard circuit without needing a separate driver module.",
+      "pinsInvolved": [
+        "1A",
+        "2A",
+        "1,2EN",
+        "1Y",
+        "2Y"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Arduino Motor Shield projects",
+      "scenario": "The classic Arduino Motor Shield is built around this exact chip.",
+      "pinsInvolved": [
+        "1A",
+        "2A",
+        "3A",
+        "4A"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "DC geared motor",
+      "Breadboard",
+      "Arduino Uno"
+    ],
+    "oftenConfusedWith": [
+      "L298N (higher current, module form factor with screw terminals)"
+    ],
+    "oftenUpgradedTo": [
+      "L298N or BTS7960 for motors drawing more than ~600mA"
+    ]
+  }
+}

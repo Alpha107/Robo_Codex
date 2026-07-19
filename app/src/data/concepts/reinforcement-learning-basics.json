@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "reinforcement-learning-basics",
+    "title": "Reinforcement Learning Basics",
+    "category": "AI & Machine Learning",
+    "level": "Advanced",
+    "tagline": "Teaching a robot to improve at a task through trial and error and reward, instead of hand-writing its exact behavior."
+  },
+  "simpleSummary": "Teaching a robot to get better at a task by letting it try things, rewarding outcomes that work and not rewarding ones that don't, rather than programming its exact behavior by hand.",
+  "keyIdea": "An agent learns a policy — a rule for choosing actions — by repeatedly interacting with an environment, receiving a reward signal after each action, and gradually adjusting its behavior to maximize cumulative future reward.",
+  "overview": "Traditional control approaches like PID and Model Predictive Control require a human to design the control law explicitly, usually based on a known or derived model of the system. Reinforcement learning (RL) takes a different approach: instead of hand-designing the behavior, an agent learns it through trial and error, guided only by a reward signal describing how good or bad each outcome was. This is especially useful when an accurate system model is hard to build by hand, or when it's easier to specify what a good outcome looks like (the reward) than to specify the exact control law that produces it. The framework involves an agent choosing actions within an environment, observing the resulting state and reward, and using that experience to improve its policy over time — with a persistent central tension between exploration (trying new actions to discover potentially better strategies) and exploitation (using already-known good actions).",
+  "equations": [
+    {
+      "label": "Q-Learning Update Rule",
+      "expression": "Q(s,a) ← Q(s,a) + α[r + γ·maxₐ′Q(s′,a′) − Q(s,a)]",
+      "meaning": "A canonical simple RL algorithm: Q(s,a) estimates the value of taking action a in state s; after observing reward r and the next state s′, this update nudges that estimate toward the reward received plus the best value achievable from the next state, discounted by γ (how much future reward matters), scaled by learning rate α."
+    }
+  ],
+  "howItWorks": "The basic loop repeats continuously: the agent observes its current state, selects an action according to its current policy, the environment transitions to a new state and returns a reward signal, and the agent uses that reward (and the resulting new state) to update its policy or its estimate of action values. Repeated over many episodes, and with enough exploration of different actions, this trial-and-error process gradually converges toward a policy that maximizes expected cumulative future reward. Real robotics applications face two major practical challenges: RL typically needs a large number of trials to learn well, which is why RL for physical robots is usually trained first in simulation before any transfer to real hardware (a process called sim-to-real transfer, itself a nontrivial challenge since no simulation perfectly matches reality); and reward design is genuinely difficult to get right, since an agent can discover an unexpected way to maximize its reward signal that technically succeeds without actually accomplishing the intended real-world goal — a failure mode known as reward hacking.",
+  "diagramCaption": "The reinforcement learning loop: an agent takes an action in an environment, receives back a new state and reward, and uses that experience to improve its policy for choosing future actions.",
+  "realWorldExamples": [
+    "Training a simulated quadruped (four-legged) robot to learn a stable, efficient walking gait through trial and error rather than hand-designed gait equations.",
+    "RL-trained robot arm grasping policies that learn to pick up varied, previously unseen objects rather than following a hand-coded grasping strategy.",
+    "Game-playing AI systems (like those that mastered Go or complex video games) as the most famous illustrations of the same underlying reinforcement learning principles applied outside robotics."
+  ],
+  "commonMisconceptions": [
+    "\"RL means the agent has no model of its environment at all\" — this describes only 'model-free' RL; 'model-based' RL algorithms explicitly learn or use an environment model to plan more efficiently, so it's a spectrum, not a single defining absence.",
+    "\"RL always outperforms traditional control methods like PID or MPC\" — for well-understood tasks with a good, accurate model, traditional model-based control is often faster to develop, more predictable and verifiable, and needs far less training data and time than RL.",
+    "\"Reward design is a minor implementation detail\" — poorly designed rewards are a leading real cause of RL systems learning unintended, sometimes bizarre behaviors that technically maximize reward without achieving the intended goal."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": [],
+  "relatedConcepts": [
+    "neural-networks-for-robotics",
+    "pid-control",
+    "model-predictive-control-intro",
+    "imitation-learning"
+  ]
+}

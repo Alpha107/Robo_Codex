@@ -1,0 +1,279 @@
+{
+  "identity": {
+    "id": "foc-bldc-servo-driver",
+    "name": "FOC BLDC Servo Driver",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A Field-Oriented Control (FOC) driver runs a brushless motor completely differently from a hobby ESC: instead of switching current through the windings in six blocky steps, it continuously measures rotor position (from Hall sensors and/or an encoder) and current (via inline or shunt sensing), then runs a Clarke/Park-transform current loop at tens of kHz to hold a smooth sinusoidal current vector at exactly 90 electrical degrees from the rotor's magnetic field. The payoff is torque that stays smooth and controllable all the way down to a dead stop, with no cogging or 'stepping' feel, plus proper current limiting instead of the crude back-EMF sensing a cheap ESC relies on. This is what makes direct-drive robot joints, gimbals, and haptic devices feel silky instead of notchy. The cost is real setup complexity: current-loop gains, encoder offset calibration, and often a CAN bus address all have to be configured correctly before the motor spins at all, and a bad calibration doesn't fail gracefully — it produces a growling, vibrating motor that never actually turns.",
+  "simpleSummary": "A motor driver that spins a brushless motor with smooth, continuous torque by constantly recalculating the ideal current angle, instead of switching it in blocky steps like a cheap ESC.",
+  "specifications": {
+    "inputVoltage": "12-56V DC (model-dependent, e.g. 6S-14S battery packs)",
+    "continuousPhaseCurrent": "~40A continuous per phase (with active cooling)",
+    "peakPhaseCurrent": "~60A for a few seconds, thermally limited",
+    "controlAlgorithm": "Field-Oriented Control (FOC), sinusoidal commutation with closed current loop",
+    "currentLoopRate": "~20-40 kHz",
+    "pwmSwitchingFrequency": "~24-40 kHz",
+    "feedbackSupported": "Hall sensors, incremental quadrature encoder, or SPI/absolute magnetic encoder",
+    "communicationInterfaces": "CAN bus (CAN 2.0B), step/dir, USB (configuration only)",
+    "controlModes": "Cascaded torque, velocity, and position control loops",
+    "dimensions": "~50mm x 50mm (typical compact FOC driver board)"
+  },
+  "pinMap": [
+    {
+      "name": "VBUS+",
+      "position": null,
+      "category": "power",
+      "function": "DC bus supply input for the motor power stage (the FETs that drive the three phases).",
+      "voltageRange": "12-56V DC",
+      "currentLimit": "Sized to peak phase current draw, often 30-60A",
+      "alternateFunctions": [],
+      "gotcha": "Hot-plugging a charged battery into an uncharged bus capacitor bank causes a large inrush current spike — many drivers need a pre-charge resistor or slow-blow fuse in the supply line when bench-testing from a stiff power supply."
+    },
+    {
+      "name": "VBUS-",
+      "position": null,
+      "category": "power",
+      "function": "Motor power stage return / ground reference, shared with the phase outputs' switching reference.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Must not share a ground trace/wire with the logic and encoder ground — high phase currents returning through a shared ground path induce noise that corrupts the current-sense readings the FOC loop depends on."
+    },
+    {
+      "name": "BRAKE_RES",
+      "position": null,
+      "category": "power",
+      "function": "External dump resistor terminal for shedding regenerated energy during fast deceleration of a spinning load.",
+      "voltageRange": "Switched to VBUS+ level when active",
+      "currentLimit": "Resistor-dependent, typically a few amps",
+      "alternateFunctions": [],
+      "gotcha": "Decelerating a large inertial load (flywheel, heavy arm) pumps energy back into the DC bus; without a brake resistor sized for that energy, bus voltage spikes and trips an overvoltage fault or, in the worst case, damages the FETs."
+    },
+    {
+      "name": "PHASE_U",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase U output — one of three sinusoidally-driven windings feeding the BLDC/PMSM motor.",
+      "voltageRange": "Switched, up to VBUS amplitude",
+      "currentLimit": "Up to rated continuous phase current",
+      "alternateFunctions": [],
+      "gotcha": "Never connect or disconnect a phase wire while the driver is enabled and the motor is spinning — the back-EMF can dump current into the FETs and trip a fault or damage the driver."
+    },
+    {
+      "name": "PHASE_V",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase V output.",
+      "voltageRange": "Switched, up to VBUS amplitude",
+      "currentLimit": "Up to rated continuous phase current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "PHASE_W",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase W output.",
+      "voltageRange": "Switched, up to VBUS amplitude",
+      "currentLimit": "Up to rated continuous phase current",
+      "alternateFunctions": [],
+      "gotcha": "Swapping any two phase wires reverses the motor's mechanical direction, but if the encoder/Hall wiring isn't correspondingly re-checked, the commutation angle ends up wrong and the motor just growls and vibrates instead of spinning."
+    },
+    {
+      "name": "HALL_A",
+      "position": null,
+      "category": "digital",
+      "function": "Hall-effect commutation sensor input, used for coarse rotor position at startup and as a low-speed commutation fallback.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor input)",
+      "alternateFunctions": [],
+      "gotcha": "Hall sensors alone only resolve rotor position to about 60 electrical degrees — enough for crude six-step drive, but true smooth FOC needs the finer-resolution encoder input as well."
+    },
+    {
+      "name": "HALL_B",
+      "position": null,
+      "category": "digital",
+      "function": "Hall-effect commutation sensor input, second channel.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "HALL_C",
+      "position": null,
+      "category": "digital",
+      "function": "Hall-effect commutation sensor input, third channel.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ENC_A",
+      "position": null,
+      "category": "digital",
+      "function": "Quadrature encoder channel A — high-resolution rotor position feedback feeding the FOC current and position loops.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor input)",
+      "alternateFunctions": [],
+      "gotcha": "An encoder with too few counts per revolution limits how finely the loop can resolve electrical angle, which shows up as torque ripple at low speed even though the algorithm itself is genuine FOC."
+    },
+    {
+      "name": "ENC_B",
+      "position": null,
+      "category": "digital",
+      "function": "Quadrature encoder channel B.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ENC_Z",
+      "position": null,
+      "category": "digital",
+      "function": "Encoder index/Z pulse, once per mechanical revolution, used for absolute homing reference.",
+      "voltageRange": "3.3-5V logic",
+      "currentLimit": "N/A (sensor input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SENSOR_5V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V supply output for powering the Hall sensors and/or encoder.",
+      "voltageRange": "5V",
+      "currentLimit": "Low, typically <200mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SENSOR_GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference for the Hall/encoder sensor connector.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CAN_H",
+      "position": null,
+      "category": "communication",
+      "function": "CAN bus high line, used by multi-axis motion controllers to send torque/velocity/position setpoints to this and other drives on the same bus.",
+      "voltageRange": "CAN differential signaling, nominal 2.5V ±1V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "CAN needs a 120-ohm termination resistor at each physical end of the bus — omit it on a long daisy chain of drives and you get intermittent frame errors that look exactly like random drive faults."
+    },
+    {
+      "name": "CAN_L",
+      "position": null,
+      "category": "communication",
+      "function": "CAN bus low line.",
+      "voltageRange": "CAN differential signaling",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "STEP",
+      "position": null,
+      "category": "digital",
+      "function": "Alternate command interface — step pulse input for drivers configured in step/dir mode, for compatibility with CNC-style motion controllers.",
+      "voltageRange": "0-5V logic, rising-edge triggered",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": "Step pulses issued faster than the driver's configured max step rate get silently dropped, causing a slow position drift that only becomes obvious after many moves, not on the first one."
+    },
+    {
+      "name": "DIR",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input for step/dir mode.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ENABLE",
+      "position": null,
+      "category": "digital",
+      "function": "Gate driver enable — must be actively asserted for the FET bridge to energize the motor.",
+      "voltageRange": "0-5V/3.3V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": "On many FOC drivers this line must be actively driven, not just pulled up externally — leaving it floating during power-up can let the motor freewheel unpowered for a moment, or trip a startup fault."
+    },
+    {
+      "name": "TEMP_SENSE",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input for an external NTC/PTC thermistor mounted on the motor windings, used for thermal foldback protection.",
+      "voltageRange": "0-3.3V (thermistor divider dependent)",
+      "currentLimit": "N/A (sensing only)",
+      "alternateFunctions": [],
+      "gotcha": "If left unconnected, most drivers fall back to an electrical I²R thermal model of the motor — it can lag real winding temperature during a hard stall, so a sustained stall can overheat the motor before the driver derates."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Direct-drive robot arm joint",
+      "scenario": "Drive a gimbal-style outrunner BLDC directly (no gearbox) as a robot joint, relying on FOC's smooth low-speed torque instead of gear reduction to avoid cogging.",
+      "pinsInvolved": ["PHASE_U", "PHASE_V", "PHASE_W", "ENC_A", "ENC_B", "ENC_Z", "CAN_H", "CAN_L"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Multi-axis CAN motion bus",
+      "scenario": "Daisy-chain several drivers on one CAN bus, each with its own node ID, all commanded in sync by a central motion controller for a multi-joint robot.",
+      "pinsInvolved": ["CAN_H", "CAN_L", "VBUS+", "VBUS-"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Upgrading a cogging drivetrain",
+      "scenario": "Replace a cheap trapezoidal/Hall-based ESC on a precision drivetrain with an FOC driver to eliminate the low-speed cogging and audible commutation whine.",
+      "pinsInvolved": ["PHASE_U", "PHASE_V", "PHASE_W", "HALL_A", "HALL_B", "HALL_C"],
+      "difficulty": "Intermediate-Advanced"
+    },
+    {
+      "title": "Camera gimbal stabilization",
+      "scenario": "Directly drive a gimbal motor at near-zero RPM with continuously smooth holding torque to counteract small camera-shake disturbances.",
+      "pinsInvolved": ["PHASE_U", "PHASE_V", "PHASE_W", "ENC_A", "ENC_B", "ENC_Z"],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Bench testing with regenerative braking",
+      "scenario": "Spin down a large flywheel or heavy test load quickly and dump the regenerated energy into a brake resistor instead of letting bus voltage spike.",
+      "pinsInvolved": ["BRAKE_RES", "VBUS+", "VBUS-"],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Gimbal-style outrunner BLDC / PMSM motor",
+      "SPI absolute magnetic encoder (e.g. AS5047P-style)",
+      "CAN-based motion controller or robot compute board"
+    ],
+    "oftenConfusedWith": [
+      "esc (basic BLDC ESC — trapezoidal/Hall six-step commutation with noticeable cogging and torque ripple at low speed, vs this driver's continuous sinusoidal current-vector control for smooth torque across the whole speed range)",
+      "bldc-motor (the bare motor itself, not a driver)"
+    ],
+    "oftenUpgradedTo": [
+      "Multi-axis EtherCAT or CANopen servo drive systems for tightly synchronized industrial multi-joint motion"
+    ]
+  },
+  "beginnerMistakes": [
+    "Running FOC without tuning the current-loop PID gains for the specific motor's inductance/resistance — produces audible whine or unstable oscillation instead of smooth torque.",
+    "Not calibrating the encoder-to-electrical-angle offset before enabling the driver — the motor either accelerates hard in the wrong direction or just growls and vibrates in place.",
+    "Skipping CAN bus termination on a multi-drive daisy chain, causing intermittent communication faults that look like random driver failures.",
+    "Sizing the power supply or battery for continuous current only, then hitting brownouts or bus-overvoltage faults during acceleration or regenerative braking transients.",
+    "Assuming any three-phase motor will 'just work' — mismatched pole-pair count or an unconfigured motor profile leaves the current loop tuned for the wrong electrical characteristics entirely."
+  ]
+}

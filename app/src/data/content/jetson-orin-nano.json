@@ -1,0 +1,308 @@
+{
+  "identity": {
+    "id": "jetson-orin-nano",
+    "name": "NVIDIA Jetson Orin Nano",
+    "category": "Single Board Computer",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Jetson Orin Nano shares the older Jetson Nano's basic idea — a small board with a real GPU for running neural networks locally — but the GPU generation gap is enormous: the original Nano's 128-core Maxwell GPU tops out around half a TFLOP of compute with no dedicated tensor hardware, while the Orin Nano's Ampere GPU adds dedicated Tensor Cores and reaches tens of TOPS of INT8 inference performance, roughly a 20x class jump that's the difference between running one lightweight model at a few frames per second and running multiple real-time vision models (or a compact vision-language model) simultaneously on the same board. That extra headroom is why it shows up in newer autonomous mobile robots and drones doing real-time multi-camera perception rather than a single low-res detector. Like its predecessor it still ships with no built-in WiFi and uses physical/'BOARD' pin numbering rather than Raspberry Pi-style BCM numbering in its GPIO library, but it adds an M.2 NVMe slot that most serious deployments use instead of booting a full JetPack + CUDA + ML-framework stack off a microSD card, which is both slower and wears the card out faster under heavy write load.",
+  "simpleSummary": "A small, more powerful successor to the Jetson Nano with a much stronger built-in GPU, made for running real-time AI vision on a robot.",
+  "specifications": {
+    "processor": "6-core Arm Cortex-A78AE, up to 1.7 GHz",
+    "gpu": "1024-core NVIDIA Ampere GPU with 32 Tensor Cores",
+    "aiPerformance": "up to ~67 TOPS INT8 (highest power mode) — roughly 20x the original Jetson Nano's Maxwell GPU",
+    "ram": "8 GB LPDDR5",
+    "storage": "microSD card, plus an M.2 Key M slot for a NVMe SSD",
+    "connectivity": "Gigabit Ethernet (no built-in WiFi — needs a USB dongle or M.2 Key E card)",
+    "usb": "4x USB 3.2, USB-C (power and data)",
+    "video": "DisplayPort output",
+    "camera": "2x MIPI CSI-2 camera connectors",
+    "gpio": "40-pin header, Raspberry Pi form-factor, 3.3V logic",
+    "power": "7-25W configurable power modes via barrel jack or USB-C PD"
+  },
+  "pinMap": [
+    {
+      "name": "Pin 1 (3V3)",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output for low-current peripherals.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~50 mA recommended",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 2 (5V)",
+      "position": null,
+      "category": "power",
+      "function": "5V rail sourced from the board's power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply headroom and active power mode",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 6 (GND)",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference for the header.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 3 (I2C SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line for connecting sensors or displays.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Jetson.GPIO addresses this header by physical pin number (BOARD mode) by default, not by a Pi-style GPIO/BCM number — copy-pasting a Raspberry Pi pin number here usually addresses the wrong pin."
+    },
+    {
+      "name": "Pin 5 (I2C SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 8 (UART TX)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART transmit line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 10 (UART RX)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware UART receive line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 19 (SPI MOSI)",
+      "position": null,
+      "category": "communication",
+      "function": "Hardware SPI MOSI line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 21 (SPI MISO)",
+      "position": null,
+      "category": "communication",
+      "function": "Hardware SPI MISO line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 23 (SPI SCK)",
+      "position": null,
+      "category": "communication",
+      "function": "Hardware SPI clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 24 (SPI CE0)",
+      "position": null,
+      "category": "communication",
+      "function": "Hardware SPI chip-select line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "SPI CE0"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 32 (PWM)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PWM capable — commonly used for a cooling fan or servo.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "Pin 33 (PWM)",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, PWM capable.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low-drive GPIO",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "USB-C Power Input",
+      "position": null,
+      "category": "power",
+      "function": "USB-C port usable for board power delivery (in addition to or instead of the barrel jack, depending on carrier board).",
+      "voltageRange": "5V USB-PD",
+      "currentLimit": "Up to 3A depending on power mode",
+      "alternateFunctions": [
+        "USB data"
+      ],
+      "gotcha": "Not every USB-C cable/charger supplies enough wattage. A low-power phone-charger cable can brownout or throttle the board the moment the GPU ramps up under an inference load."
+    },
+    {
+      "name": "DisplayPort Output",
+      "position": null,
+      "category": "special",
+      "function": "Video output for connecting a monitor directly to the board for local development.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CSI Camera Port 1",
+      "position": null,
+      "category": "communication",
+      "function": "MIPI CSI-2 camera connector, first of two available.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Using both CSI ports for a stereo rig requires the camera driver/device tree to actually support dual-camera capture — some third-party CSI camera modules only ship a single-camera driver."
+    },
+    {
+      "name": "CSI Camera Port 2",
+      "position": null,
+      "category": "communication",
+      "function": "MIPI CSI-2 camera connector, second of two available.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "M.2 NVMe Slot",
+      "position": null,
+      "category": "special",
+      "function": "M.2 Key M slot for an NVMe SSD, used to boot the OS instead of (or in addition to) microSD.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "A full JetPack + CUDA + ML framework install routinely exceeds what a microSD card handles well in terms of both speed and write endurance — most serious projects move the OS to an NVMe SSD here fairly early."
+    },
+    {
+      "name": "Ethernet Port",
+      "position": null,
+      "category": "communication",
+      "function": "Gigabit Ethernet jack, the primary wired network connection since there's no built-in WiFi.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "There is no built-in WiFi — a robot design that assumes wireless connectivity out of the box needs a USB WiFi dongle or an M.2 Key E card added explicitly."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Real-time multi-camera object detection and tracking",
+      "scenario": "Run several lightweight detection models across multiple camera feeds simultaneously on a mobile robot, something the original Jetson Nano's GPU couldn't keep up with in real time.",
+      "pinsInvolved": [
+        "CSI Camera Port 1",
+        "CSI Camera Port 2"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "On-device vision-language perception",
+      "scenario": "Run a compact vision-language or multimodal model directly on the board for a robot to interpret scenes in natural-language terms without a cloud round trip.",
+      "pinsInvolved": [
+        "M.2 NVMe Slot",
+        "USB-C Power Input"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "SLAM with semantic segmentation",
+      "scenario": "Combine simultaneous localization and mapping with real-time semantic segmentation for a mobile robot navigating cluttered indoor spaces.",
+      "pinsInvolved": [
+        "CSI Camera Port 1",
+        "Ethernet Port"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Onboard drone vision compute",
+      "scenario": "Serve as the flight computer's companion vision board, running obstacle detection and visual odometry onboard a drone.",
+      "pinsInvolved": [
+        "CSI Camera Port 1",
+        "Pin 8 (UART TX)",
+        "Pin 10 (UART RX)"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Teaching CUDA/TensorRT deployment pipelines",
+      "scenario": "Use the board in a robotics course to teach students how to optimize and deploy trained models with TensorRT for real-time inference on embedded hardware.",
+      "pinsInvolved": [
+        "M.2 NVMe Slot"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "USB or CSI cameras",
+      "IMU / visual-inertial sensor",
+      "ROS2",
+      "Microcontroller as a real-time motor-control co-processor"
+    ],
+    "oftenConfusedWith": [
+      "Jetson Nano (older, far less AI compute — no Tensor Cores, a fraction of the TOPS)",
+      "Raspberry Pi 4/5 with a Coral USB accelerator (external accelerator bolted on, rather than an integrated GPU)"
+    ],
+    "oftenUpgradedTo": [
+      "Jetson AGX Orin (substantially higher power budget and performance for industrial-tier deployments)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Running the board in a low power mode and then being surprised inference is slower than the advertised peak TOPS figure.",
+    "Booting and running heavy AI workloads from a microSD card instead of moving to the M.2 NVMe slot, hitting both a speed wall and premature card wear.",
+    "Assuming built-in WiFi like a typical dev board — it needs a USB dongle or M.2 WiFi card.",
+    "Copy-pasting Raspberry Pi GPIO pin numbers directly into Jetson.GPIO code instead of using the board's physical/BOARD numbering.",
+    "Powering the board from a low-wattage USB-C phone charger cable and seeing it throttle or brown out under GPU load."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "identity": {
+    "id": "nema17-stepper",
+    "name": "NEMA 17 Stepper Motor",
+    "category": "Motors & Actuators",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "NEMA 17 is a mounting-face standard (1.7 inch square), not a specific motor — but it's become shorthand for 'the stepper motor 3D printers and CNC machines use.' Unlike the beginner-friendly 28BYJ-48, this is a bipolar stepper: it needs a real stepper driver chip (A4988, DRV8825, or similar) rather than a simple transistor array, and it delivers genuinely useful torque and speed. Standard steppers move 1.8 degrees per step (200 steps per revolution), and — critically — they have no idea where they physically are; all positioning is relative, tracked purely in software from a known starting point (homing).",
+  "simpleSummary": "A stronger stepper motor used in 3D printers, that needs a real driver chip to run.",
+  "specifications": {
+    "operatingVoltage": "Typically driven at 12-24V through a driver (motor's own rated voltage is usually lower)",
+    "stepAngle": "1.8° per step (200 steps/revolution), some variants 0.9°",
+    "current": "~1-2A per phase (model-dependent)",
+    "holdingTorque": "~26-59 N·cm typical for standard NEMA17 motors",
+    "mountingFace": "42.3mm x 42.3mm (the 'NEMA 17' standard)",
+    "wiring": "4-wire bipolar (2 coils, 2 wires each)"
+  },
+  "pinMap": [
+    {
+      "name": "Coil A+",
+      "position": null,
+      "category": "power",
+      "function": "One end of motor coil A.",
+      "voltageRange": "Driver-supplied (typically 12-24V)",
+      "currentLimit": "Motor's rated phase current (~1-2A)",
+      "alternateFunctions": [],
+      "gotcha": "Never connect/disconnect stepper wiring while the driver is powered — the resulting voltage spike can destroy the driver chip."
+    },
+    {
+      "name": "Coil A-",
+      "position": null,
+      "category": "power",
+      "function": "Other end of motor coil A.",
+      "voltageRange": "Driver-supplied",
+      "currentLimit": "Motor's rated phase current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Coil B+",
+      "position": null,
+      "category": "power",
+      "function": "One end of motor coil B.",
+      "voltageRange": "Driver-supplied",
+      "currentLimit": "Motor's rated phase current",
+      "alternateFunctions": [],
+      "gotcha": "Swapping a coil's two wires reverses that coil's effective direction — if the motor moves the wrong way, swap one coil's pair (not both)."
+    },
+    {
+      "name": "Coil B-",
+      "position": null,
+      "category": "power",
+      "function": "Other end of motor coil B.",
+      "voltageRange": "Driver-supplied",
+      "currentLimit": "Motor's rated phase current",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "3D printer axis drive",
+      "scenario": "The standard motor for X/Y/Z motion and extruder drive in FDM 3D printers.",
+      "pinsInvolved": [
+        "Coil A+",
+        "Coil A-",
+        "Coil B+",
+        "Coil B-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "CNC router/mill axis drive",
+      "scenario": "Precise, repeatable positioning for subtractive manufacturing machines.",
+      "pinsInvolved": [
+        "Coil A+",
+        "Coil A-",
+        "Coil B+",
+        "Coil B-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Camera slider / robotic arm joint",
+      "scenario": "Where real holding torque and precise open-loop positioning are both needed.",
+      "pinsInvolved": [
+        "Coil A+",
+        "Coil A-",
+        "Coil B+",
+        "Coil B-"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "A4988 stepper driver",
+      "DRV8825 stepper driver",
+      "TB6600 stepper driver",
+      "Timing belts & pulleys"
+    ],
+    "oftenConfusedWith": [
+      "28BYJ-48 (much weaker, unipolar, simple driver board)"
+    ],
+    "oftenUpgradedTo": [
+      "Closed-loop steppers (adds an encoder to detect missed steps) for higher-reliability CNC work"
+    ]
+  }
+}

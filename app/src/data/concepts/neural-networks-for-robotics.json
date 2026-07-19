@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "neural-networks-for-robotics",
+    "title": "Neural Networks for Robotics",
+    "category": "AI & Machine Learning",
+    "level": "Advanced",
+    "tagline": "Pattern-recognition models trained on examples, used where writing explicit hand-coded rules would be impossibly complex."
+  },
+  "simpleSummary": "Computer programs loosely inspired by brain neurons, trained on lots of examples to recognize patterns — like objects in a camera image — that would be extremely hard to describe with explicit hand-written rules.",
+  "keyIdea": "A neural network learns to map inputs to outputs by adjusting many internal weighted connections based on training examples, becoming capable of recognizing complex patterns that would be impractical to capture with hand-written rules.",
+  "overview": "Some robotics tasks — recognizing arbitrary objects in a camera image despite wildly varying lighting, angle, and occlusion — are extremely difficult to solve with explicit hand-written 'if this, then that' rules, given how much natural variation exists in real-world input. Neural networks address this by learning the mapping from data instead: a network is shown many labeled training examples, its output is compared against the correct answer, and its many internal connection weights are adjusted, gradually, to reduce that error — repeated over enormous numbers of examples until the network generalizes well to new, unseen inputs.",
+  "equations": [
+    {
+      "label": "Single Artificial Neuron",
+      "expression": "output = activation(Σwᵢxᵢ + b)",
+      "meaning": "Each neuron computes a weighted sum of its inputs xᵢ (using learned weights wᵢ) plus a bias term b, then passes the result through a nonlinear activation function — this simple building block, layered many times over, is what gives networks their pattern-recognition power."
+    }
+  ],
+  "howItWorks": "A neural network is built from layers of these simple artificial neurons: an input layer, one or more hidden layers, and an output layer, with every connection between neurons carrying its own adjustable weight. Training uses an algorithm called backpropagation, which computes exactly how much each individual weight in the network contributed to the current error, working backward from the output layer toward the input layer, and nudges every weight slightly to reduce that error — repeated over many training examples until the network's predictions become reliably accurate. For robotics vision tasks specifically, Convolutional Neural Networks (CNNs) are a specialized architecture well suited to image data, exploiting the spatial structure of images for far greater efficiency than a generic fully-connected network. Because training a network entirely from scratch typically requires large labeled datasets and significant computing power, many practical robotics projects instead use transfer learning: starting from a network already trained on a huge general dataset, then fine-tuning it on a much smaller, task-specific dataset — dramatically reducing the data and compute actually needed for a working result.",
+  "diagramCaption": "A typical feedforward neural network: an input layer feeds one or more hidden layers, each connection carrying an adjustable weight, ultimately producing an output layer's prediction.",
+  "realWorldExamples": [
+    "Object detection running on a Jetson Nano or ESP32-CAM to recognize specific objects or obstacle types for a robot in real time.",
+    "The Jetson Nano's onboard GPU specifically exists to enable real-time neural network inference for robotics vision tasks that a plain CPU-only board couldn't run fast enough.",
+    "Voice or gesture recognition systems using trained neural networks to interpret human commands for a robot to act on."
+  ],
+  "commonMisconceptions": [
+    "\"Neural networks understand things the way humans do\" — they are pattern-matching statistical models fit to their training data, without human-like conceptual understanding, and can fail in surprising, non-intuitive ways (adversarial examples) that would never fool a human.",
+    "\"You always need a huge dataset and expensive GPU to use neural networks in a robotics project\" — transfer learning from an already-trained model, or using a small model designed for constrained embedded hardware, substantially lowers this barrier for hobby-scale projects.",
+    "\"A bigger neural network is always a better neural network\" — larger models cost more memory, power, and inference time, which matters enormously on embedded robotics hardware; the right model size trades accuracy against these real constraints."
+  ],
+  "relatedComponents": ["jetson-nano", "esp32-cam", "usb-webcam", "raspberry-pi-4"],
+  "relatedProjects": [],
+  "relatedConcepts": ["computer-vision-basics", "object-detection-for-robotics", "reinforcement-learning-basics"]
+}

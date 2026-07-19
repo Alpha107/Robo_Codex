@@ -1,0 +1,49 @@
+<svg viewBox="0 0 860 460" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="20" width="150" height="60" rx="8" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="105" y="55" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Joystick</text>
+
+  <rect x="30" y="160" width="170" height="140" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="115" y="225" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="115" y="246" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="330" y="60" width="160" height="90" rx="10" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="410" y="95" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">L298N &#8220;A&#8221;</text>
+  <text x="410" y="115" text-anchor="middle" fill="#ffffff" font-size="11">(front motors)</text>
+
+  <rect x="330" y="320" width="160" height="90" rx="10" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="410" y="355" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">L298N &#8220;B&#8221;</text>
+  <text x="410" y="375" text-anchor="middle" fill="#ffffff" font-size="11">(rear motors)</text>
+
+  <rect x="620" y="20" width="130" height="55" rx="8" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="685" y="52" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Front-Left</text>
+
+  <rect x="620" y="130" width="130" height="55" rx="8" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="685" y="162" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Front-Right</text>
+
+  <rect x="620" y="290" width="130" height="55" rx="8" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="685" y="322" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Rear-Left</text>
+
+  <rect x="620" y="400" width="130" height="55" rx="8" fill="#e8590c" stroke="#1a1d23" stroke-width="2"/>
+  <text x="685" y="432" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Rear-Right</text>
+
+  <rect x="330" y="190" width="160" height="60" rx="8" fill="#c92a2a" stroke="#1a1d23" stroke-width="2"/>
+  <text x="410" y="225" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Battery</text>
+
+  <path d="M105,80 V160" fill="none" stroke="#51cf66" stroke-width="3"/>
+  <text x="112" y="130" font-size="11" font-weight="600" fill="#1a1d23">VRx/VRy &#8594; A0/A1</text>
+
+  <path d="M200,200 H330" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <text x="205" y="192" font-size="11" font-weight="600" fill="#1a1d23">D2,D3,D5,D4,D7,D6 (FL+FR)</text>
+
+  <path d="M200,260 H330 V350" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <text x="205" y="278" font-size="11" font-weight="600" fill="#1a1d23">D8,D12,D10,D13,A2,D11 (RL+RR)</text>
+
+  <path d="M410,190 V150" fill="none" stroke="#c92a2a" stroke-width="3"/>
+  <path d="M410,250 V320" fill="none" stroke="#c92a2a" stroke-width="3"/>
+
+  <path d="M490,90 H620 V47" fill="none" stroke="#e8590c" stroke-width="3"/>
+  <path d="M490,120 H620 V157" fill="none" stroke="#e8590c" stroke-width="3"/>
+  <path d="M490,350 H620 V317" fill="none" stroke="#e8590c" stroke-width="3"/>
+  <path d="M490,380 H620 V427" fill="none" stroke="#e8590c" stroke-width="3"/>
+
+</svg>

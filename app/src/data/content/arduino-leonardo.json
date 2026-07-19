@@ -1,0 +1,377 @@
+{
+  "identity": {
+    "id": "arduino-leonardo",
+    "name": "Arduino Leonardo",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Leonardo looks like an Uno at a glance — same size, same header layout — but runs a different chip: the ATmega32U4, which has USB built directly into the microcontroller instead of relying on a second chip to translate USB to serial. The practical upshot is that a Leonardo can pretend to be a USB keyboard, mouse, or generic HID device, which the Uno simply cannot do. The tradeoff is a genuinely different upload/reset behavior that trips up people expecting Uno-like behavior: opening the Serial Monitor doesn't reset the board, and code needs to explicitly wait for the USB connection before printing.",
+  "simpleSummary": "An Arduino that can pretend to be a keyboard or mouse to your computer.",
+  "specifications": {
+    "microcontroller": "ATmega32U4",
+    "operatingVoltage": "5V",
+    "clockSpeed": "16 MHz",
+    "flashMemory": "32 KB (4 KB used by bootloader)",
+    "sram": "2.5 KB",
+    "eeprom": "1 KB",
+    "digitalIOPins": 20,
+    "pwmPins": 7,
+    "analogInputPins": 12,
+    "dimensions": "68.6mm x 53.3mm",
+    "connector": "Micro-USB (native USB, no separate USB-serial chip)"
+  },
+  "pinMap": [
+    {
+      "name": "D0 (RX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware serial receive (Serial1, separate from the native USB CDC serial).",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D1 (TX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware serial transmit (Serial1).",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C SDA",
+        "External Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "I2C SCL",
+        "External Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, doubles as analog input A6.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Analog input (A6)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D6",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O with PWM, doubles as analog input A7.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "Analog input (A7)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, doubles as analog input A8. Also a hardware interrupt pin.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Analog input (A8)",
+        "External Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, doubles as analog input A9.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Analog input (A9)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D9",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O with PWM, doubles as analog input A10.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "Analog input (A10)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D10",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O with PWM, doubles as analog input A11.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "Analog input (A11)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D12",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, doubles as analog input A11 on some layouts.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D13",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O with PWM, wired to the onboard LED.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A0",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, 10-bit ADC.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A1",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A2",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A3",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A4",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A5",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V rail.",
+      "voltageRange": "5V",
+      "currentLimit": "~800 mA shared",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "50 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "Unregulated supply input.",
+      "voltageRange": "7-12V recommended",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW restarts the running sketch.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AREF",
+      "position": null,
+      "category": "special",
+      "function": "Custom analog reference voltage.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "USB keyboard/mouse macro device",
+      "scenario": "Use the Keyboard/Mouse HID libraries to have the board act as an input device — impossible on the Uno without extra hardware.",
+      "pinsInvolved": [
+        "D2"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Game controller / custom HID",
+      "scenario": "Wire buttons and analog joysticks to build a custom USB game controller recognized natively by a PC.",
+      "pinsInvolved": [
+        "D2",
+        "D3",
+        "A0",
+        "A1"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "USB MIDI controller",
+      "scenario": "Combine with the MIDIUSB library and buttons/potentiometers to build a class-compliant USB MIDI device.",
+      "pinsInvolved": [
+        "A0",
+        "D2",
+        "D3"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Push buttons",
+      "Potentiometers",
+      "Joysticks"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Uno (looks identical but different chip, no native USB HID)",
+      "Arduino Micro (same chip, Nano-sized form factor)"
+    ],
+    "oftenUpgradedTo": [
+      "Teensy (far more USB HID flexibility and processing power)"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "identity": {
+    "id": "odometry-and-dead-reckoning",
+    "title": "Odometry & Dead Reckoning",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "Estimating where you are purely by tracking how far you've moved since the last known position — and watching that estimate slowly drift wrong."
+  },
+  "simpleSummary": "Figuring out where a robot currently is by adding up all its small movements since it started, the same way old sailing ships estimated position from speed, heading, and elapsed time — with the same weakness: small errors pile up over time.",
+  "keyIdea": "Odometry integrates a robot's measured wheel motion over time into a running position estimate, but because every measurement has small errors, those errors accumulate without bound, making odometry alone unreliable over long distances.",
+  "overview": "Dead reckoning is an old navigation technique: estimate your current position from a known starting point plus a tracked history of your speed, heading, and elapsed time, with no direct measurement of your actual position along the way. Wheel odometry is the robotics version of exactly this idea — using wheel encoder readings to estimate how far and in what direction a robot has moved since its last known position, then continuously updating a running (x, y, heading) estimate. Its core weakness is exactly dead reckoning's historical weakness: every measurement has small errors (wheel slip, encoder resolution limits, an assumed wheel diameter that's slightly off), and because each timestep's position estimate builds directly on the previous one, those small errors accumulate without bound — this accumulating error is called drift, and it's precisely why odometry alone is never trusted as a robot's sole source of position information for anything beyond short-term, short-distance tracking.",
+  "equations": [
+    {
+      "label": "Incremental Motion (Differential Drive)",
+      "expression": "Δs = r(ΔθR + ΔθL)/2,    Δθ = r(ΔθR − ΔθL)/L",
+      "meaning": "At each timestep, the distance traveled Δs and heading change Δθ are computed from the incremental wheel rotations ΔθR, ΔθL (from encoder counts), wheel radius r, and track width L — directly using differential drive kinematics."
+    },
+    {
+      "label": "Position Update",
+      "expression": "x ← x + Δs·cos(θ + Δθ/2),  y ← y + Δs·sin(θ + Δθ/2),  θ ← θ + Δθ",
+      "meaning": "The robot's running position and heading estimate is updated each timestep by adding the newly computed incremental motion — this repeated addition (integration) is exactly where small per-step errors accumulate into growing long-term drift."
+    }
+  ],
+  "howItWorks": "Wheel encoders count how much each wheel has rotated between updates; converting that rotation to a distance (using the assumed wheel radius) and combining left and right wheel distances via differential drive kinematics gives the incremental distance traveled and heading change since the last update. Adding that increment onto the previous position estimate produces the new estimate — and this same integration repeats at every timestep, forever. The trouble is that every ingredient in this calculation has some error: wheels slip on smooth or loose surfaces (spinning without actually moving the robot as far as the encoder implies), encoder resolution quantizes rotation into discrete steps rather than perfectly continuous values, and the wheel radius and track width used in the equations are never perfectly exact measurements of the real hardware. None of these errors are corrected by anything internal to odometry itself — each timestep simply adds its own small error onto the running total, so drift grows roughly with distance traveled (and heading errors are especially damaging, since a wrong heading estimate causes all subsequent motion to be integrated in a wrong direction, compounding the error further). This is exactly why real navigation systems never rely on odometry alone for anything beyond short-term tracking — they fuse it with an independent, absolute reference (GPS, visual landmarks, SLAM-built maps) using sensor fusion techniques like the Kalman filter, specifically to periodically correct the drift that odometry alone cannot avoid.",
+  "diagramCaption": "A robot's odometry-estimated path (dashed) increasingly diverges from its true path (solid) as small per-step errors accumulate over distance traveled — this growing gap is drift.",
+  "realWorldExamples": [
+    "This site's optical wheel encoder and rotary encoder components are exactly the sensors used to implement wheel odometry on a hobby robot.",
+    "Robot vacuum cleaners rely heavily on wheel odometry for internal position tracking, which is part of why a long cleaning session can occasionally produce a visibly messy or overlapping map as drift accumulates.",
+    "Mars rovers combine wheel odometry with visual odometry and IMU data, since GPS doesn't exist on Mars — precisely to counteract the drift that wheel odometry alone would otherwise accumulate over a long traverse."
+  ],
+  "commonMisconceptions": [
+    "\"Odometry gives an exact position\" — it's always an estimate, and one that drifts progressively worse over time and distance, especially on slippery or uneven surfaces.",
+    "\"A higher-resolution encoder completely solves drift\" — it reduces quantization error, but wheel slip, tire deformation, and other unmodeled effects still cause fundamental drift that no encoder resolution improvement alone can eliminate.",
+    "\"Odometry is useless because it drifts\" — it remains extremely valuable for short-term, high-frequency motion estimates between corrections from an absolute reference; the fusion of both, not the rejection of odometry, is the standard real solution."
+  ],
+  "relatedComponents": [
+    "optical-wheel-encoder",
+    "rotary-encoder",
+    "dc-geared-motor",
+    "mpu6050"
+  ],
+  "relatedProjects": [
+    "line-following-robot",
+    "obstacle-avoidance-robot"
+  ],
+  "relatedConcepts": [
+    "differential-drive-kinematics",
+    "kalman-filter",
+    "sensor-fusion",
+    "open-loop-vs-closed-loop-control",
+    "wheel-slip-traction-and-friction",
+    "coordinate-frames-and-transforms"
+  ]
+}

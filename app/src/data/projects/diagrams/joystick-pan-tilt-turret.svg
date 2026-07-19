@@ -1,0 +1,30 @@
+<svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="80" width="180" height="150" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="120" y="150" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="120" y="171" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="410" y="30" width="150" height="70" rx="8" fill="#845ef7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="485" y="70" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Joystick</text>
+
+  <rect x="410" y="140" width="150" height="55" rx="8" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <text x="485" y="172" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Pan Servo</text>
+
+  <rect x="410" y="210" width="150" height="55" rx="8" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <text x="485" y="242" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">Tilt Servo</text>
+
+  <path d="M210,110 H340 V55 H410" fill="none" stroke="#51cf66" stroke-width="3"/>
+  <circle cx="210" cy="110" r="4" fill="#51cf66"/>
+  <text x="220" y="102" font-size="12" font-weight="600" fill="#1a1d23">A0 &#8594; VRx</text>
+
+  <path d="M210,140 H360 V75 H410" fill="none" stroke="#51cf66" stroke-width="3"/>
+  <circle cx="210" cy="140" r="4" fill="#51cf66"/>
+  <text x="220" y="158" font-size="12" font-weight="600" fill="#1a1d23">A1 &#8594; VRy</text>
+
+  <path d="M210,170 H380 V167 H410" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="170" r="4" fill="#4dabf7"/>
+  <text x="220" y="188" font-size="12" font-weight="600" fill="#1a1d23">D9 &#8594; pan servo signal</text>
+
+  <path d="M210,200 H395 V237 H410" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="200" r="4" fill="#4dabf7"/>
+  <text x="220" y="218" font-size="12" font-weight="600" fill="#1a1d23">D10 &#8594; tilt servo signal</text>
+</svg>

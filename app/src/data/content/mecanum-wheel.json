@@ -1,0 +1,71 @@
+{
+  "identity": {
+    "id": "mecanum-wheel",
+    "name": "Mecanum Wheel",
+    "category": "Structural & Mechanical",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A mecanum wheel looks strange for a reason: its main hub spins on the normal axle like any wheel, but a ring of angled rollers around its circumference lets it also slide freely sideways along the ground. With four of these arranged in mirrored pairs (each corner's rollers angled opposite to its neighbor) and each wheel independently driven, a robot can combine each wheel's forward/backward spin in different proportions to move forward, sideways, diagonally, or spin in place — true holonomic movement, without needing any separate steering mechanism at all. The tradeoff is real: mecanum wheels have less traction and are noisier and more mechanically complex than plain wheels, and they need four independently-controlled motors with fairly precise speed matching to move predictably.",
+  "simpleSummary": "A special wheel with angled rollers that lets a robot slide sideways as well as roll forward.",
+  "specifications": {
+    "rollerCount": "Typically 9-15 angled rollers around the hub circumference",
+    "rollerAngle": "45° relative to the wheel's main axis (standard mecanum geometry)",
+    "wheelPairing": "Requires mirrored left/right-handed wheels — a left-handed and right-handed wheel are not interchangeable",
+    "driveRequirement": "Each of the 4 wheels needs its own independently-controllable motor"
+  },
+  "pinMap": [
+    {
+      "name": "Hub Bore",
+      "position": null,
+      "category": "special",
+      "function": "Center mounting point connecting to the drive motor's shaft.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Mounting a left-handed wheel where a right-handed one belongs (or vice versa) makes the whole holonomic drive math behave incorrectly — check wheel handedness carefully before assembly."
+    },
+    {
+      "name": "Roller Assembly",
+      "position": null,
+      "category": "special",
+      "function": "The ring of angled free-spinning rollers that let the wheel slide sideways while still rolling normally along its main rotation.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Individual rollers can wear or seize over time — a stuck roller behaves like a flat spot and disrupts smooth holonomic motion."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Omnidirectional warehouse/competition robot",
+      "scenario": "Move in any direction (including sideways) without turning first — common in robotics competitions and warehouse robots.",
+      "pinsInvolved": [
+        "Hub Bore",
+        "Roller Assembly"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Precision docking/positioning robot",
+      "scenario": "Fine lateral adjustment without a multi-point turn, useful for tight-space maneuvering.",
+      "pinsInvolved": [
+        "Hub Bore"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "4x DC geared motor",
+      "4-channel motor driver"
+    ],
+    "oftenConfusedWith": [
+      "Omni wheels (similar holonomic capability, different roller geometry, sometimes simpler)"
+    ],
+    "oftenUpgradedTo": [
+      "Swerve drive modules for even more precise independent wheel steering + drive"
+    ]
+  }
+}

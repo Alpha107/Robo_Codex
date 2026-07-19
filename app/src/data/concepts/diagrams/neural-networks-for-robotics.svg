@@ -1,0 +1,35 @@
+<svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .layer1 { animation: activate 2.4s ease-in-out infinite; }
+    .layer2 { animation: activate 2.4s ease-in-out infinite; animation-delay: -0.4s; }
+    .layer3 { animation: activate 2.4s ease-in-out infinite; animation-delay: -0.8s; }
+    @keyframes activate { 0%, 100% { opacity: 0.4; } 20% { opacity: 1; } 55% { opacity: 1; } 75% { opacity: 0.4; } }
+  </style>
+
+  <text x="280" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">A Simple Feedforward Neural Network</text>
+
+  <text x="100" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#5b6270">input</text>
+  <text x="280" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#5b6270">hidden</text>
+  <text x="460" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#5b6270">output</text>
+
+  <g stroke="#dde1e8" stroke-width="1">
+    <line x1="100" y1="80" x2="280" y2="70"/><line x1="100" y1="80" x2="280" y2="120"/><line x1="100" y1="80" x2="280" y2="170"/><line x1="100" y1="80" x2="280" y2="220"/>
+    <line x1="100" y1="140" x2="280" y2="70"/><line x1="100" y1="140" x2="280" y2="120"/><line x1="100" y1="140" x2="280" y2="170"/><line x1="100" y1="140" x2="280" y2="220"/>
+    <line x1="100" y1="200" x2="280" y2="70"/><line x1="100" y1="200" x2="280" y2="120"/><line x1="100" y1="200" x2="280" y2="170"/><line x1="100" y1="200" x2="280" y2="220"/>
+    <line x1="280" y1="70" x2="460" y2="115"/><line x1="280" y1="120" x2="460" y2="115"/><line x1="280" y1="170" x2="460" y2="115"/><line x1="280" y1="220" x2="460" y2="115"/>
+    <line x1="280" y1="70" x2="460" y2="175"/><line x1="280" y1="120" x2="460" y2="175"/><line x1="280" y1="170" x2="460" y2="175"/><line x1="280" y1="220" x2="460" y2="175"/>
+  </g>
+
+  <g fill="#4dabf7" class="layer1">
+    <circle cx="100" cy="80" r="10"/><circle cx="100" cy="140" r="10"/><circle cx="100" cy="200" r="10"/>
+  </g>
+  <g fill="#f08c00" class="layer2">
+    <circle cx="280" cy="70" r="10"/><circle cx="280" cy="120" r="10"/><circle cx="280" cy="170" r="10"/><circle cx="280" cy="220" r="10"/>
+  </g>
+  <g fill="#2f9e44" class="layer3">
+    <circle cx="460" cy="115" r="10"/><circle cx="460" cy="175" r="10"/>
+  </g>
+
+  <text x="280" y="248" text-anchor="middle" font-size="10.5" fill="#5b6270">Every connection has its own learned weight, adjusted during training.</text>
+  <text x="280" y="265" text-anchor="middle" font-size="10" fill="#5b6270">Example: input = camera pixels, output = "obstacle" vs "clear path" classification.</text>
+</svg>

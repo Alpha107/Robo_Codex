@@ -1,0 +1,40 @@
+{
+  "identity": {
+    "id": "open-loop-vs-closed-loop-control",
+    "title": "Open-Loop vs Closed-Loop Control",
+    "category": "Control Theory",
+    "level": "Foundational",
+    "tagline": "The most basic fork in the road for any controller: does it check its own result, or not?"
+  },
+  "simpleSummary": "Open-loop control fires off a command and trusts it worked; closed-loop control measures what actually happened and corrects itself if it didn't.",
+  "keyIdea": "The difference between a controller that only looks forward (command in, action out) and one that also looks backward (checks its own output and corrects for error).",
+  "overview": "This is the single most important distinction to understand before studying any other control concept. An open-loop system computes its output purely from the reference command, with no information about whether that output actually achieved the desired result. A closed-loop (feedback) system measures its actual output with a sensor and uses the difference between what was wanted and what was measured — the error — to continuously correct itself. Nearly every other control concept (PID, state-space control, MPC) is a specific way of building the 'correct itself' half of a closed-loop system; open-loop control has no such half at all.",
+  "equations": [
+    {
+      "label": "Open-loop output",
+      "expression": "u(t) = f(r(t))",
+      "meaning": "The control output u(t) depends only on the reference command r(t) — there is no y(t) (measured output) anywhere in this equation."
+    },
+    {
+      "label": "Closed-loop output",
+      "expression": "u(t) = f(r(t), y(t)),  e(t) = r(t) − y(t)",
+      "meaning": "The control output depends on both the reference r(t) and the measured actual output y(t), via their difference, the error e(t)."
+    }
+  ],
+  "howItWorks": "Open-loop control is simpler, cheaper, and often faster to reason about: no sensor is required, and there's no risk of feedback-related instability (oscillation, overshoot). Its fundamental weakness is that it cannot detect or correct for disturbances or inaccuracies — if a stepper motor misses a step due to too much load, an open-loop controller has no way of knowing and will confidently continue as if nothing happened, accumulating position error forever. Closed-loop control fixes this by measuring the real output (e.g. an encoder reading actual motor position) and feeding that measurement back into the control decision. The cost is added complexity: a sensor is required, the control law must be designed to actually converge rather than oscillate or diverge, and if the sensor itself is noisy or wrong, the whole loop can be led astray by bad information. The right choice depends entirely on whether the plant (the physical system) is predictable enough, and disturbances small enough, that just trusting the command is good enough.",
+  "diagramCaption": "Open-loop control has no return path from output to input; closed-loop control measures the output and feeds it back to correct future commands.",
+  "realWorldExamples": [
+    "A basic stepper motor project (like the 28BYJ-48) driven purely by step counts is open-loop: the code assumes every commanded step actually happened, with no encoder to verify it.",
+    "A microwave oven's timer is open-loop (it cooks for a fixed time regardless of the food's actual temperature), while a thermostat-controlled oven is closed-loop (it measures actual temperature and adjusts).",
+    "This site's DC Motor Speed Control project is open-loop as built — a potentiometer reading maps directly to a PWM value with no speed sensor confirming the motor is actually spinning at that speed.",
+    "A robot arm using a servo with position feedback (closed-loop internally, since a hobby servo already contains its own potentiometer feedback) versus a plain stepper motor driven with no encoder (open-loop)."
+  ],
+  "commonMisconceptions": [
+    "\"Closed-loop is always better\" — added sensors, cost, and the real risk of feedback instability mean open-loop is often the correct, deliberate engineering choice for predictable, low-disturbance systems.",
+    "\"Open-loop means uncontrolled\" — an open-loop system is still fully controlled by its input command; it simply never checks whether that command achieved the intended result.",
+    "\"Any system with a sensor is automatically closed-loop\" — the sensor reading has to actually feed back into the control decision; a system that only logs a sensor reading without using it to adjust output is still open-loop."
+  ],
+  "relatedComponents": ["nema17-stepper", "28byj48-stepper", "optical-wheel-encoder", "rotary-encoder"],
+  "relatedProjects": ["dc-motor-speed-control"],
+  "relatedConcepts": ["pid-control", "state-space-representation", "odometry-and-dead-reckoning"]
+}

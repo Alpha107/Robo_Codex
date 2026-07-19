@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "dynamic-window-approach",
+    "title": "Dynamic Window Approach & Velocity Obstacles",
+    "category": "Motion Planning & Navigation",
+    "level": "Advanced",
+    "tagline": "Picking the next split-second velocity by only considering speeds the robot can actually reach, then simulating each one briefly."
+  },
+  "simpleSummary": "A fast, real-time way to choose a robot's very next velocity command by only considering speeds it can physically reach in the next instant, briefly simulating each one a short distance ahead, and picking whichever balances making progress against staying safe.",
+  "keyIdea": "The Dynamic Window Approach restricts its search to the small set of velocities actually reachable given the robot's current speed and acceleration limits, simulates each candidate briefly forward in time, and scores them on goal progress, obstacle clearance, and speed.",
+  "overview": "Global planners like A* and RRT search over positions and paths ahead of time using a known map. The Dynamic Window Approach (DWA) instead works directly in velocity space, at every single control cycle, considering only the velocities the robot could realistically be commanded to in the very next instant — a real robot with bounded acceleration cannot instantly jump from stopped to full speed, so only velocities within a small window around its current velocity are actually achievable. For each candidate velocity in that reachable 'dynamic window,' DWA briefly simulates forward a short time horizon assuming that velocity is held, scores the resulting short trajectory, and executes whichever candidate scores best for just the next control cycle — then repeats the entire process again on the next cycle, a receding-horizon style similar in spirit to Model Predictive Control, but purpose-built around real-time obstacle avoidance with genuine velocity and acceleration constraints.",
+  "equations": [
+    {
+      "label": "The Dynamic Window",
+      "expression": "Vd = { (v,ω) : v ∈ [v_cur − aₘₐₓΔt, v_cur + aₘₐₓΔt], ω similarly }",
+      "meaning": "The set of linear/angular velocities (v, ω) actually reachable from the robot's current velocity v_cur within one control cycle Δt, given its maximum acceleration aₘₐₓ — this restricted, physically-achievable set is exactly the 'dynamic window.'"
+    },
+    {
+      "label": "Scoring Function",
+      "expression": "G(v,ω) = α·heading + β·clearance + γ·velocity",
+      "meaning": "Each admissible candidate velocity is scored on a weighted combination of how well it points toward the goal (heading), how far it keeps the robot from obstacles (clearance), and how fast it moves (velocity); the highest-scoring candidate is executed."
+    }
+  ],
+  "howItWorks": "Because a real robot has bounded acceleration, only a small window of velocities around its current one are physically reachable within a single short control cycle — that reachable set is the dynamic window. DWA prunes this window further by removing any candidate velocity that would make the robot collide with a nearby obstacle given its own braking distance — a genuinely safety-critical step, since it only ever considers velocities the robot can still safely stop or turn away from in time. Among the surviving, admissible candidates, DWA picks whichever maximizes the weighted score of goal-heading alignment, obstacle clearance, and forward speed, executes that single velocity command for one control cycle, and then immediately re-simulates and re-picks again on the very next cycle. This makes it a fast, genuinely reactive, but velocity- and obstacle-aware local planner — sitting between crude binary reactive rules and full path search on the obstacle-avoidance spectrum, which is exactly why it's almost always paired underneath a slower global planner rather than used alone.",
+  "diagramCaption": "At each control cycle, several candidate velocity arcs are simulated briefly ahead; arcs that would collide are pruned (red), and the highest-scoring safe arc (green, pulsing) is executed — then the whole fan is re-evaluated on the next cycle.",
+  "realWorldExamples": [
+    "Real mobile robot navigation stacks (like ROS's move_base/nav2) using DWA, or its close relative the Timed Elastic Band planner, as the local planner layer directly underneath a slower A*-based global route.",
+    "A delivery robot or wheelchair smoothly slowing and steering around a person who steps into its path, respecting its own real braking and turning limits rather than planning an instantaneous, physically impossible maneuver.",
+    "This site's Obstacle-Avoidance Robot project is a much simpler, rule-based cousin of this same idea, reacting to sensor readings without the explicit velocity-window simulation and scoring DWA performs."
+  ],
+  "commonMisconceptions": [
+    "\"DWA plans a full path all the way to the goal\" — it only picks the single best next velocity command for one short time step, repeated every cycle; it has no long-range lookahead the way A* or RRT do, which is exactly why it's normally paired with a slower global planner.",
+    "\"DWA can command any velocity that scores well\" — the entire point of the 'dynamic window' is restricting candidates to velocities the robot can physically and safely reach given its current speed and acceleration limits.",
+    "\"DWA and MPC are the same technique\" — they share the receding-horizon, re-simulate-every-cycle spirit, but DWA is specifically scoped around velocity-space obstacle avoidance with simple scoring, while MPC solves a general optimization problem over a longer horizon with explicit constraints."
+  ],
+  "relatedComponents": ["hc-sr04", "rplidar", "l298n"],
+  "relatedProjects": ["obstacle-avoidance-robot"],
+  "relatedConcepts": ["obstacle-avoidance-strategies", "path-planning-overview", "model-predictive-control-intro", "trajectory-generation-and-smoothing"]
+}

@@ -1,0 +1,117 @@
+{
+  "identity": {
+    "id": "tm1637-7segment",
+    "name": "4-Digit 7-Segment Display (TM1637)",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "This module puts four 7-segment digits behind a TM1637 driver chip, which handles all the segment multiplexing and current control on its own — the host only has to send it commands over two wires (CLK and DIO). That's the entire point of the upgrade over a bare seven-segment display: a single raw digit needs one GPIO pin plus a resistor per segment (8+ pins for one digit, and manual multiplexing code if you want more than one), while this module drives four digits and a colon off just two signal pins regardless of how many digits are chained. The tradeoff is a proprietary 2-wire protocol that looks like I2C but isn't — there's no device addressing, so it can't share a bus with real I2C peripherals.",
+  "simpleSummary": "A 4-digit number display with a built-in chip that does all the wiring work for you, controlled by just two signal wires.",
+  "specifications": {
+    "driverChip": "TM1637",
+    "digitCount": 4,
+    "interface": "2-wire proprietary serial (CLK + DIO) — resembles I2C but has no device address and cannot share a bus with real I2C devices",
+    "operatingVoltage": "3.3V - 5.5V (chip is tolerant of both logic levels)",
+    "displayType": "4x common-cathode 7-segment digits plus a center colon, multiplexed entirely on-chip",
+    "brightnessLevels": "8 levels (0-7), set via a command byte — no PWM wiring needed on the host side",
+    "pullUpResistors": "Onboard ~10k pull-ups on CLK/DIO already present on most breakout boards",
+    "dimensions": "~50mm x 19mm x 8mm typical breakout board"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the TM1637 chip and the LED digits it drives.",
+      "voltageRange": "3.3V - 5.5V",
+      "currentLimit": "~80-100 mA with all segments lit at max brightness",
+      "alternateFunctions": [],
+      "gotcha": "Datasheet says 3.3V works, but some cheap clone boards only clock reliably and display at full brightness on 5V — dim or flickery digits at 3.3V is a common clone symptom, not always a code bug."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the controlling microcontroller.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CLK",
+      "position": null,
+      "category": "communication",
+      "function": "Clock line for the TM1637's serial protocol; the host toggles this while shifting each bit on DIO.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (digital I/O)",
+      "alternateFunctions": [],
+      "gotcha": "It looks like I2C SCL but isn't — there's no device address, so you cannot put a real I2C peripheral (like a DS3231 RTC) on the same two wires as this display."
+    },
+    {
+      "name": "DIO",
+      "position": null,
+      "category": "communication",
+      "function": "Bidirectional data line — carries command and digit-pattern bytes to the chip, and is briefly pulled low by the chip to ACK each byte.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "N/A (digital I/O)",
+      "alternateFunctions": [],
+      "gotcha": "Libraries that skip reading the ACK bit after each byte will happily 'write' to a display that's unplugged or miswired and never report an error."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Digital clock or countdown timer",
+      "scenario": "Drive HH:MM using the built-in colon, updating once per second from an RTC or the microcontroller's own millis() counter.",
+      "pinsInvolved": ["VCC", "GND", "CLK", "DIO"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Scoreboard or lap counter",
+      "scenario": "Show a running score or count that increments on a button press, without needing 8+ GPIO pins per digit.",
+      "pinsInvolved": ["VCC", "GND", "CLK", "DIO"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Temperature or sensor value readout",
+      "scenario": "Poll a DHT22 or thermistor and show the live reading with adjustable brightness for indoor vs outdoor visibility.",
+      "pinsInvolved": ["VCC", "GND", "CLK", "DIO"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Robot status/RPM display",
+      "scenario": "Show live motor RPM or a diagnostic code on a robot's chassis without dedicating a full LCD to a single number.",
+      "pinsInvolved": ["VCC", "GND", "CLK", "DIO"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Electronic dice or random number generator",
+      "scenario": "Seed a random number on button press and flash through digits before settling on a result, using the brightness/blink control for effect.",
+      "pinsInvolved": ["VCC", "GND", "CLK", "DIO"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "DS3231 RTC module",
+      "DHT22 temperature/humidity sensor"
+    ],
+    "oftenConfusedWith": [
+      "Bare seven-segment-display (a single undriven digit — needs one GPIO pin plus a resistor per segment and manual multiplexing code for multiple digits, versus this module's 2-wire driven interface)",
+      "max7219-dot-matrix (graphics-capable pixel matrix vs this module's fixed 7-segment digit shapes)"
+    ],
+    "oftenUpgradedTo": [
+      "max7219-dot-matrix or a small OLED for scrolling text and graphics beyond fixed numeric digits"
+    ]
+  },
+  "beginnerMistakes": [
+    "Wiring CLK/DIO into a real I2C bus expecting address-based sharing — the TM1637 protocol has no addressing and needs its own dedicated pair.",
+    "Skipping the ACK-bit check in a hand-rolled driver, so a disconnected or dead display fails silently instead of raising an error.",
+    "Assuming 3.3V will look identical to 5V — some clone boards visibly dim or flicker at 3.3V.",
+    "Forgetting the colon is just another segment bit on one of the digit bytes, and wondering why it won't turn on or off independently.",
+    "Hammering the display with writes far faster than needed, causing visible flicker instead of only updating when the value actually changes."
+  ]
+}

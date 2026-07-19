@@ -1,0 +1,48 @@
+<svg viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .flow-dash { stroke-dasharray: 6 5; animation: dashmove 1.1s linear infinite; }
+    @keyframes dashmove { to { stroke-dashoffset: -22; } }
+    .pulse { animation: pulsef 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes pulsef { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+  </style>
+
+  <text x="340" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Following One Point Through the Frame Chain</text>
+
+  <path id="travelpath" d="M540,110 Q430,150 330,175 Q220,205 100,225" fill="none" stroke="#adb5bd" stroke-width="1.6" stroke-dasharray="4 4" class="flow-dash"/>
+
+  <g transform="translate(100,225)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#e03131" stroke-width="2.5"/>
+    <polygon points="30,-4 38,0 30,4" fill="#e03131"/>
+    <line x1="0" y1="0" x2="0" y2="-30" stroke="#2f9e44" stroke-width="2.5"/>
+    <polygon points="-4,-30 0,-38 4,-30" fill="#2f9e44"/>
+    <circle r="4" fill="#1a1d23"/>
+  </g>
+  <text x="60" y="260" font-size="11.5" font-weight="700" fill="#1a1d23">world frame (fixed origin)</text>
+
+  <g transform="translate(330,175) rotate(-18)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#e03131" stroke-width="2.5"/>
+    <polygon points="30,-4 38,0 30,4" fill="#e03131"/>
+    <line x1="0" y1="0" x2="0" y2="-30" stroke="#2f9e44" stroke-width="2.5"/>
+    <polygon points="-4,-30 0,-38 4,-30" fill="#2f9e44"/>
+    <circle r="4" fill="#1a1d23"/>
+  </g>
+  <text x="270" y="210" font-size="11.5" font-weight="700" fill="#1a1d23">robot base frame</text>
+  <text x="270" y="224" font-size="10" fill="#4dabf7">(moves — tracked via odometry)</text>
+
+  <g transform="translate(540,110) rotate(-32)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#e03131" stroke-width="2.5"/>
+    <polygon points="30,-4 38,0 30,4" fill="#e03131"/>
+    <line x1="0" y1="0" x2="0" y2="-30" stroke="#2f9e44" stroke-width="2.5"/>
+    <polygon points="-4,-30 0,-38 4,-30" fill="#2f9e44"/>
+    <circle r="4" fill="#1a1d23"/>
+  </g>
+  <text x="470" y="65" font-size="11.5" font-weight="700" fill="#1a1d23">sensor frame (e.g. LiDAR)</text>
+  <text x="470" y="79" font-size="10" fill="#f08c00">(fixed, rigid offset from base)</text>
+
+  <circle r="7" fill="#e64980" class="pulse">
+    <animateMotion dur="3.2s" repeatCount="indefinite" path="M540,110 Q430,150 330,175 Q220,205 100,225"/>
+  </circle>
+
+  <text x="340" y="295" text-anchor="middle" font-size="10.5" fill="#5b6270">One measured point (pink) is carried through T(sensor&#8594;base)</text>
+  <text x="340" y="309" text-anchor="middle" font-size="10.5" fill="#5b6270">then T(base&#8594;world) &#8212; same point, expressed in three different frames.</text>
+</svg>

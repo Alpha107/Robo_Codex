@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "wheel-slip-traction-and-friction",
+    "title": "Wheel Slip, Traction & Friction",
+    "category": "Kinematics & Dynamics",
+    "level": "Intermediate",
+    "tagline": "A wheel can only push as hard as friction allows — ask for more, and it just spins in place instead of moving the robot."
+  },
+  "simpleSummary": "A wheel can only push a robot forward as hard as the friction between it and the ground allows — ask for more force than that (too much torque, too sharp a turn), and the wheel just spins or skids in place instead of actually moving the robot.",
+  "keyIdea": "The maximum force a wheel can transmit to the ground is limited by the friction coefficient times the normal force pressing it down; exceeding that limit causes slip, breaking the 'rolling without slipping' assumption that differential drive kinematics and odometry both quietly depend on.",
+  "overview": "Every kinematic equation covered elsewhere on this site — differential drive, odometry — silently assumes rolling without slipping: the wheel's contact patch moves together with the ground, cleanly converting rotation into travel distance. That assumption only holds as long as the force needed to produce a commanded acceleration or turn stays under the maximum friction force the wheel-ground contact can actually supply. Exceed that limit — too much torque applied too suddenly, too tight a turn at too high a speed, a low-friction surface like a wet floor or polished tile — and the wheel slips: it spins or skids without the robot actually traveling that distance, breaking the clean kinematic relationship odometry relies on and directly causing exactly the kind of drift discussed in Odometry & Dead Reckoning.",
+  "equations": [
+    {
+      "label": "Maximum Friction Force",
+      "expression": "F_max = μ·N",
+      "meaning": "The maximum force a wheel can transmit before slipping equals the coefficient of friction μ (depends on both surfaces in contact) times the normal force N pressing the wheel into the ground (depends on the robot's weight distribution)."
+    },
+    {
+      "label": "Rolling Without Slipping (ideal condition)",
+      "expression": "v_contact = 0",
+      "meaning": "In ideal rolling, the wheel's contact point has zero velocity relative to the ground beneath it — the ground and the wheel's surface move together at that instant, which is exactly the assumption that breaks down once the demanded force exceeds F_max."
+    }
+  ],
+  "howItWorks": "The friction coefficient μ depends on both surfaces in contact — a rubber tire on carpet has high μ, a hard plastic wheel on smooth tile has low μ — and drops further with contamination like dust or water. The normal force N on a given wheel depends on the robot's weight distribution: more weight on a wheel means more available friction force, up to the point where excess weight instead just increases rolling resistance and wastes energy. This matters for both driving and turning: applying more torque than μN allows doesn't accelerate the robot any faster, it just spins the wheel in place, wasting energy and battery; and a sharp turn at high speed demands more sideways friction force than straight-line driving does, which is exactly why real vehicles skid rather than turn instantly on ice or at excessive speed. Critically, slip is one of the primary real-world sources of odometry's accumulated drift — every equation in Differential Drive Kinematics and Odometry & Dead Reckoning implicitly assumes zero slip, so any real slip directly feeds into exactly the drift those pages describe.",
+  "diagramCaption": "Within the friction limit, a wheel's rotation converts cleanly into forward travel; past that limit, the same rotation just spins the wheel in place — no matter how much torque is applied, the robot doesn't move any faster.",
+  "realWorldExamples": [
+    "A small hobby robot's wheels spinning uselessly on a smooth tile floor when accelerating too aggressively from a stop, rather than actually moving forward.",
+    "A line-following or obstacle-avoidance robot's odometry-based distance estimate becoming noticeably wrong specifically after driving on a slippery surface — a direct real-world demonstration of the slip-breaks-odometry connection.",
+    "Choosing higher-grip rubber tires over hard plastic wheels for a robot expected to accelerate quickly or turn sharply, a design decision made entirely because of this friction limit."
+  ],
+  "commonMisconceptions": [
+    "\"More torque always means more acceleration\" — once commanded torque demands more force than μN can supply, additional torque just spins the wheel faster in place rather than accelerating the robot any further.",
+    "\"Wheel slip is only a problem for high-speed vehicles\" — even a slow hobby robot on a low-friction surface (polished floor, thin carpet) can slip noticeably during ordinary acceleration or turning, degrading dead-reckoning accuracy.",
+    "\"Slip is purely a hardware problem, not something software needs to account for\" — traction-control-style approaches (limiting commanded acceleration, detecting slip from encoder/IMU mismatch) are software techniques built specifically to work within this physical limit."
+  ],
+  "relatedComponents": ["robot-wheel", "dc-geared-motor", "mecanum-wheel"],
+  "relatedProjects": ["line-following-robot", "obstacle-avoidance-robot"],
+  "relatedConcepts": ["differential-drive-kinematics", "odometry-and-dead-reckoning", "motor-control-theory"]
+}

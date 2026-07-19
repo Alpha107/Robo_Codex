@@ -1,0 +1,26 @@
+<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="70" width="180" height="160" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="120" y="145" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="120" y="166" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="400" y="30" width="150" height="120" rx="8" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="475" y="95" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">7-Segment</text>
+  <text x="475" y="115" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Display</text>
+
+  <path d="M210,100 H400" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="100" r="4" fill="#4dabf7"/>
+  <text x="220" y="92" font-size="12" font-weight="600" fill="#1a1d23">D2&#8211;D8 &#8594; segments A&#8211;G</text>
+  <text x="220" y="118" font-size="11" fill="#5b6270">(one resistor per segment)</text>
+
+  <line x1="210" y1="190" x2="240" y2="190" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="210" cy="190" r="4" fill="#1a1d23"/>
+  <text x="195" y="183" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">D9</text>
+  <path d="M240,190 H300" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <rect x="300" y="175" width="60" height="30" rx="4" fill="#adb5bd" stroke="#1a1d23" stroke-width="2"/>
+  <text x="330" y="195" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1d23">ROLL</text>
+  <path d="M360,190 H400" stroke="#1a1d23" stroke-width="3" fill="none"/>
+  <text x="368" y="215" font-size="11" fill="#5b6270">other leg &#8594; GND</text>
+
+  <text x="475" y="215" text-anchor="middle" fill="#5b6270" font-size="11">Display's COM pin also &#8594; GND</text>
+  <text x="475" y="230" text-anchor="middle" fill="#5b6270" font-size="11">(common-cathode assumed)</text>
+</svg>

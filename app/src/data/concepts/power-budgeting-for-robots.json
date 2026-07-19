@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "power-budgeting-for-robots",
+    "title": "Power Budgeting for Robots",
+    "category": "Actuation Foundations",
+    "level": "Foundational",
+    "tagline": "Adding up how much current every part of a robot actually needs, so the battery and wiring aren't just guessed at."
+  },
+  "simpleSummary": "Adding up how much electrical current every single part of a robot actually needs — including worst-case conditions, not just idle — so the battery, wiring, and voltage regulators can be sized correctly instead of guessed at.",
+  "keyIdea": "Power budgeting means summing the expected current draw of every component, at worst-case (not just idle) load, to correctly size a robot's battery capacity, voltage regulation, and wiring before problems show up.",
+  "overview": "It's easy to focus entirely on getting each individual part of a robot working in isolation, and only discover later that the combined current draw of everything running simultaneously — especially several motors under real load at once — exceeds what the chosen battery, regulator, or wiring can safely deliver. A proper power budget lists every current-consuming part of a robot along with its expected worst-case current draw, and sums them, rather than relying on optimistic idle-current assumptions or plain guesswork.",
+  "equations": [
+    {
+      "label": "Total Current Estimate",
+      "expression": "I_total = ΣI_component (at worst-case load)",
+      "meaning": "Summing every component's expected current draw — critically, using each component's worst-case or peak current, like a motor's stall current, not its lower typical/idle draw — gives a realistic total the power system must actually support."
+    },
+    {
+      "label": "Simplified Battery Runtime Estimate",
+      "expression": "runtime (hours) ≈ capacity (mAh) / I_total (mA)",
+      "meaning": "A simplified first-pass planning estimate for how long a battery will last under a given average current draw, ignoring voltage sag and real efficiency losses — useful for rough sizing, not a precise guarantee."
+    }
+  ],
+  "howItWorks": "A careful power budget distinguishes idle or typical current draw from worst-case, peak, or stall current draw for each component — a motor's stall current, as covered in Motor Control Theory, is often many times its typical running current, and it's exactly this worst-case number a safe power budget needs to use. It also accounts for simultaneous worst-case operation: all drive motors under full load, an active buzzer, and a full-brightness LED all running at once, rather than assuming components conveniently take turns drawing current. Wire gauge and connector current ratings should be chosen based on this realistic total, not on what merely 'seems like enough.' A particularly important practical habit is separating logic-level power — the small, steady current a microcontroller and sensors need, ideally from a clean, separately-regulated supply — from higher-current, noisier motor power, typically drawn from a separate, more robust battery or regulator. Sharing a single supply between sensitive logic and noisy, high-current motor loads is a common real source of unreliable behavior, since a voltage dip or electrical noise on the shared supply, caused by a motor suddenly drawing heavy current, can cause a microcontroller to reset or misbehave at exactly the worst moment.",
+  "diagramCaption": "A power budget sums every component's worst-case current draw — motors at stall current, not typical running current — into a realistic total the battery and wiring must actually be sized to support.",
+  "realWorldExamples": [
+    "Sizing a battery pack correctly for a project like this site's Obstacle-Avoidance Robot or Mecanum Omnidirectional Robot by summing each motor's stall current, not just its typical running current.",
+    "Separating a robot's L298N motor power supply from its Arduino's own logic power supply specifically to prevent motor-current-induced voltage dips from resetting the microcontroller mid-operation.",
+    "A battery-powered IoT sensor project, like this site's Smart Home Sensor Hub, estimating expected field battery runtime by dividing battery capacity by the device's average current draw."
+  ],
+  "commonMisconceptions": [
+    "\"If it works fine on the bench with one motor running, the full robot will be fine too\" — real problems often only appear when multiple current-hungry parts run simultaneously under real load, which a bench test with just one motor spinning freely doesn't reveal at all.",
+    "\"Using idle or typical current draw numbers is close enough for sizing a battery or wiring\" — worst-case (stall/peak) current is what actually determines whether wiring, connectors, and a battery's maximum discharge rate stay safely within their ratings, not the lower typical-operation number.",
+    "\"A bigger battery capacity alone solves power problems\" — capacity affects runtime, but voltage sag, wiring gauge, and connector current ratings under peak load are separate concerns a bigger battery alone doesn't fix."
+  ],
+  "relatedComponents": ["lipo-battery", "l298n", "voltage-regulator", "lm2596-buck-converter", "bms-board"],
+  "relatedProjects": ["obstacle-avoidance-robot", "mecanum-omnidirectional-robot"],
+  "relatedConcepts": ["motor-control-theory", "gear-ratios-and-mechanical-advantage"]
+}

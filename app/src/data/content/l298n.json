@@ -1,0 +1,196 @@
+{
+  "identity": {
+    "id": "l298n",
+    "name": "L298N Dual H-Bridge Motor Driver",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The L298N is the default answer to 'how do I control a DC motor from a microcontroller.' A microcontroller pin can supply maybe 20-40mA — nowhere near enough for a motor — so the L298N sits between them as a switch, using its own separate, beefier power supply to actually drive the motor while accepting weak logic-level signals to decide direction and speed. Each of its two channels forms an 'H-bridge': four internal switches arranged so current can flow through the motor in either direction, which is how a single driver can make a motor spin forward, backward, or stop. Its main weakness is a real one: the L298N is an older linear (non-MOSFET) design that drops nearly 2V across itself, so the motor never sees the driver's full input voltage, and it can run warm at moderate currents.",
+  "simpleSummary": "The classic motor driver module that lets a weak microcontroller pin control a much more powerful motor.",
+  "specifications": {
+    "channels": "2 (drives 2 DC motors, or 1 bipolar stepper)",
+    "motorVoltage": "5V - 35V",
+    "logicVoltage": "5V (onboard 5V regulator available via a jumper, for powering the microcontroller's logic)",
+    "currentPerChannel": "~2A continuous (with heatsink), less without",
+    "voltageDrop": "~2V dropped across the chip itself — motors run at noticeably less than the supply voltage",
+    "connector": "Screw terminals for motor power and motor outputs"
+  },
+  "pinMap": [
+    {
+      "name": "IN1",
+      "position": null,
+      "category": "digital",
+      "function": "Direction control input for Motor A, half of the H-bridge pair.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": "IN1/IN2 combination sets direction: HIGH/LOW spins one way, LOW/HIGH the other, and matching states (both HIGH or both LOW) brake the motor."
+    },
+    {
+      "name": "IN2",
+      "position": null,
+      "category": "digital",
+      "function": "Direction control input for Motor A, other half of the pair.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN3",
+      "position": null,
+      "category": "digital",
+      "function": "Direction control input for Motor B.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN4",
+      "position": null,
+      "category": "digital",
+      "function": "Direction control input for Motor B.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ENA",
+      "position": null,
+      "category": "digital",
+      "function": "PWM speed-enable input for Motor A — feeding it a PWM signal controls speed; tying it permanently HIGH (via the onboard jumper) runs at full speed.",
+      "voltageRange": "0-5V logic, PWM capable",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "If the ENA jumper is removed for PWM speed control but nothing is wired to this pin, the motor won't spin at all — a common 'my motor does nothing' beginner mistake."
+    },
+    {
+      "name": "ENB",
+      "position": null,
+      "category": "digital",
+      "function": "PWM speed-enable input for Motor B.",
+      "voltageRange": "0-5V logic, PWM capable",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "OUT1",
+      "position": null,
+      "category": "power",
+      "function": "Motor A terminal 1.",
+      "voltageRange": "Up to motor supply voltage minus ~2V drop",
+      "currentLimit": "~2A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT2",
+      "position": null,
+      "category": "power",
+      "function": "Motor A terminal 2.",
+      "voltageRange": "Up to motor supply voltage minus ~2V drop",
+      "currentLimit": "~2A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT3",
+      "position": null,
+      "category": "power",
+      "function": "Motor B terminal 1.",
+      "voltageRange": "Up to motor supply voltage minus ~2V drop",
+      "currentLimit": "~2A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT4",
+      "position": null,
+      "category": "power",
+      "function": "Motor B terminal 2.",
+      "voltageRange": "Up to motor supply voltage minus ~2V drop",
+      "currentLimit": "~2A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "+12V",
+      "position": null,
+      "category": "power",
+      "function": "Motor supply input (accepts 5-35V despite the '+12V' screw-terminal label).",
+      "voltageRange": "5-35V",
+      "currentLimit": "Board-dependent, size the supply for both motors' stall current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground — must be shared between the motor supply and the microcontroller's ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Forgetting the common ground between the microcontroller and the L298N's power supply is a very common 'nothing works' cause."
+    },
+    {
+      "name": "+5V",
+      "position": null,
+      "category": "power",
+      "function": "Onboard 5V regulator output, active when the 5V-enable jumper is in place and motor supply is 7-35V.",
+      "voltageRange": "5V",
+      "currentLimit": "Low — enough for a small microcontroller only",
+      "alternateFunctions": [],
+      "gotcha": "Remove the jumper before feeding in a supply above 12V, or the onboard regulator can overheat."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "2WD/4WD robot car drive",
+      "scenario": "Independently control two drive motors' speed and direction for differential-drive steering.",
+      "pinsInvolved": [
+        "IN1",
+        "IN2",
+        "IN3",
+        "IN4",
+        "ENA",
+        "ENB"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Bipolar stepper motor driving",
+      "scenario": "The two H-bridge channels can also drive a single 4-wire bipolar stepper motor directly (with software-controlled step sequencing).",
+      "pinsInvolved": [
+        "OUT1",
+        "OUT2",
+        "OUT3",
+        "OUT4"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "DC geared motor",
+      "Arduino Uno",
+      "Robot chassis kit"
+    ],
+    "oftenConfusedWith": [
+      "L293D (lower current, DIP chip form factor)",
+      "BTS7960 (much higher current, different control scheme)"
+    ],
+    "oftenUpgradedTo": [
+      "BTS7960 (for higher current) or a MOSFET-based driver (for less voltage drop and heat)"
+    ]
+  }
+}

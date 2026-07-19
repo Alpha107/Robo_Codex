@@ -1,0 +1,149 @@
+{
+  "identity": {
+    "id": "esc",
+    "name": "ESC (Electronic Speed Controller)",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A brushless motor can't be driven by a simple H-bridge — it needs its three phases switched in a precise, continuously-adjusted sequence, which is exactly what an ESC does. From the outside, though, it looks deceptively simple: it takes the same servo-style PWM signal used to command a hobby servo's angle (1-2ms pulses) and translates pulse width into motor speed instead, which is why the same microcontroller code and libraries used for servos work almost unchanged for ESCs. Most ESCs also include a BEC (Battery Eliminator Circuit) that taps off a regulated 5V from the main battery on the signal wire, conveniently powering the flight controller or receiver without a separate power connection. New ESCs almost always need a one-time calibration procedure to learn the throttle stick's min/max pulse range.",
+  "simpleSummary": "A speed-control box that spins a brushless motor by rapidly switching power through its three wires.",
+  "specifications": {
+    "inputSignal": "Servo-style PWM, 1ms (min throttle) - 2ms (max throttle), 50Hz typical",
+    "batteryInput": "Matches the application — commonly 2S-6S LiPo (7.4V-22.2V) for drones",
+    "continuousCurrentRating": "Model-dependent, from a few amps (small drone ESCs) to 100A+ (large RC car/boat ESCs)",
+    "bec": "Many ESCs include a Battery Eliminator Circuit providing regulated 5V on the signal connector",
+    "directionality": "Unidirectional (drones) or bidirectional (RC cars — reverse via a second throttle press)"
+  },
+  "pinMap": [
+    {
+      "name": "Signal",
+      "position": null,
+      "category": "communication",
+      "function": "PWM input from the flight controller/receiver/microcontroller — pulse width sets motor speed.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (control input)",
+      "alternateFunctions": [],
+      "gotcha": "New ESCs need a calibration sequence (full throttle then zero throttle at power-on) to learn the correct pulse range, or the throttle response will be wrong or unresponsive."
+    },
+    {
+      "name": "BEC+ (5V)",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V output from the onboard Battery Eliminator Circuit, riding on the signal connector alongside the PWM line.",
+      "voltageRange": "5V",
+      "currentLimit": "Model-dependent, typically enough for a flight controller/receiver only",
+      "alternateFunctions": [],
+      "gotcha": "If using multiple ESCs on one flight controller, only connect one BEC+ line — connecting several 5V sources together can cause a fight between regulators."
+    },
+    {
+      "name": "GND (signal)",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference for the signal connector.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Battery+",
+      "position": null,
+      "category": "power",
+      "function": "Main battery power input (often a bare wire pair or connector like XT60, not a pin header).",
+      "voltageRange": "Matches battery pack (e.g. 7.4-22.2V for 2S-6S LiPo)",
+      "currentLimit": "Up to the ESC's continuous current rating",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Battery-",
+      "position": null,
+      "category": "power",
+      "function": "Main battery ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Phase A",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase wire A, to the BLDC motor.",
+      "voltageRange": "ESC-switched",
+      "currentLimit": "Up to ESC rating",
+      "alternateFunctions": [],
+      "gotcha": "Swapping any two phase wires reverses spin direction — the standard way to fix a drone motor spinning the wrong way."
+    },
+    {
+      "name": "Phase B",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase wire B.",
+      "voltageRange": "ESC-switched",
+      "currentLimit": "Up to ESC rating",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Phase C",
+      "position": null,
+      "category": "power",
+      "function": "Motor phase wire C.",
+      "voltageRange": "ESC-switched",
+      "currentLimit": "Up to ESC rating",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Drone/quadcopter motor control",
+      "scenario": "One ESC per motor, commanded by the flight controller's PWM/DShot output.",
+      "pinsInvolved": [
+        "Signal",
+        "Battery+",
+        "Battery-",
+        "Phase A",
+        "Phase B",
+        "Phase C"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "RC car brushless power system",
+      "scenario": "Bidirectional ESCs allow forward, brake, and reverse from a single throttle channel.",
+      "pinsInvolved": [
+        "Signal",
+        "Phase A",
+        "Phase B",
+        "Phase C"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Powering a flight controller via BEC",
+      "scenario": "Use one ESC's BEC output to power the flight controller instead of a separate 5V regulator.",
+      "pinsInvolved": [
+        "BEC+ (5V)",
+        "GND (signal)"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "BLDC motor",
+      "LiPo battery",
+      "Flight controller"
+    ],
+    "oftenConfusedWith": [
+      "Motor drivers like the L298N (those are for brushed DC motors, not brushless)"
+    ],
+    "oftenUpgradedTo": [
+      "ESCs with DShot/telemetry support for faster, more reliable digital control than analog PWM"
+    ]
+  }
+}

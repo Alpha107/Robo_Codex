@@ -1,0 +1,110 @@
+{
+  "identity": {
+    "id": "hc12",
+    "name": "HC-12 Wireless Serial Module",
+    "category": "Communication Modules",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The HC-12 aims for the sweet spot between the NRF24L01/LoRa's SPI complexity and Bluetooth's short range: it's a plain UART wireless serial link, meaning it plugs in and works almost exactly like the HC-05 Bluetooth module — bytes sent to one module's serial input come out the other module's serial output — but with roughly 100x the range (up to ~1km in open air) because it operates in the 433MHz band rather than 2.4GHz Bluetooth/WiFi. Configuration (channel, power, baud rate) is done through AT commands via a dedicated SET pin, and it has no pairing process at all — any two HC-12 modules on the same channel simply hear each other.",
+  "simpleSummary": "A long-range wireless module that sends data like a walkie-talkie, reaching much farther than Bluetooth.",
+  "specifications": {
+    "operatingVoltage": "3.2V - 5.5V",
+    "interface": "UART (TX/RX), configured via AT commands",
+    "frequency": "433.4-473.0 MHz (channel-selectable)",
+    "range": "Up to ~1km line-of-sight (lower in practice with obstacles)",
+    "dataRate": "Up to 100kbps (typically configured much lower to maximize range)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.2-5.5V",
+      "currentLimit": "~100 mA peak during transmission (higher power settings draw more)",
+      "alternateFunctions": [],
+      "gotcha": "At the highest transmit power setting, current draw can exceed what a microcontroller's onboard 5V regulator comfortably supplies alongside everything else."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial transmit.",
+      "voltageRange": "0-3.3V/5V (board-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "RXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial receive.",
+      "voltageRange": "0-3.3V/5V (board-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SET",
+      "position": null,
+      "category": "digital",
+      "function": "Pulling LOW puts the module into AT command configuration mode instead of normal transparent-serial mode.",
+      "voltageRange": "0-3.3V/5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "AT mode select"
+      ],
+      "gotcha": "Forgetting to pull this LOW before sending AT commands means the module just treats your configuration commands as data to transmit, silently failing to reconfigure."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Long-range remote control",
+      "scenario": "Control a boat, car, or drone from much farther away than Bluetooth or NRF24L01 would allow.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Wireless sensor relay across a large property",
+      "scenario": "Relay sensor data from a distant outbuilding back to a central receiver.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Arduino Nano"
+    ],
+    "oftenConfusedWith": [
+      "HC-05/06 Bluetooth (shorter range, phone-compatible)",
+      "NRF24L01 (SPI interface, shorter range, higher data rate)"
+    ],
+    "oftenUpgradedTo": [
+      "LoRa modules for even longer range at the cost of a more complex SPI interface"
+    ]
+  }
+}

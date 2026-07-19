@@ -1,0 +1,133 @@
+{
+  "identity": {
+    "id": "bme280",
+    "name": "BMP180 / BME280 Pressure Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The BMP180 measures barometric pressure and temperature; its successor, the BME280, adds humidity sensing too, and both talk over a standard I2C bus rather than the DHT sensors' proprietary timing protocol — a much easier, faster, and more reliable interface. Pressure sensing is the more surprising use case for beginners: because atmospheric pressure decreases predictably with altitude, this sensor can estimate elevation change (useful in drones and weather stations) accurately enough to detect a few meters of height difference, using the same physics as an aircraft altimeter.",
+  "simpleSummary": "A sensor that reads temperature, humidity, and air pressure, and reports them over a simple digital connection.",
+  "specifications": {
+    "operatingVoltage": "1.8V - 3.6V (breakouts commonly add a 5V-tolerant regulator)",
+    "interface": "I2C (default address 0x76 or 0x77), SPI on some breakouts",
+    "pressureRange": "300-1100 hPa",
+    "pressureAccuracy": "±1 hPa (BME280)",
+    "humidity": "BME280 only — BMP180 has no humidity sensing",
+    "altitudeEstimation": "Derived from pressure using the barometric formula, accurate to a few meters"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "1.8-3.6V (breakout-dependent, often 5V-tolerant)",
+      "currentLimit": "~1-4 µA in sleep, ~714 µA during measurement",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "CSB",
+      "position": null,
+      "category": "digital",
+      "function": "Chip select — tie HIGH for I2C mode (the default on most breakouts), drive as active-LOW select for SPI mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI CS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDO",
+      "position": null,
+      "category": "digital",
+      "function": "In I2C mode, selects the address (LOW=0x76, HIGH=0x77). In SPI mode, acts as the data output (MISO).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C address select",
+        "SPI MISO"
+      ],
+      "gotcha": "Never leave floating — an undefined I2C address makes the sensor unreliable to detect."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Weather station",
+      "scenario": "Track pressure trends over time to give a simple 'storm coming' style forecast alongside temperature/humidity.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Drone altitude hold",
+      "scenario": "Use pressure-derived altitude as one input to a flight controller's altitude-hold mode.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Indoor climate monitor",
+      "scenario": "Combine pressure, temperature, and (on BME280) humidity into a single small sensor for a smart-home dashboard.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "OLED display (SSD1306)"
+    ],
+    "oftenConfusedWith": [
+      "DHT11/DHT22 (proprietary single-wire protocol, no pressure sensing)"
+    ],
+    "oftenUpgradedTo": [
+      "BME680 (adds gas/air-quality sensing to the same package)"
+    ]
+  }
+}

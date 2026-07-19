@@ -1,0 +1,32 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .slowpulse { animation: slowpulse 2.4s ease-in-out infinite; }
+    @keyframes slowpulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+    .fastpulse { animation: fastpulse 0.35s ease-in-out infinite; }
+    @keyframes fastpulse { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+    .flow { stroke-dasharray: 6 5; animation: flowmove 1s linear infinite; }
+    @keyframes flowmove { to { stroke-dashoffset: -22; } }
+  </style>
+
+  <text x="280" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Hybrid Obstacle Avoidance Architecture</text>
+
+  <rect x="40" y="55" width="220" height="60" rx="8" fill="#2f6fae" stroke="#1a1d23" stroke-width="2" class="slowpulse"/>
+  <text x="150" y="80" text-anchor="middle" fill="#ffffff" font-size="12.5" font-weight="700">Global Planner</text>
+  <text x="150" y="98" text-anchor="middle" fill="#d0e8ff" font-size="10">slow, full map, ~1 Hz</text>
+
+  <rect x="40" y="140" width="220" height="60" rx="8" fill="#e03131" stroke="#1a1d23" stroke-width="2" class="fastpulse"/>
+  <text x="150" y="165" text-anchor="middle" fill="#ffffff" font-size="12.5" font-weight="700">Local Reactive Layer</text>
+  <text x="150" y="183" text-anchor="middle" fill="#ffe3e3" font-size="10">fast, live sensors, ~30+ Hz</text>
+
+  <path d="M260,85 H320 V140" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <path d="M260,170 H320 V140" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <path d="M320,140 H360" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="360,134 374,140 360,146" fill="#1a1d23"/>
+
+  <rect x="374" y="112" width="140" height="56" rx="8" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <text x="444" y="136" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Motor</text>
+  <text x="444" y="153" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Commands</text>
+
+  <text x="280" y="225" text-anchor="middle" font-size="10.5" fill="#5b6270">The fast reactive layer can override the slow global plan's next step at any moment.</text>
+  <text x="280" y="242" text-anchor="middle" font-size="10" fill="#5b6270">Notice the two boxes pulse at very different rates — that's the real gap between them.</text>
+</svg>

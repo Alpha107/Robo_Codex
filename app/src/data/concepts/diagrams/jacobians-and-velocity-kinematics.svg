@@ -1,0 +1,37 @@
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .beat { animation: beat 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes beat { 0%, 100% { transform: scale(0.85); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 1; } }
+  </style>
+
+  <text x="150" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2f9e44">Well-conditioned pose</text>
+  <circle cx="90" cy="230" r="5" fill="#1a1d23"/>
+  <line x1="90" y1="230" x2="140" y2="150" stroke="#1a1d23" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="140" cy="150" r="5" fill="#1a1d23"/>
+  <line x1="140" y1="150" x2="220" y2="190" stroke="#5b6270" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="220" cy="190" r="6" fill="#e03131"/>
+  <ellipse cx="220" cy="190" rx="34" ry="30" fill="none" stroke="#2f9e44" stroke-width="2.5" class="beat"/>
+  <g stroke="#2f9e44" stroke-width="2" class="beat">
+    <line x1="220" y1="190" x2="220" y2="158"/>
+    <line x1="220" y1="190" x2="220" y2="222"/>
+    <line x1="220" y1="190" x2="188" y2="190"/>
+    <line x1="220" y1="190" x2="252" y2="190"/>
+  </g>
+  <text x="220" y="245" text-anchor="middle" font-size="10.5" fill="#2f9e44">can move ~equally well in any direction</text>
+
+  <line x1="320" y1="0" x2="320" y2="300" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="480" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e03131">Near-singular pose</text>
+  <circle cx="360" cy="230" r="5" fill="#1a1d23"/>
+  <line x1="360" y1="230" x2="480" y2="100" stroke="#1a1d23" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="480" cy="100" r="5" fill="#1a1d23"/>
+  <line x1="480" y1="100" x2="600" y2="60" stroke="#5b6270" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="600" cy="60" r="6" fill="#e03131"/>
+  <ellipse cx="600" cy="60" rx="44" ry="8" fill="none" stroke="#e03131" stroke-width="2.5" transform="rotate(-25 600 60)" class="beat"/>
+  <g stroke="#e03131" stroke-width="2" class="beat" transform="rotate(-25 600 60)">
+    <line x1="600" y1="60" x2="642" y2="60"/>
+    <line x1="600" y1="60" x2="558" y2="60"/>
+  </g>
+  <text x="480" y="270" text-anchor="middle" font-size="9.5" fill="#e03131">almost fully outstretched: barely any motion</text>
+  <text x="480" y="283" text-anchor="middle" font-size="9.5" fill="#e03131">possible along the arm's own reach direction</text>
+</svg>

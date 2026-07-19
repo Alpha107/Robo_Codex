@@ -1,0 +1,38 @@
+{
+  "identity": {
+    "id": "ros-concepts",
+    "title": "ROS (Robot Operating System) Concepts",
+    "category": "Software & Systems",
+    "level": "Intermediate",
+    "tagline": "A shared framework that gives a robot's software pieces a common language to talk to each other in, so nobody has to build that plumbing from scratch."
+  },
+  "simpleSummary": "A widely-used framework that gives the different pieces of a robot's software (sensors, planning, control) a standard way to send data to each other, plus a huge library of already-built robotics software to reuse.",
+  "keyIdea": "ROS provides a standardized communication layer — independent programs called nodes exchanging data over topics, services, and actions — plus a large ecosystem of reusable robotics software, letting different parts of a robot's software be developed, run, and even distributed across machines independently.",
+  "overview": "Despite the name, ROS (Robot Operating System) is not actually an operating system in the traditional sense — it has no kernel or scheduler of its own. It's a middleware framework that runs on top of a real OS (typically Linux), providing a standardized communication layer between independent pieces of robot software plus a large collection of developer tools. Its core building blocks are nodes (independent programs, each usually responsible for one specific job — a camera driver, a motor controller, a path planner), topics (named, one-to-many publish/subscribe channels that nodes stream continuous data over), services (synchronous request/response calls between two nodes for on-demand actions), and actions (for longer-running tasks that report progress and can be canceled mid-way). Beyond this communication layer, ROS's real practical value is its enormous existing ecosystem: ready-made packages for common sensor drivers, SLAM, navigation, and manipulation, meaning a robotics project rarely needs to reinvent these fundamental capabilities from scratch.",
+  "equations": [],
+  "howItWorks": "Because nodes communicate only through well-defined topics, services, and actions rather than being directly wired together in code, individual nodes can be swapped, restarted, debugged, or even run on entirely different physical machines — distributed across a robot's onboard computer and a separate laptop, for instance — with minimal changes required elsewhere in the system. This modularity is exactly what makes ROS's shared ecosystem of existing packages practically reusable across wildly different specific robots: as long as every node agrees on the same topic names and message formats, a LiDAR driver package built for one robot can plug into an entirely different robot's navigation stack with little modification. It's worth knowing there are two major generations: ROS 1 (the original, less suited to real-time control and multi-robot systems) and ROS 2 (built on a more robust underlying communication middleware with better support for real-time and multi-robot use) — a genuinely relevant distinction, not just a version number.",
+  "diagramCaption": "A typical ROS node graph: independent nodes (camera driver, SLAM, path planner, motor controller) exchange data over named topics, with no node needing to know about any other node's internal implementation.",
+  "realWorldExamples": [
+    "A research or hobby mobile robot combining an off-the-shelf LiDAR driver node, an existing SLAM package, and a custom navigation node, without writing any of the underlying communication plumbing from scratch.",
+    "Academic and industry robotics research nearly universally builds on ROS or ROS 2 rather than a custom in-house communication framework, specifically because of this large reusable ecosystem.",
+    "A robot arm manipulation project reusing an existing ROS motion-planning package rather than re-deriving inverse kinematics and collision checking from scratch."
+  ],
+  "commonMisconceptions": [
+    "\"ROS is an actual operating system replacing Linux\" — it's a middleware/framework that runs on top of a conventional OS, not a kernel or scheduler itself; the name is a bit of a historical misnomer many beginners take too literally.",
+    "\"ROS is only for expensive, large research robots\" — it runs perfectly well on hobby-scale hardware like a Raspberry Pi, though very cheap microcontroller boards like a plain Arduino typically run a lightweight bridge node rather than full ROS itself.",
+    "\"Every part of a ROS-based robot needs to be a ROS node\" — many robots mix ROS nodes with simpler, non-ROS microcontroller firmware bridged in through a lightweight connection, rather than requiring every single component to speak ROS natively."
+  ],
+  "relatedComponents": [
+    "raspberry-pi-4",
+    "jetson-nano",
+    "rplidar"
+  ],
+  "relatedProjects": [],
+  "relatedConcepts": [
+    "robot-middleware-pubsub",
+    "behavior-trees-and-finite-state-machines",
+    "real-time-systems-basics",
+    "coordinate-frames-and-transforms",
+    "robot-safety-watchdogs-and-failsafes"
+  ]
+}

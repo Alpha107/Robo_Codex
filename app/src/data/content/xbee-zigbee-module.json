@@ -1,0 +1,198 @@
+{
+  "identity": {
+    "id": "xbee-zigbee-module",
+    "name": "XBee / Zigbee Module",
+    "category": "Communication Modules",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "An XBee is a self-contained radio module built around the IEEE 802.15.4 / Zigbee stack, exposing a simple 3.3V UART to the host while handling addressing, packet framing, and — in Zigbee firmware — self-healing multi-hop mesh routing entirely on its own. That mesh capability is the key difference from simpler wireless modules: an nRF24L01 or HC-12 gives you a raw point-to-point (or basic star) radio link and leaves networking entirely up to your code, while an XBee running Zigbee firmware can relay a message through several intermediate nodes to reach a destination outside direct radio range, automatically re-routing if a node drops out. Configuration happens either in AT command mode (simple transparent serial bridge) or API frame mode (structured packets addressing specific 64-bit node addresses), both set up through Digi's XCTU desktop tool before the module ever gets wired into a project.",
+  "simpleSummary": "A radio module that can relay messages hop-by-hop through a self-healing wireless mesh, not just talk to one other radio directly.",
+  "specifications": {
+    "protocol": "IEEE 802.15.4 / Zigbee mesh networking",
+    "frequencyBand": "2.4 GHz ISM (900 MHz variants also exist, e.g. XBee-PRO 900)",
+    "range": "~90 m indoor, ~1500 m outdoor line-of-sight (Series 2/3); PRO variants reach further",
+    "hostInterface": "UART, 3.3V logic, configurable baud (default 9600 bps)",
+    "networkTopology": "Mesh (Zigbee firmware) — self-healing, multi-hop; point-to-point/star also supported (raw 802.15.4 firmware)",
+    "outputPower": "~1.25 mW (1 dBm) standard; up to 63 mW (18 dBm) on PRO variants",
+    "operatingVoltage": "3.3V logic and supply — not 5V tolerant on data pins without level shifting",
+    "addressing": "64-bit factory-assigned MAC address plus 16-bit network address; PAN ID groups nodes into one logical network",
+    "configuration": "AT command mode or API frame mode, configured via Digi XCTU software"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the radio and logic.",
+      "voltageRange": "3.3V (module-dependent, check datasheet for exact tolerance)",
+      "currentLimit": "~40-45 mA transmit peak (standard); higher on PRO variants",
+      "alternateFunctions": [],
+      "gotcha": "This is a 3.3V-only device — plugging it into a 5V Arduino header via a generic non-regulated 'XBee shield' can damage the radio; genuine XBee shields include an onboard regulator and level shifting, but not all clones do."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the host.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DOUT",
+      "position": null,
+      "category": "digital",
+      "function": "UART data output, from the module's perspective — connects to the host's RX pin.",
+      "voltageRange": "0-3.3V digital",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [
+        "TX (host-side breakout silkscreens sometimes flip this label)"
+      ],
+      "gotcha": "This is named from the module's own point of view (DOUT = module output), which is the opposite convention from some breakout boards silkscreened TX/RX from the host's perspective — 'just connect TX to RX' sounds obvious but it's easy to cross these incorrectly across mismatched labeling schemes."
+    },
+    {
+      "name": "DIN",
+      "position": null,
+      "category": "digital",
+      "function": "UART data input, from the module's perspective — the host's TX pin drives this.",
+      "voltageRange": "0-3.3V digital",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [
+        "RX (host-side breakout silkscreens sometimes flip this label)"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "digital",
+      "function": "Active-LOW hardware reset input.",
+      "voltageRange": "0-3.3V digital, active LOW",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "Has an internal pull-up so it's safe to leave unconnected, but a breakout board that ties this to a host GPIO defaulting LOW at boot will hold the radio in permanent reset — worth checking first if a module 'never boots.'"
+    },
+    {
+      "name": "CTS",
+      "position": null,
+      "category": "digital",
+      "function": "Clear-To-Send output, used for hardware flow control — signals whether the module's input buffer can accept more UART data.",
+      "voltageRange": "0-3.3V digital",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [],
+      "gotcha": "Unused by default in transparent AT mode at typical baud rates, but if you enable hardware flow control on only one side of the link, the other side's buffer can silently overflow and drop bytes during a burst — an intermittent, hard-to-reproduce data-loss bug."
+    },
+    {
+      "name": "RTS",
+      "position": null,
+      "category": "digital",
+      "function": "Request-To-Send input, paired with CTS for hardware flow control.",
+      "voltageRange": "0-3.3V digital",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ASSOCIATE",
+      "position": null,
+      "category": "special",
+      "function": "Status output, typically driving an onboard LED, indicating network join state (blink pattern differs for coordinator vs. router/end device).",
+      "voltageRange": "0-3.3V digital output",
+      "currentLimit": "Low, LED drive",
+      "alternateFunctions": [],
+      "gotcha": "The blink pattern (steady blinking = still searching for a network, off/solid = joined, depending on role) is a genuinely useful first diagnostic that's easy to overlook when troubleshooting 'why won't my mesh join' — check this before suspecting the wiring."
+    },
+    {
+      "name": "RSSI_PWM",
+      "position": null,
+      "category": "special",
+      "function": "PWM output proportional to received signal strength, usable for a simple analog link-quality indicator.",
+      "voltageRange": "PWM, 0-3.3V",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [
+        "PWM0"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Wireless serial replacement",
+      "scenario": "Swap a wired UART connection between two boards for a pair of XBees in transparent AT mode, with no code changes needed on either side.",
+      "pinsInvolved": [
+        "DOUT",
+        "DIN",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Multi-robot mesh telemetry network",
+      "scenario": "Run a Zigbee mesh across several mobile robots so telemetry reaches a base station even when a robot moves outside direct radio range of it, routing through other robots as intermediate hops.",
+      "pinsInvolved": [
+        "DOUT",
+        "DIN",
+        "ASSOCIATE"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Multi-hop warehouse sensor node",
+      "scenario": "Report data from a remote sensor back to a coordinator through several intermediate router nodes across a large facility.",
+      "pinsInvolved": [
+        "DOUT",
+        "DIN",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "API-mode multi-robot command dispatch",
+      "scenario": "Use API frame mode to address individual robots by their 64-bit address from one coordinator, rather than broadcasting to every node on the network.",
+      "pinsInvolved": [
+        "DOUT",
+        "DIN"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Long-range field robot link",
+      "scenario": "Use an XBee-PRO 900 pair for a base-station-to-field-robot link that reaches well beyond typical WiFi range.",
+      "pinsInvolved": [
+        "DOUT",
+        "DIN",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno + XBee Explorer/Shield",
+      "XCTU configuration software",
+      "Coordinator + router/end-device network"
+    ],
+    "oftenConfusedWith": [
+      "nRF24L01 — cheaper and shorter range, with a much simpler point-to-point/star protocol and no built-in mesh networking or 64-bit addressing stack",
+      "HC-12 — a plain transparent UART wireless bridge with no networking, addressing, or mesh capability at all, just a wireless wire replacement",
+      "HC-05 Bluetooth — a short-range point-to-point pairing model, not a multi-node mesh network"
+    ],
+    "oftenUpgradedTo": [
+      "XBee-PRO variants for higher output power and range",
+      "Full Zigbee/Thread-based industrial mesh gateways for large-scale sensor networks"
+    ]
+  },
+  "beginnerMistakes": [
+    "Powering directly from 5V logic without a level shifter or regulator — the module itself is 3.3V only.",
+    "Crossing DOUT/DIN backwards because of the module-perspective vs. host-perspective labeling mismatch between the module's pin names and a breakout board's silkscreen.",
+    "Leaving two modules on different PAN IDs or channels and assuming a hardware fault, when they simply never joined the same logical network.",
+    "Not using XCTU to check or update firmware and settings before wiring a module into a project, then spending hours debugging 'broken hardware' that's actually a misconfigured AT parameter.",
+    "Ignoring the ASSOCIATE LED's blink pattern, missing an easy first diagnostic for join/no-join status."
+  ]
+}

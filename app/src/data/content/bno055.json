@@ -1,0 +1,153 @@
+{
+  "identity": {
+    "id": "bno055",
+    "name": "BNO055 Absolute Orientation Sensor",
+    "category": "Motion & Orientation Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Every other IMU in this encyclopedia hands you raw accelerometer/gyroscope/magnetometer numbers and leaves the hard part — sensor fusion — to your code. The BNO055 is different: it contains its own dedicated ARM Cortex-M0 microcontroller that runs the accelerometer, gyroscope, and magnetometer fusion internally, and simply reports a ready-to-use orientation (as Euler angles or a quaternion) over I2C. That's a genuinely different category of chip — a 'smart sensor' rather than a raw-data sensor — and it's the reason people choose it despite costing more than an MPU6050/9250: no Kalman filter or Madgwick filter to write, tune, or debug.",
+  "simpleSummary": "An all-in-one motion sensor that does its own math and just tells you your exact orientation in space.",
+  "specifications": {
+    "operatingVoltage": "3.3V (breakouts commonly add a 5V-tolerant regulator)",
+    "interface": "I2C (default), UART on some breakouts",
+    "internalProcessor": "ARM Cortex-M0, runs onboard sensor fusion",
+    "outputFormats": "Absolute orientation (Euler angles or quaternion), linear acceleration, gravity vector, calibration status",
+    "fusionModes": "NDOF (9-DOF fused), IMU (6-DOF, no magnetometer), and several other selectable modes"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~12 mA typical",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PS0",
+      "position": null,
+      "category": "digital",
+      "function": "Protocol select bit 0 — both PS0/PS1 LOW selects I2C mode (the default on most breakouts).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Protocol select"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PS1",
+      "position": null,
+      "category": "digital",
+      "function": "Protocol select bit 1.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Protocol select"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "RST",
+      "position": null,
+      "category": "special",
+      "function": "Active-LOW reset — resets the internal fusion processor.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "INT",
+      "position": null,
+      "category": "digital",
+      "function": "Interrupt output, configurable for several fusion/sensor events.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robot/drone orientation without writing a fusion filter",
+      "scenario": "Read ready-made orientation output directly, skipping the usual Kalman/Madgwick filter development.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Camera gimbal stabilization",
+      "scenario": "Fast, stable orientation data feeding directly into a stabilization control loop.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL",
+        "INT"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "VR/AR orientation tracking",
+      "scenario": "Onboard fusion reduces the host processor's workload for real-time head tracking.",
+      "pinsInvolved": [
+        "SDA",
+        "SCL"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Raspberry Pi Pico"
+    ],
+    "oftenConfusedWith": [
+      "MPU6050/MPU9250 (raw sensor data, fusion left to your own code)"
+    ],
+    "oftenUpgradedTo": [
+      "Dedicated flight-controller-grade AHRS units for aviation-certified accuracy"
+    ]
+  }
+}

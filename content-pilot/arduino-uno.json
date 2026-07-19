@@ -1,0 +1,337 @@
+{
+  "identity": {
+    "id": "arduino-uno-r3",
+    "name": "Arduino Uno R3",
+    "category": "Microcontroller Board",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Arduino Uno is a beginner-friendly microcontroller board built around the ATmega328P chip. Think of it as a small, self-contained computer whose entire job is to read inputs (a button, a sensor, a signal) and turn them into outputs (a light, a motor movement, a message) according to a program you write and upload over USB. It's the default first board for almost everyone learning embedded electronics because it's forgiving, well-documented, cheap to replace if damaged, and has by far the largest tutorial and library ecosystem of any hobbyist board. It belongs to the 'classic AVR Arduino' family, alongside the Nano (same chip, smaller form factor) and the Mega (same architecture, far more pins).",
+  "specifications": {
+    "microcontroller": "ATmega328P",
+    "operatingVoltage": "5V",
+    "inputVoltageRecommended": "7-12V (via barrel jack or Vin pin)",
+    "inputVoltageLimit": "6-20V (absolute limit; above ~12V the onboard regulator overheats)",
+    "clockSpeed": "16 MHz",
+    "flashMemory": "32 KB (0.5 KB used by bootloader)",
+    "sram": "2 KB",
+    "eeprom": "1 KB",
+    "digitalIOPins": 14,
+    "pwmPins": 6,
+    "analogInputPins": 6,
+    "dcCurrentPerIOPin": "20 mA recommended, 40 mA absolute max",
+    "dcCurrentOn3V3Pin": "50 mA",
+    "dimensions": "68.6 mm x 53.4 mm",
+    "connector": "USB-B (power, programming, serial)"
+  },
+  "pinMap": [
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "Input for an unregulated external power supply (e.g., a 9V battery). Feeds the onboard voltage regulator to produce the board's 5V rail.",
+      "voltageRange": "7-12V recommended",
+      "currentLimit": "Depends on external supply; regulator can get hot above ~500mA sustained",
+      "alternateFunctions": [],
+      "gotcha": "Do not connect VIN if you're already powering the board through the USB port or barrel jack — you can back-feed and damage the regulator or your power source."
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V output from the onboard regulator. Used to power external sensors and small modules.",
+      "voltageRange": "5V (regulated)",
+      "currentLimit": "~800mA total, shared across the whole board",
+      "alternateFunctions": [],
+      "gotcha": "This is an output, not an input. Never feed 5V from an external source into this pin — it bypasses the regulator entirely."
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output, generated from the 5V rail by a secondary onboard regulator. Used for 3.3V-only sensors and modules (many WiFi/radio modules).",
+      "voltageRange": "3.3V (regulated)",
+      "currentLimit": "50 mA max",
+      "alternateFunctions": [],
+      "gotcha": "Very easy to overdraw — a single WiFi module drawing bursts of current can brown out this rail. Not meant to power anything power-hungry."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference. There are three GND pins on the board, all internally connected.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Every external component's ground must connect back here (or to another GND pin) or signals will read as noise/garbage — this is the single most common beginner wiring mistake."
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling this pin LOW restarts the running program from the beginning, same as pressing the onboard reset button.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Some shields use this pin intentionally for auto-reset during upload; don't tie it permanently LOW unless you want the board stuck in a reset loop."
+    },
+    {
+      "name": "IOREF",
+      "position": null,
+      "category": "special",
+      "function": "Reports the board's logic voltage (5V on the Uno) to shields, so a shield can adapt to boards that run at different logic levels.",
+      "voltageRange": "5V",
+      "currentLimit": "N/A (reference only, not meant to source current)",
+      "alternateFunctions": [],
+      "gotcha": "Rarely used directly by beginners; matters mainly if you're designing your own shield."
+    },
+    {
+      "name": "D0 (RX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O pin. Also the hardware serial receive line, used when the board communicates over USB serial or with external UART devices.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["UART RX"],
+      "gotcha": "Avoid using this as a plain digital pin if you also need Serial.print() for debugging — the two will conflict, and having anything else wired to it during USB upload can cause upload failures."
+    },
+    {
+      "name": "D1 (TX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O pin. Also the hardware serial transmit line.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["UART TX"],
+      "gotcha": "Same conflict as D0 — leave free of other wiring while using Serial or during sketch upload."
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["External Interrupt 0"],
+      "gotcha": "One of only two pins (with D3) that support hardware interrupts — prioritize this pin for things like button presses or encoder pulses that need instant reaction."
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM output capability.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["PWM", "External Interrupt 1"],
+      "gotcha": "The other hardware interrupt pin — same priority note as D2."
+    },
+    {
+      "name": "D4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM output capability.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["PWM"],
+      "gotcha": null
+    },
+    {
+      "name": "D6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM output capability.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["PWM"],
+      "gotcha": null
+    },
+    {
+      "name": "D7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM output capability. Commonly used for servo control signals.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["PWM"],
+      "gotcha": null
+    },
+    {
+      "name": "D10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM output capability.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["PWM", "SPI SS (Slave Select)"],
+      "gotcha": "If you use SPI devices, this pin usually needs to stay configured as OUTPUT even if unused, or SPI can misbehave."
+    },
+    {
+      "name": "D11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM output capability.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["PWM", "SPI MOSI"],
+      "gotcha": "Shared with SPI data-out — avoid using for PWM at the same time you're running an SPI device."
+    },
+    {
+      "name": "D12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["SPI MISO"],
+      "gotcha": null
+    },
+    {
+      "name": "D13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, wired to the onboard 'L' LED so it blinks without any external wiring — the classic first test pin.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": ["SPI SCK"],
+      "gotcha": "Has a slightly different default state than other pins at boot due to the onboard LED and its resistor — not ideal as a sensitive input pin."
+    },
+    {
+      "name": "A0",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, reads voltage 0-5V and converts it to a 0-1023 value (10-bit ADC). Can also be used as digital pin.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (if used as digital output)",
+      "alternateFunctions": ["Digital I/O"],
+      "gotcha": null
+    },
+    {
+      "name": "A1",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same characteristics as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (if used as digital output)",
+      "alternateFunctions": ["Digital I/O"],
+      "gotcha": null
+    },
+    {
+      "name": "A2",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same characteristics as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (if used as digital output)",
+      "alternateFunctions": ["Digital I/O"],
+      "gotcha": null
+    },
+    {
+      "name": "A3",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same characteristics as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (if used as digital output)",
+      "alternateFunctions": ["Digital I/O"],
+      "gotcha": null
+    },
+    {
+      "name": "A4",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same characteristics as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (if used as digital output)",
+      "alternateFunctions": ["I2C SDA (data line)"],
+      "gotcha": "Doubles as the I2C data line — don't repurpose it for a plain analog sensor if you plan to add any I2C device later (very common beginner conflict, e.g. adding an OLED display after the fact)."
+    },
+    {
+      "name": "A5",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same characteristics as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (if used as digital output)",
+      "alternateFunctions": ["I2C SCL (clock line)"],
+      "gotcha": "Doubles as the I2C clock line — same caution as A4."
+    },
+    {
+      "name": "AREF",
+      "position": null,
+      "category": "special",
+      "function": "Lets you supply a custom reference voltage for the analog-to-digital converter instead of the default 5V, improving analog reading precision in specific cases.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Rarely needed by beginners; leave unconnected unless you specifically call analogReference() in code."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Blinking LED / traffic light simulation",
+      "scenario": "Wire one or more LEDs to digital pins (e.g., D13, D12, D11) with current-limiting resistors and sequence them in code to simulate a traffic light.",
+      "pinsInvolved": ["D13", "D12", "D11", "GND"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Ultrasonic distance measuring",
+      "scenario": "Pair with an HC-SR04 sensor to measure distance to an object and print it over serial, or react to it (e.g., stop a motor when something gets close).",
+      "pinsInvolved": ["D2 (Trig)", "D3 (Echo)", "5V", "GND"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Servo-controlled pointer or gate",
+      "scenario": "Drive a hobby servo's angle using the Servo library to build a simple gauge, sorting gate, or pan mechanism.",
+      "pinsInvolved": ["D9", "5V", "GND"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Temperature/humidity monitor",
+      "scenario": "Read a digital temperature/humidity sensor (e.g., DHT11) and print readings to the Serial Monitor or an I2C LCD.",
+      "pinsInvolved": ["D4", "A4 (SDA)", "A5 (SCL)", "5V", "GND"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Simple line-following robot brain",
+      "scenario": "Read two IR line sensors on analog pins and drive a motor driver (e.g., L298N) via digital/PWM pins to steer a small robot along a line.",
+      "pinsInvolved": ["A0", "A1", "D5", "D6", "D7", "D8", "5V", "GND"],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": ["HC-SR04", "SG90 servo motor", "L298N motor driver", "DHT11", "breadboard", "jumper wires"],
+    "oftenConfusedWith": ["Arduino Nano (same chip, smaller board, micro-USB)", "Arduino Mega (same architecture, far more I/O pins)"],
+    "oftenUpgradedTo": ["ESP32 (adds WiFi/Bluetooth, more processing power, same beginner-friendly workflow)"]
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "identity": {
+    "id": "hc-sr04",
+    "name": "HC-SR04 Ultrasonic Distance Sensor",
+    "category": "Distance & Proximity Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The HC-SR04 measures distance the way a bat does: it sends out a short burst of ultrasonic sound (well above human hearing) and times how long it takes the echo to bounce back off an object. That time-of-flight is converted into a distance using the speed of sound. It's the most common 'first sensor' in robotics because it's cheap, simple to wire (just 4 pins), and gives genuinely useful, fairly accurate readings for hobbyist-level obstacle detection. It belongs to the family of time-of-flight distance sensors, alongside sharper but pricier alternatives like laser (ToF) sensors.",
+  "simpleSummary": "A sensor that measures distance by timing an echo, just like a bat using sound to sense objects.",
+  "specifications": {
+    "operatingVoltage": "5V DC",
+    "operatingCurrent": "~15 mA",
+    "measuringRange": "2 cm - 400 cm",
+    "measuringAngle": "~15 degrees (effective cone)",
+    "resolution": "~0.3 cm",
+    "ultrasonicFrequency": "40 kHz",
+    "triggerInputSignal": "10 microsecond TTL pulse",
+    "echoOutputSignal": "TTL pulse, width proportional to distance",
+    "dimensions": "45mm x 20mm x 15mm"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the sensor's onboard circuitry and ultrasonic transducers.",
+      "voltageRange": "5V",
+      "currentLimit": "~15 mA typical, higher during the ultrasonic pulse burst",
+      "alternateFunctions": [],
+      "gotcha": "This sensor is designed for 5V logic; running it directly off a 3.3V board's power rail generally gives unreliable range or won't work at all."
+    },
+    {
+      "name": "TRIG",
+      "position": null,
+      "category": "digital",
+      "function": "Input pin. Sending a 10-microsecond HIGH pulse here tells the sensor to emit an 8-pulse ultrasonic burst at 40kHz.",
+      "voltageRange": "0-5V, active HIGH pulse",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "The pulse must be at least 10 microseconds — shorter pulses are commonly ignored, and this is the #1 reason a first attempt reads all zeros."
+    },
+    {
+      "name": "ECHO",
+      "position": null,
+      "category": "digital",
+      "function": "Output pin. Goes HIGH the instant the ultrasonic burst is sent and stays HIGH until the echo returns — the HIGH duration in microseconds is what you convert into distance.",
+      "voltageRange": "0-5V output",
+      "currentLimit": "N/A (output, low current)",
+      "alternateFunctions": [],
+      "gotcha": "This pin outputs a full 5V signal. If wired directly into a 3.3V-only board input (e.g., certain ESP32/STM32 pins), it can damage that pin — use a voltage divider or level shifter in that case."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the controlling microcontroller.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Must be common with the microcontroller's ground or the ECHO timing reading will be meaningless."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Obstacle-avoiding robot",
+      "scenario": "Mount the sensor facing forward on a wheeled robot; when measured distance drops below a threshold, stop or turn away from the obstacle.",
+      "pinsInvolved": [
+        "TRIG",
+        "ECHO",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Parking sensor simulation",
+      "scenario": "Combine with a buzzer or LED bar that beeps/lights faster as an object gets closer, mimicking a car parking sensor.",
+      "pinsInvolved": [
+        "TRIG",
+        "ECHO",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Non-contact liquid level indicator",
+      "scenario": "Mount facing down into an open tank to estimate fill level from the distance to the liquid surface (works best with still, non-foaming liquids).",
+      "pinsInvolved": [
+        "TRIG",
+        "ECHO",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Intermediate (surface conditions affect accuracy)"
+    },
+    {
+      "title": "Gesture-triggered interaction (theremin-style)",
+      "scenario": "Map real-time distance readings to a musical pitch or LED brightness for a hand-controlled interactive display.",
+      "pinsInvolved": [
+        "TRIG",
+        "ECHO",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Automatic bin lid",
+      "scenario": "Detect a hand approaching the bin and trigger a servo to open the lid, closing it again after a delay.",
+      "pinsInvolved": [
+        "TRIG",
+        "ECHO",
+        "VCC",
+        "GND",
+        "servo signal pin"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "SG90 servo motor (for sensor pan/tilt)",
+      "buzzer",
+      "LED bar graph"
+    ],
+    "oftenConfusedWith": [
+      "IR distance sensors (shorter range, less accurate on dark/reflective surfaces, but faster and no dead cone)",
+      "PIR motion sensors (detect motion/heat, not distance)"
+    ],
+    "oftenUpgradedTo": [
+      "VL53L0X / VL53L1X laser (ToF) distance sensors (higher precision, narrower beam, I2C interface)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Aiming the sensor at soft or angled surfaces (fabric, foam, sharply angled walls) — sound gets absorbed or deflected away instead of bouncing back, giving no reading or a wildly wrong one.",
+    "Forgetting the minimum range (~2cm) — objects closer than that are often missed entirely.",
+    "Not accounting for the ~15-degree cone — the sensor can 'see' objects off to the side that aren't directly in front, confusing obstacle-avoidance logic.",
+    "Polling it faster than the sensor can settle (recommended ~60ms between readings), causing echo readings to overlap and return garbage values."
+  ]
+}

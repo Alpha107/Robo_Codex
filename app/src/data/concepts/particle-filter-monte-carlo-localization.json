@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "particle-filter-monte-carlo-localization",
+    "title": "Particle Filter (Monte Carlo Localization)",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Advanced",
+    "tagline": "Estimating position with thousands of simulated 'guesses' that get reshuffled toward whichever ones match reality best."
+  },
+  "simpleSummary": "Estimating a robot's position by keeping track of thousands of possible 'where I might be' guesses at once, then repeatedly killing off the guesses that don't match what the sensors see and duplicating the ones that do.",
+  "keyIdea": "A particle filter represents a probability distribution over possible robot states as a large cloud of weighted random samples (particles), updating that cloud by moving each particle per the motion model, weighting it by how well it matches new sensor data, and resampling to concentrate particles where the weight is highest.",
+  "overview": "Kalman filters represent uncertainty as a single smooth bell curve (a Gaussian), described compactly by a mean and covariance — but that representation fundamentally cannot express genuinely ambiguous situations, like 'the robot might be in this hallway, or in that other identical-looking hallway across the building.' A particle filter takes an entirely different approach: instead of one smooth curve, it represents the probability distribution as a large set of discrete sample hypotheses called particles, each one a complete guess at the robot's full state (e.g. its x, y position and heading). This lets a particle filter naturally represent complex, multi-modal distributions with several separate clusters of likely locations — exactly the kind of ambiguity that arises in real, repetitive-looking environments, and exactly what's needed to solve the 'kidnapped robot' problem, where a robot has no idea where it started.",
+  "equations": [
+    {
+      "label": "Particle Weight Update",
+      "expression": "wᵢ ∝ P(z | xᵢ)",
+      "meaning": "Each particle i, representing a hypothesized state xᵢ, is assigned a weight wᵢ proportional to how likely the actual sensor measurement z would be if that particle's hypothesis were the true state — particles whose hypothesis better explains what the sensor actually saw get higher weight."
+    }
+  ],
+  "howItWorks": "The algorithm (often called Monte Carlo Localization, or MCL, when applied to robot localization within a known map) repeats a four-step cycle. First, a large number of particles is initialized, either randomly across the space of possible states or from some prior knowledge. Second, a prediction step moves every particle according to the motion model (e.g. odometry), adding a bit of randomness to represent motion uncertainty. Third, an update step compares each particle's hypothesized state against the newest sensor measurement — for a particle representing a specific hypothesized position on a known map, this means comparing what a sensor should read at that position against what it actually just read — and assigns that particle a weight based on how well it matches. Fourth, a resampling step draws a brand new set of particles from the current set with probability proportional to each particle's weight: well-matching particles get duplicated, poorly-matching ones die out, and the whole cloud progressively concentrates around the states that best explain the incoming sensor data. Repeated over many cycles, an initially scattered, ambiguous cloud of particles converges into a tight cluster around the true position, once enough sensor data has resolved the ambiguity. The real cost is computational: enough particles must be maintained to adequately represent the full distribution, and that requirement grows quickly (the 'curse of dimensionality') as the state being estimated becomes more complex.",
+  "diagramCaption": "Particles start scattered across all plausible locations; as sensor measurements arrive, low-weight particles are discarded and high-weight ones duplicated, converging the cloud onto the true position.",
+  "realWorldExamples": [
+    "ROS's widely-used AMCL (Adaptive Monte Carlo Localization) package, a standard tool for real mobile robot localization within a known map.",
+    "A robot vacuum's internal localization system resolving which of several visually similar rooms it's actually in, using exactly this particle-cloud approach.",
+    "FastSLAM and related SLAM algorithms, which use a particle filter to represent joint uncertainty over both the robot's position and the map being built simultaneously."
+  ],
+  "commonMisconceptions": [
+    "\"Particle filters and Kalman filters solve the exact same problem the same way\" — they represent uncertainty fundamentally differently (a single smooth curve vs. a cloud of discrete samples), giving particle filters the ability to represent multi-modal, ambiguous situations that Kalman filters structurally cannot.",
+    "\"More particles is always strictly better with no downside\" — more particles better represent the true distribution, but every additional particle costs computation on every single update cycle, so real systems must balance particle count against available processing time.",
+    "\"Particle filters only work for localization\" — the same particle-based representation is used for other estimation problems too, including joint map-and-pose estimation in some SLAM algorithms."
+  ],
+  "relatedComponents": ["rplidar", "hc-sr04", "neo6m-gps"],
+  "relatedProjects": [],
+  "relatedConcepts": ["kalman-filter", "slam", "odometry-and-dead-reckoning"]
+}

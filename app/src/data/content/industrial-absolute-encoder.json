@@ -1,0 +1,181 @@
+{
+  "identity": {
+    "id": "industrial-absolute-encoder",
+    "name": "Industrial Absolute Rotary Encoder",
+    "category": "Line Following / Encoders / Feedback",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "An absolute rotary encoder reports the shaft's exact angular position as soon as power is applied, with no homing move required, because its internal disc or magnetic pattern encodes a unique code word for every distinct position rather than a repeating incremental pattern. That's the fundamental difference from a cheap incremental encoder: an incremental encoder only knows it moved N steps since power-on and loses that reference completely on a power cycle, while this one still knows exactly where the shaft is even after being unpowered and manually rotated. Industrial versions communicate over a synchronous serial interface (SSI) with RS-422 differential signaling rather than simple TTL, since they're built for long cable runs in electrically noisy machine environments. Multi-turn variants add a geared or Wiegand-effect turn counter so the encoder also remembers how many full revolutions have occurred, not just the angle within one turn.",
+  "simpleSummary": "A sealed metal shaft encoder that always knows its exact angle the instant it's powered on, without ever needing to re-home.",
+  "specifications": {
+    "resolution": "13-bit single-turn (8192 steps/revolution); optional 12-bit turns counter (4096 revolutions) on multi-turn models",
+    "interface": "SSI (Synchronous Serial Interface), RS-422 differential clock and data",
+    "outputCode": "Binary or Gray code, jumper/DIP selectable",
+    "supplyVoltage": "10-30V DC industrial rail",
+    "maxClockFrequency": "up to 2 MHz SSI clock at short cable length; typically derated to 300 kHz-1 MHz on longer industrial runs",
+    "shaftType": "6 mm solid shaft, radial or axial cable/connector exit",
+    "maxMechanicalSpeed": "6000 RPM continuous",
+    "protectionRating": "IP65 (shaft-seal versions), IP67 available",
+    "housingDiameter": "58 mm (common industrial standard size)"
+  },
+  "pinMap": [
+    {
+      "name": "V+",
+      "position": null,
+      "category": "power",
+      "function": "Positive supply for the encoder's internal optics/magnetics and RS-422 line drivers.",
+      "voltageRange": "10-30V DC",
+      "currentLimit": "~60-100 mA typical",
+      "alternateFunctions": [],
+      "gotcha": "The wide input range makes it tempting to wire straight into a hobbyist 5V rail out of habit — this device needs the higher industrial voltage and simply won't respond correctly (or at all) on logic-level power."
+    },
+    {
+      "name": "V-",
+      "position": null,
+      "category": "power",
+      "function": "Power return / 0V reference.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CLK+",
+      "position": null,
+      "category": "communication",
+      "function": "SSI clock input, non-inverting — driven by the controller/PLC, not the encoder, to shift out position bits.",
+      "voltageRange": "RS-422 differential levels",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "The encoder is purely a slave here; it never initiates a transfer on its own. If nothing toggles this clock line, the encoder sits idle even though it's powered and has a valid position."
+    },
+    {
+      "name": "CLK-",
+      "position": null,
+      "category": "communication",
+      "function": "SSI clock input, inverting, paired with CLK+.",
+      "voltageRange": "RS-422 differential levels",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": "At cable runs beyond a few meters, the clock frequency must be reduced per the SSI cable-length/frequency chart or reflections corrupt data bits — that shows up as intermittently wrong positions, not a dead encoder."
+    },
+    {
+      "name": "DATA+",
+      "position": null,
+      "category": "communication",
+      "function": "SSI data output, non-inverting — shifts out the current absolute position, MSB first, synchronized to CLK.",
+      "voltageRange": "RS-422 differential levels",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [],
+      "gotcha": "There's no explicit 'start' command like a UART frame — after all resolution bits are clocked out, most SSI encoders just repeat the last value until a clock-low period longer than the monoflop timeout (commonly ~20-40 microseconds) resets the frame for a fresh read."
+    },
+    {
+      "name": "DATA-",
+      "position": null,
+      "category": "communication",
+      "function": "SSI data output, inverting, paired with DATA+.",
+      "voltageRange": "RS-422 differential levels",
+      "currentLimit": "N/A (output)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SHIELD",
+      "position": null,
+      "category": "special",
+      "function": "Cable shield / drain, connected to the connector housing.",
+      "voltageRange": "Chassis/earth reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Ground this at one end only (the controller cabinet) — grounding both ends is a very common source of intermittent bit errors on long industrial cable runs."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robot joint absolute position feedback",
+      "scenario": "Mount on a joint so the controller knows exact joint angle immediately at power-on, skipping the homing routine that an incremental encoder would require.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "CLK+",
+        "CLK-",
+        "DATA+",
+        "DATA-"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "CNC/gantry axis position feedback",
+      "scenario": "Replace a limit-switch homing sequence with direct absolute position readout on power-up, saving cycle time on every machine start.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "CLK+",
+        "CLK-",
+        "DATA+",
+        "DATA-"
+      ],
+      "difficulty": "Intermediate-Advanced"
+    },
+    {
+      "title": "Crane/hoist load-height measurement",
+      "scenario": "Track hoist drum rotation so the exact load height is retained through a power loss, rather than needing to re-reference to a known height after every restart.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "CLK+",
+        "CLK-",
+        "DATA+",
+        "DATA-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "AGV steering angle reference",
+      "scenario": "Use a multi-turn absolute encoder on a steering column so the vehicle's steering angle is known immediately at startup without a re-centering maneuver.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "CLK+",
+        "CLK-",
+        "DATA+",
+        "DATA-"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Retrofit homing-elimination upgrade",
+      "scenario": "Replace an incremental encoder plus limit-switch homing setup on an existing machine axis to cut startup time and remove a mechanical wear point.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "DATA+",
+        "DATA-"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Servo drive or motion controller with an SSI input card",
+      "Industrial PLC",
+      "Robot arm joint gearbox"
+    ],
+    "oftenConfusedWith": [
+      "Incremental rotary encoder (KY-040 style) — reports only relative step counts and completely loses its position reference on every power cycle, requiring a homing routine at startup, whereas this reports an exact absolute angle the instant power is applied",
+      "Optical wheel encoder — an open, unsealed hobbyist encoder disc not rated for the dust, vibration, or IP65 wash-down environments this industrial housing is built for"
+    ],
+    "oftenUpgradedTo": [
+      "Multi-turn absolute encoders with CANopen or EtherCAT fieldbus output, for direct network integration without a dedicated SSI interface card"
+    ]
+  },
+  "beginnerMistakes": [
+    "Assuming 'absolute' automatically means 'higher precision' than an incremental encoder — the real benefit is retaining position without homing, and resolution can actually be similar between the two types.",
+    "Wiring it like a hobbyist breakout on 5V logic without checking that it's actually a 10-30V device with RS-422 differential outputs, not TTL.",
+    "Skipping termination/proper differential wiring on long cable runs and getting garbled position data that looks like a sensor fault.",
+    "Mounting with a rigid, non-flexible coupling that transmits shaft misalignment stress directly into the encoder's bearings, causing premature failure.",
+    "Forgetting to configure the receiving controller's SSI bit count to match the encoder's actual resolution — a mismatched clock count reads the wrong bits as the most significant ones, producing a plausible-looking but wrong position."
+  ]
+}

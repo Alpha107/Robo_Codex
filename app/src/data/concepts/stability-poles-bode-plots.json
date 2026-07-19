@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "stability-poles-bode-plots",
+    "title": "Stability, Poles & Bode Plots",
+    "category": "Control Theory",
+    "level": "Advanced",
+    "tagline": "Predicting whether a system will settle down, oscillate, or blow up — before it ever runs on real hardware."
+  },
+  "simpleSummary": "A set of tools for predicting, using math alone, whether a controlled system will calm down to its target or spiral out of control — critical to check before trusting a controller on real hardware like a drone.",
+  "keyIdea": "A linear system's long-term behavior is completely determined by the locations of its transfer function's poles; poles in the stable region mean the system settles down, poles outside it mean the system oscillates or diverges.",
+  "overview": "Once a system is expressed as a transfer function, its denominator — set equal to zero — is called the characteristic equation, and its roots are the system's poles. Poles are not just abstract math: each one corresponds to a natural mode of the system's response over time, and their locations in the complex plane completely determine whether that response decays toward zero (stable), stays at a constant oscillation (marginally stable), or grows without bound (unstable). Bode plots offer a complementary, frequency-domain view: they show how a system's output magnitude and phase shift respond across a whole range of input frequencies, which is especially useful for predicting how a real closed-loop (feedback) system behaves, including how close it is to instability under real-world imperfections like sensor noise or communication delay.",
+  "equations": [
+    {
+      "label": "Characteristic Equation",
+      "expression": "denominator of G(s) = 0",
+      "meaning": "Setting a transfer function's denominator to zero and solving for s gives the system's poles — the values of s where the transfer function becomes infinite."
+    },
+    {
+      "label": "Stability Criterion",
+      "expression": "Stable  ⟺  Re(pole) < 0 for every pole",
+      "meaning": "A linear system is stable if and only if every pole has a negative real part — meaning every pole sits in the left half of the complex s-plane. Any pole with a positive real part means the response grows without bound."
+    }
+  ],
+  "howItWorks": "A pole that is a negative real number corresponds to a response that decays smoothly like a simple exponential; a pair of complex poles with a negative real part corresponds to a decaying oscillation (ringing that dies out); a pole with a positive real part corresponds to a response that grows without bound — true instability. A pole sitting exactly on the imaginary axis (zero real part) is marginally stable: it neither grows nor decays, oscillating forever at a constant amplitude, which in practice is just as unusable as instability because any real disturbance pushes it one way or the other. Bode plots take a different angle: they plot a system's gain (in decibels) and phase shift as a function of input frequency, on logarithmic axes. For a closed-loop feedback system, the gain margin and phase margin read directly off a Bode plot indicate how much extra gain or delay the real system could tolerate before crossing into instability — a critical safety check, since simulations rarely capture every real-world imperfection (sensor lag, unmodeled friction, communication delay) that a physical system will actually experience. This is why control engineers check pole locations and stability margins analytically before ever deploying a controller onto hardware that could be damaged or dangerous if it becomes unstable.",
+  "diagramCaption": "Left: the s-plane, where every pole in the shaded left half means a stable, decaying response, and any pole crossing into the right half means instability. Right: a simplified Bode magnitude plot, showing how gain rolls off with frequency.",
+  "realWorldExamples": [
+    "Checking that a drone's flight controller has all closed-loop poles in the stable left-half plane before a single test flight — an unstable closed loop can crash a drone in well under a second.",
+    "Diagnosing a PID-controlled robot arm that oscillates persistently by reading its Bode plot's phase margin, revealing that the derivative gain needs increasing to add damping.",
+    "Comparing gain margin between a simulated controller and the same controller on real hardware, to account for real-world delays a simulation didn't model."
+  ],
+  "commonMisconceptions": [
+    "\"If it doesn't crash in a short simulation, it's stable\" — marginal stability and slow-growing instabilities can look fine for a few seconds before clearly diverging.",
+    "\"A system that's stable open-loop stays stable once you add feedback\" — feedback (especially with high gain) can destabilize an otherwise perfectly stable system; this is exactly why stability analysis is done on the closed-loop system, not just the plant alone.",
+    "\"Bode plots and pole locations are two completely different tools\" — they describe the same underlying stability information from two different, mathematically connected viewpoints (frequency domain vs. complex-plane pole locations)."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": [],
+  "relatedConcepts": ["transfer-functions-laplace-basics", "pid-control", "state-space-representation"]
+}

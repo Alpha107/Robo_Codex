@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "inverse-kinematics",
+    "title": "Inverse Kinematics",
+    "category": "Kinematics & Dynamics",
+    "level": "Advanced",
+    "tagline": "Working backwards from where you want the tip to be, to the joint angles that will actually put it there."
+  },
+  "simpleSummary": "Given where you want a robot arm's tip to end up, working out what angles every joint needs to be — which, unlike the forward problem, can have no answer, one answer, or many possible answers.",
+  "keyIdea": "Inverse kinematics solves the reverse of forward kinematics: given a desired end-effector position (and often orientation), find joint angles that achieve it — a problem that can have zero, one, or infinitely many solutions depending on the target and the robot's geometry.",
+  "overview": "Forward kinematics answers 'given these joint angles, where does the tip end up?' — always one clean answer. Inverse kinematics asks the opposite, and far more useful, question: 'I want the tip at this exact position (and maybe orientation) — what joint angles get me there?' This is the problem that actually needs solving whenever a task is naturally specified in real-world space rather than joint space — 'pick up the object at this location' rather than 'set joint 1 to 43 degrees.' Unlike forward kinematics, inverse kinematics is not guaranteed to have exactly one answer: a target might be entirely unreachable (outside the robot's workspace, giving zero solutions), reachable in exactly one configuration, reachable in a small number of distinct configurations (like an elbow-up versus elbow-down solution for a simple arm), or — for kinematically redundant robots with more joints than strictly necessary — reachable in infinitely many ways.",
+  "equations": [
+    {
+      "label": "2-Link Planar Arm — Elbow Angle",
+      "expression": "cos(θ₂) = (x² + y² − L₁² − L₂²) / (2·L₁·L₂)",
+      "meaning": "For a target position (x, y) and known link lengths L₁, L₂, this gives the elbow joint angle θ₂ — note the ± when taking the arccosine, which is exactly where the elbow-up vs. elbow-down multiple-solution branch comes from."
+    },
+    {
+      "label": "2-Link Planar Arm — Base Angle",
+      "expression": "θ₁ = atan2(y, x) − atan2(L₂sin(θ₂), L₁ + L₂cos(θ₂))",
+      "meaning": "Once θ₂ is known, this gives the base joint angle θ₁ needed to actually point the arm at the target (x, y)."
+    }
+  ],
+  "howItWorks": "For simple arms (2-DOF or 3-DOF planar arms, or arms with a spherical wrist), inverse kinematics can be solved analytically with closed-form trigonometric equations, as shown above for a 2-link planar arm. For more general serial-link arms, no such closed-form solution exists, and inverse kinematics is instead solved numerically and iteratively: starting from a guess of joint angles, the robot's Jacobian (the matrix relating small joint movements to small end-effector movements) is used to repeatedly nudge the guess closer to the target, typically using methods like the Newton-Raphson iteration or gradient descent, stopping once the error is small enough. When a target has multiple valid solutions (several distinct sets of joint angles that all reach it), the choice between them is typically made using additional criteria: avoiding joint limits, staying close to the arm's previous configuration for smooth motion, or avoiding a collision with an obstacle. This is why real robot arm controllers don't just solve inverse kinematics once — for smooth continuous motion (like a legged robot placing each foot, or an arm following a moving target), inverse kinematics runs fresh on every single control cycle.",
+  "diagramCaption": "For the same target point, a 2-link arm can often reach it in more than one way — an 'elbow-up' configuration and an 'elbow-down' configuration are both valid inverse kinematics solutions.",
+  "realWorldExamples": [
+    "A robot arm gripper commanded to a specific (x, y, z) position and orientation, with code computing the required servo angles rather than a human specifying each joint angle by hand.",
+    "A quadruped (four-legged) robot computing each leg's joint angles fresh on every control cycle from a desired foot placement, essential for any walking gait.",
+    "Character animation in video games and film, where inverse kinematics keeps a character's feet correctly placed on uneven ground regardless of the character's overall pose."
+  ],
+  "commonMisconceptions": [
+    "\"Inverse kinematics always has exactly one answer, like forward kinematics\" — it can have zero (unreachable target), one, several distinct, or infinitely many solutions depending on the robot's geometry and degrees of freedom.",
+    "\"You can skip inverse kinematics by just commanding joint angles directly\" — that only works if the task is already specified in joint space; any task specified in real-world position/orientation terms genuinely requires solving inverse kinematics.",
+    "\"Numerical inverse kinematics always converges to a correct answer\" — iterative methods can get stuck in poor local solutions or fail to converge at all, especially near singularities (arm configurations where the Jacobian loses rank)."
+  ],
+  "relatedComponents": ["servo-bracket-arm-kit", "mg996r-servo", "sg90-servo"],
+  "relatedProjects": ["joystick-pan-tilt-turret"],
+  "relatedConcepts": ["forward-kinematics", "jacobians-and-velocity-kinematics", "denavit-hartenberg-parameters"]
+}

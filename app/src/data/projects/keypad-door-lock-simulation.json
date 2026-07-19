@@ -1,0 +1,281 @@
+{
+  "identity": {
+    "id": "keypad-door-lock-simulation",
+    "title": "Keypad Door Lock Simulation",
+    "tagline": "Enter the right code, a servo \"unlocks\" the door. Get it wrong, and the buzzer lets everyone know.",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "40 minutes"
+  },
+  "goal": "Build a simulated keypad door lock: type a 4-digit code on a membrane keypad, and a servo swings to an \"unlocked\" position if it matches — with an LCD prompting for input and a buzzer scolding you for a wrong attempt.",
+  "simpleSummary": "Type a passcode on a keypad to \"unlock\" a servo-controlled door, with wrong-code buzzing.",
+  "howItWorks": "A 4x4 membrane keypad has 16 buttons but uses only 8 wires, because it's wired as a grid rather than one wire per button: 4 \"row\" wires and 4 \"column\" wires, with each button sitting at the intersection of exactly one row and one column. The Arduino scans this grid by briefly energizing one row at a time and checking which columns respond, which is more wiring-efficient than 16 individual buttons but does need a library (the Keypad library) to handle the scanning logic. From there, the project is just string comparison: build up the digits typed so far, and once four have been entered, compare the result against a fixed correct code.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "membrane-keypad",
+      "quantity": 1
+    },
+    {
+      "componentId": "sg90-servo",
+      "quantity": 1,
+      "note": "acts as the lock mechanism"
+    },
+    {
+      "componentId": "buzzer",
+      "quantity": 1
+    },
+    {
+      "componentId": "lcd1602",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 14 wires"
+    }
+  ],
+  "circuitDiagramCaption": "Keypad's 4 rows + 4 columns on D2-D9; servo on D10; buzzer on D11; LCD on the I2C bus (A4/A5).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "R1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "R2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "R3"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "R4"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "C1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "C2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D7"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "C3"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        }
+      },
+      {
+        "from": {
+          "componentId": "membrane-keypad",
+          "pin": "C4"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "Signal (orange/yellow wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "VCC (red wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "sg90-servo",
+          "pin": "GND (brown/black wire)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A5"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the keypad's 8 pins (usually a single flat ribbon connector) to Arduino D2 through D9 — rows first (D2-D5), then columns (D6-D9).",
+      "detail": "The Keypad library's example sketches list the exact row/column pin order for a standard 4x4 keypad ribbon — matching that order matters, since a swapped row/column produces confusing, seemingly-random wrong readings rather than an obvious failure."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the servo's signal wire to D10, power to 5V, and ground to GND.",
+      "detail": "The servo represents the physical lock bolt — rotating to one angle means \"locked,\" another means \"unlocked.\""
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the buzzer between D11 and GND.",
+      "detail": "Used here for a short \"access denied\" beep, not a continuous alarm."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the LCD's I2C backpack: GND to GND, VCC to 5V, SDA to A4, SCL to A5.",
+      "detail": "Same LCD wiring used in the Ultrasonic Distance Meter and Temperature & Humidity Display projects."
+    },
+    {
+      "step": 5,
+      "instruction": "Install the Keypad library alongside LiquidCrystal_I2C and Servo before uploading.",
+      "detail": "This project leans on three separate libraries at once — if the sketch won't compile, check that all three installed correctly before assuming it's a wiring problem."
+    }
+  ],
+  "code": [
+    {
+      "filename": "keypad_door_lock.ino",
+      "language": "arduino",
+      "source": "#include <Keypad.h>\n#include <Servo.h>\n#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n\n// Keypad Door Lock Simulation\n// Enter a 4-digit code; a servo \"unlocks\" on a correct match.\n\nconst char CORRECT_CODE[] = \"1234\"; // change this to your own code\nconst int CODE_LENGTH = 4;\n\nconst byte ROWS = 4;\nconst byte COLS = 4;\nchar keys[ROWS][COLS] = {\n  {'1','2','3','A'},\n  {'4','5','6','B'},\n  {'7','8','9','C'},\n  {'*','0','#','D'}\n};\nbyte rowPins[ROWS] = {2, 3, 4, 5};\nbyte colPins[COLS] = {6, 7, 8, 9};\nKeypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);\n\nconst int SERVO_PIN = 10;\nconst int BUZZER_PIN = 11;\nServo lockServo;\n\nLiquidCrystal_I2C lcd(0x27, 16, 2);\n\nchar enteredCode[CODE_LENGTH + 1];\nint enteredCount = 0;\n\nvoid setup() {\n  lockServo.attach(SERVO_PIN);\n  lockServo.write(0); // 0 degrees = locked\n\n  pinMode(BUZZER_PIN, OUTPUT);\n\n  lcd.init();\n  lcd.backlight();\n  promptForCode();\n}\n\nvoid loop() {\n  char key = keypad.getKey();\n  if (!key) return; // no key pressed this loop\n\n  if (key == '*') { // '*' clears a mistaken entry\n    enteredCount = 0;\n    promptForCode();\n    return;\n  }\n\n  if (enteredCount < CODE_LENGTH && isDigit(key)) {\n    enteredCode[enteredCount] = key;\n    enteredCount++;\n    enteredCode[enteredCount] = '\\0';\n\n    lcd.setCursor(0, 1);\n    lcd.print(enteredCode);\n\n    if (enteredCount == CODE_LENGTH) {\n      checkCode();\n    }\n  }\n}\n\nvoid checkCode() {\n  if (strcmp(enteredCode, CORRECT_CODE) == 0) {\n    lcd.clear();\n    lcd.print(\"Access granted\");\n    lockServo.write(90); // 90 degrees = unlocked\n    delay(3000);\n    lockServo.write(0); // re-lock automatically\n  } else {\n    lcd.clear();\n    lcd.print(\"Access denied\");\n    tone(BUZZER_PIN, 300, 500);\n    delay(1500);\n  }\n\n  enteredCount = 0;\n  promptForCode();\n}\n\nvoid promptForCode() {\n  lcd.clear();\n  lcd.setCursor(0, 0);\n  lcd.print(\"Enter code:\");\n}\n",
+      "explanation": "The keypad's getKey() returns the character of whatever key is currently pressed (or a null value if nothing is), so the loop simply ignores empty reads and appends real digits to enteredCode as they arrive. Once four digits are collected, checkCode() runs a plain string comparison (strcmp) against the fixed correct code — a match swings the servo to its \"unlocked\" angle and automatically re-locks after a few seconds, while a mismatch triggers a short buzzer scold. The '*' key is wired as a manual reset in case of a typo, a small but important usability detail for anything with a fixed-length entry."
+    }
+  ],
+  "expectedBehavior": "The LCD prompts for a code and echoes each digit as it's typed. Entering the correct 4 digits shows \"Access granted,\" swings the servo to unlock, and automatically re-locks a few seconds later. Any wrong code shows \"Access denied\" and sounds a low buzzer tone.",
+  "troubleshooting": [
+    {
+      "issue": "Keypad presses are read incorrectly or not at all.",
+      "fix": "This is almost always rows and columns wired to the wrong pins, or in the wrong order — recheck against the Keypad library's own wiring diagram for a 4x4 matrix, not just the pin count."
+    },
+    {
+      "issue": "Servo doesn't move, or moves erratically.",
+      "fix": "Confirm the servo has a stable power source — a servo drawing current directly from the same 5V rail as an LCD and buzzer can brown out under load; consider a separate 5V supply if this happens."
+    },
+    {
+      "issue": "LCD shows nothing.",
+      "fix": "Same LCD contrast/address troubleshooting as the Ultrasonic Distance Meter project applies here unchanged."
+    },
+    {
+      "issue": "Code always seems to fail even when typed correctly.",
+      "fix": "Print enteredCode over Serial right before the comparison to see exactly what was captured — a stray leftover character from an incomplete previous entry is the most common cause."
+    }
+  ],
+  "extensions": [
+    "Add a lockout after 3 failed attempts, requiring a delay before trying again.",
+    "Store multiple valid codes (e.g. one per household member) instead of a single fixed code.",
+    "Add an RFID card as a second unlock method alongside the keypad (see RFID Access Control).",
+    "Log every access attempt (success or failure) with a timestamp over Serial."
+  ]
+}

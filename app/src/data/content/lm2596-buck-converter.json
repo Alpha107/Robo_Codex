@@ -1,0 +1,96 @@
+{
+  "identity": {
+    "id": "lm2596-buck-converter",
+    "name": "LM2596 Buck Converter",
+    "category": "Power Management",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A buck converter steps a higher DC voltage down to a lower one efficiently, switching power on and off rapidly rather than burning off the difference as heat the way a simple linear regulator does — meaning it stays cool even when dropping something like 12V down to 5V at real current, where a linear regulator would waste a lot of energy as heat. This module exposes a small trimpot to adjust the output voltage to whatever's needed, which is also its most common trap for beginners: it ships set to some arbitrary voltage, not necessarily what your project needs, and must be measured and adjusted with a multimeter before connecting anything voltage-sensitive.",
+  "simpleSummary": "A small module that safely steps a higher voltage down to a lower one, like 12V down to 5V.",
+  "specifications": {
+    "inputVoltage": "4.5V - 40V (module-dependent)",
+    "outputVoltage": "1.25V - 37V, adjustable via onboard trimpot",
+    "outputCurrent": "Up to 3A typical (heat/heatsink dependent)",
+    "efficiency": "~85-95%, far better than a linear regulator dropping the same voltage difference"
+  },
+  "pinMap": [
+    {
+      "name": "IN+",
+      "position": null,
+      "category": "power",
+      "function": "Positive voltage input.",
+      "voltageRange": "4.5-40V",
+      "currentLimit": "Depends on output load and efficiency",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IN-",
+      "position": null,
+      "category": "power",
+      "function": "Input ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT+",
+      "position": null,
+      "category": "power",
+      "function": "Regulated positive output — voltage set by the onboard trimpot.",
+      "voltageRange": "1.25-37V (as adjusted)",
+      "currentLimit": "Up to ~3A",
+      "alternateFunctions": [],
+      "gotcha": "Ships set to an arbitrary voltage from the factory — always measure and adjust with a multimeter under no load before connecting anything voltage-sensitive."
+    },
+    {
+      "name": "OUT-",
+      "position": null,
+      "category": "power",
+      "function": "Output ground, shares a common reference with input ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Battery-to-logic voltage step-down",
+      "scenario": "Step a 12V battery pack down to a clean 5V for powering a microcontroller and sensors.",
+      "pinsInvolved": [
+        "IN+",
+        "IN-",
+        "OUT+",
+        "OUT-"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Multi-voltage project power distribution",
+      "scenario": "Generate several different regulated voltages from one higher-voltage supply for mixed-voltage components.",
+      "pinsInvolved": [
+        "OUT+",
+        "OUT-"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "LiPo battery",
+      "Arduino Uno",
+      "L298N motor driver"
+    ],
+    "oftenConfusedWith": [
+      "Boost converter (steps voltage up, not down)",
+      "7805/AMS1117 linear regulator (simpler, less efficient, more heat)"
+    ],
+    "oftenUpgradedTo": [
+      "Higher-current buck modules for power-hungry loads like LED strips or multiple servos"
+    ]
+  }
+}

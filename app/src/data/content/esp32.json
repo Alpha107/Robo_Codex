@@ -1,0 +1,450 @@
+{
+  "identity": {
+    "id": "esp32-devkit",
+    "name": "ESP32 DevKit",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The ESP32 is a dual-core WiFi + Bluetooth system-on-chip that costs about the same as an Arduino Nano but runs roughly ten times faster and can talk to the internet natively — no add-on shield required. It's the board most people upgrade to once an Uno-class project needs networking, more processing headroom, or Bluetooth. The catch is that its logic is strictly 3.3V (unlike the Uno's more forgiving 5V), and a handful of pins have quirky boot-time behavior that can silently break a project if you don't know about them. Variants like the ESP32-S3 (adds native USB, more GPIO) and ESP32-C3 (single-core RISC-V, cheaper, smaller) share the same core ideas with different pin counts.",
+  "simpleSummary": "A cheap microcontroller with built-in WiFi and Bluetooth, faster than an Arduino.",
+  "specifications": {
+    "microcontroller": "Xtensa dual-core LX6, up to 240 MHz",
+    "operatingVoltage": "3.3V (GPIOs are NOT 5V tolerant)",
+    "inputVoltageRecommended": "5V via USB or VIN",
+    "wireless": "WiFi 802.11 b/g/n, Bluetooth Classic + BLE",
+    "flashMemory": "4 MB (typical, external SPI flash)",
+    "sram": "520 KB",
+    "digitalIOPins": "~34 GPIO (varies by board/variant)",
+    "adc": "12-bit, ADC1 (GPIO32-39) usable alongside WiFi, ADC2 pins conflict with WiFi",
+    "dac": "2 channels (GPIO25, GPIO26)",
+    "connector": "Micro-USB or USB-C (board-dependent)"
+  },
+  "pinMap": [
+    {
+      "name": "3V3",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output from the onboard regulator.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~600 mA shared, less under WiFi transmit bursts",
+      "alternateFunctions": [],
+      "gotcha": "WiFi transmit bursts can draw 400-500mA spikes — a weak USB port or breadboard power rail causes random reboots."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "5V input, feeds the onboard 3.3V regulator (often labeled 5V on some boards).",
+      "voltageRange": "5V",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "EN",
+      "position": null,
+      "category": "special",
+      "function": "Chip enable / reset. Pulling LOW resets the module.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO0",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also the BOOT button pin that selects normal-boot vs flashing mode at power-on.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "Boot mode select"
+      ],
+      "gotcha": "Must be HIGH at boot for normal operation; if a connected component pulls it LOW, the board can get stuck failing to boot your program."
+    },
+    {
+      "name": "GPIO1 (TX0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware serial transmit, also used by the USB-serial bridge for flashing/debugging.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART0 TX"
+      ],
+      "gotcha": "Avoid using for general I/O if you need USB Serial output."
+    },
+    {
+      "name": "GPIO3 (RX0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware serial receive, shared with USB-serial bridge.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART0 RX"
+      ],
+      "gotcha": "Must be HIGH at boot; something pulling it LOW can prevent flashing."
+    },
+    {
+      "name": "GPIO2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, often wired to an onboard LED on dev boards.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Boot mode strapping"
+      ],
+      "gotcha": "Must be LOW or floating at boot on some boards to enter flashing mode correctly."
+    },
+    {
+      "name": "GPIO4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O, also an SPI chip-select on many boards.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI SS"
+      ],
+      "gotcha": "Boot strapping pin — must be HIGH at boot."
+    },
+    {
+      "name": "GPIO12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Touch sensor"
+      ],
+      "gotcha": "Boot strapping pin — pulling HIGH at boot can prevent the internal flash voltage from being set correctly. Best avoided for external pull-ups."
+    },
+    {
+      "name": "GPIO13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Touch sensor",
+        "JTAG"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO14",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Touch sensor",
+        "JTAG"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO15",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Touch sensor",
+        "JTAG"
+      ],
+      "gotcha": "Boot strapping pin controlling boot log verbosity — safe to use but avoid pulling LOW at boot."
+    },
+    {
+      "name": "GPIO16",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART2"
+      ],
+      "gotcha": "Unavailable on boards using this pin for PSRAM (some ESP32-WROVER modules)."
+    },
+    {
+      "name": "GPIO17",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "UART2"
+      ],
+      "gotcha": "Same PSRAM caveat as GPIO16 on WROVER-based boards."
+    },
+    {
+      "name": "GPIO18",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO19",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO21 (SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO22 (SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO23",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO25",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O with true analog output (DAC).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "DAC1",
+        "ADC2"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO26",
+      "position": null,
+      "category": "analog",
+      "function": "General-purpose I/O with true analog output (DAC).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "DAC2",
+        "ADC2"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO27",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC2",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO32",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, usable alongside active WiFi.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO33",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, usable alongside active WiFi.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "12 mA",
+      "alternateFunctions": [
+        "ADC1",
+        "Touch sensor"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "GPIO34",
+      "position": null,
+      "category": "analog",
+      "function": "Analog-only input (no output driver).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [
+        "ADC1"
+      ],
+      "gotcha": "Input-only — cannot drive an LED or any output, a frequent beginner surprise."
+    },
+    {
+      "name": "GPIO35",
+      "position": null,
+      "category": "analog",
+      "function": "Analog-only input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [
+        "ADC1"
+      ],
+      "gotcha": "Input-only, same as GPIO34."
+    },
+    {
+      "name": "GPIO36",
+      "position": null,
+      "category": "analog",
+      "function": "Analog-only input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [
+        "ADC1"
+      ],
+      "gotcha": "Input-only, same as GPIO34."
+    },
+    {
+      "name": "GPIO39",
+      "position": null,
+      "category": "analog",
+      "function": "Analog-only input.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [
+        "ADC1"
+      ],
+      "gotcha": "Input-only, same as GPIO34."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "WiFi-connected sensor dashboard",
+      "scenario": "Read a sensor and publish readings to a web dashboard or MQTT broker over WiFi — no separate networking shield needed.",
+      "pinsInvolved": [
+        "GPIO21 (SDA)",
+        "GPIO22 (SCL)",
+        "3V3",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Bluetooth-controlled robot",
+      "scenario": "Drive a small robot's motors from a phone app over BLE instead of a dedicated Bluetooth module.",
+      "pinsInvolved": [
+        "GPIO18",
+        "GPIO19",
+        "GPIO23"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Battery-powered environment logger with deep sleep",
+      "scenario": "Use the ESP32's deep-sleep modes to log temperature/humidity for months on a single battery charge, waking briefly to transmit.",
+      "pinsInvolved": [
+        "GPIO4",
+        "3V3",
+        "GND"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Home automation node",
+      "scenario": "Control relays and read sensors, integrating with Home Assistant / ESPHome over WiFi.",
+      "pinsInvolved": [
+        "GPIO16",
+        "GPIO17",
+        "GPIO32"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Relay modules",
+      "OLED display (SSD1306)",
+      "DHT22"
+    ],
+    "oftenConfusedWith": [
+      "ESP8266/NodeMCU (WiFi only, no Bluetooth, single core)",
+      "ESP32-S3 (adds native USB + AI acceleration)",
+      "ESP32-C3 (cheaper, single RISC-V core)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi Zero W (when a full Linux OS is needed instead of a microcontroller RTOS)"
+    ]
+  }
+}

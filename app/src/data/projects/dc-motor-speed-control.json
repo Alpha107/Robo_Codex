@@ -1,0 +1,219 @@
+{
+  "identity": {
+    "id": "dc-motor-speed-control",
+    "title": "DC Motor Speed Control",
+    "tagline": "One motor, one knob, full manual speed control through a real motor driver.",
+    "category": "Robots & Motion",
+    "difficulty": "Intermediate",
+    "estimatedTime": "30 minutes"
+  },
+  "goal": "Drive a single DC motor's speed continuously from 0 to full using a potentiometer, through an L298N motor driver — the essential motor-control building block underneath both the Line-Following Robot and Obstacle-Avoidance Robot projects, isolated here on its own so the driver wiring makes sense in a much simpler context first.",
+  "simpleSummary": "Turn a knob to speed a motor up or slow it down smoothly.",
+  "howItWorks": "A DC motor spins as fast as the voltage across it allows, and an Arduino pin can't supply anywhere near the current a motor draws — hence the L298N, which acts as a current amplifier: it takes a low-power direction signal and a PWM speed signal from the Arduino, and uses them to switch a much larger current from a separate battery through the motor. The IN1/IN2 pins set direction (which way current flows through the motor), while the ENA pin's PWM duty cycle (exactly the same technique as PWM LED Fading) sets how much of the time that current actually flows — a 30% duty cycle spins the motor noticeably slower than a 90% one, in exactly the same way a dimmer PWM signal makes an LED look dimmer.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A separate motor power supply (e.g. 4x AA pack) — do not power the motor from the Arduino"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "l298n",
+      "quantity": 1
+    },
+    {
+      "componentId": "dc-geared-motor",
+      "quantity": 1
+    },
+    {
+      "componentId": "potentiometer",
+      "quantity": 1
+    },
+    {
+      "componentId": "18650-holder",
+      "quantity": 1,
+      "note": "or any 6-12V battery pack matching your motor"
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 8 wires"
+    }
+  ],
+  "circuitDiagramCaption": "Potentiometer sets speed via A0; Arduino drives the L298N's direction (IN1/IN2) and speed (ENA/PWM); the L298N drives the motor from battery power.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT1"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal A"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "OUT2"
+        },
+        "to": {
+          "componentId": "dc-geared-motor",
+          "pin": "Terminal B"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D7"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN1"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "IN2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "ENA"
+        }
+      },
+      {
+        "from": {
+          "componentId": "potentiometer",
+          "pin": "Terminal 1 (End A)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "potentiometer",
+          "pin": "Terminal 2 (End B)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "potentiometer",
+          "pin": "Wiper"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A0"
+        }
+      },
+      {
+        "from": {
+          "componentId": "18650-holder",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "+12V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "18650-holder",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "l298n",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "l298n",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        },
+        "label": "shared ground"
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the motor's two terminals to the L298N's OUT1 and OUT2.",
+      "detail": "Direction doesn't matter yet — if the motor spins the \"wrong\" way once everything is running, just swap these two wires."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire Arduino D7 to L298N IN1, and D8 to IN2.",
+      "detail": "This pair sets direction: one HIGH/one LOW spins forward, swapping which is HIGH spins it in reverse, and both the same (both HIGH or both LOW) stops the motor regardless of ENA."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire Arduino D9 to L298N ENA.",
+      "detail": "This is the PWM speed control — without a signal here (or with an ENA jumper cap left in place forcing it HIGH), the motor only ever runs at full speed or off, ignoring any speed code entirely."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the potentiometer's outer legs to 5V and GND, and its wiper to A0.",
+      "detail": "Same voltage-divider wiring as Servo Pan Sweep."
+    },
+    {
+      "step": 5,
+      "instruction": "Connect the battery's positive lead to L298N +12V and negative lead to L298N GND, then connect that same ground to Arduino GND.",
+      "detail": "The shared-ground requirement is non-negotiable here, same as every other motor-driver project in this encyclopedia — skip it and nothing will behave predictably."
+    }
+  ],
+  "code": [
+    {
+      "filename": "dc_motor_speed_control.ino",
+      "language": "arduino",
+      "source": "// DC Motor Speed Control\n// A potentiometer sets motor speed continuously from 0 to full, forward only.\n\nconst int POT_PIN = A0;\nconst int IN1 = 7;\nconst int IN2 = 8;\nconst int ENA = 9; // PWM\n\nvoid setup() {\n  pinMode(IN1, OUTPUT);\n  pinMode(IN2, OUTPUT);\n  pinMode(ENA, OUTPUT);\n\n  // fixed forward direction for this project\n  digitalWrite(IN1, HIGH);\n  digitalWrite(IN2, LOW);\n}\n\nvoid loop() {\n  int potValue = analogRead(POT_PIN);      // 0-1023\n  int speed = map(potValue, 0, 1023, 0, 255); // rescale to PWM's 0-255 range\n\n  analogWrite(ENA, speed);\n}\n",
+      "explanation": "IN1/IN2 are set once in setup() and never touched again in this version — direction is fixed, only speed varies, which keeps the first pass at this circuit simple. The loop itself is almost identical in spirit to Servo Pan Sweep: read a potentiometer, map its range onto the output's expected range (0-255 for PWM instead of 0-180 for a servo angle), and write it out continuously."
+    }
+  ],
+  "expectedBehavior": "Turning the potentiometer smoothly changes the motor's spin speed from fully stopped to full speed, responding in real time as you turn the knob.",
+  "troubleshooting": [
+    {
+      "issue": "Motor only ever runs at full speed or not at all, ignoring the potentiometer.",
+      "fix": "Check for an ENA jumper cap still installed on the L298N board — remove it so the Arduino's PWM signal actually reaches the driver instead of being overridden to permanently HIGH."
+    },
+    {
+      "issue": "Motor doesn't spin at all.",
+      "fix": "Confirm the battery is delivering power to the L298N (check its power LED if present) and that Arduino GND and L298N GND are connected — the single most common \"dead\" motor circuit cause."
+    },
+    {
+      "issue": "Motor buzzes or vibrates at low speeds without actually turning.",
+      "fix": "This is normal at very low PWM values — most small DC motors need a minimum duty cycle before they have enough torque to overcome friction and actually start moving; consider adding a minimum speed floor in code."
+    }
+  ],
+  "extensions": [
+    "Add a second button to reverse direction (toggle IN1/IN2) instead of leaving it fixed.",
+    "Control speed from Serial input instead of a potentiometer, for computer-driven speed control.",
+    "Extend to two motors and a joystick for full driving control — see the Line-Following or Obstacle-Avoidance Robot projects.",
+    "Add a rotary encoder on the motor shaft to measure and display actual RPM, not just commanded speed."
+  ]
+}

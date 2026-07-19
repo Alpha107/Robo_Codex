@@ -1,0 +1,387 @@
+{
+  "identity": {
+    "id": "arduino-mega-2560",
+    "name": "Arduino Mega 2560",
+    "category": "Microcontroller Board",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Mega is what you reach for when an Uno runs out of pins. Same 5V AVR family and same beginner-friendly programming model, just a much bigger chip: 54 digital pins instead of 14, 16 analog inputs instead of 6, and four hardware serial ports instead of one — genuinely useful when a robot needs to talk to a GPS, a Bluetooth module, and a debug console simultaneously without resorting to software-emulated serial. The tradeoff is size and cost; most projects that fit on an Uno should stay there.",
+  "simpleSummary": "A bigger Arduino with way more pins, for projects that outgrow the Uno.",
+  "specifications": {
+    "microcontroller": "ATmega2560",
+    "operatingVoltage": "5V",
+    "inputVoltageRecommended": "7-12V (via VIN)",
+    "clockSpeed": "16 MHz",
+    "flashMemory": "256 KB (8 KB used by bootloader)",
+    "sram": "8 KB",
+    "eeprom": "4 KB",
+    "digitalIOPins": 54,
+    "pwmPins": 15,
+    "analogInputPins": 16,
+    "dimensions": "101.52mm x 53.3mm",
+    "connector": "USB-B"
+  },
+  "pinMap": [
+    {
+      "name": "D0 (RX0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial receive, also shared with the USB programming port.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Avoid wiring here while using Serial or uploading."
+    },
+    {
+      "name": "D1 (TX0)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial transmit, shared with USB programming port.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM, hardware interrupt.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM, hardware interrupt.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D4-D9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O bank; D4-D9 support PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D10-D13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM; also the SPI header bank alongside D50-D53.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D14 (TX3)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial3 transmit.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D15 (RX3)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial3 receive.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D16 (TX2)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial2 transmit.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D17 (RX2)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial2 receive.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D18 (TX1)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial1 transmit, hardware interrupt capable.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART TX",
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D19 (RX1)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware Serial1 receive, hardware interrupt capable.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "UART RX",
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D20 (SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line, hardware interrupt capable.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C SDA",
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D21 (SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line, hardware interrupt capable.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "I2C SCL",
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D22-D49",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O bank; pins 44-46 additionally support PWM. This is the pin range that makes the Mega useful for large sensor/actuator arrays.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D50 (MISO)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI MISO.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D51 (MOSI)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI MOSI.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D52 (SCK)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI clock.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D53 (SS)",
+      "position": null,
+      "category": "digital",
+      "function": "Hardware SPI slave-select.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA",
+      "alternateFunctions": [
+        "SPI SS"
+      ],
+      "gotcha": "Must stay configured as OUTPUT for SPI to behave correctly, even if unused."
+    },
+    {
+      "name": "A0-A15",
+      "position": null,
+      "category": "analog",
+      "function": "16 analog inputs, 10-bit ADC, each also usable as digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "20 mA (as digital output)",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V output.",
+      "voltageRange": "5V",
+      "currentLimit": "~800 mA shared",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output.",
+      "voltageRange": "3.3V",
+      "currentLimit": "50 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "Unregulated supply input.",
+      "voltageRange": "7-12V recommended",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IOREF",
+      "position": null,
+      "category": "special",
+      "function": "Reports the board's logic voltage (5V) to shields.",
+      "voltageRange": "5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW restarts the running sketch.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AREF",
+      "position": null,
+      "category": "special",
+      "function": "Custom analog reference voltage for the ADC.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "3D printer / CNC controller",
+      "scenario": "The Mega's pin count is exactly why RAMPS and similar 3D-printer control boards are built on top of it.",
+      "pinsInvolved": [
+        "D10-D13",
+        "D50 (MISO)",
+        "D51 (MOSI)",
+        "D52 (SCK)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Multi-sensor robot with several serial peripherals",
+      "scenario": "Run a GPS on Serial1, a Bluetooth module on Serial2, and a debug console on Serial0 simultaneously.",
+      "pinsInvolved": [
+        "D18 (TX1)",
+        "D19 (RX1)",
+        "D16 (TX2)",
+        "D17 (RX2)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Large sensor array data logger",
+      "scenario": "16 analog inputs comfortably cover many analog sensors (soil moisture, light, gas) in one project.",
+      "pinsInvolved": [
+        "A0-A15"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "RAMPS 3D-printer shield",
+      "L298N motor driver"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Due (same size, 3.3V logic, not 5V tolerant)"
+    ],
+    "oftenUpgradedTo": [
+      "STM32 or Teensy boards when raw processing speed becomes the bottleneck rather than pin count"
+    ]
+  }
+}

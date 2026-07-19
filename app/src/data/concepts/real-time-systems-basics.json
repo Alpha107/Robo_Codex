@@ -1,0 +1,37 @@
+{
+  "identity": {
+    "id": "real-time-systems-basics",
+    "title": "Real-Time Systems Basics",
+    "category": "Software & Systems",
+    "level": "Intermediate",
+    "tagline": "Systems where arriving on time matters just as much as arriving at the right answer at all."
+  },
+  "simpleSummary": "Systems where a response has to happen within a guaranteed deadline, not just eventually — a correct answer that arrives too late can be just as bad as a wrong one.",
+  "keyIdea": "A real-time system must guarantee its response happens within a specific deadline in the worst case, not just on average; hard real-time systems treat any missed deadline as complete failure, while soft real-time systems tolerate occasional lateness with degraded, not catastrophic, results.",
+  "overview": "An ordinary computer program being 'usually fast' is generally good enough — a web browser being briefly slow is merely annoying. A real-time system is fundamentally different: it has actual deadlines that must be met, and the consequence of missing one ranges from degraded performance up to genuine safety failure, depending on the system. The critical distinction is between hard real-time systems, where a missed deadline counts as a complete failure regardless of how good the eventual answer would have been, and soft real-time systems, where occasional missed deadlines degrade quality without causing outright failure.",
+  "equations": [],
+  "howItWorks": "A hard real-time example: a drone's flight stabilization loop, or an airbag deployment controller — a late correction is functionally as bad as no correction at all, since the drone may already have crashed, or the collision may already have happened, by the time a late response arrives. A soft real-time example: a video stream that occasionally drops a frame is a lesser, real problem, but not catastrophic. The crucial point often missed is that real-time correctness is about guaranteed worst-case timing, not average-case speed: a system that responds blazing fast 99% of the time but occasionally takes ten times longer in some rare case is not a real-time system if that rare case could actually occur during real operation and blow a deadline — being fast on average simply isn't the same guarantee. This is exactly why dedicated real-time operating systems (RTOS) and deterministic scheduling are used specifically for control loops with hard timing requirements, like a drone's stabilization loop or a CNC machine's motion control, while a general-purpose OS's occasional unpredictable delays (mainly from other tasks unpredictably contending for the CPU) make it unsuitable for those specific hard-real-time pieces — even though that same general-purpose OS is perfectly fine for other, less timing-critical parts of the very same robot, like high-level path planning or a web dashboard.",
+  "diagramCaption": "A recurring control loop has a fixed deadline every cycle; completing before the deadline is a success, but arriving even slightly late in a hard real-time system counts as a full failure, not a partial one.",
+  "realWorldExamples": [
+    "A drone's flight stabilization loop, which must run at a guaranteed fixed rate (often every few milliseconds) or the vehicle can become unstable and crash — a hard real-time requirement.",
+    "A car's airbag deployment system, another textbook hard real-time example, where a late deployment is functionally the same as no deployment at all.",
+    "A robot's video streaming or logging subsystem, which can usually tolerate occasional soft real-time delays (a dropped frame) without any safety consequence."
+  ],
+  "commonMisconceptions": [
+    "\"Real-time means 'very fast'\" — the defining property is guaranteed, predictable, worst-case timing, not raw speed; a relatively slow system can be genuinely real-time as long as it reliably meets its specific deadline every single time.",
+    "\"A system that's fast on average is real-time\" — a system that occasionally takes unpredictably longer, even rarely, is not automatically real-time if that rare case could occur during operation and blow a deadline.",
+    "\"An Arduino running simple code is automatically a real-time system\" — only if its worst-case timing for every code path is actually analyzed and guaranteed to meet the needed deadline; running 'fast enough on average' is not the same as a verified real-time guarantee."
+  ],
+  "relatedComponents": [
+    "arduino-uno-r3",
+    "teensy-4",
+    "stm32-blue-pill"
+  ],
+  "relatedProjects": [],
+  "relatedConcepts": [
+    "embedded-systems-fundamentals",
+    "ros-concepts",
+    "pid-control",
+    "robot-safety-watchdogs-and-failsafes"
+  ]
+}

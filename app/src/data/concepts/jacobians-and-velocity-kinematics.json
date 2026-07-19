@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "jacobians-and-velocity-kinematics",
+    "title": "Jacobians & Velocity Kinematics",
+    "category": "Kinematics & Dynamics",
+    "level": "Advanced",
+    "tagline": "The matrix that connects how fast each joint turns to how fast (and which way) the end-effector actually moves."
+  },
+  "simpleSummary": "A matrix that tells you how end-effector speed and direction relate to joint speeds — used to control velocity directly, refine inverse kinematics guesses, and spot arm poses where motion suddenly becomes difficult or impossible.",
+  "keyIdea": "The Jacobian is the local, linear relationship between small joint velocity changes and the resulting end-effector velocity — essentially the derivative of forward kinematics — and it can be inverted to find the joint velocities needed for a desired end-effector motion.",
+  "overview": "Forward kinematics relates joint angles to end-effector position, but that relationship is generally nonlinear (full of sines and cosines) and doesn't directly say how fast the end-effector moves when the joints are spinning at given speeds. The Jacobian matrix fills this gap: it's the matrix of partial derivatives that linearly relates a small change in joint angles (or joint velocities) to the resulting small change in end-effector position and orientation (or velocity). This makes it the mathematical foundation for three closely related, very practical things: controlling a robot's end-effector by commanded velocity rather than commanded position, solving inverse kinematics iteratively when no closed-form solution exists, and identifying singularities — arm configurations where motion in certain directions becomes difficult or momentarily impossible no matter how fast the joints spin.",
+  "equations": [
+    {
+      "label": "Forward Velocity Kinematics",
+      "expression": "ẋ = J(θ)·θ̇",
+      "meaning": "The end-effector's velocity ẋ (linear and angular) equals the Jacobian matrix J, evaluated at the current joint angles θ, multiplied by the vector of joint velocities θ̇."
+    },
+    {
+      "label": "Inverse Velocity Kinematics",
+      "expression": "θ̇ = J⁻¹(θ)·ẋ",
+      "meaning": "Inverting the Jacobian (where possible) gives the joint velocities θ̇ needed to produce a desired end-effector velocity ẋ — the basis of real-time Cartesian velocity control (e.g. joystick teleoperation) and of Newton-Raphson-style numerical inverse kinematics."
+    }
+  ],
+  "howItWorks": "Each column of the Jacobian describes how the end-effector's velocity changes in response to one specific joint moving, with all other joints held still — stacking these columns together for every joint gives the full matrix. This matters practically in three ways. First, velocity control: if an operator commands a desired end-effector velocity (say, from a joystick), the inverse Jacobian directly computes the joint velocities needed to produce it, in real time. Second, numerical inverse kinematics: when no closed-form position solution exists, an iterative method can use the Jacobian to repeatedly nudge a guessed joint configuration closer to a target position, refining the guess step by step (this is exactly the Newton-Raphson-style approach used for complex arms). Third, and critically for safety and performance, the Jacobian reveals singularities: configurations (like an arm fully outstretched) where the Jacobian loses full rank, meaning the arm instantaneously loses the ability to move in some direction at all, regardless of how fast the joints spin. Near a singularity, achieving even a small desired end-effector motion in the 'lost' direction requires impractically or impossibly high joint velocities — a genuine real-world hazard, which is why path planners deliberately avoid arm configurations close to singularities rather than treating this as a purely abstract mathematical curiosity.",
+  "diagramCaption": "A manipulability ellipse visualizes how easily an arm can move in different directions from its current pose: a well-conditioned (bent) pose gives a round ellipse (equally capable in any direction); a near-singular (outstretched) pose gives a squashed ellipse (almost no capability in one direction).",
+  "realWorldExamples": [
+    "Teleoperating a robot arm smoothly with a joystick that commands end-effector velocity directly, with the inverse Jacobian computing the required joint speeds live.",
+    "A numerical inverse kinematics solver for a complex arm iterating toward a target pose using Jacobian-based updates rather than a closed-form formula.",
+    "Robot path planners deliberately routing an arm's motion away from fully-outstretched or oddly-aligned joint configurations to avoid requiring unrealistic joint speeds near a singularity."
+  ],
+  "commonMisconceptions": [
+    "\"The Jacobian only matters for velocity control, not position\" — it's also foundational to solving position-level inverse kinematics numerically, whenever no closed-form solution is available.",
+    "\"Singularities are just a mathematical technicality, not a real problem\" — near a true singularity, real motors would need genuinely impractical or physically impossible speeds to achieve small desired motions, a real safety and performance concern.",
+    "\"A well-designed robot arm never has singularities\" — nearly all serial-link arms have at least some singular configurations within their reachable workspace; the practical goal is avoiding them during planned motion, not eliminating them from existing."
+  ],
+  "relatedComponents": ["servo-bracket-arm-kit", "rotary-encoder", "optical-wheel-encoder"],
+  "relatedProjects": [],
+  "relatedConcepts": ["forward-kinematics", "inverse-kinematics", "denavit-hartenberg-parameters"]
+}

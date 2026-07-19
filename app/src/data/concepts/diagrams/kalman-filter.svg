@@ -1,0 +1,35 @@
+<svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .flow { stroke-dasharray: 6 5; animation: flowmove 1s linear infinite; }
+    @keyframes flowmove { to { stroke-dashoffset: -22; } }
+    .seq { animation: seqfade 3s ease-in-out infinite; }
+    @keyframes seqfade { 0%, 15% { opacity: 0.15; } 30%, 100% { opacity: 1; } }
+    .seq2 { animation-delay: -1s; }
+    .seq3 { animation-delay: -2s; }
+  </style>
+
+  <text x="310" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">The Predict &#8594; Update Cycle</text>
+
+  <rect x="60" y="60" width="170" height="60" rx="8" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="145" y="86" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Predict</text>
+  <text x="145" y="103" text-anchor="middle" fill="#d0e8ff" font-size="10">using system model</text>
+
+  <path d="M230,90 H320" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="320,84 334,90 320,96" fill="#1a1d23"/>
+
+  <rect x="334" y="60" width="200" height="60" rx="8" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <text x="434" y="86" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">Update (Correct)</text>
+  <text x="434" y="103" text-anchor="middle" fill="#fff3e0" font-size="10">blend with new measurement</text>
+
+  <path d="M434,120 V160 H145 V120" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="139,126 145,114 151,126" fill="#1a1d23"/>
+  <text x="290" y="150" text-anchor="middle" font-size="10.5" fill="#5b6270">repeat every timestep</text>
+
+  <text x="310" y="200" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1d23">Uncertainty shrinks after each update</text>
+  <path d="M120,260 q90,-70 180,0" fill="none" stroke="#adb5bd" stroke-width="2.5" class="seq"/>
+  <text x="115" y="278" font-size="10" fill="#adb5bd" class="seq">prediction (wide)</text>
+  <path d="M300,260 q40,-45 80,0" fill="none" stroke="#4dabf7" stroke-width="2.5" class="seq seq2"/>
+  <text x="330" y="278" font-size="10" fill="#1c7ed6" class="seq seq2">measurement</text>
+  <path d="M420,260 q20,-30 40,0" fill="none" stroke="#2f9e44" stroke-width="3" class="seq seq3"/>
+  <text x="430" y="200" font-size="10" font-weight="700" fill="#2f9e44" class="seq seq3">updated (narrow)</text>
+</svg>

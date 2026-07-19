@@ -1,0 +1,83 @@
+{
+  "identity": {
+    "id": "breadboard",
+    "name": "Breadboard",
+    "category": "Prototyping Essentials",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A breadboard lets circuits be built and rewired instantly with no soldering, using a grid of spring metal clips hidden under the plastic holes — understanding exactly which holes are internally connected is the single most important thing to learn before using one. The two side columns (power rails) run the full length of the board, typically split into a + and - rail; the center section's short rows (usually 5 holes) are connected to each other but not across the central gap, which is sized to straddle DIP chips so their pins on either side aren't accidentally shorted together.",
+  "simpleSummary": "A reusable board full of connected holes that lets you build circuits by pushing in wires — no soldering.",
+  "specifications": {
+    "railLayout": "Two power rails (usually + and -) running the board's length, split at the midpoint on longer boards",
+    "terminalStrips": "Rows of 5 connected holes on each side of the central divide (standard 830-point or 400-point boards)",
+    "holeSpacing": "0.1 inch (2.54mm), matching standard DIP chip and header pin spacing",
+    "currentLimit": "Spring clips are only rated for a few hundred mA — not suitable for motor-level currents"
+  },
+  "pinMap": [
+    {
+      "name": "Power Rail (+)",
+      "position": null,
+      "category": "power",
+      "function": "A full-length column of internally-connected holes, typically used to distribute a supply voltage across the whole board.",
+      "voltageRange": "Whatever is connected, typically 3.3-5V for logic circuits",
+      "currentLimit": "A few hundred mA (spring clip contact rating)",
+      "alternateFunctions": [],
+      "gotcha": "On longer boards, the two halves of each rail are often NOT connected to each other — check for a physical gap, or bridge it with a jumper wire if a single continuous rail is needed."
+    },
+    {
+      "name": "Power Rail (-)",
+      "position": null,
+      "category": "power",
+      "function": "A full-length ground rail, paired with the + rail.",
+      "voltageRange": "0V (ground)",
+      "currentLimit": "A few hundred mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Terminal Strip",
+      "position": null,
+      "category": "special",
+      "function": "A short row (usually 5 holes) internally connected to each other, used for building the actual circuit connections between components.",
+      "voltageRange": "Whatever is connected",
+      "currentLimit": "A few hundred mA",
+      "alternateFunctions": [],
+      "gotcha": "Each row is isolated from the row directly across the central gap — a DIP chip straddling that gap has each pin on a separate, unconnected row, exactly as intended."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Rapid circuit prototyping",
+      "scenario": "Build and test a circuit design before committing to solder or a permanent PCB.",
+      "pinsInvolved": [
+        "Power Rail (+)",
+        "Power Rail (-)",
+        "Terminal Strip"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Teaching/learning electronics",
+      "scenario": "The standard platform for learning how components connect in a real circuit, not just a schematic.",
+      "pinsInvolved": [
+        "Terminal Strip"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Jumper wires",
+      "Resistors, capacitors, diodes, transistors",
+      "Arduino Uno"
+    ],
+    "oftenConfusedWith": [
+      "Perfboard/stripboard (soldered, permanent, no re-wiring)"
+    ],
+    "oftenUpgradedTo": [
+      "Perfboard or a custom PCB once a design is finalized and needs to be permanent"
+    ]
+  }
+}

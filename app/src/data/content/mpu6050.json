@@ -1,0 +1,155 @@
+{
+  "identity": {
+    "id": "mpu6050",
+    "name": "MPU6050 Accelerometer + Gyroscope",
+    "category": "Motion & Orientation Sensors",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The MPU6050 (often sold on a small blue 'GY-521' breakout) combines a 3-axis accelerometer and a 3-axis gyroscope in one chip — six degrees of freedom total, hence '6-DOF.' The accelerometer measures gravity/acceleration but is noisy and drifts under motion; the gyroscope measures rotation rate cleanly in the short term but drifts over time. Neither one alone gives a reliable orientation reading, which is why almost every project using this sensor runs a sensor fusion algorithm (like a Kalman or complementary filter) in software to combine both into a stable tilt/orientation estimate — a genuinely important concept this chip is most people's first introduction to.",
+  "simpleSummary": "A chip that senses both tilt and rotation, commonly used to measure a robot's orientation.",
+  "specifications": {
+    "operatingVoltage": "3.3V (breakout boards commonly add a regulator for 5V tolerance)",
+    "interface": "I2C (default address 0x68)",
+    "accelerometerRange": "±2/4/8/16g (selectable)",
+    "gyroscopeRange": "±250/500/1000/2000°/s (selectable)",
+    "resolution": "16-bit ADC per axis",
+    "magnetometer": "None (see MPU9250 for a 9-DOF version with a built-in compass)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~4 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V (5V-tolerant on most breakouts)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "XDA",
+      "position": null,
+      "category": "communication",
+      "function": "Auxiliary I2C data line, for connecting a secondary sensor (e.g. an external magnetometer) that the MPU6050 can read on the host's behalf.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Auxiliary I2C"
+      ],
+      "gotcha": "Rarely used in beginner projects — safe to leave unconnected."
+    },
+    {
+      "name": "XCL",
+      "position": null,
+      "category": "communication",
+      "function": "Auxiliary I2C clock line.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Auxiliary I2C"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "AD0",
+      "position": null,
+      "category": "digital",
+      "function": "I2C address select — LOW (default/grounded) sets address 0x68, HIGH sets 0x69.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Tie HIGH to run two MPU6050s on the same I2C bus without an address conflict."
+    },
+    {
+      "name": "INT",
+      "position": null,
+      "category": "digital",
+      "function": "Interrupt output, configurable to fire on new-data-ready or motion-detection events.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Self-balancing robot",
+      "scenario": "Fuse accelerometer and gyroscope readings to estimate tilt angle for a balancing control loop.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Drone/flight controller stabilization",
+      "scenario": "Core sensor for basic DIY flight controllers before upgrading to a 9-DOF or fusion-chip sensor.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA",
+        "INT"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Step counter / activity tracker",
+      "scenario": "Detect motion patterns from raw acceleration data.",
+      "pinsInvolved": [
+        "SCL",
+        "SDA"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32"
+    ],
+    "oftenConfusedWith": [
+      "MPU9250 (adds a magnetometer for absolute heading)",
+      "ADXL345 (accelerometer only, no gyroscope)"
+    ],
+    "oftenUpgradedTo": [
+      "BNO055 (does sensor fusion onboard, no software filter needed)"
+    ]
+  }
+}

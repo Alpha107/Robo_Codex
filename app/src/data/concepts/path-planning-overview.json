@@ -1,0 +1,28 @@
+{
+  "identity": {
+    "id": "path-planning-overview",
+    "title": "Path Planning Overview",
+    "category": "Motion Planning & Navigation",
+    "level": "Intermediate",
+    "tagline": "The general problem of finding a route from start to goal that avoids obstacles — before picking a specific algorithm."
+  },
+  "simpleSummary": "The general problem of finding a route from where a robot is to where it needs to be, without hitting anything along the way — the umbrella problem that specific algorithms like Dijkstra, A*, and RRT each solve differently.",
+  "keyIdea": "Path planning searches a representation of free space — a grid, a graph, or a continuous configuration space — for a valid route from start to goal, with different algorithms trading off guaranteed optimality, speed, and how well they scale to complex or high-dimensional spaces.",
+  "overview": "Before comparing specific algorithms, it's worth separating two related but distinct problems. Global planning computes an overall route across a known map ahead of time — like planning a route across a warehouse floor plan before the robot starts moving. Local planning (or reactive obstacle avoidance) instead decides the immediate next move using only current sensor data, reacting to things the global map didn't know about. Nearly every real mobile robot combines both: a global planner finds an efficient overall route, while a faster local layer handles moment-to-moment obstacle avoidance and deviations from that plan. The formal space being searched is often called configuration space (or C-space) — the space of every possible robot configuration, with 'obstacle regions' carved out representing configurations that would cause a collision; path planning is the search for a continuous, collision-free route through this space from a start configuration to a goal configuration.",
+  "equations": [],
+  "howItWorks": "Different planning algorithms make different choices about how to represent the search space and how to search it. Grid-based representations divide space into discrete cells, well suited to classic graph-search algorithms like Dijkstra's algorithm and A*. Sampling-based representations instead avoid discretizing the whole space at all, randomly sampling valid configurations and connecting them — this becomes essential in high-dimensional spaces (like planning motion for a multi-jointed robot arm), where a fine grid becomes computationally impossible to search directly, a problem known as the curse of dimensionality. No single approach dominates in every situation: the right choice depends on trade-offs between completeness (will it find a solution if one exists), optimality (will it find the best solution, not merely a valid one), computational cost, and how well the chosen representation fits the actual space being searched — a 2D floor map and a 6-DOF arm's configuration space call for genuinely different tools.",
+  "diagramCaption": "A generic path planning problem: find a valid route through a space with obstacles, from a start configuration to a goal configuration, using whichever search strategy best fits the space being searched.",
+  "realWorldExamples": [
+    "Warehouse robots planning efficient routes between shelves across a known floor map, using a grid or graph-based global planner.",
+    "This site's Obstacle-Avoidance Robot project, which relies primarily on local/reactive planning rather than a pre-known global map.",
+    "A self-driving car needing both: global route planning across city streets, plus fast local planning to react to real-time traffic and pedestrians."
+  ],
+  "commonMisconceptions": [
+    "\"Path planning always means finding the shortest possible path\" — many planners optimize for other objectives too, like safety margin from obstacles, smoothness, or computational cost, not length alone.",
+    "\"One algorithm works best in every situation\" — grid-based search suits known, low-dimensional discretized maps; sampling-based methods suit high-dimensional or continuous spaces; there is no universal winner.",
+    "\"Global planning alone is enough for a real robot\" — a global plan can't account for obstacles the map didn't know about; nearly all real systems pair it with a faster local/reactive layer."
+  ],
+  "relatedComponents": ["rplidar", "hc-sr04"],
+  "relatedProjects": ["obstacle-avoidance-robot", "line-following-robot"],
+  "relatedConcepts": ["dijkstras-algorithm", "a-star-search", "rrt-and-rrt-star", "obstacle-avoidance-strategies"]
+}

@@ -1,0 +1,41 @@
+{
+  "identity": {
+    "id": "obstacle-avoidance-strategies",
+    "title": "Obstacle Avoidance Strategies",
+    "category": "Motion Planning & Navigation",
+    "level": "Foundational",
+    "tagline": "The spectrum of real approaches robots use to avoid hitting things, from simple reactive rules to full path replanning."
+  },
+  "simpleSummary": "The different practical ways robots avoid hitting things, ranging from simple reactive rules like 'stop and turn if something's close' to full replanning of the entire route around a detected obstacle.",
+  "keyIdea": "Obstacle avoidance spans a spectrum from purely reactive, sensor-triggered behaviors (fast, simple, no map needed) to deliberative replanning around a known obstacle map (slower, more thorough), and most real robots combine both at once.",
+  "overview": "At one end of the spectrum, purely reactive obstacle avoidance uses simple, immediate rules based on current sensor readings — 'if the front sensor reads below this threshold, stop and turn' — with no map and almost no computation required, making it extremely fast to react to sudden, unexpected obstacles. At the other end, deliberative approaches incorporate detected obstacles into a map (typically an occupancy grid) and replan a global route around them using search algorithms like A* or RRT — more thorough and often more efficient overall, but computationally heavier and slower to react to something appearing suddenly. Virtually every serious real mobile robot combines both: a slower global layer computes an efficient overall route around known obstacles, while a much faster local, reactive layer handles sudden unexpected obstacles and fine local maneuvering, able to override the global plan's immediate next step the instant something the map didn't know about appears.",
+  "equations": [],
+  "howItWorks": "Purely reactive strategies are fast and mechanically simple but can be shortsighted, reacting only to what's immediately in front of the robot with no broader awareness — this site's Obstacle-Avoidance Robot project sits partway along this end of the spectrum, sweeping a single ultrasonic sensor on a servo to measure which direction has more open space, a step up from the simplest binary stop-and-turn rule but still fundamentally reactive rather than planned. Fully deliberative replanning is far more thorough and can find genuinely better overall routes, but costs meaningfully more computation and reacts more slowly to sudden changes the map didn't anticipate. Hybrid architectures, used by essentially all serious mobile robots and autonomous vehicles, run both simultaneously at very different update rates: a slow global planner might replan once per second or only on demand, while a fast local reactive layer runs many times per second, ready to override the global plan's immediate next move whenever a sudden, unmapped obstacle appears in the robot's path.",
+  "diagramCaption": "A hybrid obstacle-avoidance architecture: a slow global planner computes an efficient overall route from the known map, while a fast local reactive layer can override that plan's immediate next step the instant an unexpected obstacle appears.",
+  "realWorldExamples": [
+    "This site's own Obstacle-Avoidance Robot project, using a purely reactive strategy based on a sweeping ultrasonic sensor.",
+    "A warehouse robot combining a global route plan across the warehouse floor with local reactive avoidance for a person unexpectedly walking into its path.",
+    "Self-driving cars layering long-range route planning, medium-range path planning around mapped obstacles, and very fast reactive emergency braking or steering, all running simultaneously at different update rates."
+  ],
+  "commonMisconceptions": [
+    "\"Reactive obstacle avoidance is inherently worse than deliberative planning\" — they're different tools for different jobs (fast reaction to the unexpected vs. thorough route optimization), and virtually every serious real robot uses both together rather than choosing one exclusively.",
+    "\"Obstacle avoidance is a solved, simple problem\" — genuinely difficult edge cases remain active challenges: fast-moving obstacles, materials sensors struggle to detect reliably (like glass or thin poles), and crowded human environments requiring socially-aware navigation.",
+    "\"A robot with obstacle avoidance never needs a map at all\" — purely reactive avoidance can get a robot through immediate obstacles, but without any map or global plan it has no way to find an efficient overall route, only to avoid collisions moment to moment."
+  ],
+  "relatedComponents": [
+    "hc-sr04",
+    "ir-obstacle-sensor",
+    "sharp-gp2y0a21",
+    "rplidar"
+  ],
+  "relatedProjects": [
+    "obstacle-avoidance-robot",
+    "line-following-robot"
+  ],
+  "relatedConcepts": [
+    "potential-fields",
+    "path-planning-overview",
+    "rrt-and-rrt-star",
+    "dynamic-window-approach"
+  ]
+}

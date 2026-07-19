@@ -1,0 +1,93 @@
+{
+  "identity": {
+    "id": "dht11-dht22",
+    "name": "DHT11 / DHT22 Temperature & Humidity Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The DHT11 and DHT22 are the default 'read the room's temperature and humidity' sensors, both using a single data wire and a proprietary timing-based digital protocol instead of I2C or SPI — the microcontroller sends a short start signal, then reads back a precisely-timed sequence of pulses encoding 40 bits of data. The DHT22 costs more but is meaningfully better in every measurable way (wider range, better accuracy, faster response); the DHT11 remains popular purely because it's cheaper and 'good enough' for room-temperature hobby projects. Both are quite slow — readings should be requested no more than about once every 1-2 seconds, or the sensor returns stale/invalid data.",
+  "simpleSummary": "A simple sensor that reports the room's temperature and humidity over a single wire.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5.5V",
+    "temperatureRangeDHT11": "0-50°C, ±2°C accuracy",
+    "temperatureRangeDHT22": "-40 to 80°C, ±0.5°C accuracy",
+    "humidityRangeDHT11": "20-90% RH, ±5% accuracy",
+    "humidityRangeDHT22": "0-100% RH, ±2-5% accuracy",
+    "interface": "Single-wire proprietary digital protocol (not I2C/SPI/UART)",
+    "samplingRate": "DHT11: ~1 Hz max; DHT22: ~0.5 Hz max"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3V - 5.5V",
+      "currentLimit": "~1-2.5 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DATA",
+      "position": null,
+      "category": "digital",
+      "function": "Single-wire data line carrying both the request signal (from the microcontroller) and the 40-bit response (from the sensor), using precise pulse-width timing rather than a standard protocol.",
+      "voltageRange": "0-5V, needs a ~10kΩ pull-up resistor to VCC",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Requesting data faster than the sensor's minimum interval (~1-2 seconds) returns garbage or a timeout — this is the most common 'my readings are all NaN' beginner problem."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Home weather station",
+      "scenario": "Log or display indoor temperature and humidity over time.",
+      "pinsInvolved": [
+        "DATA",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Greenhouse/incubator climate control",
+      "scenario": "Trigger a fan, heater, or humidifier based on threshold readings.",
+      "pinsInvolved": [
+        "DATA"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "HVAC/smart thermostat prototype",
+      "scenario": "Read ambient conditions as input to a simple climate control algorithm.",
+      "pinsInvolved": [
+        "DATA"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "16x2 LCD (for displaying readings)"
+    ],
+    "oftenConfusedWith": [
+      "BME280 (I2C interface, adds pressure, better accuracy, costs more)"
+    ],
+    "oftenUpgradedTo": [
+      "BME280 for higher accuracy and a standard I2C interface instead of proprietary timing"
+    ]
+  }
+}

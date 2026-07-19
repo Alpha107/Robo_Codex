@@ -1,0 +1,93 @@
+{
+  "identity": {
+    "id": "ball-bearing",
+    "name": "Ball Bearing",
+    "category": "Structural & Mechanical",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A ball bearing lets one part spin smoothly relative to another by replacing direct sliding contact (which generates friction and wears both surfaces) with a ring of hardened steel balls that roll instead of slide. In robotics, bearings show up anywhere something needs to rotate freely and precisely under load — a wheel axle, a rotating turret, an idler pulley — and choosing the right bore size (inner diameter, matched to the shaft) and outer diameter (matched to the housing) matters as much as choosing the right electronic component, even though it's easy for a software-focused beginner to overlook.",
+  "simpleSummary": "A ring of little steel balls that lets a wheel or shaft spin smoothly with almost no friction.",
+  "specifications": {
+    "construction": "Inner race, outer race, ball bearings between them, often a shield/seal on one or both sides",
+    "commonSizes": "Named by bore/outer-diameter/width, e.g. '608' bearing = 8mm bore, 22mm OD, 7mm width (common in fidget spinners and small robotics)",
+    "sealType": "Open, single-shielded (2RS/ZZ), or double-shielded — affects dust/debris resistance and friction",
+    "loadDirection": "Radial bearings handle side-loads; thrust bearings handle axial (end-to-end) loads"
+  },
+  "pinMap": [
+    {
+      "name": "Inner Race",
+      "position": null,
+      "category": "special",
+      "function": "The inner ring, typically press-fit or slid onto a rotating shaft.",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Forcing a bearing onto a slightly oversized shaft by pressing on the outer race (instead of the inner race) transmits force through the balls and can pit or damage them."
+    },
+    {
+      "name": "Outer Race",
+      "position": null,
+      "category": "special",
+      "function": "The outer ring, typically press-fit into a housing or bracket that stays stationary.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Ball Track",
+      "position": null,
+      "category": "special",
+      "function": "The ring of steel balls that actually rolls between the inner and outer races, carrying the load with minimal friction.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Contaminants (dust, dirt) getting into an unshielded bearing's ball track significantly increase friction and wear over time."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Wheel/axle support",
+      "scenario": "Let a driven or free-spinning wheel rotate smoothly under the robot's weight.",
+      "pinsInvolved": [
+        "Inner Race",
+        "Outer Race",
+        "Ball Track"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Idler pulley support",
+      "scenario": "Provide a low-friction free-spinning point for a timing belt's return path.",
+      "pinsInvolved": [
+        "Inner Race",
+        "Outer Race"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Rotating turret/pan mechanism",
+      "scenario": "Smooth, precise rotation for a camera pan mount or turret base.",
+      "pinsInvolved": [
+        "Outer Race",
+        "Ball Track"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Timing belt & pulley",
+      "Aluminum extrusion",
+      "NEMA 17 stepper motor"
+    ],
+    "oftenConfusedWith": [
+      "Bushings (simpler sliding-contact support, more friction, cheaper)"
+    ],
+    "oftenUpgradedTo": [
+      "Precision-ground linear rail bearings for CNC-grade motion accuracy"
+    ]
+  }
+}

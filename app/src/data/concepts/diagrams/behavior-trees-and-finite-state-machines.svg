@@ -1,0 +1,54 @@
+<svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .active { animation: active 4s steps(1) infinite; }
+    @keyframes active { 0%, 20% { stroke: #e03131; stroke-width: 4; } 21%, 100% { stroke: #1a1d23; stroke-width: 2; } }
+    .a2 { animation-delay: -1s; }
+    .a3 { animation-delay: -2s; }
+    .a4 { animation-delay: -3s; }
+    .tick { animation: tickglow 2.4s ease-in-out infinite; }
+    @keyframes tickglow { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+    .t2 { animation-delay: -0.3s; }
+    .t3 { animation-delay: -0.6s; }
+    .t4 { animation-delay: -0.9s; }
+  </style>
+
+  <text x="150" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a1d23">Finite State Machine</text>
+  <circle cx="80" cy="90" r="34" fill="#4dabf7" stroke="#1a1d23" stroke-width="2" class="active"/>
+  <text x="80" y="94" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="700">Idle</text>
+  <circle cx="200" cy="60" r="34" fill="#f08c00" stroke="#1a1d23" stroke-width="2" class="active a2"/>
+  <text x="200" y="64" text-anchor="middle" fill="#ffffff" font-size="9.5" font-weight="700">Searching</text>
+  <circle cx="240" cy="170" r="34" fill="#2f9e44" stroke="#1a1d23" stroke-width="2" class="active a3"/>
+  <text x="240" y="174" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700">Approaching</text>
+  <circle cx="110" cy="220" r="34" fill="#845ef7" stroke="#1a1d23" stroke-width="2" class="active a4"/>
+  <text x="110" y="224" text-anchor="middle" fill="#ffffff" font-size="9.5" font-weight="700">Grasping</text>
+
+  <path d="M108,75 Q150,60 168,60" fill="none" stroke="#1a1d23" stroke-width="1.6"/>
+  <path d="M215,92 Q230,120 235,138" fill="none" stroke="#1a1d23" stroke-width="1.6"/>
+  <path d="M215,195 Q160,215 142,218" fill="none" stroke="#1a1d23" stroke-width="1.6"/>
+  <path d="M85,190 Q80,140 80,124" fill="none" stroke="#1a1d23" stroke-width="1.6"/>
+
+  <line x1="320" y1="0" x2="320" y2="300" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="470" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1a1d23">Behavior Tree</text>
+  <rect x="430" y="45" width="90" height="34" rx="6" fill="#4dabf7" stroke="#1a1d23" stroke-width="2" class="tick"/>
+  <text x="475" y="66" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="700">Selector</text>
+
+  <path d="M475,79 V100 M475,100 H400 M475,100 H550" stroke="#1a1d23" stroke-width="1.6" fill="none"/>
+  <path d="M400,100 V115" stroke="#1a1d23" stroke-width="1.6"/>
+  <path d="M550,100 V115" stroke="#1a1d23" stroke-width="1.6"/>
+
+  <rect x="355" y="115" width="90" height="30" rx="6" fill="#f08c00" stroke="#1a1d23" stroke-width="2" class="tick t2"/>
+  <text x="400" y="134" text-anchor="middle" fill="#ffffff" font-size="9.5" font-weight="700">Battery Low?</text>
+
+  <rect x="505" y="115" width="90" height="30" rx="6" fill="#2f9e44" stroke="#1a1d23" stroke-width="2" class="tick t3"/>
+  <text x="550" y="134" text-anchor="middle" fill="#ffffff" font-size="9.5" font-weight="700">Sequence</text>
+
+  <path d="M550,145 V160 M550,160 H480 M550,160 H620" stroke="#1a1d23" stroke-width="1.6" fill="none"/>
+  <rect x="440" y="175" width="90" height="30" rx="6" fill="#845ef7" stroke="#1a1d23" stroke-width="2" class="tick t4"/>
+  <text x="485" y="194" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700">Move To Target</text>
+  <rect x="560" y="175" width="55" height="30" rx="6" fill="#e64980" stroke="#1a1d23" stroke-width="2" class="tick t4"/>
+  <text x="587" y="194" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700">Grasp</text>
+
+  <text x="470" y="270" text-anchor="middle" font-size="9.5" fill="#5b6270">Subtrees like "recharge if low" can be reused</text>
+  <text x="470" y="284" text-anchor="middle" font-size="9.5" fill="#5b6270">across many larger behaviors.</text>
+</svg>

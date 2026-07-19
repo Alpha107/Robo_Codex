@@ -1,0 +1,147 @@
+{
+  "identity": {
+    "id": "nrf24l01",
+    "name": "NRF24L01 Wireless Module",
+    "category": "Communication Modules",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The NRF24L01 is the go-to choice when a project needs cheap, low-power wireless communication between two or more microcontrollers — not phones, just other NRF24L01-equipped boards. It talks over SPI rather than the simpler UART used by Bluetooth or HC-12 modules, which gives it much higher throughput but a steeper setup curve, and it supports multi-node 'star' networks where one node can address several others by a configurable pipe address. Its onboard PCB trace antenna keeps range modest (tens of meters indoors); a version with an external antenna and power amplifier reaches much further at the cost of higher power draw.",
+  "simpleSummary": "A cheap, low-power wireless module for sending data between two microcontrollers.",
+  "specifications": {
+    "operatingVoltage": "1.9V - 3.6V (logic pins are 5V-tolerant on most breakouts, power rail is not)",
+    "interface": "SPI",
+    "frequency": "2.4GHz ISM band",
+    "dataRate": "250kbps - 2Mbps (configurable)",
+    "range": "~10-100m depending on antenna variant and environment"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input — strictly 3.3V, not 5V tolerant.",
+      "voltageRange": "1.9-3.6V",
+      "currentLimit": "~12 mA average, spikes higher during transmit",
+      "alternateFunctions": [],
+      "gotcha": "Feeding 5V into VCC destroys the module immediately — this is a genuinely common mistake since the SPI logic pins nearby often ARE 5V tolerant, leading people to assume the power pin is too."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CE",
+      "position": null,
+      "category": "digital",
+      "function": "Chip enable — toggles between standby and active TX/RX modes.",
+      "voltageRange": "0-3.3V (5V-tolerant)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "CSN",
+      "position": null,
+      "category": "digital",
+      "function": "SPI chip select, active LOW.",
+      "voltageRange": "0-3.3V (5V-tolerant)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI CS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SCK",
+      "position": null,
+      "category": "digital",
+      "function": "SPI clock.",
+      "voltageRange": "0-3.3V (5V-tolerant)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "MOSI",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data in.",
+      "voltageRange": "0-3.3V (5V-tolerant)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "MISO",
+      "position": null,
+      "category": "digital",
+      "function": "SPI data out.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "IRQ",
+      "position": null,
+      "category": "digital",
+      "function": "Active-LOW interrupt output, signals events like data received or transmission complete.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": "Optional — many projects poll status registers over SPI instead of wiring this pin."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Wireless RC transmitter/receiver",
+      "scenario": "Build a custom remote control for a car, drone, or robot with low latency and low power draw.",
+      "pinsInvolved": [
+        "CE",
+        "CSN",
+        "SCK",
+        "MOSI",
+        "MISO"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Multi-node sensor network",
+      "scenario": "Several battery-powered sensor nodes reporting back to one central receiver.",
+      "pinsInvolved": [
+        "CE",
+        "CSN"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Nano",
+      "Arduino Pro Mini"
+    ],
+    "oftenConfusedWith": [
+      "HC-12 (simpler UART interface, longer range, lower throughput)",
+      "LoRa modules (much longer range, much lower data rate)"
+    ],
+    "oftenUpgradedTo": [
+      "LoRa modules when range matters more than data rate"
+    ]
+  }
+}

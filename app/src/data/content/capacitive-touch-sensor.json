@@ -1,0 +1,103 @@
+{
+  "identity": {
+    "id": "capacitive-touch-sensor",
+    "name": "Capacitive Touch Sensor (TTP223)",
+    "category": "Input Devices",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The TTP223 is about as simple as digital input gets: a tiny breakout with a round copper touch pad on top, wired to a chip that senses the small capacitance change when a finger gets close and flips a digital output pin HIGH or LOW. There's no analog reading and no calibration code required — the chip self-calibrates its baseline on power-up. The one real wrinkle is that many boards carry a solder jumper that switches the output between momentary mode (HIGH only while touched) and toggle/latching mode (each touch flips the output state and holds it) — code written assuming one mode will misbehave in a confusing way on a board set to the other.",
+  "simpleSummary": "A tiny touch-sensitive pad that outputs a simple HIGH or LOW signal when you touch it, no analog reading needed.",
+  "specifications": {
+    "sensorChip": "TTP223 capacitive touch IC",
+    "operatingVoltage": "2.0V - 5.5V",
+    "outputType": "Digital push-pull HIGH/LOW (no analog output)",
+    "outputModes": "Momentary (HIGH only while touched) or toggle/latching (each touch flips state) — selected by a solder jumper on the board",
+    "responseTime": "~220-260 ms, including a brief self-calibration right after power-up",
+    "standbyCurrent": "~3-6 microamps typical — low enough for battery-powered wake circuits",
+    "detectionRange": "A few millimeters through non-metallic material (plastic, glass, thin wood) placed over the pad",
+    "padSize": "~8-10mm diameter round copper pad on typical breakout boards"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the touch sensor IC.",
+      "voltageRange": "2.0V - 5.5V",
+      "currentLimit": "~3-6 microamps standby, low mA during active sensing",
+      "alternateFunctions": [],
+      "gotcha": "The chip runs a brief self-calibration for roughly a quarter second right after power-up — touching the pad during that window can get baked in as the new 'untouched' baseline, making the sensor seem stuck or unresponsive afterward."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference, shared with the controlling microcontroller.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "OUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital output that goes HIGH when the pad is touched — behavior depends on the board's solder-jumper mode.",
+      "voltageRange": "0-VCC digital",
+      "currentLimit": "~a few mA, enough to drive an LED directly but not a relay coil",
+      "alternateFunctions": [],
+      "gotcha": "Whether this pin behaves as a momentary press or a toggling latch is set by a solder jumper on the board, not by your code — code written assuming one mode will silently misbehave on a board jumpered to the other. Check the jumper before debugging your sketch."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Touch button replacement",
+      "scenario": "Swap out a mechanical tactile switch for a sealed, no-moving-parts touch pad on a project enclosure.",
+      "pinsInvolved": ["VCC", "GND", "OUT"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "DIY touch on/off toggle",
+      "scenario": "Use toggle-mode output to switch a relay or MOSFET controlling a lamp or fan on and off with a single tap.",
+      "pinsInvolved": ["VCC", "GND", "OUT"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Wake-from-sleep touch pad",
+      "scenario": "Wire OUT to an interrupt pin on a low-power microcontroller so a light touch wakes the device from deep sleep.",
+      "pinsInvolved": ["VCC", "GND", "OUT"],
+      "difficulty": "Intermediate (interrupt/sleep configuration)"
+    },
+    {
+      "title": "Hidden touch trigger behind an enclosure panel",
+      "scenario": "Mount the pad behind a thin plastic panel so the touch point is invisible from outside, since the sensor works through non-metallic material.",
+      "pinsInvolved": ["VCC", "GND", "OUT"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Simple touch-based game input",
+      "scenario": "Use several momentary-mode sensors as low-profile buttons for a reaction-time or whack-a-mole style game.",
+      "pinsInvolved": ["VCC", "GND", "OUT"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": ["Arduino Uno", "relay module", "single LED"],
+    "oftenConfusedWith": [
+      "Mechanical tactile push button (physical actuation vs capacitive field sensing, no moving parts)",
+      "IR proximity sensor (detects nearby objects through open air vs contact/near-contact sensing through a surface)"
+    ],
+    "oftenUpgradedTo": [
+      "MPR121 multi-channel capacitive touch IC for several independent touch pads on one board"
+    ]
+  },
+  "beginnerMistakes": [
+    "Assuming momentary mode when the board is actually jumpered to toggle mode, or vice versa, and blaming the code for the mismatch.",
+    "Touching the pad during the brief self-calibration window right after power-up, which can bake a false baseline in.",
+    "Mounting the pad behind or near metal, which blocks or badly distorts capacitive sensing.",
+    "Running a long unshielded wire out to a remote pad, which picks up enough noise to cause false triggers.",
+    "Expecting an analog 'how hard/how close' reading — the output is purely digital HIGH/LOW with no proximity gradient."
+  ]
+}

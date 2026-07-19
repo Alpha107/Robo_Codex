@@ -1,0 +1,30 @@
+<svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="110" width="180" height="140" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="120" y="175" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="120" y="196" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <rect x="420" y="30" width="170" height="60" rx="8" fill="#0ca678" stroke="#1a1d23" stroke-width="2"/>
+  <text x="505" y="55" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">HC-SR04 #1</text>
+  <text x="505" y="73" text-anchor="middle" fill="#ffffff" font-size="11">(entry side)</text>
+
+  <rect x="420" y="120" width="170" height="60" rx="8" fill="#0ca678" stroke="#1a1d23" stroke-width="2"/>
+  <text x="505" y="145" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">HC-SR04 #2</text>
+  <text x="505" y="163" text-anchor="middle" fill="#ffffff" font-size="11">(exit side)</text>
+
+  <rect x="420" y="220" width="170" height="60" rx="8" fill="#495057" stroke="#1a1d23" stroke-width="2"/>
+  <text x="505" y="245" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">16x2 LCD</text>
+  <text x="505" y="263" text-anchor="middle" fill="#ffffff" font-size="11">(I2C backpack)</text>
+
+  <path d="M210,140 H340 V60 H420" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="140" r="4" fill="#4dabf7"/>
+  <text x="220" y="132" font-size="12" font-weight="600" fill="#1a1d23">D9/D10 &#8594; TRIG/ECHO #1</text>
+
+  <path d="M210,170 H360 V150 H420" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <circle cx="210" cy="170" r="4" fill="#4dabf7"/>
+  <text x="220" y="188" font-size="12" font-weight="600" fill="#1a1d23">D11/D12 &#8594; TRIG/ECHO #2</text>
+
+  <path d="M210,220 H380 V250 H420" fill="none" stroke="#cc5de8" stroke-width="3"/>
+  <circle cx="210" cy="220" r="4" fill="#cc5de8"/>
+  <text x="220" y="238" font-size="12" font-weight="600" fill="#1a1d23">A4/A5 &#8594; LCD SDA/SCL</text>
+
+</svg>

@@ -1,0 +1,45 @@
+<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .flow { stroke-dasharray: 6 5; animation: flowmove 1s linear infinite; }
+    @keyframes flowmove { to { stroke-dashoffset: -22; } }
+    .trace { stroke-dasharray: 130; animation: tracedraw 2.6s ease-in-out infinite; }
+    @keyframes tracedraw { 0% { stroke-dashoffset: 130; } 60%, 100% { stroke-dashoffset: 0; } }
+    .flicker rect { animation: flicker 1.8s steps(2) infinite; }
+    @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  </style>
+
+  <text x="340" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">A Classical Computer Vision Pipeline</text>
+
+  <rect x="20" y="60" width="140" height="90" rx="8" fill="#8d6e63" stroke="#1a1d23" stroke-width="2"/>
+  <text x="90" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Raw Pixels</text>
+  <g class="flicker">
+    <rect x="45" y="110" width="10" height="10" fill="#dcdcdc"/><rect x="60" y="110" width="10" height="10" fill="#8a8a8a"/>
+    <rect x="75" y="110" width="10" height="10" fill="#4a4a4a"/><rect x="90" y="110" width="10" height="10" fill="#bcbcbc"/>
+    <rect x="45" y="122" width="10" height="10" fill="#6a6a6a"/><rect x="60" y="122" width="10" height="10" fill="#2a2a2a"/>
+    <rect x="75" y="122" width="10" height="10" fill="#9a9a9a"/><rect x="90" y="122" width="10" height="10" fill="#5a5a5a"/>
+  </g>
+
+  <path d="M160,105 H190" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="190,99 204,105 190,111" fill="#1a1d23"/>
+
+  <rect x="204" y="60" width="140" height="90" rx="8" fill="#4dabf7" stroke="#1a1d23" stroke-width="2"/>
+  <text x="274" y="95" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Preprocess</text>
+  <text x="274" y="112" text-anchor="middle" fill="#e7f5ff" font-size="10">grayscale, blur</text>
+
+  <path d="M344,105 H374" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="374,99 388,105 374,111" fill="#1a1d23"/>
+
+  <rect x="388" y="60" width="140" height="90" rx="8" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <text x="458" y="95" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Extract Features</text>
+  <text x="458" y="112" text-anchor="middle" fill="#fff3e0" font-size="10">edges, color regions</text>
+
+  <path d="M528,105 H558" stroke="#1a1d23" stroke-width="2.5" fill="none" class="flow"/>
+  <polygon points="558,99 572,105 558,111" fill="#1a1d23"/>
+
+  <rect x="572" y="60" width="90" height="90" rx="8" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <path d="M600,90 h35 v40 h-35 z" fill="none" stroke="#ffffff" stroke-width="2.5" class="trace"/>
+  <text x="617" y="145" text-anchor="middle" fill="#ffffff" font-size="10.5" font-weight="700">object found</text>
+
+  <text x="340" y="205" text-anchor="middle" font-size="11" fill="#5b6270">Each stage adds structure the raw pixel grid never had on its own.</text>
+  <text x="340" y="222" text-anchor="middle" font-size="10" fill="#5b6270">Example: a line-following robot uses just the Preprocess + color-threshold steps, nothing more.</text>
+</svg>

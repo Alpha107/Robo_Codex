@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "imitation-learning",
+    "title": "Imitation Learning",
+    "category": "AI & Machine Learning",
+    "level": "Advanced",
+    "tagline": "Teaching a robot by showing it examples of a human doing the task right, instead of trial-and-error or hand-written rules."
+  },
+  "simpleSummary": "Instead of trial-and-error or hand-written rules, teaching a robot by showing it examples of a human (or another controller) doing the task correctly, and training it to copy that behavior.",
+  "keyIdea": "Imitation learning trains a policy directly from a dataset of demonstrated state-action pairs, learning to map 'what I currently see' to 'what the demonstrator did in that situation,' without needing a hand-designed reward function or millions of trial-and-error attempts.",
+  "overview": "Reinforcement learning requires a reward function and typically huge numbers of trial-and-error interactions, often impractical or outright dangerous to run on a real physical robot. Hand-coded rules require an expert to explicitly enumerate a strategy, which is difficult for tasks that are intuitive for a human to demonstrate but hard to describe as explicit if-then logic — 'drive smoothly through this obstacle course,' or 'grasp this oddly-shaped object.' Imitation learning offers a third path: collect a dataset of demonstrations — a human teleoperating a robot arm through many successful grasps, or driving a simulated car around a track — recording what the demonstrator observed (the state) and what action they took at each moment, then train a policy, often a neural network, using ordinary supervised learning to reproduce that same mapping. The simplest version of this is called behavioral cloning.",
+  "equations": [
+    {
+      "label": "Behavioral Cloning Objective",
+      "expression": "minimize Σ Loss(π(sᵢ), aᵢ)  over demonstrations {(sᵢ, aᵢ)}",
+      "meaning": "The policy π is trained, via ordinary supervised learning, to output an action as close as possible to the actual action aᵢ the demonstrator took in each recorded state sᵢ — no reward function is needed at all."
+    }
+  ],
+  "howItWorks": "Naive behavioral cloning has a well-known core weakness: distribution shift, or compounding error. A policy trained only on states the expert demonstrator actually visited has no idea what to do once even a small error causes it to drift into a state slightly different from anything in the training data — the expert, being expert, rarely if ever visited such a slightly-off state, so there's no training example showing how to recover. That small deviation compounds further over time, since the policy keeps acting on an ever-more-unfamiliar state, unlike a human who naturally corrects small drifts as they happen. More advanced techniques, like DAgger (Dataset Aggregation), address this directly by having the policy also collect its own experience of drifting off-track and getting corrective labels for those off-track states, rather than training purely on clean expert trajectories. In practice, imitation learning is often used as a practical starting point for a policy — giving it a reasonable initial behavior instead of random, clumsy actions — which is then further refined through reinforcement learning, combining imitation's data-efficiency with RL's ability to improve past whatever a single demonstrator showed.",
+  "diagramCaption": "An expert's demonstrated path stays smooth and on-track; a naively cloned policy starts by following it closely, but small errors compound over time, drifting it into unfamiliar territory the training data never covered.",
+  "realWorldExamples": [
+    "Teaching a robot arm to grasp objects by recording many successful human-teleoperated grasp demonstrations, then training a policy to reproduce similar grasping motions from camera input.",
+    "Early self-driving car research using recorded human driving demonstrations (steering angle alongside camera footage) to train a basic driving policy via behavioral cloning.",
+    "Using imitation learning to give a reinforcement learning agent a reasonable starting policy, which is then further refined through trial-and-error RL training rather than starting from random behavior."
+  ],
+  "commonMisconceptions": [
+    "\"Imitation learning just memorizes and replays the exact demonstrations\" — it learns a generalizable mapping from state to action meant to handle states similar to, but not identical to, the demonstrations — though this generalization gap is exactly where naive behavioral cloning's compounding-error weakness comes from.",
+    "\"Imitation learning always eliminates the need for a reward function\" — mostly true for simple behavioral cloning, but more advanced variants like inverse reinforcement learning actually infer a reward function from the demonstrations, blurring this line.",
+    "\"More demonstration data always fixes the compounding-error problem\" — more clean expert data alone doesn't teach recovery from off-track states; techniques like DAgger specifically add corrective labels for those off-track situations instead."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": [],
+  "relatedConcepts": ["reinforcement-learning-basics", "neural-networks-for-robotics", "behavior-trees-and-finite-state-machines"]
+}

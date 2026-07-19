@@ -1,0 +1,51 @@
+{
+  "identity": {
+    "id": "motor-control-theory",
+    "title": "Motor Control Theory (Torque, Back-EMF)",
+    "category": "Actuation Foundations",
+    "level": "Intermediate",
+    "tagline": "The basic electrical relationships explaining why a motor slows under load and why a stalled motor is dangerous."
+  },
+  "simpleSummary": "The basic electrical relationships that explain why a motor visibly slows down under load, why it draws more current when working harder, and why a jammed (stalled) motor draws a genuinely dangerous amount of current.",
+  "keyIdea": "A DC motor's speed is roughly proportional to applied voltage minus a back-EMF term that grows with speed, and its torque is roughly proportional to current draw — together explaining why a stalled or heavily loaded motor draws a dangerously high current.",
+  "overview": "A spinning DC motor's own coil, moving through its internal magnetic field, generates its own voltage — called back-EMF (back electromotive force) — that opposes the supply voltage driving it, growing proportionally with the motor's own speed. This is why a motor's current draw is naturally self-limiting to a degree once it's spinning freely, but also exactly why a stalled motor (zero speed, therefore zero back-EMF) draws far more current than a freely-spinning one at the same supply voltage. Torque produced is roughly proportional to current draw, which means a heavily loaded motor — one needing more torque to keep turning against resistance — draws proportionally more current, which is exactly why motor drivers need adequate current ratings and why an undersized power supply or wiring can seem perfectly fine with an unloaded motor but fail under real working load.",
+  "equations": [
+    {
+      "label": "Voltage Balance",
+      "expression": "V = I·R + Kₑ·ω",
+      "meaning": "Applied voltage V splits between a resistive drop (I·R, current through the winding's resistance) and back-EMF (Kₑ·ω, proportional to angular speed ω and the motor's back-EMF constant Kₑ)."
+    },
+    {
+      "label": "Torque-Current Relationship",
+      "expression": "τ = Kₜ·I",
+      "meaning": "Torque τ produced is proportional to current I, scaled by the motor's torque constant Kₜ — more mechanical load requires more torque, which requires more current."
+    }
+  ],
+  "howItWorks": "At any given supply voltage, a motor naturally settles at whatever speed makes the sum of resistive drop and back-EMF equal the supply voltage. Adding mechanical load forces the motor to draw more current to produce the extra torque needed, and per the voltage equation, that extra current 'eats into' more of the available voltage as resistive drop, leaving less voltage available for back-EMF — meaning the motor must slow down to reduce its own back-EMF and re-balance the equation. This is exactly the familiar real-world experience of a motor visibly slowing down under load. It's also exactly why a microcontroller pin can never directly drive a real motor: a pin simply cannot supply anywhere near the current a motor draws, especially under load or stall conditions, and attempting to drive one directly would destroy the pin — hence the need for a proper motor driver like an L298N. PWM-based speed control fits neatly into this same picture: PWM effectively creates an adjustable average supply voltage, and this same voltage-current-speed relationship then determines the resulting steady speed for that average voltage under whatever load is actually present.",
+  "diagramCaption": "A motor's speed-torque curve: speed is highest (free-run) at zero load torque, and drops roughly linearly as load torque increases, reaching zero speed at the stall point — where current is at its absolute maximum.",
+  "realWorldExamples": [
+    "This site's L298N Motor Driver component page discusses stall current specifically as a critical rating to check when selecting a driver for a given motor.",
+    "A robot's drive motors audibly and visibly slowing down when climbing over an obstacle or thick carpet, exactly as this relationship predicts: increased load, increased current, reduced speed at the same supply voltage.",
+    "This site's DC Motor Speed Control project's PWM-based speed control is governed by precisely this voltage-current-speed relationship underneath the analogWrite() call."
+  ],
+  "commonMisconceptions": [
+    "\"A stalled motor is safe as long as the supply voltage seems fine\" — a stalled motor draws its maximum current specifically because back-EMF drops to zero; this is precisely the condition most likely to overheat a motor or exceed a driver's current rating, even when everything else looks fine.",
+    "\"A higher-power-rated motor always spins faster under the same PWM signal\" — actual speed depends on the interaction between supply voltage, the back-EMF constant, and load, not on power rating alone.",
+    "\"Current draw only matters at startup\" — sustained heavy load (climbing, pushing, carrying weight) keeps current elevated for as long as the load persists, not just during the initial startup moment."
+  ],
+  "relatedComponents": [
+    "dc-geared-motor",
+    "l298n",
+    "bldc-motor",
+    "esc"
+  ],
+  "relatedProjects": [
+    "dc-motor-speed-control"
+  ],
+  "relatedConcepts": [
+    "pid-control",
+    "robot-dynamics-newton-euler-lagrangian",
+    "gear-ratios-and-mechanical-advantage",
+    "actuator-selection-servo-stepper-bldc"
+  ]
+}

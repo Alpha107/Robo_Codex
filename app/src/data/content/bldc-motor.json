@@ -1,0 +1,96 @@
+{
+  "identity": {
+    "id": "bldc-motor",
+    "name": "Brushless DC Motor (BLDC)",
+    "category": "Motors & Actuators",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A brushless motor replaces the mechanical brushes of a regular DC motor with electronic commutation — a controller rapidly switches power across three coil phases in the right sequence to spin the rotor. That removes the wear-prone part that limits a brushed motor's lifespan and lets BLDCs run more efficiently at much higher speeds, which is exactly why every drone propeller and most high-performance robots use them. The tradeoff is that a BLDC motor cannot be driven directly from a microcontroller pin or even a simple H-bridge — it requires a dedicated Electronic Speed Controller (ESC) that handles the three-phase commutation, typically itself controlled by a simple PWM or digital signal.",
+  "simpleSummary": "A powerful, efficient motor with no wearing brushes inside, spun by rapidly switching power through its coils.",
+  "specifications": {
+    "phases": "3 (three coil windings, star or delta wound)",
+    "kvRating": "Motor constant in RPM per volt (e.g. 1000KV = ~1000 RPM per volt, unloaded)",
+    "operatingVoltage": "Model-dependent, commonly driven from 2S-6S LiPo packs (7.4V-22.2V)",
+    "controlRequirement": "Requires an ESC (Electronic Speed Controller) — cannot be driven directly",
+    "efficiency": "Higher than brushed DC motors, less heat, longer lifespan (no brush wear)"
+  },
+  "pinMap": [
+    {
+      "name": "Phase A",
+      "position": null,
+      "category": "power",
+      "function": "One of three motor phase windings, connects to the ESC.",
+      "voltageRange": "ESC-switched, matches battery voltage",
+      "currentLimit": "Motor's rated current (varies widely by size)",
+      "alternateFunctions": [],
+      "gotcha": "The three phase wires are often unlabeled/interchangeable on many hobby motors — swapping any two reverses the spin direction."
+    },
+    {
+      "name": "Phase B",
+      "position": null,
+      "category": "power",
+      "function": "Second motor phase winding.",
+      "voltageRange": "ESC-switched",
+      "currentLimit": "Motor's rated current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "Phase C",
+      "position": null,
+      "category": "power",
+      "function": "Third motor phase winding.",
+      "voltageRange": "ESC-switched",
+      "currentLimit": "Motor's rated current",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Drone/multirotor propulsion",
+      "scenario": "The standard motor type for every quadcopter/drone propeller, chosen for its power-to-weight ratio.",
+      "pinsInvolved": [
+        "Phase A",
+        "Phase B",
+        "Phase C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "High-performance robot wheel drive",
+      "scenario": "Combined with a gearbox or direct-drive hub design for robots needing more speed/efficiency than a brushed motor provides.",
+      "pinsInvolved": [
+        "Phase A",
+        "Phase B",
+        "Phase C"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Gimbal stabilization",
+      "scenario": "Specialized low-KV gimbal BLDC motors provide smooth, precise camera stabilization.",
+      "pinsInvolved": [
+        "Phase A",
+        "Phase B",
+        "Phase C"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "ESC (Electronic Speed Controller)",
+      "LiPo battery"
+    ],
+    "oftenConfusedWith": [
+      "DC geared motor (brushed, 2-wire, no ESC needed)",
+      "Stepper motors (open-loop positioning, not continuous high-speed spin)"
+    ],
+    "oftenUpgradedTo": [
+      "FOC (Field-Oriented Control) ESCs for smoother, more efficient commutation"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "identity": {
+    "id": "dijkstras-algorithm",
+    "title": "Dijkstra's Algorithm",
+    "category": "Motion Planning & Navigation",
+    "level": "Intermediate",
+    "tagline": "Guaranteed shortest paths, found by always expanding whichever unvisited point is currently cheapest to reach."
+  },
+  "simpleSummary": "A systematic method for finding the guaranteed-shortest path from a start point to every other point in a map or graph, by always exploring outward from whichever unvisited point is currently closest.",
+  "keyIdea": "Dijkstra's algorithm guarantees the shortest path by repeatedly finalizing the closest not-yet-visited node, updating its neighbors' distances, and never revisiting a finalized node — provably optimal as long as no edge has a negative weight.",
+  "overview": "Dijkstra's algorithm finds the shortest path from a starting node to every other reachable node in a weighted graph or grid. It maintains a running 'tentative distance' for every node (initially infinite, except the start at zero), then repeatedly selects the unvisited node with the smallest tentative distance, finalizes it, and updates ('relaxes') the tentative distances of its neighbors if reaching them through the just-finalized node would be shorter than what was previously known. This process, repeated until the goal is finalized (or every reachable node has been visited), is guaranteed to produce the true shortest path, provided every edge weight is non-negative.",
+  "equations": [
+    {
+      "label": "Relaxation Step",
+      "expression": "if dist[u] + weight(u,v) < dist[v]:  dist[v] = dist[u] + weight(u,v)",
+      "meaning": "For the currently finalized node u and each of its neighbors v, check whether reaching v via u is cheaper than the best known distance to v so far; if so, update v's tentative distance."
+    }
+  ],
+  "howItWorks": "The algorithm's core guarantee comes from a simple but powerful fact: once a node is selected as the current cheapest unvisited node and finalized, no shorter path to it could ever be discovered later, because any other route would necessarily have to pass through some other node that is currently at least as expensive to reach. This lets the algorithm safely never revisit a finalized node. In practice, implementations use a priority queue to always efficiently pick the next cheapest unvisited node, rather than scanning the entire remaining set each time. Dijkstra's algorithm has no concept of direction toward the goal at all — it explores fairly uniformly outward in every direction from the start, finalizing nodes in order of increasing distance regardless of whether they're anywhere near the actual goal. This uniform, undirected exploration is exactly the property that A* search improves upon by adding a heuristic that estimates remaining distance to the goal, focusing exploration in a useful direction instead.",
+  "diagramCaption": "Dijkstra's algorithm expands outward from the start roughly like an expanding wavefront, finalizing nodes in order of increasing distance regardless of which direction the actual goal is in.",
+  "realWorldExamples": [
+    "Early GPS navigation systems computing shortest driving routes on road networks modeled as weighted graphs (distance or time as edge weights).",
+    "A warehouse robot computing the shortest path across a grid map of the warehouse floor to a target shelf location.",
+    "Network routing protocols use conceptually related shortest-path algorithms to determine efficient data paths across a network."
+  ],
+  "commonMisconceptions": [
+    "\"Dijkstra explores in a smart, goal-directed way\" — it has no concept of direction toward the goal at all, exploring fairly uniformly in every direction from the start; this is exactly what A* improves upon with a heuristic.",
+    "\"Dijkstra works correctly with negative edge weights\" — it assumes all edge weights are non-negative; graphs with negative weights need a different algorithm, like Bellman-Ford.",
+    "\"Dijkstra and A* find different paths\" — with an admissible heuristic, A* finds the exact same optimal path Dijkstra would, just by exploring far fewer nodes to get there."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": [],
+  "relatedConcepts": ["path-planning-overview", "a-star-search"]
+}

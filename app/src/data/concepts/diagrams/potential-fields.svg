@@ -1,0 +1,40 @@
+<svg viewBox="0 0 560 310" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .force { animation: forcepulse 1.2s ease-in-out infinite; }
+    @keyframes forcepulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+  </style>
+
+  <text x="280" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1d23">Combined Attractive + Repulsive Forces</text>
+
+  <circle cx="420" cy="150" r="10" fill="#2f9e44"/>
+  <text x="435" y="146" font-size="11" font-weight="700" fill="#2f9e44">goal (attracts)</text>
+  <g stroke="#2f9e44" stroke-width="1.6" class="force">
+    <path d="M300,150 h95"/><path d="M330,90 l70,50"/><path d="M330,210 l70,-50"/>
+  </g>
+  <g fill="#2f9e44" class="force">
+    <polygon points="390,146 400,150 390,154"/>
+    <polygon points="393,135 400,140 386,144"/>
+    <polygon points="393,158 400,163 386,166"/>
+  </g>
+
+  <circle cx="220" cy="150" r="22" fill="#e03131" opacity="0.85"/>
+  <text x="185" y="120" font-size="11" font-weight="700" fill="#e03131">obstacle (repels)</text>
+  <g stroke="#e03131" stroke-width="1.6" class="force" style="animation-delay:-0.6s">
+    <path d="M220,150 l-50,0"/><path d="M220,150 l-35,-35"/><path d="M220,150 l-35,35"/><path d="M220,150 l0,-50"/>
+  </g>
+  <g fill="#e03131" class="force" style="animation-delay:-0.6s">
+    <polygon points="172,146 165,150 172,154"/>
+    <polygon points="188,118 179,116 187,127"/>
+    <polygon points="188,182 179,184 187,173"/>
+    <polygon points="216,102 220,95 224,102"/>
+  </g>
+
+  <text x="35" y="175" font-size="10.5" font-weight="700" fill="#1a1d23">robot</text>
+  <path d="M70,150 Q150,80 250,90 Q350,100 420,150" fill="none" stroke="#4dabf7" stroke-width="3" stroke-dasharray="6 4"/>
+  <circle r="8" fill="#1a1d23">
+    <animateMotion dur="3.5s" repeatCount="indefinite" path="M70,150 Q150,80 250,90 Q350,100 420,150"/>
+  </circle>
+
+  <text x="280" y="280" text-anchor="middle" font-size="10" fill="#5b6270">The robot follows the combined pull-and-push direction,</text>
+  <text x="280" y="293" text-anchor="middle" font-size="10" fill="#5b6270">curving around the obstacle toward the goal.</text>
+</svg>

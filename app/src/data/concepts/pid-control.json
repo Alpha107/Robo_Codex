@@ -1,0 +1,55 @@
+{
+  "identity": {
+    "id": "pid-control",
+    "title": "PID Control",
+    "category": "Control Theory",
+    "level": "Foundational",
+    "tagline": "The three-term feedback recipe behind almost every closed-loop controller in robotics."
+  },
+  "simpleSummary": "A way of automatically correcting an output based on how wrong it currently is, how long it's been wrong, and how fast that wrongness is changing.",
+  "keyIdea": "Measure the error between where you want to be and where you are, then react to that error using three complementary lenses: its current size, its accumulated history, and its rate of change.",
+  "overview": "PID stands for Proportional-Integral-Derivative. It is the single most widely used feedback control algorithm in engineering, from a robot arm holding a position to a drone stabilizing its altitude to a 3D printer's hotend holding temperature. Instead of trying to calculate the exact motor command needed from first principles, a PID controller continuously measures the error — the difference between a desired setpoint and the actual measured value — and computes a correction from that error alone, on every control loop cycle. This makes it enormously general-purpose: the same algorithm structure controls temperature, position, speed, or orientation, with only the gains changed.",
+  "equations": [
+    {
+      "label": "PID Control Law",
+      "expression": "u(t) = Kp*e(t) + Ki*∫e(t)dt + Kd*de(t)/dt",
+      "meaning": "u(t) is the controller's output (e.g. motor PWM value); e(t) = setpoint − measured value is the instantaneous error; Kp, Ki, and Kd are tunable gains for the proportional, integral, and derivative terms respectively."
+    },
+    {
+      "label": "Discrete (code-friendly) form",
+      "expression": "u = Kp*error + Ki*integral + Kd*(error - lastError)/dt",
+      "meaning": "In real code, the integral term is a running sum of error over time (accumulated each loop), and the derivative term is approximated as the change in error since the last loop iteration, divided by the time step dt."
+    }
+  ],
+  "howItWorks": "Each term does a different job. The proportional term (Kp*e) produces a correction directly proportional to the current error — a big error produces a big correction, a small error a small one — but on its own it typically settles with a persistent small error called steady-state error, because as the error shrinks the correction shrinks too, sometimes to nothing before the target is truly reached. The integral term (Ki*∫e dt) sums up error over time, so even a small but persistent error accumulates into a growing correction, eventually eliminating steady-state error. But too much integral gain causes overshoot and oscillation, because it keeps pushing even after the error has started shrinking, and continues correcting for past error that no longer exists — a problem known as integral windup. The derivative term (Kd*de/dt) reacts to how fast the error is changing, effectively damping the response: if the error is closing in quickly, the derivative term pulls back the correction in anticipation, reducing overshoot. Tuning a PID controller means picking Kp, Ki, and Kd so the system reaches its target quickly (fast rise time), without excessive overshoot, and settles without oscillating — a three-way trade-off with no single universally correct answer, which is why tuning is usually done experimentally (e.g. the Ziegler-Nichols method) rather than purely analytically for anything beyond simple systems.",
+  "diagramCaption": "A standard closed-loop PID control block diagram: the error between setpoint and measured output feeds the PID controller, which drives the plant (the physical system being controlled), and the plant's output is measured and fed back to compute the next error.",
+  "realWorldExamples": [
+    "A servo-based robot arm joint holding a commanded angle steadily even when an external force nudges it.",
+    "A drone's flight controller using nested PID loops (rate, then angle, then position) to stay level and hold altitude.",
+    "The DC Motor Speed Control project's smoother, more advanced cousin: this site's version uses direct analogRead-to-PWM mapping, but the next step is a real PID loop instead.",
+    "A 3D printer's hotend holding a target temperature (e.g. 200°C) steady despite heat loss to the surrounding air."
+  ],
+  "commonMisconceptions": [
+    "\"More gain is always better\" — increasing Kp too far causes oscillation and instability rather than a faster, cleaner response; every gain has a point of diminishing (and then negative) returns.",
+    "\"The integral term is optional\" — it is genuinely necessary to eliminate steady-state error in most real systems; a P-only or PD-only controller often settles slightly short of or past the actual target and stays there.",
+    "\"PID gains transfer between different robots or systems\" — gains are specific to the physical system's mass, friction, and response speed; a PID tuned for one motor/load combination usually needs re-tuning for another."
+  ],
+  "relatedComponents": [
+    "l298n",
+    "sg90-servo",
+    "mg996r-servo",
+    "bldc-motor",
+    "esc"
+  ],
+  "relatedProjects": [
+    "dc-motor-speed-control",
+    "servo-pan-sweep",
+    "line-following-robot"
+  ],
+  "relatedConcepts": [
+    "open-loop-vs-closed-loop-control",
+    "state-space-representation",
+    "stability-poles-bode-plots",
+    "root-locus-and-digital-control"
+  ]
+}

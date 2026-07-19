@@ -1,0 +1,138 @@
+{
+  "identity": {
+    "id": "color-sensor-tcs34725",
+    "name": "Color Sensor (TCS34725)",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The TCS34725 reads color the way a scanner does: it shines its own onboard white LED onto the target, then measures how much red, green, blue, and unfiltered ('clear') light bounces back using four separate photodiodes behind an IR-blocking filter. That built-in illumination is what makes it usable in variable lighting — without it, ambient light color would dominate every reading. It talks over I2C, so wiring is as simple as any other breakout, but getting genuinely accurate color names out of the raw RGBC counts still takes some normalization work, since raw values scale with distance, surface angle, and how reflective the object is.",
+  "simpleSummary": "A sensor that shines its own light on an object and reports back what color it sees.",
+  "specifications": {
+    "operatingVoltage": "3.3V (most breakouts include a regulator tolerant of 3.3-5V supply)",
+    "interface": "I2C, default address 0x29",
+    "sensingElements": "RGBC (Red/Green/Blue/Clear) photodiode array behind an IR-blocking filter",
+    "integrationTime": "2.4ms - 614ms, configurable (tradeoff between reading speed and sensitivity)",
+    "gain": "1x, 4x, 16x, or 60x, selectable in software",
+    "onboardIllumination": "White LED for lighting the target, independently controllable on most breakouts",
+    "interruptSupport": "Programmable high/low threshold interrupt on the INT pin",
+    "dimensions": "~21mm x 15.5mm (typical breakout)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input for the sensor IC and, on most breakouts, the onboard white LED.",
+      "voltageRange": "3.3-5V (breakout-dependent)",
+      "currentLimit": "~65 mA with the LED on, ~3 mA sensor-only",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line.",
+      "voltageRange": "0-3.3V/5V (breakout-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["I2C SCL"],
+      "gotcha": null
+    },
+    {
+      "name": "SDA",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line.",
+      "voltageRange": "0-3.3V/5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": ["I2C SDA"],
+      "gotcha": null
+    },
+    {
+      "name": "INT",
+      "position": null,
+      "category": "digital",
+      "function": "Active-low, open-drain interrupt output, asserted when a reading crosses a configured RGBC threshold.",
+      "voltageRange": "0-3.3V (open-drain, needs a pull-up)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Being open-drain, it floats HIGH unless pulled up — many breakouts include the pull-up onboard, but bare ICs do not, and a floating INT line reads as constant false interrupts."
+    },
+    {
+      "name": "LED",
+      "position": null,
+      "category": "digital",
+      "function": "Enables/disables the onboard white illumination LED, either directly or through a driver transistor depending on the breakout.",
+      "voltageRange": "0-3.3V logic (breakout-dependent)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "On some cheap breakouts this pin is hardwired straight to VCC instead of being switchable — you can't actually turn the LED off in software on those boards, which quietly ruins any use case that depends on reading ambient (non-illuminated) light."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Color-sorting robot",
+      "scenario": "A conveyor or gripper arm reads the color of small objects (LEGO bricks, candy, recyclables) and routes them into different bins.",
+      "pinsInvolved": ["SCL", "SDA", "LED"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Line-color-based navigation",
+      "scenario": "Instead of just following a black line, distinguish between multiple colored lines or tape colors to trigger different robot behaviors at intersections.",
+      "pinsInvolved": ["SCL", "SDA"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Paint/material color matching",
+      "scenario": "Hold the sensor against a painted surface or fabric swatch and match the reading against a reference color database.",
+      "pinsInvolved": ["SCL", "SDA", "LED"],
+      "difficulty": "Intermediate (needs calibration against known references)"
+    },
+    {
+      "title": "'Simon says' color reaction game",
+      "scenario": "Detect which colored button or card a player touches by holding the sensor near it, driving a simple reflex game.",
+      "pinsInvolved": ["SCL", "SDA"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Ambient light-adaptive display",
+      "scenario": "Use the sensor's Clear channel as a rough ambient brightness reading to auto-dim a connected display or LED strip.",
+      "pinsInvolved": ["SCL", "SDA"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ESP32",
+      "SG90 servo motor (for sorting mechanism)",
+      "Conveyor/gripper mechanism"
+    ],
+    "oftenConfusedWith": [
+      "LDR/photoresistor (only measures brightness, not color)",
+      "IR line sensors (detect contrast/reflectivity, not actual color)"
+    ],
+    "oftenUpgradedTo": [
+      "AS7341 (11-channel spectral sensor for finer color/spectral discrimination)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Reading color under strong ambient light with the onboard LED also on — the two light sources mix and skew every reading; keep readings consistent by shading the sensor or standardizing distance/angle.",
+    "Not normalizing RGB against the Clear channel — raw R/G/B counts change with distance and surface reflectivity, so comparing raw values between two different readings without normalizing gives inconsistent 'color' results.",
+    "Assuming the LED pin is software-controllable without checking the breakout — on some boards it's hardwired to VCC and always on.",
+    "Placing the sensor too far from the target — the onboard LED is weak and meant for near-contact sensing (a few millimeters to a couple centimeters), not room-scale color detection.",
+    "Leaving the INT pin unconnected and floating while relying on interrupt-driven reads instead of the simpler polling approach."
+  ]
+}

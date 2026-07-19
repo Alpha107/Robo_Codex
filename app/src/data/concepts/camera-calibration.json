@@ -1,0 +1,49 @@
+{
+  "identity": {
+    "id": "camera-calibration",
+    "title": "Camera Calibration",
+    "category": "Sensing, Estimation & Perception",
+    "level": "Advanced",
+    "tagline": "Measuring exactly how a specific camera maps the real 3D world onto its 2D image, so that mapping can be trusted and reversed."
+  },
+  "simpleSummary": "Figuring out the exact mathematical relationship between where something really is in front of a camera and where it shows up in the image, including correcting for the lens's own distortion.",
+  "keyIdea": "Camera calibration determines a camera's intrinsic parameters (focal length, optical center, lens distortion) by observing a known pattern from multiple angles, which is required before pixel coordinates can be accurately related to real-world positions or distances.",
+  "overview": "A raw camera image is not a perfect geometric window onto the world: every lens introduces some distortion (straight lines can appear slightly curved near the edges of the frame), and the exact relationship between a 3D point in front of the camera and the 2D pixel it lands on depends on internal parameters — focal length and optical center, measured in pixel units — that are specific to that exact camera and lens combination. Camera calibration is the process of measuring these parameters directly, typically by capturing several images of a known pattern (classically a black-and-white checkerboard) from different angles and distances, then using the pattern's known geometry to solve for the camera's internal parameters and lens distortion coefficients. Any task that needs to relate pixels to real-world measurements — distance estimation, 3D reconstruction, augmented reality overlays, or visual SLAM — depends on this calibration being done correctly first.",
+  "equations": [
+    {
+      "label": "Pinhole Camera Projection",
+      "expression": "u = fx·(X/Z) + cx,   v = fy·(Y/Z) + cy",
+      "meaning": "A 3D world point at (X, Y, Z) projects to pixel coordinates (u, v), where fx, fy are the focal lengths in pixel units and cx, cy are the optical center's pixel coordinates — the core simplified model most camera calibration is based on."
+    },
+    {
+      "label": "Intrinsic Matrix",
+      "expression": "K = [[fx, 0, cx], [0, fy, cy], [0, 0, 1]]",
+      "meaning": "The intrinsic parameters are usually packaged into this single 3×3 matrix K, which — once known from calibration — lets software convert between pixel coordinates and real-world geometric rays reliably."
+    }
+  ],
+  "howItWorks": "Calibration separates two kinds of parameters. Intrinsic parameters describe the camera's own fixed internal geometry — focal length, optical center, and lens distortion coefficients — and stay the same regardless of where the camera is pointed, as long as the lens and sensor themselves don't change. Extrinsic parameters describe the camera's actual position and orientation in the world (or relative to a specific object), and change every time the camera moves. To find the intrinsics, a standard calibration procedure captures multiple images of a known flat pattern (a checkerboard, whose exact grid geometry is known in advance) from a variety of angles and distances; because the pattern's true geometry is known, an algorithm can solve for the camera parameters that best explain how that known geometry appears distorted and foreshortened in each captured image. Without this step, any pixel coordinate a vision algorithm produces carries baked-in, systematic geometric error from unmodeled lens distortion and an unknown or wrongly-assumed focal length — errors that are invisible for purely qualitative tasks (like 'is there something in front of the camera') but fatal for anything requiring actual measurement or accurate 3D geometry.",
+  "diagramCaption": "The pinhole camera model: a 3D point projects through the camera's optical center onto the image plane; calibration measures the focal length and optical center that make this projection mathematically precise for a specific camera.",
+  "realWorldExamples": [
+    "Calibrating an ESP32-CAM or Raspberry Pi Camera Module before using it for distance estimation or visual SLAM, since uncorrected lens distortion would otherwise introduce systematic measurement errors.",
+    "Industrial machine vision systems calibrating their cameras precisely enough to measure real manufactured part dimensions from images to sub-millimeter accuracy.",
+    "AR/VR headsets factory-calibrating their cameras' intrinsics, then continuously tracking their own changing position and orientation (extrinsics) to correctly overlay virtual content onto the real world."
+  ],
+  "commonMisconceptions": [
+    "\"Camera calibration is only needed for expensive, precise vision systems\" — even a cheap hobby camera used for distance estimation or line-following benefits from correcting real lens distortion, and any project attempting actual measurement genuinely needs it.",
+    "\"All cameras with the same model number need the same calibration\" — calibration must be done per physical camera-and-lens unit, since manufacturing variation means no two units, even of the same model, are perfectly identical.",
+    "\"Calibration only matters for exotic wide-angle or fisheye lenses\" — even ordinary lenses have measurable distortion that affects accurate measurement tasks, just usually less severely than a wide-angle lens."
+  ],
+  "relatedComponents": [
+    "esp32-cam",
+    "pi-camera-module",
+    "usb-webcam",
+    "ov7670"
+  ],
+  "relatedProjects": [],
+  "relatedConcepts": [
+    "computer-vision-basics",
+    "point-clouds-and-lidar-processing",
+    "slam",
+    "imu-calibration-and-bias-compensation"
+  ]
+}

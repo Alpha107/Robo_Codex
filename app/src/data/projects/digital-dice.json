@@ -1,0 +1,202 @@
+{
+  "identity": {
+    "id": "digital-dice",
+    "title": "Digital Dice",
+    "tagline": "Press a button, get a random 1-6 lit up on a 7-segment display — a real die, no dots required.",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "30 minutes"
+  },
+  "goal": "Build an electronic six-sided die: pressing a button rolls a random number from 1 to 6 and displays it on a 7-segment display, drawn as an actual digit rather than a dot pattern.",
+  "simpleSummary": "Press a button to roll a random number 1-6, shown on a digit display like a real die.",
+  "howItWorks": "A 7-segment display is exactly what it sounds like — seven individually-controllable LED bars (plus often a decimal point) arranged to form any digit when the right combination is lit. There's no built-in intelligence in the display itself; every single digit 0-9 is really just a specific pattern of which segments are on and which are off, which is why this project needs a small lookup table mapping each die value to its own array of seven true/false values. The \"randomness\" comes from Arduino's random() function, and the button-press trigger reuses the exact same edge-detection idea from Push-Button LED Toggle — act once per press, not continuously while held.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "push-button",
+      "quantity": 1
+    },
+    {
+      "componentId": "seven-segment-display",
+      "quantity": 1
+    },
+    {
+      "componentId": "basic-passives",
+      "quantity": 7,
+      "note": "one ~220Ω resistor per segment"
+    },
+    {
+      "componentId": "breadboard",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 10 wires"
+    }
+  ],
+  "circuitDiagramCaption": "Segments A-G on D2-D8 (each through its own resistor); roll button on D9.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment A"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment B"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D3"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment C"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment D"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D5"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment E"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D6"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment F"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D7"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "Segment G"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        }
+      },
+      {
+        "from": {
+          "componentId": "seven-segment-display",
+          "pin": "COM"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "push-button",
+          "pin": "Terminal 1"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        }
+      },
+      {
+        "from": {
+          "componentId": "push-button",
+          "pin": "Terminal 2"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Identify your display's segment pinout (A through G, plus COM) from its datasheet or the seller's listing.",
+      "detail": "7-segment displays don't have a universal pin arrangement — the physical pin order varies by part, so check yours specifically rather than assuming."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire each segment (A-G) through its own 220Ω resistor to Arduino pins D2 through D8.",
+      "detail": "Yes, every single segment needs its own resistor — skipping this to save wiring risks driving each segment LED too hard."
+    },
+    {
+      "step": 3,
+      "instruction": "Wire the display's COM pin to GND if it's common-cathode, or to 5V if it's common-anode.",
+      "detail": "This one detail changes your code's logic entirely — a common-cathode display lights a segment with HIGH, a common-anode display lights it with LOW. Check which type you have before uploading; the code below assumes common-cathode."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the roll button between D9 and GND, exactly as in Push-Button LED Toggle.",
+      "detail": "Same debounced press-detection pattern used throughout the beginner projects."
+    }
+  ],
+  "code": [
+    {
+      "filename": "digital_dice.ino",
+      "language": "arduino",
+      "source": "// Digital Dice\n// Rolls a random 1-6 on a 7-segment display each time the button is pressed.\n// Assumes a COMMON-CATHODE display (HIGH = segment on).\n\nconst int SEG_PINS[7] = {2, 3, 4, 5, 6, 7, 8}; // A, B, C, D, E, F, G\nconst int BUTTON_PIN = 9;\n\n// Which segments (A,B,C,D,E,F,G) are lit for each die face 1-6.\nconst bool DIGIT_PATTERNS[6][7] = {\n  {0,1,1,0,0,0,0}, // 1\n  {1,1,0,1,1,0,1}, // 2\n  {1,1,1,1,0,0,1}, // 3\n  {0,1,1,0,0,1,1}, // 4\n  {1,0,1,1,0,1,1}, // 5\n  {1,0,1,1,1,1,1}, // 6\n};\n\nbool lastButtonReading = HIGH;\n\nvoid setup() {\n  for (int i = 0; i < 7; i++) {\n    pinMode(SEG_PINS[i], OUTPUT);\n  }\n  pinMode(BUTTON_PIN, INPUT_PULLUP);\n  randomSeed(analogRead(A0)); // seed with electrical noise so rolls vary between power-ups\n\n  showDigit(1); // show a starting face\n}\n\nvoid loop() {\n  bool currentReading = digitalRead(BUTTON_PIN);\n\n  if (currentReading == LOW && lastButtonReading == HIGH) {\n    int roll = random(1, 7); // random(1,7) returns 1-6\n    showDigit(roll);\n    delay(30);\n  }\n\n  lastButtonReading = currentReading;\n}\n\nvoid showDigit(int value) {\n  const bool* pattern = DIGIT_PATTERNS[value - 1];\n  for (int i = 0; i < 7; i++) {\n    digitalWrite(SEG_PINS[i], pattern[i]);\n  }\n}\n",
+      "explanation": "DIGIT_PATTERNS is the lookup table that does all the real work: showDigit() just looks up the row for the requested value and writes each segment pin HIGH or LOW to match, rather than containing any digit-specific logic itself. randomSeed(analogRead(A0)) reads electrical noise from a floating analog pin to start Arduino's pseudo-random generator differently each power-up — without it, random() would produce the exact same \"random\" sequence every single time the board resets, which would defeat the whole point of a dice roller."
+    }
+  ],
+  "expectedBehavior": "The display shows a starting digit on power-up, and each button press instantly rolls and displays a new random number from 1 to 6.",
+  "troubleshooting": [
+    {
+      "issue": "Display shows a scrambled or wrong pattern for every number.",
+      "fix": "Your display's physical pin order almost certainly doesn't match the SEG_PINS order assumed here — double-check each segment against your specific display's datasheet, not just the pin count."
+    },
+    {
+      "issue": "Display doesn't light up at all.",
+      "fix": "You likely have a common-anode display wired as if it were common-cathode (or vice versa) — try wiring COM to the opposite rail and inverting the HIGH/LOW logic."
+    },
+    {
+      "issue": "Same number rolls every time after a reset.",
+      "fix": "Confirm randomSeed() is being called with a genuinely floating (unconnected) analog pin — a pin that's wired to something will read a consistent value every time, defeating the randomness."
+    }
+  ],
+  "extensions": [
+    "Add a second 7-segment display and roll two dice at once.",
+    "Replace the physical button with a shake-detection trigger using an accelerometer (see MPU6050).",
+    "Add a brief \"rolling\" animation that flashes through a few random digits before settling on the final result.",
+    "Extend the lookup table to display all 10 digits (0-9) for a general-purpose number display, not just a die."
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "identity": {
+    "id": "adxl345",
+    "name": "ADXL345 Accelerometer",
+    "category": "Motion & Orientation Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The ADXL345 is a focused, no-frills 3-axis accelerometer — no gyroscope, no magnetometer, just acceleration on X/Y/Z — which makes it simpler to work with (and cheaper) than a full IMU when a project only needs tilt sensing, tap/double-tap detection, or basic freefall detection. Its standout feature versus most beginner breakouts is that it genuinely supports both I2C and SPI on the same chip, selected by how the CS pin is wired, rather than being locked to one protocol.",
+  "simpleSummary": "A tiny sensor that tells you which way is down and detects tilts, taps, or falls.",
+  "specifications": {
+    "operatingVoltage": "2V - 3.6V (breakouts commonly add a 5V-tolerant regulator)",
+    "interface": "I2C or SPI (selectable via CS pin wiring)",
+    "range": "±2/4/8/16g (selectable)",
+    "resolution": "Up to 13-bit",
+    "features": "Tap/double-tap detection, freefall detection, activity/inactivity detection — all in hardware"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "2-3.6V (breakout-dependent, often 5V-tolerant)",
+      "currentLimit": "~140 µA typical (very low power)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "SCL/SCLK",
+      "position": null,
+      "category": "communication",
+      "function": "I2C clock line, or SPI clock in SPI mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SCL",
+        "SPI SCLK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDA/SDI",
+      "position": null,
+      "category": "communication",
+      "function": "I2C data line, or SPI data-in in SPI mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "I2C SDA",
+        "SPI SDI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "SDO",
+      "position": null,
+      "category": "communication",
+      "function": "In SPI mode, data output (MISO). In I2C mode, this pin instead selects the I2C address (LOW=0x53, HIGH=0x1D).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI MISO",
+        "I2C address select"
+      ],
+      "gotcha": "Its function completely changes based on the interface mode — check which mode you're in before assuming what this pin does."
+    },
+    {
+      "name": "CS",
+      "position": null,
+      "category": "digital",
+      "function": "Chip select — tie HIGH for I2C mode, drive as an active-LOW select line for SPI mode.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "SPI CS"
+      ],
+      "gotcha": "Leaving this floating (unconnected) leads to unreliable mode selection — always tie it explicitly HIGH or LOW."
+    },
+    {
+      "name": "INT1",
+      "position": null,
+      "category": "digital",
+      "function": "Configurable interrupt output 1 (e.g. tap detection, activity).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "INT2",
+      "position": null,
+      "category": "digital",
+      "function": "Configurable interrupt output 2, independently assignable to a different event than INT1.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "Low",
+      "alternateFunctions": [
+        "Interrupt"
+      ],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Tilt-controlled interface",
+      "scenario": "Read tilt angle from acceleration to control a game or UI element.",
+      "pinsInvolved": [
+        "SCL/SCLK",
+        "SDA/SDI"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Tap-to-wake trigger",
+      "scenario": "Use the built-in hardware tap detection to wake a low-power device without polling in software.",
+      "pinsInvolved": [
+        "INT1"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Freefall/drop detection",
+      "scenario": "Trigger an action (e.g. parachute deployment, alarm) using the onboard freefall detection.",
+      "pinsInvolved": [
+        "INT2"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "ATtiny85 (low-power tilt applications)"
+    ],
+    "oftenConfusedWith": [
+      "MPU6050 (adds a gyroscope)"
+    ],
+    "oftenUpgradedTo": [
+      "MPU6050/MPU9250 when rotation rate or heading data is also needed"
+    ]
+  }
+}

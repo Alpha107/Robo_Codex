@@ -1,0 +1,43 @@
+<svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .fwd { stroke-dasharray: 6 5; animation: fwdflow 1s linear infinite; }
+    @keyframes fwdflow { to { stroke-dashoffset: -22; } }
+    .growline { stroke-dasharray: 220; animation: grow 2.6s ease-out infinite; }
+    @keyframes grow { 0% { stroke-dashoffset: 220; } 60%, 100% { stroke-dashoffset: 0; } }
+  </style>
+
+  <rect x="20" y="40" width="230" height="70" rx="8" fill="#8d6e63" stroke="#1a1d23" stroke-width="2"/>
+  <text x="135" y="68" text-anchor="middle" fill="#ffffff" font-size="12.5" font-weight="700">Time domain</text>
+  <text x="135" y="86" text-anchor="middle" fill="#f0e4dc" font-size="11">differential equation</text>
+  <text x="135" y="101" text-anchor="middle" fill="#f0e4dc" font-size="10">e.g. J·dω/dt + b·ω = K·V</text>
+
+  <path d="M250,75 H320" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="320,69 334,75 320,81" fill="#1a1d23"/>
+  <text x="285" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#2f6fae">Laplace</text>
+
+  <rect x="334" y="40" width="230" height="70" rx="8" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="449" y="68" text-anchor="middle" fill="#ffffff" font-size="12.5" font-weight="700">s-domain</text>
+  <text x="449" y="86" text-anchor="middle" fill="#d0e8ff" font-size="11">algebraic transfer function</text>
+  <text x="449" y="101" text-anchor="middle" fill="#d0e8ff" font-size="10">G(s) = K / (&#964;s + 1)</text>
+
+  <text x="340" y="150" font-size="13" font-weight="700" fill="#1a1d23">Once in the s-domain:</text>
+
+  <text x="30" y="195" font-size="13" font-weight="700" fill="#1a1d23">U(s)</text>
+  <path d="M65,190 H108" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="108,184 122,190 108,196" fill="#1a1d23"/>
+  <rect x="122" y="165" width="110" height="50" rx="7" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="177" y="195" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700">G(s)</text>
+  <path d="M232,190 H265" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="265,184 279,190 265,196" fill="#1a1d23"/>
+  <text x="290" y="195" font-size="13" font-weight="700" fill="#1a1d23">Y(s) = G(s)&#183;U(s)</text>
+
+  <text x="340" y="240" text-anchor="middle" font-size="11" fill="#5b6270">Series and feedback combinations of blocks become simple algebra instead of coupled differential equations.</text>
+
+  <rect x="60" y="260" width="560" height="65" rx="8" fill="#f4f6f9" stroke="#dde1e8" stroke-width="1.4"/>
+  <text x="340" y="278" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1d23">Example: step voltage in, motor speed out</text>
+  <line x1="90" y1="315" x2="230" y2="315" stroke="#1a1d23" stroke-width="1.4"/>
+  <line x1="90" y1="315" x2="90" y2="288" stroke="#1a1d23" stroke-width="1.4"/>
+  <path d="M90,313 Q120,290 230,289" fill="none" stroke="#2f6fae" stroke-width="2.5" class="growline"/>
+  <text x="245" y="295" font-size="10" fill="#5b6270">&#969;(t) rises smoothly toward K&#183;V,</text>
+  <text x="245" y="309" font-size="10" fill="#5b6270">at a rate set entirely by &#964;</text>
+</svg>

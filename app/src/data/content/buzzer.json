@@ -1,0 +1,82 @@
+{
+  "identity": {
+    "id": "buzzer",
+    "name": "Buzzer (Active/Passive)",
+    "category": "Displays & Feedback",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Buzzers come in two functionally different types that look almost identical, and mixing them up is the most common beginner confusion: an active buzzer has its own internal oscillator, so applying any steady DC voltage makes it beep at one fixed pitch — dead simple, but you can't change the tone. A passive buzzer has no internal oscillator at all; it just vibrates at whatever frequency you feed it, meaning it needs a PWM/tone signal from the microcontroller to make any sound, but in exchange it can play actual musical notes and melodies, not just a single beep.",
+  "simpleSummary": "A small speaker-like part that beeps — either on its own fixed tone or playing any tone your code sends it.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V typical",
+    "activeType": "Internal oscillator, fixed pitch, driven by steady DC — just needs HIGH/LOW",
+    "passiveType": "No internal oscillator, needs a PWM/tone signal at the desired frequency to produce sound",
+    "soundOutput": "~85-100 dB typical for small piezo/magnetic buzzers"
+  },
+  "pinMap": [
+    {
+      "name": "Positive (+)",
+      "position": null,
+      "category": "power",
+      "function": "Positive terminal — often marked with a longer lead or a '+' symbol.",
+      "voltageRange": "3.3-5V (active); PWM signal (passive)",
+      "currentLimit": "~20-30 mA",
+      "alternateFunctions": [
+        "PWM (passive type)"
+      ],
+      "gotcha": "Active and passive buzzers are frequently visually identical — if code that plays a melody produces only a single tone (or vice versa), you likely have the wrong type."
+    },
+    {
+      "name": "Negative (-)",
+      "position": null,
+      "category": "power",
+      "function": "Ground/negative terminal.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Alarm/alert sound",
+      "scenario": "An active buzzer wired to a digital pin for a simple on/off alert tone.",
+      "pinsInvolved": [
+        "Positive (+)",
+        "Negative (-)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Melody/musical notification",
+      "scenario": "A passive buzzer driven with the tone() function to play simple melodies or distinct notification sounds.",
+      "pinsInvolved": [
+        "Positive (+)"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Sonar-style distance feedback",
+      "scenario": "Vary a passive buzzer's pitch based on a distance sensor reading, like a parking sensor.",
+      "pinsInvolved": [
+        "Positive (+)"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "HC-SR04",
+      "PIR motion sensor"
+    ],
+    "oftenConfusedWith": [
+      "Small speakers (buzzers are single-frequency-capable at best, not full audio)"
+    ],
+    "oftenUpgradedTo": [
+      "A small speaker + audio amplifier for actual audio playback"
+    ]
+  }
+}

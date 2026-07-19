@@ -1,0 +1,196 @@
+{
+  "identity": {
+    "id": "bts7960",
+    "name": "BTS7960 High-Current Motor Driver",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "When an L298N's ~2A ceiling isn't enough — a full-size wheelchair motor, an e-bike hub motor, a heavy robot drivetrain — the BTS7960 module is the usual next step, built around two automotive-grade BTS7960 half-bridge ICs capable of tens of amps continuously. Its control scheme is different from the L298N's IN1/IN2/ENA pattern: instead of separate direction and enable pins, it uses two PWM inputs (RPWM and LPWM) where driving one spins the motor forward and the other spins it backward, with duty cycle setting speed. It also exposes current-sense outputs (R_IS/L_IS) that a microcontroller can read to detect an overloaded or stalled motor.",
+  "simpleSummary": "A heavy-duty motor driver for big motors that draw more current than a standard L298N can handle.",
+  "specifications": {
+    "motorVoltage": "6V - 27V",
+    "peakCurrent": "Up to 43A (per the IC datasheet; module cooling limits sustained current in practice)",
+    "logicVoltage": "5V",
+    "controlScheme": "Dual PWM (RPWM/LPWM) instead of direction+enable pins",
+    "currentSensing": "R_IS / L_IS analog outputs proportional to motor current"
+  },
+  "pinMap": [
+    {
+      "name": "RPWM",
+      "position": null,
+      "category": "digital",
+      "function": "PWM input driving the motor in the 'forward' direction — duty cycle sets speed.",
+      "voltageRange": "0-5V logic, PWM",
+      "currentLimit": "N/A (logic input)",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Never drive RPWM and LPWM simultaneously — that commands both directions at once and can damage the module."
+    },
+    {
+      "name": "LPWM",
+      "position": null,
+      "category": "digital",
+      "function": "PWM input driving the motor in the 'reverse' direction.",
+      "voltageRange": "0-5V logic, PWM",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Same simultaneous-drive warning as RPWM."
+    },
+    {
+      "name": "R_EN",
+      "position": null,
+      "category": "digital",
+      "function": "Enable for the forward (right) half-bridge — must be HIGH for RPWM to have any effect.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Often tied HIGH permanently alongside L_EN if direction control is handled entirely through RPWM/LPWM."
+    },
+    {
+      "name": "L_EN",
+      "position": null,
+      "category": "digital",
+      "function": "Enable for the reverse (left) half-bridge.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "R_IS",
+      "position": null,
+      "category": "analog",
+      "function": "Current-sense output for the forward half-bridge, useful for stall/overload detection.",
+      "voltageRange": "0-5V analog, proportional to current",
+      "currentLimit": "N/A (sensing output)",
+      "alternateFunctions": [
+        "Current feedback"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "L_IS",
+      "position": null,
+      "category": "analog",
+      "function": "Current-sense output for the reverse half-bridge.",
+      "voltageRange": "0-5V analog",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "Current feedback"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Logic power input.",
+      "voltageRange": "5V",
+      "currentLimit": "Low (logic only)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground — must be shared with the microcontroller.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B+",
+      "position": null,
+      "category": "power",
+      "function": "Motor battery positive input.",
+      "voltageRange": "6V - 27V",
+      "currentLimit": "Up to tens of amps (cooling-limited)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B-",
+      "position": null,
+      "category": "power",
+      "function": "Motor battery negative input.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "M+",
+      "position": null,
+      "category": "power",
+      "function": "Motor terminal.",
+      "voltageRange": "Up to B+ voltage",
+      "currentLimit": "Up to tens of amps",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "M-",
+      "position": null,
+      "category": "power",
+      "function": "Motor terminal.",
+      "voltageRange": "Up to B+ voltage",
+      "currentLimit": "Up to tens of amps",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Large wheeled robot / go-kart drivetrain",
+      "scenario": "Drive a high-power DC motor that would overwhelm an L298N.",
+      "pinsInvolved": [
+        "RPWM",
+        "LPWM",
+        "B+",
+        "B-",
+        "M+",
+        "M-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Winch or heavy linear actuator control",
+      "scenario": "High current handling suits heavy-load actuation.",
+      "pinsInvolved": [
+        "RPWM",
+        "LPWM",
+        "R_EN",
+        "L_EN"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Stall-protected motor control",
+      "scenario": "Monitor R_IS/L_IS to detect a jammed mechanism and cut power before overheating the motor.",
+      "pinsInvolved": [
+        "R_IS",
+        "L_IS"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Large DC gear motors",
+      "12V/24V battery packs"
+    ],
+    "oftenConfusedWith": [
+      "L298N (much lower current, different IN/EN control scheme)"
+    ],
+    "oftenUpgradedTo": [
+      "Dedicated brushed-motor ESCs for even higher current handling"
+    ]
+  }
+}

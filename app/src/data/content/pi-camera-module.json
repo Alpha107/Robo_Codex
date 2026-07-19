@@ -1,0 +1,69 @@
+{
+  "identity": {
+    "id": "pi-camera-module",
+    "name": "Raspberry Pi Camera Module",
+    "category": "Vision & Imaging",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "Unlike the OV7670's raw parallel bus, the Raspberry Pi Camera Module connects over a dedicated CSI ribbon cable straight into the Pi's own image signal processor, which handles all the low-level capture work in hardware. The result is a plug-and-play experience from the software side: a couple of lines of Python (via libcamera/picamera2) and you're capturing photos or video, with the Pi's GPU doing the heavy lifting of encoding. It only works with Raspberry Pi boards specifically — the CSI connector and protocol aren't a generic standard other microcontrollers can use.",
+  "simpleSummary": "A camera made specifically for the Raspberry Pi, plugging straight into its dedicated camera port.",
+  "specifications": {
+    "interface": "CSI (Camera Serial Interface) ribbon cable — Raspberry Pi only",
+    "resolution": "12MP+ (Camera Module 3), earlier versions 5-8MP",
+    "video": "Up to 4K on newer modules, 1080p common baseline",
+    "powerSource": "Powered through the CSI ribbon cable itself, no separate power wiring",
+    "focusType": "Fixed-focus or autofocus depending on module version"
+  },
+  "pinMap": [
+    {
+      "name": "CSI Connector",
+      "position": null,
+      "category": "communication",
+      "function": "The entire interface is a single 15/22-pin CSI ribbon cable carrying power, clock, and high-speed differential data lanes to the Pi's dedicated camera port.",
+      "voltageRange": "N/A (ribbon cable interface, not individual pins)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Must be inserted the correct way around (contacts facing the right direction) into both the camera and the Pi's CSI port, or nothing will be detected — a very common first-time setup mistake."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Computer vision robot",
+      "scenario": "Feed live video into OpenCV or a TensorFlow Lite model running on the Pi for object detection/tracking.",
+      "pinsInvolved": [
+        "CSI Connector"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Time-lapse / security camera",
+      "scenario": "Simple scheduled or motion-triggered photo/video capture project.",
+      "pinsInvolved": [
+        "CSI Connector"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Video calling / streaming appliance",
+      "scenario": "Combine with a Pi and network connection for a DIY streaming camera.",
+      "pinsInvolved": [
+        "CSI Connector"
+      ],
+      "difficulty": "Beginner-Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi 4",
+      "Raspberry Pi Zero W"
+    ],
+    "oftenConfusedWith": [
+      "USB webcams (work on any computer, not just a Pi, but with more USB/CPU overhead)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi HQ Camera (interchangeable lenses, larger sensor)"
+    ]
+  }
+}

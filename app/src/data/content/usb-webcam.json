@@ -1,0 +1,71 @@
+{
+  "identity": {
+    "id": "usb-webcam",
+    "name": "USB Webcam",
+    "category": "Vision & Imaging",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The easiest possible way to get computer vision working in a hobbyist project: plug a standard UVC-class (USB Video Class) webcam into any computer with a USB port — a laptop, a Raspberry Pi, a Jetson Nano — and libraries like OpenCV can open it with a couple of lines of code, no driver installation or protocol wrangling required. The tradeoff versus a dedicated camera module (Pi Camera, ESP32-CAM) is that it needs a real USB host with enough processing power to run the vision software; it's not something a bare Arduino or other microcontroller-class board can use directly.",
+  "simpleSummary": "A plug-and-play camera for adding computer vision to any project with a USB port.",
+  "specifications": {
+    "interface": "USB (UVC class — works without custom drivers on Linux/Windows/macOS)",
+    "resolution": "480p to 4K depending on model",
+    "connector": "USB-A or USB-C",
+    "powerSource": "Powered entirely through the USB connection, no separate power needed"
+  },
+  "pinMap": [
+    {
+      "name": "USB Connector",
+      "position": null,
+      "category": "communication",
+      "function": "Single USB connection carrying both power and video data using the standard UVC protocol.",
+      "voltageRange": "5V (USB standard)",
+      "currentLimit": "Typically under 500mA (standard USB port budget)",
+      "alternateFunctions": [
+        "USB Video Class"
+      ],
+      "gotcha": "Requires a real computer (Pi, Jetson, laptop) to run the host-side software — it cannot be read directly by a bare microcontroller like an Arduino or ESP32."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "OpenCV-based robot vision",
+      "scenario": "The simplest path to giving a Raspberry Pi or Jetson-based robot a camera feed for computer vision processing.",
+      "pinsInvolved": [
+        "USB Connector"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Video conferencing / streaming",
+      "scenario": "The original, most common use case for any UVC webcam.",
+      "pinsInvolved": [
+        "USB Connector"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Machine vision prototyping",
+      "scenario": "Quick prototyping of a vision pipeline on a laptop before committing to an embedded camera module.",
+      "pinsInvolved": [
+        "USB Connector"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Raspberry Pi 4",
+      "Jetson Nano",
+      "Laptop/PC"
+    ],
+    "oftenConfusedWith": [
+      "Raspberry Pi Camera Module (CSI interface, Pi-only, lower host CPU overhead)"
+    ],
+    "oftenUpgradedTo": [
+      "Raspberry Pi Camera Module or a dedicated machine-vision camera for lower latency and CPU overhead"
+    ]
+  }
+}

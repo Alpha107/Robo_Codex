@@ -1,0 +1,187 @@
+{
+  "identity": {
+    "id": "car-counter-two-ultrasonic",
+    "title": "Car Counter (Two Ultrasonic Sensors)",
+    "tagline": "Two sensors, one gate, and the order they trigger in tells you which way something passed.",
+    "category": "Sensors & Automation",
+    "difficulty": "Intermediate",
+    "estimatedTime": "40 minutes"
+  },
+  "goal": "Count vehicles (or people) passing through a gate or doorway, correctly incrementing for entries and decrementing for exits — using two ultrasonic sensors and the order in which they detect something, the same basic principle behind real parking-lot occupancy counters.",
+  "simpleSummary": "Use two distance sensors to count how many things pass through a doorway, and which direction.",
+  "howItWorks": "A single distance sensor can tell you something passed, but not which direction. Two sensors, placed a short distance apart along the path something has to travel through, solve that with timing: if the outer (entry-side) sensor detects something first, followed shortly after by the inner (exit-side) sensor, that's consistent with something moving inward — count it as an entry. If the inner sensor triggers first, followed by the outer one, that's the same object moving the other way — count it as an exit. The trick is entirely in the sequence and timing between the two triggers, not in either sensor individually; each one is just running the same distance-measuring code as in the Ultrasonic Distance Meter project.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "Arduino IDE Serial Monitor to watch the running count"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "hc-sr04",
+      "quantity": 2,
+      "note": "one entry-side, one exit-side"
+    },
+    {
+      "componentId": "lcd1602",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 1,
+      "note": "about 10 wires"
+    }
+  ],
+  "circuitDiagramCaption": "Two independent HC-SR04 sensors on separate pin pairs; LCD shared on the I2C bus (A4/A5).",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "TRIG",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D9"
+        },
+        "label": "entry sensor"
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "ECHO",
+          "instance": 0
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D10"
+        },
+        "label": "entry sensor"
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "TRIG",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D11"
+        },
+        "label": "exit sensor"
+      },
+      {
+        "from": {
+          "componentId": "hc-sr04",
+          "pin": "ECHO",
+          "instance": 1
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D12"
+        },
+        "label": "exit sensor"
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SDA"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A4"
+        }
+      },
+      {
+        "from": {
+          "componentId": "lcd1602",
+          "pin": "SCL"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "A5"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the first (entry-side) HC-SR04: TRIG to D9, ECHO to D10.",
+      "detail": "Both sensors share the same 5V and GND rails — only TRIG/ECHO need to be on separate pins per sensor."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the second (exit-side) HC-SR04: TRIG to D11, ECHO to D12.",
+      "detail": "Keeping entry on the lower pin numbers and exit on the higher ones is just a wiring convention that makes the code easier to read — it isn't required electrically."
+    },
+    {
+      "step": 3,
+      "instruction": "Mount the two sensors facing across the gate from the same side, spaced roughly 15-30cm apart along the direction of travel.",
+      "detail": "Too close together and a single object triggers both nearly simultaneously, making direction hard to distinguish; too far apart and the detection window between them gets unreliably long."
+    },
+    {
+      "step": 4,
+      "instruction": "Wire the LCD's I2C backpack to GND, 5V, A4 (SDA), and A5 (SCL), same as the other LCD-based projects.",
+      "detail": "Displays the running count so you don't need the Serial Monitor to see it working."
+    }
+  ],
+  "code": [
+    {
+      "filename": "car_counter_two_ultrasonic.ino",
+      "language": "arduino",
+      "source": "#include <Wire.h>\n#include <LiquidCrystal_I2C.h>\n\n// Car Counter (Two Ultrasonic Sensors)\n// Increments on entry-then-exit trigger order, decrements on exit-then-entry.\n\nconst int TRIG1 = 9,  ECHO1 = 10; // entry-side sensor\nconst int TRIG2 = 11, ECHO2 = 12; // exit-side sensor\n\nconst int TRIGGER_DISTANCE_CM = 20; // something closer than this counts as \"present\"\nconst unsigned long SEQUENCE_TIMEOUT_MS = 1500; // max gap between the two triggers\n\nenum State { IDLE, WAITING_FOR_SENSOR2, WAITING_FOR_SENSOR1 };\nState state = IDLE;\nunsigned long stateStartedAt = 0;\n\nint count = 0;\n\nLiquidCrystal_I2C lcd(0x27, 16, 2);\n\nvoid setup() {\n  pinMode(TRIG1, OUTPUT); pinMode(ECHO1, INPUT);\n  pinMode(TRIG2, OUTPUT); pinMode(ECHO2, INPUT);\n\n  lcd.init();\n  lcd.backlight();\n  updateDisplay();\n}\n\nvoid loop() {\n  bool sensor1Triggered = readDistanceCm(TRIG1, ECHO1) < TRIGGER_DISTANCE_CM;\n  bool sensor2Triggered = readDistanceCm(TRIG2, ECHO2) < TRIGGER_DISTANCE_CM;\n  unsigned long now = millis();\n\n  // Time out a stalled sequence (e.g. someone lingered under one sensor).\n  if (state != IDLE && now - stateStartedAt > SEQUENCE_TIMEOUT_MS) {\n    state = IDLE;\n  }\n\n  switch (state) {\n    case IDLE:\n      if (sensor1Triggered) {\n        state = WAITING_FOR_SENSOR2;\n        stateStartedAt = now;\n      } else if (sensor2Triggered) {\n        state = WAITING_FOR_SENSOR1;\n        stateStartedAt = now;\n      }\n      break;\n\n    case WAITING_FOR_SENSOR2:\n      if (sensor2Triggered) {\n        count++;\n        state = IDLE;\n        updateDisplay();\n      }\n      break;\n\n    case WAITING_FOR_SENSOR1:\n      if (sensor1Triggered) {\n        count--;\n        state = IDLE;\n        updateDisplay();\n      }\n      break;\n  }\n\n  delay(50); // sensors need a brief gap between readings to avoid cross-interference\n}\n\nlong readDistanceCm(int trigPin, int echoPin) {\n  digitalWrite(trigPin, LOW);\n  delayMicroseconds(2);\n  digitalWrite(trigPin, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(trigPin, LOW);\n\n  long duration = pulseIn(echoPin, HIGH, 30000);\n  if (duration == 0) return 999;\n  return duration / 58;\n}\n\nvoid updateDisplay() {\n  lcd.clear();\n  lcd.setCursor(0, 0);\n  lcd.print(\"Cars inside:\");\n  lcd.setCursor(0, 1);\n  lcd.print(count);\n}\n",
+      "explanation": "The State enum captures exactly one thing: has the sequence seen its first trigger yet, and if so, from which sensor, waiting for the second? That's a much more reliable structure than trying to track raw timestamps by hand, since it clearly expresses \"we're mid-sequence\" as its own explicit state rather than an implicit condition scattered across several variables. The 50ms delay between readings exists because two ultrasonic sensors firing at exactly the same moment can occasionally hear each other's echo rather than their own — a brief stagger avoids that cross-talk."
+    }
+  ],
+  "expectedBehavior": "Walking (or moving an object) past the entry sensor and then the exit sensor within about 1.5 seconds increments the count on the LCD; the reverse order decrements it. Triggering only one sensor, or with too long a gap, does nothing.",
+  "troubleshooting": [
+    {
+      "issue": "Count increments and decrements randomly with no one passing through.",
+      "fix": "Lower TRIGGER_DISTANCE_CM, or check for reflective surfaces (walls, glass) directly behind the intended detection zone that could false-trigger a sensor at rest."
+    },
+    {
+      "issue": "Passing through doesn't register at all.",
+      "fix": "Increase SEQUENCE_TIMEOUT_MS if people/objects move slowly through your gate, and confirm both sensors independently report sensible distances via Serial before troubleshooting the sequence logic."
+    },
+    {
+      "issue": "Direction is consistently backwards (entries counted as exits).",
+      "fix": "Your sensor 1/sensor 2 physical placement is swapped relative to which side you intended as \"entry\" — either swap their wiring or swap the increment/decrement logic to match."
+    },
+    {
+      "issue": "One sensor seems to interfere with the other.",
+      "fix": "Increase the physical spacing between the two sensors, or increase the delay between reading each one."
+    }
+  ],
+  "extensions": [
+    "Add a maximum-occupancy alert (buzzer or LED) once the count reaches a set limit — handy for a simple parking-lot-full indicator.",
+    "Log every entry/exit event with a timestamp over Serial for a basic traffic log.",
+    "Add a physical reset button to zero the count.",
+    "Replace the LCD with a WiFi upload (ESP32) so the count is viewable remotely — see the Smart Home Sensor Hub project's WiFi dashboard pattern."
+  ]
+}

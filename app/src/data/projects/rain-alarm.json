@@ -1,0 +1,138 @@
+{
+  "identity": {
+    "id": "rain-alarm",
+    "title": "Rain Alarm",
+    "tagline": "A buzzer that shouts the moment water touches the sensor grid.",
+    "category": "Sensors & Automation",
+    "difficulty": "Beginner-Intermediate",
+    "estimatedTime": "15 minutes"
+  },
+  "goal": "Sound a buzzer immediately when the rain sensor's exposed grid gets wet — a simple, satisfying \"did you leave the window open\" detector, and a clean example of reading a sensor's simplified digital output rather than its raw analog signal.",
+  "simpleSummary": "Sound a buzzer the instant a rain sensor gets wet.",
+  "howItWorks": "The rain sensor board has two parts: an exposed grid of parallel copper traces that sits outside getting rained on, and a small onboard comparator circuit that sits safely tucked away. Water bridges tiny gaps between the traces, which lowers the resistance across the grid — the comparator watches that resistance (via a small onboard potentiometer that sets the sensitivity) and flips its DOUT pin from HIGH to LOW once enough water is present to cross the threshold. That means the Arduino doesn't need to interpret a raw analog value at all for this project — it can just watch for a clean digital LOW, exactly like reading a button.",
+  "toolsNeeded": [
+    "Arduino IDE (free, installed on your computer)",
+    "USB cable to connect the board to your computer",
+    "Breadboard and jumper wires",
+    "A few drops of water for testing (or a damp cloth) — no need to wait for real rain"
+  ],
+  "components": [
+    {
+      "componentId": "arduino-uno-r3",
+      "quantity": 1
+    },
+    {
+      "componentId": "rain-sensor",
+      "quantity": 1
+    },
+    {
+      "componentId": "buzzer",
+      "quantity": 1
+    },
+    {
+      "componentId": "jumper-wires",
+      "quantity": 4
+    }
+  ],
+  "circuitDiagramCaption": "Rain sensor's digital output (DOUT) on D2; buzzer on D8.",
+  "assembly3D": {
+    "connections": [
+      {
+        "from": {
+          "componentId": "rain-sensor",
+          "pin": "VCC"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "5V"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rain-sensor",
+          "pin": "GND"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      },
+      {
+        "from": {
+          "componentId": "rain-sensor",
+          "pin": "DOUT"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D2"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Positive (+)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "D8"
+        }
+      },
+      {
+        "from": {
+          "componentId": "buzzer",
+          "pin": "Negative (-)"
+        },
+        "to": {
+          "componentId": "arduino-uno-r3",
+          "pin": "GND"
+        }
+      }
+    ]
+  },
+  "wiringSteps": [
+    {
+      "step": 1,
+      "instruction": "Wire the rain sensor's VCC to Arduino 5V, GND to GND, and DOUT to D2.",
+      "detail": "This build only uses the simplified digital output (DOUT), not the raw analog output (AOUT) — see Extend This Project for the analog version, which can report how much rain, not just whether there's any."
+    },
+    {
+      "step": 2,
+      "instruction": "Wire the buzzer between D8 and GND.",
+      "detail": "Same simple two-wire buzzer connection as Buzzer Alarm / Tune Player."
+    },
+    {
+      "step": 3,
+      "instruction": "Mount the sensor board so the copper grid faces up and slightly angled, with the electronics side facing down and protected.",
+      "detail": "The grid is meant to get wet; the small circuit board underneath is not — keep it shielded if you're testing this somewhere water might drip onto it directly."
+    }
+  ],
+  "code": [
+    {
+      "filename": "rain_alarm.ino",
+      "language": "arduino",
+      "source": "// Rain Alarm\n// Sounds a buzzer continuously while the rain sensor grid detects moisture.\n\nconst int RAIN_DOUT_PIN = 2;\nconst int BUZZER_PIN = 8;\n\nvoid setup() {\n  pinMode(RAIN_DOUT_PIN, INPUT);\n  pinMode(BUZZER_PIN, OUTPUT);\n}\n\nvoid loop() {\n  // Most of these boards' comparators output LOW when wet, HIGH when dry —\n  // check yours with the Serial Monitor if the alarm behaves backwards.\n  bool isWet = digitalRead(RAIN_DOUT_PIN) == LOW;\n\n  if (isWet) {\n    tone(BUZZER_PIN, 1000); // continuous 1kHz tone while wet\n  } else {\n    noTone(BUZZER_PIN);\n  }\n}\n",
+      "explanation": "This is about as simple as sensor-driven logic gets: read one digital pin, and drive the buzzer directly from that reading with no intermediate state to track. tone() with no duration argument plays continuously until explicitly stopped with noTone(), which is exactly the \"alarm keeps sounding while the condition persists\" behavior this project wants, unlike the Buzzer Alarm / Tune Player project's one-shot melody."
+    }
+  ],
+  "expectedBehavior": "The buzzer stays silent while the sensor grid is dry, and sounds continuously the moment a few drops of water bridge the grid — stopping again once it dries or is wiped off.",
+  "troubleshooting": [
+    {
+      "issue": "Alarm never triggers even when clearly wet.",
+      "fix": "Adjust the small sensitivity potentiometer on the sensor board, and confirm water is actually bridging multiple traces on the grid, not just touching one."
+    },
+    {
+      "issue": "Alarm is inverted (sounds when dry, silent when wet).",
+      "fix": "Your specific board's comparator polarity is opposite to this code's assumption — change == LOW to == HIGH in the digitalRead comparison."
+    },
+    {
+      "issue": "Alarm triggers randomly with no water present.",
+      "fix": "Check for condensation or humidity directly on the grid, and make sure the sensitivity potentiometer isn't turned to an extremely sensitive setting."
+    }
+  ],
+  "extensions": [
+    "Switch to the sensor's analog output (AOUT) to report rain intensity, not just presence, and display it on an LCD.",
+    "Add a relay that closes a garden shed's window or retracts an awning automatically when rain is detected.",
+    "Log rain events with timestamps for a simple rainfall history.",
+    "Combine with the Soil Moisture Monitor project for a complete garden-watering-decision system."
+  ]
+}

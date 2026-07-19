@@ -1,0 +1,440 @@
+{
+  "identity": {
+    "id": "arduino-due",
+    "name": "Arduino Due",
+    "category": "Microcontroller Board",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Due was Arduino's first 32-bit ARM board, built around Atmel's SAM3X8E and physically shaped like a Mega so existing Mega shields mostly fit. Its defining trait — and its most common beginner-destroying mistake — is that it runs at 3.3V logic with pins that are NOT 5V tolerant, unlike every classic AVR Arduino before it. Wiring a 5V sensor straight to a Due pin the way you would on an Uno or Mega can permanently damage it. In exchange you get a real floating-point unit, two true analog outputs (DAC), and a native USB port alongside the usual programming port.",
+  "simpleSummary": "An early 32-bit Arduino, shaped like the Mega, for projects needing more speed and memory.",
+  "specifications": {
+    "microcontroller": "Atmel SAM3X8E, Arm Cortex-M3, 84 MHz",
+    "operatingVoltage": "3.3V (NOT 5V tolerant)",
+    "inputVoltageRecommended": "7-12V (via VIN)",
+    "flashMemory": "512 KB",
+    "sram": "96 KB",
+    "digitalIOPins": 54,
+    "pwmPins": 12,
+    "analogInputPins": 12,
+    "analogOutputPins": "2 (true DAC, not PWM-simulated)",
+    "dimensions": "101.52mm x 53.3mm",
+    "connector": "2x Micro-USB (native USB + programming port), plus barrel jack"
+  },
+  "pinMap": [
+    {
+      "name": "D0 (RX0)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware Serial receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA (varies by pin group)",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Not 5V tolerant — unlike an Uno/Mega, this will not survive a 5V logic signal."
+    },
+    {
+      "name": "D1 (TX0)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware Serial transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM",
+        "Interrupt"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D13",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O with PWM, wired to the onboard LED.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI SCK"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D14 (TX3)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, hardware Serial3 transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D15 (RX3)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, hardware Serial3 receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D16 (TX2)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, hardware Serial2 transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D17 (RX2)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, hardware Serial2 receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D18 (TX1)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, hardware Serial1 transmit.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D19 (RX1)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O, hardware Serial1 receive.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "D20 (SDA)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C data line (Wire).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "I2C SDA"
+      ],
+      "gotcha": "Not 5V tolerant — many I2C breakout boards default to 5V logic, check level compatibility."
+    },
+    {
+      "name": "D21 (SCL)",
+      "position": null,
+      "category": "communication",
+      "function": "Default I2C clock line (Wire).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [
+        "I2C SCL"
+      ],
+      "gotcha": "Same 3.3V-only caveat as SDA."
+    },
+    {
+      "name": "D22-D53",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O bank — no special onboard function; used for high pin-count shields.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "3-15 mA",
+      "alternateFunctions": [],
+      "gotcha": "Not 5V tolerant."
+    },
+    {
+      "name": "A0",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, 12-bit ADC (higher resolution than AVR-based boards).",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "A1-A11",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input bank, same 12-bit ADC as A0.",
+      "voltageRange": "0-3.3V",
+      "currentLimit": "N/A (input)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DAC0",
+      "position": null,
+      "category": "analog",
+      "function": "True analog output — outputs a real varying voltage, unlike PWM 'analogWrite' pins on AVR boards.",
+      "voltageRange": "0-2.75V output range",
+      "currentLimit": "Low output drive",
+      "alternateFunctions": [],
+      "gotcha": "Genuine analog voltage out, not a fast on/off PWM signal — useful for audio and precise control signals."
+    },
+    {
+      "name": "DAC1",
+      "position": null,
+      "category": "analog",
+      "function": "Second true analog output channel.",
+      "voltageRange": "0-2.75V output range",
+      "currentLimit": "Low output drive",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output — this board's native logic level.",
+      "voltageRange": "3.3V",
+      "currentLimit": "~800 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V output for peripherals that need it (not for board logic).",
+      "voltageRange": "5V",
+      "currentLimit": "~800 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "Unregulated supply input.",
+      "voltageRange": "7-12V recommended",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "IOREF",
+      "position": null,
+      "category": "special",
+      "function": "Reports the board's logic voltage (3.3V) to shields.",
+      "voltageRange": "3.3V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW resets the chip.",
+      "voltageRange": "0-3.3V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Audio/waveform generation",
+      "scenario": "Use the true DAC outputs to generate real analog waveforms for audio synthesis or signal generation.",
+      "pinsInvolved": [
+        "DAC0",
+        "DAC1"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "High-channel-count shield projects",
+      "scenario": "54 digital pins support large sensor/actuator arrays that wouldn't fit on an Uno or even a Nano.",
+      "pinsInvolved": [
+        "D22-D53"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Multiple simultaneous serial devices",
+      "scenario": "Four hardware UARTs let the Due talk to several serial peripherals (GPS, Bluetooth, RFID) at once without software serial hacks.",
+      "pinsInvolved": [
+        "D0 (RX0)",
+        "D1 (TX0)",
+        "D18 (TX1)",
+        "D19 (RX1)"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Mega shields (mechanically compatible)"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Mega 2560 (same size, 5V logic, no true DAC)"
+    ],
+    "oftenUpgradedTo": [
+      "Teensy 4.x (faster, smaller, better USB/audio ecosystem)"
+    ]
+  }
+}

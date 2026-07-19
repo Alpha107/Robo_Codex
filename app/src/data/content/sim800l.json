@@ -1,0 +1,127 @@
+{
+  "identity": {
+    "id": "sim800l",
+    "name": "SIM800L GSM/GPRS Module",
+    "category": "Communication Modules",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The SIM800L gives a microcontroller access to the actual cellular network — SMS, phone calls, and basic GPRS data — using a regular SIM card, completely independent of any WiFi network. It's controlled over UART with AT commands, similar in spirit to a Bluetooth module, but with a power requirement that catches almost every beginner off guard: while idle it draws a modest ~20mA, but the instant it transmits (registering on the network, sending an SMS) it can spike to 2A for brief bursts, which a microcontroller's onboard 5V regulator or a small USB power bank cannot supply — undersized power is the number one reason these modules seem to 'randomly reset' or 'not turn on.'",
+  "simpleSummary": "A module that gives a microcontroller access to the cell network — texting, calling, basic data.",
+  "specifications": {
+    "operatingVoltage": "3.4V - 4.4V (NOT 5V — needs its own regulated supply, not a microcontroller's 5V rail)",
+    "interface": "UART, controlled via AT commands",
+    "currentDraw": "~20mA idle, up to 2A in brief transmit bursts",
+    "network": "Quad-band GSM/GPRS (voice, SMS, basic data)",
+    "simCard": "Requires a micro-SIM card with active service"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input — needs a dedicated supply capable of 2A bursts, not a microcontroller's onboard regulator.",
+      "voltageRange": "3.4-4.4V",
+      "currentLimit": "Up to 2A transmit bursts",
+      "alternateFunctions": [],
+      "gotcha": "The single most common SIM800L failure: powering it from an Arduino's 5V/3.3V pin, which cannot supply transmit-burst current, causing the module to brown out and reset right when it tries to connect."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "TXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial transmit, 3.3V-ish logic level.",
+      "voltageRange": "0-2.8V typical",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "RXD",
+      "position": null,
+      "category": "communication",
+      "function": "Serial receive.",
+      "voltageRange": "0-2.8V typical",
+      "currentLimit": "N/A",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Not reliably 5V tolerant — use a level shifter or voltage divider from a 5V microcontroller's TX pin."
+    },
+    {
+      "name": "RST",
+      "position": null,
+      "category": "special",
+      "function": "Active-LOW hardware reset.",
+      "voltageRange": "0-VCC, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "NET",
+      "position": null,
+      "category": "special",
+      "function": "Connection point for an external antenna (often a small spring/helical antenna soldered here or a nearby connector).",
+      "voltageRange": "RF signal",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Weak or missing antenna connection is the second most common 'won't register on the network' cause after power issues."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Remote SMS alert system",
+      "scenario": "Send an SMS alert when a sensor threshold is crossed, with no WiFi/internet infrastructure needed.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "GPS tracker with cellular reporting",
+      "scenario": "Combine with a GPS module to periodically report location via SMS or GPRS data.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Remote equipment monitoring in areas without WiFi",
+      "scenario": "Cellular connectivity for agricultural, remote industrial, or off-grid monitoring projects.",
+      "pinsInvolved": [
+        "TXD",
+        "RXD",
+        "VCC"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "GPS module (NEO-6M)",
+      "Dedicated 4V/2A power supply"
+    ],
+    "oftenConfusedWith": [
+      "ESP32 (WiFi only, no cellular network access)"
+    ],
+    "oftenUpgradedTo": [
+      "4G/LTE Cat-M modules for faster data and better network coverage as 2G/3G networks are phased out in many regions"
+    ]
+  }
+}

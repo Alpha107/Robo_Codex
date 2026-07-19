@@ -1,0 +1,91 @@
+{
+  "identity": {
+    "id": "limit-switch",
+    "name": "Limit Switch / Microswitch",
+    "category": "Input Devices",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A limit switch detects that something has physically reached a specific position — a 3D printer axis hitting the end of its travel, a door reaching fully open, a CNC machine's carriage at its home position — by having a lever or plunger mechanically triggered at exactly that point. Unlike most sensors in this encyclopedia, it's satisfyingly simple: a mechanical switch with a satisfying positive 'click' and no calibration, drift, or environmental sensitivity to worry about, which is exactly why it's still the standard choice for homing and end-of-travel safety even in otherwise all-electronic designs. Most have three terminals (COM, NO, NC) rather than just two, letting a circuit choose whether the switch should be normally-open or normally-closed for its specific safety logic.",
+  "simpleSummary": "A switch that gets pressed automatically when something reaches a specific spot, like a printer arm hitting its limit.",
+  "specifications": {
+    "switchType": "SPDT (single-pole double-throw) — provides both normally-open and normally-closed contacts",
+    "actuationMethod": "Lever, roller lever, or plain plunger depending on variant",
+    "ratedVoltage": "Often rated for both low-voltage logic and higher mains-adjacent voltages/currents",
+    "mechanicalLife": "Typically rated for hundreds of thousands to millions of actuations"
+  },
+  "pinMap": [
+    {
+      "name": "COM",
+      "position": null,
+      "category": "digital",
+      "function": "Common terminal — connects to either NO or NC depending on actuation state.",
+      "voltageRange": "Logic-level or higher depending on rating",
+      "currentLimit": "Depends on switch rating (often several amps)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "NO",
+      "position": null,
+      "category": "digital",
+      "function": "Normally-open contact — connects to COM only when the switch is actuated (pressed).",
+      "voltageRange": "Logic-level or higher",
+      "currentLimit": "Depends on switch rating",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "NC",
+      "position": null,
+      "category": "digital",
+      "function": "Normally-closed contact — connects to COM by default, disconnects when the switch is actuated.",
+      "voltageRange": "Logic-level or higher",
+      "currentLimit": "Depends on switch rating",
+      "alternateFunctions": [],
+      "gotcha": "Using NC for safety-critical stops (like an emergency limit) is generally safer than NO, since a broken/disconnected wire then behaves the same as a triggered stop rather than silently failing to trigger at all."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "3D printer/CNC axis homing",
+      "scenario": "Detect when an axis reaches its home or end-of-travel position to establish a known reference point.",
+      "pinsInvolved": [
+        "COM",
+        "NO"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Door/lid open detection",
+      "scenario": "Detect whether a door, lid, or hatch is fully open or closed.",
+      "pinsInvolved": [
+        "COM",
+        "NC"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Mechanical safety cutoff",
+      "scenario": "Physically stop a motor or mechanism from over-traveling and causing damage.",
+      "pinsInvolved": [
+        "COM",
+        "NC"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "NEMA 17 stepper motor",
+      "3D printer/CNC controller boards"
+    ],
+    "oftenConfusedWith": [
+      "Hall effect sensor (contactless, no mechanical wear, but needs a magnet)"
+    ],
+    "oftenUpgradedTo": [
+      "Optical or magnetic non-contact end-stops for higher precision and no mechanical wear"
+    ]
+  }
+}

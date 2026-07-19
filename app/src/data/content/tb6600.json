@@ -1,0 +1,179 @@
+{
+  "identity": {
+    "id": "tb6600",
+    "name": "TB6600 Stepper Motor Driver",
+    "category": "Motor Drivers & Controllers",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The TB6600 is a step up from small pluggable drivers like the A4988 in every sense: a boxier standalone module rated for much larger stepper motors (NEMA 23/34 class, common in bigger CNC routers and industrial-adjacent builds), with screw terminals instead of solder pins and opto-isolated step/direction inputs that electrically separate the control signal from the motor power stage — protecting a microcontroller from motor-side electrical noise. Configuration is done with a bank of DIP switches for microstepping resolution and current limit, rather than a trimpot you adjust by feel.",
+  "simpleSummary": "A rugged driver module for large stepper motors used in bigger CNC machines.",
+  "specifications": {
+    "inputVoltage": "9V - 42V DC",
+    "outputCurrent": "Up to 4A per phase (DIP-switch selectable)",
+    "microstepping": "Selectable via DIP switches: full step up to 1/32 step",
+    "isolation": "Opto-isolated STEP/DIR/ENA inputs",
+    "motorCompatibility": "2-phase bipolar stepper motors, NEMA 17 through NEMA 34"
+  },
+  "pinMap": [
+    {
+      "name": "PUL+",
+      "position": null,
+      "category": "digital",
+      "function": "Step pulse input, positive side of the opto-isolated pair — each pulse moves the motor one (micro)step.",
+      "voltageRange": "5-24V logic (opto-isolated input)",
+      "currentLimit": "N/A (opto input)",
+      "alternateFunctions": [
+        "STEP"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "PUL-",
+      "position": null,
+      "category": "digital",
+      "function": "Step pulse input, negative side.",
+      "voltageRange": "5-24V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DIR+",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input, positive side — level sets rotation direction.",
+      "voltageRange": "5-24V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DIR-",
+      "position": null,
+      "category": "digital",
+      "function": "Direction input, negative side.",
+      "voltageRange": "5-24V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "ENA+",
+      "position": null,
+      "category": "digital",
+      "function": "Enable input, positive side — disabling cuts power to the motor coils, letting the shaft spin freely by hand.",
+      "voltageRange": "5-24V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Often left unconnected (motor enabled by default) — only wire it up if you specifically need free-spin/disable control."
+    },
+    {
+      "name": "ENA-",
+      "position": null,
+      "category": "digital",
+      "function": "Enable input, negative side.",
+      "voltageRange": "5-24V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "A+",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil A terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Up to 4A",
+      "alternateFunctions": [],
+      "gotcha": "Never disconnect motor wiring while powered — can spike-damage the driver."
+    },
+    {
+      "name": "A-",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil A other terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Up to 4A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B+",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil B terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Up to 4A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "B-",
+      "position": null,
+      "category": "power",
+      "function": "Motor coil B other terminal.",
+      "voltageRange": "Driver-switched",
+      "currentLimit": "Up to 4A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Main power supply input.",
+      "voltageRange": "9V - 42V DC",
+      "currentLimit": "Size to motor's rated current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Power supply ground.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "CNC router/mill with larger steppers",
+      "scenario": "Drive NEMA 23-class motors that exceed what a small A4988/DRV8825 module can safely handle.",
+      "pinsInvolved": [
+        "PUL+",
+        "PUL-",
+        "DIR+",
+        "DIR-"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Industrial-style positioning table",
+      "scenario": "Opto-isolation makes it a safer choice near noisy industrial power electronics.",
+      "pinsInvolved": [
+        "A+",
+        "A-",
+        "B+",
+        "B-"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "NEMA 17/23 stepper motors",
+      "24V power supply"
+    ],
+    "oftenConfusedWith": [
+      "A4988/DRV8825 (smaller, lower current, no opto-isolation, direct microcontroller connection)"
+    ],
+    "oftenUpgradedTo": [
+      "Closed-loop stepper drivers (detect and correct missed steps)"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <rect x="30" y="120" width="170" height="160" rx="10" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="115" y="195" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Arduino</text>
+  <text x="115" y="216" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">Uno</text>
+
+  <!-- three identical LED branches: red(D10) yellow(D11) green(D12) -->
+  <!-- Red -->
+  <line x1="200" y1="150" x2="230" y2="150" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="150" r="4" fill="#1a1d23"/>
+  <text x="185" y="143" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">D10</text>
+  <path d="M230,150 H260" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <path d="M260,150 l7,-10 l10,20 l10,-20 l10,20 l7,-10" fill="none" stroke="#1a1d23" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M304,150 H330" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <polygon points="330,136 330,164 360,150" fill="#e03131" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="360" y1="136" x2="360" y2="164" stroke="#1a1d23" stroke-width="4"/>
+  <text x="300" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1d23">RED</text>
+
+  <!-- Yellow -->
+  <line x1="200" y1="200" x2="230" y2="200" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="200" r="4" fill="#1a1d23"/>
+  <text x="185" y="193" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">D11</text>
+  <path d="M230,200 H260" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <path d="M260,200 l7,-10 l10,20 l10,-20 l10,20 l7,-10" fill="none" stroke="#1a1d23" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M304,200 H330" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <polygon points="330,186 330,214 360,200" fill="#f08c00" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="360" y1="186" x2="360" y2="214" stroke="#1a1d23" stroke-width="4"/>
+  <text x="300" y="232" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1d23">YELLOW</text>
+
+  <!-- Green -->
+  <line x1="200" y1="250" x2="230" y2="250" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="250" r="4" fill="#1a1d23"/>
+  <text x="185" y="243" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">D12</text>
+  <path d="M230,250 H260" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <path d="M260,250 l7,-10 l10,20 l10,-20 l10,20 l7,-10" fill="none" stroke="#1a1d23" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M304,250 H330" stroke="#4dabf7" stroke-width="3" fill="none"/>
+  <polygon points="330,236 330,264 360,250" fill="#2f9e44" stroke="#1a1d23" stroke-width="2"/>
+  <line x1="360" y1="236" x2="360" y2="264" stroke="#1a1d23" stroke-width="4"/>
+  <text x="300" y="282" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1d23">GREEN</text>
+
+  <!-- common ground -->
+  <path d="M200,320 V150 M200,320 V200 M200,320 V250" fill="none" stroke="none"/>
+  <path d="M360,164 V330 H200 V320" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <path d="M360,214 V330" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <path d="M360,264 V330" fill="none" stroke="#1a1d23" stroke-width="3"/>
+  <line x1="200" y1="320" x2="230" y2="320" stroke="#1a1d23" stroke-width="3"/>
+  <circle cx="200" cy="320" r="4" fill="#1a1d23"/>
+  <text x="185" y="313" text-anchor="end" font-size="12" font-weight="600" fill="#1a1d23">GND</text>
+
+  <text x="430" y="150" fill="#5b6270" font-size="12">each branch: 220&#8486; resistor</text>
+  <text x="430" y="166" fill="#5b6270" font-size="12">in series with its LED</text>
+
+  <line x1="430" y1="220" x2="460" y2="220" stroke="#4dabf7" stroke-width="3"/>
+  <text x="468" y="225" fill="#5b6270" font-size="12">signal</text>
+  <line x1="430" y1="242" x2="460" y2="242" stroke="#1a1d23" stroke-width="3"/>
+  <text x="468" y="247" fill="#5b6270" font-size="12">ground</text>
+
+</svg>

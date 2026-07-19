@@ -1,0 +1,124 @@
+{
+  "identity": {
+    "id": "relay-module",
+    "name": "Relay Module",
+    "category": "Power Management",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A relay is an electrically-controlled mechanical switch: a small coil, energized by a safe low-voltage logic signal, physically pulls a metal contact closed (or open), letting a microcontroller control circuits at voltages and currents it could never touch directly — mains-powered lamps, motors, heaters. Most breakout modules add an optocoupler between the control pin and the relay coil, electrically isolating the microcontroller from the switched circuit entirely, which matters a lot when the switched side is mains voltage: a fault on the high-voltage side has no direct electrical path back to the microcontroller.",
+  "simpleSummary": "An electrically-controlled switch that lets a small microcontroller safely control high-power devices like lamps.",
+  "specifications": {
+    "controlVoltage": "3.3V - 5V logic (module-dependent)",
+    "switchedVoltage": "Often rated up to 250VAC / 30VDC on the relay contacts themselves",
+    "switchedCurrent": "Commonly 10A rated (check the specific relay's datasheet)",
+    "isolation": "Most modules include an optocoupler between logic input and relay coil"
+  },
+  "pinMap": [
+    {
+      "name": "IN",
+      "position": null,
+      "category": "digital",
+      "function": "Control input — typically active LOW on common modules (LOW energizes the relay).",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A (drives an optocoupler/transistor, not the coil directly)",
+      "alternateFunctions": [],
+      "gotcha": "Many modules are active-LOW, the opposite of what beginners expect — double-check before assuming HIGH means 'on'."
+    },
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power for the relay coil and control circuitry.",
+      "voltageRange": "3.3-5V (module-dependent)",
+      "currentLimit": "~70-100 mA while energized",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "COM",
+      "position": null,
+      "category": "power",
+      "function": "Common terminal of the switched (high-voltage) circuit.",
+      "voltageRange": "Up to the relay's rated switching voltage",
+      "currentLimit": "Up to the relay's rated switching current",
+      "alternateFunctions": [],
+      "gotcha": "This side of the module can carry mains voltage — treat it with the same respect as any exposed mains wiring, entirely separate from the logic side."
+    },
+    {
+      "name": "NO",
+      "position": null,
+      "category": "power",
+      "function": "Normally-open switched contact — connects to COM only when the relay is energized.",
+      "voltageRange": "Up to rated switching voltage",
+      "currentLimit": "Up to rated switching current",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "NC",
+      "position": null,
+      "category": "power",
+      "function": "Normally-closed switched contact — connects to COM by default, disconnects when energized.",
+      "voltageRange": "Up to rated switching voltage",
+      "currentLimit": "Up to rated switching current",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Mains-powered appliance control",
+      "scenario": "Turn a lamp, fan, or other mains-powered device on/off from a microcontroller, with full electrical isolation.",
+      "pinsInvolved": [
+        "IN",
+        "COM",
+        "NO"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "High-current DC load switching",
+      "scenario": "Switch a motor, solenoid, or other DC load drawing more current than a transistor alone would comfortably handle.",
+      "pinsInvolved": [
+        "IN",
+        "COM",
+        "NO"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Fail-safe circuit design",
+      "scenario": "Use the NC contact so a circuit defaults to a safe state if the controlling microcontroller loses power.",
+      "pinsInvolved": [
+        "COM",
+        "NC"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Solenoid valve",
+      "Soil moisture sensor"
+    ],
+    "oftenConfusedWith": [
+      "Solid-state relays (no moving parts, faster switching, different failure modes)"
+    ],
+    "oftenUpgradedTo": [
+      "Solid-state relays for high-cycle-count or fast-switching applications"
+    ]
+  }
+}

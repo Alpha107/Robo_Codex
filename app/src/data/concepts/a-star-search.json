@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "a-star-search",
+    "title": "A* Search",
+    "category": "Motion Planning & Navigation",
+    "level": "Intermediate",
+    "tagline": "Dijkstra's algorithm with a sense of direction — reaching the same guaranteed-optimal answer by exploring far less of the map."
+  },
+  "simpleSummary": "Like Dijkstra's algorithm, but smarter: it uses an estimate of how far each point still is from the goal to explore mostly toward the goal, instead of spreading out evenly in every direction.",
+  "keyIdea": "A* combines Dijkstra's guaranteed-optimal cost tracking with a heuristic estimate of remaining distance to the goal, exploring dramatically fewer nodes while still guaranteeing the optimal path, as long as the heuristic never overestimates.",
+  "overview": "A* search takes Dijkstra's algorithm and adds one crucial ingredient: a heuristic function that estimates how far a given node still is from the goal. Instead of prioritizing nodes purely by their distance from the start (as Dijkstra does), A* prioritizes nodes by the combined estimate of cost-so-far plus estimated-cost-remaining, pulling its exploration toward the goal rather than spreading uniformly outward in every direction. This 'informed' search typically explores dramatically fewer nodes than Dijkstra's algorithm on the same problem, while still guaranteeing the shortest path is found, provided the heuristic is admissible — meaning it never overestimates the true remaining distance.",
+  "equations": [
+    {
+      "label": "A* Priority Function",
+      "expression": "f(n) = g(n) + h(n)",
+      "meaning": "g(n) is the actual cost from the start to node n (exactly as tracked in Dijkstra's algorithm); h(n) is the heuristic's estimated cost from n to the goal; A* always expands the node with the lowest total f(n) next."
+    },
+    {
+      "label": "Admissibility Condition",
+      "expression": "h(n) ≤ true remaining cost, for every n",
+      "meaning": "For A* to guarantee finding the optimal path, the heuristic must never overestimate the true cost remaining to the goal — an overestimating heuristic can make the search faster but breaks the optimality guarantee."
+    }
+  ],
+  "howItWorks": "At every step, A* pops the node with the lowest f(n) = g(n) + h(n) from its priority queue — the same greedy frontier-expansion idea as Dijkstra's algorithm, but now pulled toward the goal by the added h(n) term. Common heuristic choices depend on how the robot is allowed to move: straight-line (Euclidean) distance for free 2D movement, or Manhattan distance for grid movement restricted to four directions. The choice of heuristic matters enormously for both correctness and performance: a heuristic of exactly zero everywhere makes A* behave identically to plain Dijkstra (no direction preference at all), while a heuristic that's a very close (but never overestimating) approximation of the true remaining cost lets A* find the optimal path while exploring only a small fraction of the nodes Dijkstra would need to check. This is precisely why A* is the default choice over plain Dijkstra whenever a reasonable, informative heuristic is available.",
+  "diagramCaption": "A* focuses its exploration in a narrower corridor toward the goal, guided by the heuristic, instead of Dijkstra's wide, uniform expansion in every direction.",
+  "realWorldExamples": [
+    "Video game AI pathfinding almost universally uses A*, since it finds fast, still-optimal shortest paths across grid-based game maps.",
+    "Robot path planning across a known occupancy grid map (built via SLAM) toward a specific goal location.",
+    "GPS and mapping software using A*-like informed search variants for fast route computation across enormous real-world road networks."
+  ],
+  "commonMisconceptions": [
+    "\"A* is a completely different algorithm from Dijkstra\" — it's Dijkstra's algorithm with a heuristic added; setting the heuristic to zero everywhere makes A* behave exactly like plain Dijkstra.",
+    "\"A* is always faster than Dijkstra, no matter what\" — true when a reasonably informative heuristic is available, but with a poor or zero heuristic, A* offers no speed benefit over plain Dijkstra at all.",
+    "\"Any heuristic works as long as it points roughly toward the goal\" — an overestimating heuristic can make A* run faster but breaks its guarantee of finding the truly optimal path."
+  ],
+  "relatedComponents": ["rplidar"],
+  "relatedProjects": [],
+  "relatedConcepts": ["dijkstras-algorithm", "path-planning-overview", "rrt-and-rrt-star"]
+}

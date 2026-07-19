@@ -1,0 +1,166 @@
+{
+  "identity": {
+    "id": "force-torque-sensor",
+    "name": "6-Axis Force/Torque Sensor",
+    "category": "Force & Torque Sensing",
+    "difficulty": "Advanced",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A 6-axis force/torque (F/T) sensor is a compact metal puck bolted between a robot arm's wrist and its end effector, measuring the full wrench applied at that interface: three forces (Fx, Fy, Fz) and three torques (Mx, My, Mz) simultaneously, not just a single push/pull number. Internally it's a machined elastic structure (often a Stewart-platform-like spoke arrangement) instrumented with multiple strain-gauge bridges whose combined readings are resolved through a calibration matrix into the six independent components. This is what lets a robot 'feel' contact during force-controlled assembly, polishing, or human collaboration instead of blindly following a position trajectory. Unlike a single load cell, it can distinguish a straight push from an off-axis nudge or a twisting moment, which is exactly the information a compliant-motion controller needs.",
+  "simpleSummary": "A sensor puck bolted onto a robot's wrist that lets it feel exactly how hard, and in which direction and twist, something is pushing back.",
+  "specifications": {
+    "measurementAxes": "6 (Fx, Fy, Fz, Mx, My, Mz)",
+    "forceRangeXY": "±200 N",
+    "forceRangeZ": "±400 N",
+    "torqueRange": "±10 N·m",
+    "resolution": "~0.05 N force, ~0.0015 N·m torque (16-bit ADC per strain channel)",
+    "outputInterface": "RS-485, Modbus RTU, half-duplex differential pair",
+    "sampleRate": "up to 1 kHz over RS-485 (internal strain ADCs sample faster, ~7.8 kHz per axis, and are digitally filtered)",
+    "supplyVoltage": "10-30V DC industrial rail",
+    "ipRating": "IP65",
+    "singleAxisOverload": "typically 2-3x rated capacity before permanent zero-offset shift or damage",
+    "mountingInterface": "circular bolt-circle flanges on both faces, ISO 9409-1 compatible on many robot-mount models",
+    "weight": "~250-350 g depending on flange size"
+  },
+  "pinMap": [
+    {
+      "name": "V+",
+      "position": null,
+      "category": "power",
+      "function": "Positive supply input for the sensor's strain-gauge excitation, amplifiers, and RS-485 transceiver.",
+      "voltageRange": "10-30V DC",
+      "currentLimit": "~150 mA typical at 24V",
+      "alternateFunctions": [],
+      "gotcha": "Running this off the same unfiltered 24V rail as a motor driver or contactor coil injects switching noise straight into the strain-gauge front end; give it its own filtered/regulated feed or expect noisy low-order counts even though the sensor itself is fine."
+    },
+    {
+      "name": "V-",
+      "position": null,
+      "category": "power",
+      "function": "Power return / supply ground, referenced to V+.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "This is the power return, not the cable shield — tying them together at the sensor end is a common way to create a ground loop that shows up as low-level torque-channel noise."
+    },
+    {
+      "name": "RS485_A",
+      "position": null,
+      "category": "communication",
+      "function": "Non-inverting differential data line for the Modbus RTU output stream carrying all six wrench channels.",
+      "voltageRange": "RS-485 differential levels",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Needs a 120 ohm termination resistor at each physical end of the bus, not at every sensor — over-terminating a short bench run usually still works, but under-terminating a longer run causes intermittent frame corruption that looks like a flaky sensor."
+    },
+    {
+      "name": "RS485_B",
+      "position": null,
+      "category": "communication",
+      "function": "Inverting differential data line, paired with RS485_A.",
+      "voltageRange": "RS-485 differential levels",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Swapping A/B relative to the rest of the bus doesn't damage anything but reliably produces zero valid frames — if a freshly wired sensor reads nothing on an otherwise healthy bus, try swapping this pair first."
+    },
+    {
+      "name": "SYNC",
+      "position": null,
+      "category": "digital",
+      "function": "Optional external trigger input (TTL) used to time-align sampling across multiple F/T sensors or with a motion controller's servo cycle.",
+      "voltageRange": "0-5V TTL",
+      "currentLimit": "Low, input only",
+      "alternateFunctions": [],
+      "gotcha": "Leaving this floating on some firmware revisions can free-run or spuriously trigger sampling; if you're not using multi-sensor sync, tie it to a known level rather than leaving it unconnected."
+    },
+    {
+      "name": "SHIELD",
+      "position": null,
+      "category": "special",
+      "function": "Cable shield / drain connection to the connector housing, intended to be grounded to earth at one point in the system.",
+      "voltageRange": "Chassis/earth reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Grounding the shield at both the sensor end and the controller end creates a ground loop through the chassis; the standard practice is single-point grounding at the controller cabinet only."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Force-controlled peg-in-hole assembly",
+      "scenario": "Monitor Fz and the small Mx/My torques while inserting a part, backing off and re-approaching on a search spiral when resistance spikes instead of grinding through a misalignment.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "RS485_A",
+        "RS485_B"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Human-robot collaborative contact safety",
+      "scenario": "Continuously watch the wrench magnitude at the tool flange and trigger a protective stop or compliant retreat if contact force exceeds a safety-rated threshold, per collaborative robot safety standards.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "RS485_A",
+        "RS485_B"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Robotic deburring / surface finishing",
+      "scenario": "Hold a constant normal force (Fz) against a curved workpiece surface while the tool path moves tangentially, compensating automatically for part-to-part shape variation.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "RS485_A",
+        "RS485_B"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Bin-picking grasp verification",
+      "scenario": "After closing the gripper, check Fz and torque signatures to confirm a real part is held (and not slipping) before committing to the transport move, rather than trusting gripper position alone.",
+      "pinsInvolved": [
+        "V+",
+        "V-",
+        "RS485_A",
+        "RS485_B"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Multi-sensor synchronized force logging",
+      "scenario": "Use the SYNC input across several F/T sensors on a test rig so every sensor's sample corresponds to the exact same instant, needed for research-grade multi-axis load characterization.",
+      "pinsInvolved": [
+        "SYNC",
+        "RS485_A",
+        "RS485_B"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Robot arm wrist flange",
+      "Parallel/adaptive gripper",
+      "RS-485/Modbus module",
+      "Industrial motion controller or PLC"
+    ],
+    "oftenConfusedWith": [
+      "Load cell + HX711 amplifier (measures one axis of force only; this sensor resolves a full 6-component wrench — 3 forces and 3 torques — simultaneously)",
+      "In-line rotary torque sensor (measures a single torque about one shaft axis for drivetrain testing, not a spatial force/torque wrench at a tool interface)"
+    ],
+    "oftenUpgradedTo": [
+      "EtherCAT or fieldbus-output F/T sensors with higher sample rates for tight real-time force-control loops"
+    ]
+  },
+  "beginnerMistakes": [
+    "Exceeding a single axis's overload rating during a fast collision or a mistuned force-control loop — this can permanently shift the calibration zero-offset even when the sensor still 'works' and shows no visible damage.",
+    "Skipping the RS-485 termination resistors, which only becomes obvious as corrupted frames under EMI or on longer cable runs, not on a short bench test.",
+    "Not taring/zeroing the sensor after mounting the end effector — the tool's own weight and any asymmetric mass bias every reading until it's zeroed in that orientation.",
+    "Grounding the cable shield at both ends instead of one, introducing a ground loop that shows up as low-level noise on the torque channels specifically.",
+    "Treating the sensor as a perfectly rigid structural link in fast motions — it has real mechanical compliance, and ignoring that can excite resonance in a tightly tuned force-control loop."
+  ]
+}

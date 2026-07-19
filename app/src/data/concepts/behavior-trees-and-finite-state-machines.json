@@ -1,0 +1,28 @@
+{
+  "identity": {
+    "id": "behavior-trees-and-finite-state-machines",
+    "title": "Behavior Trees & Finite State Machines",
+    "category": "AI & Machine Learning",
+    "level": "Intermediate",
+    "tagline": "Two structured ways of organizing a robot's decision-making, instead of one giant tangle of if-statements."
+  },
+  "simpleSummary": "Two common ways of organizing a robot's decision-making logic into a clear, manageable structure — one using a fixed set of named states and transitions, the other using a tree of tasks that succeed, fail, or are still running.",
+  "keyIdea": "Finite state machines organize behavior as a fixed set of named states with defined transitions between them; behavior trees instead organize behavior as a hierarchical tree of tasks, offering more modular and reusable structure as behavior complexity grows.",
+  "overview": "A finite state machine (FSM) breaks a robot's behavior into a distinct, finite set of states — Idle, Searching, Approaching, Grasping, Returning — with defined transition rules determining when to switch from one state to another, such as 'if an object is detected, transition from Searching to Approaching.' This is simple and intuitive to visualize and debug for a moderate number of states, but tends to suffer from state explosion as behavior complexity grows: the number of possible transitions grows quickly, and interactions between states become progressively harder to reason about. Behavior trees address exactly this scaling problem by organizing behavior as a tree of nodes evaluated every control cycle, rather than a flat set of states and transitions, making complex conditional behavior easier to build up modularly and reuse across different larger behaviors.",
+  "equations": [],
+  "howItWorks": "In a behavior tree, leaf nodes represent actual actions or conditions — 'Move To Target,' 'Is Battery Low?' — each reporting back one of three statuses every time it's evaluated: Success, Failure, or Running (still in progress). Composite nodes combine their children with specific logic: a Sequence node runs its children in order and only succeeds if every single one succeeds, failing immediately the moment any child fails; a Selector (or Fallback) node instead tries its children in order and succeeds as soon as any one of them succeeds, only failing if all of them do. These two composite node types alone let surprisingly complex conditional behavior be built up hierarchically, and individual subtrees — like a general 'recharge if battery is low' subtree — can be reused across many different larger behaviors, an advantage finite state machines don't naturally offer, since FSM transitions are typically specific to that particular machine's own structure. Neither approach is universally 'better': FSMs remain a perfectly good, simple choice for behaviors with genuinely few states and transitions, while behavior trees pay off specifically as complexity and reuse needs grow.",
+  "diagramCaption": "A finite state machine represents behavior as named states connected by transition arrows; a behavior tree instead represents it as a hierarchy of composite nodes (Sequence, Selector) and leaf actions, evaluated top-down every cycle.",
+  "realWorldExamples": [
+    "Video game AI, where behavior trees originated and remain heavily used, driving non-player character decision-making.",
+    "A warehouse or service robot's overall task logic (navigate to shelf, pick item, return to base, with interspersed checks like low battery) commonly implemented as a behavior tree in modern robotics middleware.",
+    "A simple robot's operating logic (Idle → Searching → Approaching → Grasping → Returning) as a classic, straightforward finite state machine example."
+  ],
+  "commonMisconceptions": [
+    "\"Behavior trees and finite state machines solve completely different problems\" — both are ways of structuring decision-making and control logic; they're alternative, and sometimes combined, solutions to essentially the same underlying organizational problem.",
+    "\"State machines are obsolete — always use behavior trees\" — FSMs remain a perfectly good, simple, appropriate choice for behaviors with a genuinely small number of states and transitions.",
+    "\"A behavior tree's 'Running' status means something has gone wrong\" — Running is a normal, expected status for any action that takes more than one control cycle to complete, like a multi-second movement."
+  ],
+  "relatedComponents": [],
+  "relatedProjects": ["line-following-robot", "obstacle-avoidance-robot"],
+  "relatedConcepts": ["reinforcement-learning-basics", "ros-concepts", "path-planning-overview"]
+}

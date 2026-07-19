@@ -1,0 +1,97 @@
+{
+  "identity": {
+    "id": "sg90-servo",
+    "name": "SG90 Micro Servo Motor",
+    "category": "Actuator - Motor",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A servo motor is a small motor with a built-in gearbox and feedback circuit that lets you command it to hold a specific angle, rather than just spinning continuously like a normal DC motor. The SG90 is the classic entry-level hobby servo: light, cheap, plastic-geared, and strong enough for small mechanisms like a robotic arm joint or a pan-tilt camera mount. You tell it where to point using a PWM signal, and it uses its internal electronics to drive itself to that angle and hold position against a moderate load. It belongs to the family of RC hobby servos, the same category used in remote-control cars and planes.",
+  "specifications": {
+    "operatingVoltage": "4.8V - 6V",
+    "stallTorque": "~1.8 kg·cm @ 4.8V, ~2.2 kg·cm @ 6V",
+    "speed": "~0.1 sec / 60 degrees @ 4.8V",
+    "rotationRange": "~180 degrees (standard variant); continuous-rotation variants exist and behave differently",
+    "weight": "~9 g",
+    "gearType": "Plastic (nylon) gears",
+    "controlSignal": "PWM, 50 Hz frame rate",
+    "pulseWidthRange": "~1ms (0 degrees) to ~2ms (180 degrees), 1.5ms neutral/center — exact range varies slightly by unit",
+    "dimensions": "~23mm x 12.2mm x 29mm"
+  },
+  "pinMap": [
+    {
+      "name": "Signal (orange/yellow wire)",
+      "position": null,
+      "category": "communication",
+      "function": "Receives the PWM control pulse that tells the servo what angle to move to. The pulse repeats roughly every 20ms (50Hz); the width of the HIGH portion (1-2ms) encodes the target angle.",
+      "voltageRange": "0-5V logic level",
+      "currentLimit": "N/A (control input, negligible current)",
+      "alternateFunctions": [],
+      "gotcha": "Needs a clean, regularly repeating pulse — software-based 'bit-banged' timing on a busy microcontroller can cause visible jitter. Dedicated libraries (e.g., the Arduino Servo library) or hardware PWM avoid this."
+    },
+    {
+      "name": "VCC (red wire)",
+      "position": null,
+      "category": "power",
+      "function": "Power input driving the internal motor and gearbox.",
+      "voltageRange": "4.8V - 6V",
+      "currentLimit": "Can spike to 500mA-700mA+ under load or stall, far more than a microcontroller's onboard 5V pin can safely supply for more than one servo",
+      "alternateFunctions": [],
+      "gotcha": "Powering more than one or two servos directly from a microcontroller board's 5V pin is a very common failure mode — it browns out the board, causing random resets or erratic behavior. Use a separate 5V supply for multiple or high-load servos."
+    },
+    {
+      "name": "GND (brown/black wire)",
+      "position": null,
+      "category": "power",
+      "function": "Ground return for the motor power circuit.",
+      "voltageRange": "0V reference",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "If the servo is powered from a separate supply (recommended for multiple servos), that supply's ground must still be tied to the microcontroller's ground, or the signal reference will float and the servo will behave erratically."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Robotic arm joint",
+      "scenario": "Use one servo per joint (base rotation, shoulder, elbow, gripper) to build a simple 3-4 degree-of-freedom arm.",
+      "pinsInvolved": ["Signal", "VCC", "GND"],
+      "difficulty": "Beginner-Intermediate"
+    },
+    {
+      "title": "Pan-tilt camera/sensor mount",
+      "scenario": "Two servos mounted perpendicular to each other let a camera or an HC-SR04 sensor sweep across a wider field of view.",
+      "pinsInvolved": ["Signal", "VCC", "GND"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "RC car steering",
+      "scenario": "A single servo turns the front wheels left/right based on a receiver or microcontroller signal.",
+      "pinsInvolved": ["Signal", "VCC", "GND"],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Sorting mechanism gate",
+      "scenario": "Servo rotates a small flap or gate to direct items into different bins based on a sensor reading (e.g., color or size detection upstream).",
+      "pinsInvolved": ["Signal", "VCC", "GND"],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Automatic pet feeder flap",
+      "scenario": "Servo opens a food-dispensing flap on a timer or button press, then returns to the closed angle.",
+      "pinsInvolved": ["Signal", "VCC", "GND"],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": ["Arduino Uno", "HC-SR04", "PCA9685 16-channel servo driver (for many servos)", "external 5V/6V power supply"],
+    "oftenConfusedWith": ["Continuous-rotation servos (same form factor, but the signal controls speed/direction instead of a fixed angle)", "Stepper motors (higher precision and holding torque, but need a dedicated driver and more complex control)"],
+    "oftenUpgradedTo": ["MG90S / MG996R (metal-geared servos with higher torque and durability)"]
+  },
+  "beginnerMistakes": [
+    "Powering multiple servos straight from the microcontroller's 5V pin, causing brownouts and random resets.",
+    "Forcing the horn to rotate by hand while powered off — this can strip the internal plastic gears.",
+    "Commanding an angle outside the servo's actual mechanical range, causing it to stall, buzz, and draw excess current against its own end-stop.",
+    "Forgetting a common ground when using a separate power supply, causing jittery or random movement."
+  ]
+}

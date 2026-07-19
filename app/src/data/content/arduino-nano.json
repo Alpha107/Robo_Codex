@@ -1,0 +1,409 @@
+{
+  "identity": {
+    "id": "arduino-nano",
+    "name": "Arduino Nano",
+    "category": "Microcontroller Board",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "The Arduino Nano packs the same ATmega328P brain as the Uno into a breadboard-friendly board about a third of the size, with male pin headers instead of the Uno's female sockets so it can be plugged straight into a breadboard. It trades the Uno's barrel jack and full-size USB-B for a compact USB connector (Mini-USB on older boards, Micro-USB on the Nano v3.x, USB-C on newer clones) and gains two extra analog-only pins (A6/A7). It's the board of choice whenever a project needs Uno-level capability but Uno-sized real estate isn't available.",
+  "simpleSummary": "A shrunk-down Arduino Uno that plugs straight into a breadboard.",
+  "specifications": {
+    "microcontroller": "ATmega328P",
+    "operatingVoltage": "5V",
+    "inputVoltageRecommended": "7-12V (via VIN)",
+    "clockSpeed": "16 MHz",
+    "flashMemory": "32 KB (2 KB used by bootloader)",
+    "sram": "2 KB",
+    "eeprom": "1 KB",
+    "digitalIOPins": 14,
+    "pwmPins": 6,
+    "analogInputPins": 8,
+    "dcCurrentPerIOPin": "40 mA",
+    "dimensions": "45mm x 18mm",
+    "connector": "Mini-USB / Micro-USB (varies by revision)"
+  },
+  "pinMap": [
+    {
+      "name": "D0 (RX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware serial receive.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "UART RX"
+      ],
+      "gotcha": "Avoid wiring anything here while using Serial or uploading a sketch."
+    },
+    {
+      "name": "D1 (TX)",
+      "position": null,
+      "category": "digital",
+      "function": "Digital I/O; hardware serial transmit.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "UART TX"
+      ],
+      "gotcha": "Same upload/Serial conflict as D0."
+    },
+    {
+      "name": "D2",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "External Interrupt 0"
+      ],
+      "gotcha": "Prioritize for buttons/encoders needing instant reaction."
+    },
+    {
+      "name": "D3",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "PWM",
+        "External Interrupt 1"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D4",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D5",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D6",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D7",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D8",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "D9",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "PWM"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D10",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI SS"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D11",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O with PWM.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "PWM",
+        "SPI MOSI"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D12",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "SPI MISO"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "D13",
+      "position": null,
+      "category": "digital",
+      "function": "General-purpose digital I/O, wired to the onboard LED.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "SPI SCK"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A0",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, 10-bit ADC. Usable as digital I/O.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A1",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A2",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A3",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "Digital I/O"
+      ],
+      "gotcha": null
+    },
+    {
+      "name": "A4",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "Digital I/O",
+        "I2C SDA"
+      ],
+      "gotcha": "Doubles as I2C data line."
+    },
+    {
+      "name": "A5",
+      "position": null,
+      "category": "analog",
+      "function": "Analog input, same as A0.",
+      "voltageRange": "0-5V",
+      "currentLimit": "40 mA",
+      "alternateFunctions": [
+        "Digital I/O",
+        "I2C SCL"
+      ],
+      "gotcha": "Doubles as I2C clock line."
+    },
+    {
+      "name": "A6",
+      "position": null,
+      "category": "analog",
+      "function": "Analog-only input (10-bit ADC).",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [],
+      "gotcha": "Unlike A0-A5, this pin is ADC-only and cannot be used as a digital pin — a common surprise for Uno users moving to the Nano."
+    },
+    {
+      "name": "A7",
+      "position": null,
+      "category": "analog",
+      "function": "Analog-only input (10-bit ADC).",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A (input only)",
+      "alternateFunctions": [],
+      "gotcha": "Same analog-only restriction as A6."
+    },
+    {
+      "name": "5V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 5V rail, shared with USB power.",
+      "voltageRange": "5V",
+      "currentLimit": "~800 mA shared",
+      "alternateFunctions": [],
+      "gotcha": "Output only — don't feed external 5V in here."
+    },
+    {
+      "name": "3.3V",
+      "position": null,
+      "category": "power",
+      "function": "Regulated 3.3V output for low-voltage peripherals.",
+      "voltageRange": "3.3V",
+      "currentLimit": "50 mA",
+      "alternateFunctions": [],
+      "gotcha": "Easy to overdraw with a hungry WiFi/radio module."
+    },
+    {
+      "name": "VIN",
+      "position": null,
+      "category": "power",
+      "function": "Unregulated supply input, feeds the onboard regulator.",
+      "voltageRange": "7-12V recommended",
+      "currentLimit": "Depends on supply",
+      "alternateFunctions": [],
+      "gotcha": "Don't connect while also powering via USB."
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Common ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "RESET",
+      "position": null,
+      "category": "special",
+      "function": "Pulling LOW restarts the running sketch.",
+      "voltageRange": "0-5V, active LOW",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AREF",
+      "position": null,
+      "category": "special",
+      "function": "Custom analog reference voltage for the ADC.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Rarely needed; leave unconnected unless calling analogReference()."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Breadboard-native prototyping",
+      "scenario": "Plug directly into a breadboard alongside other components — no jumper wires needed for the MCU itself.",
+      "pinsInvolved": [
+        "all"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Compact sensor data logger",
+      "scenario": "Read multiple analog sensors (using A6/A7 for extra headroom) and log to an SD card module over SPI.",
+      "pinsInvolved": [
+        "A0",
+        "A6",
+        "A7",
+        "D10",
+        "D11",
+        "D12",
+        "D13"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Small wearable or enclosure-constrained build",
+      "scenario": "Any project where a full-size Uno simply won't fit in the housing.",
+      "pinsInvolved": [
+        "5V",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Wireless sensor node",
+      "scenario": "Pair with an NRF24L01 over SPI to build a battery-powered remote sensor.",
+      "pinsInvolved": [
+        "D10",
+        "D11",
+        "D12",
+        "D13",
+        "3.3V",
+        "GND"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard",
+      "HC-SR04",
+      "NRF24L01",
+      "SG90 servo"
+    ],
+    "oftenConfusedWith": [
+      "Arduino Uno (same chip, larger board, female headers)",
+      "Arduino Pro Mini (smaller still, no onboard USB)"
+    ],
+    "oftenUpgradedTo": [
+      "ESP32 (adds WiFi/Bluetooth in a similar compact footprint)"
+    ]
+  }
+}

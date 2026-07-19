@@ -1,0 +1,95 @@
+{
+  "identity": {
+    "id": "flame-sensor",
+    "name": "Flame/Fire Sensor",
+    "category": "Environmental Sensors",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A flame sensor looks almost identical to the simple IR obstacle sensor — same small board, same comparator chip, same dark IR-receiver dome — but its photodiode is specifically tuned to the infrared wavelength range that flames emit strongly (roughly 760-1100nm), letting it detect fire at a distance even in normal ambient light. It's a presence/absence detector, not a temperature sensor: it answers 'is there a flame-like IR source in view,' not 'how hot is it,' and like any IR-based sensor it can be fooled by other strong IR sources (direct sunlight, incandescent bulbs) giving false positives.",
+  "simpleSummary": "A sensor tuned to spot the infrared light a flame gives off, so it can detect fire nearby.",
+  "specifications": {
+    "operatingVoltage": "3.3V - 5V",
+    "detectionRange": "~20cm - 100cm depending on flame size, adjustable sensitivity via trimpot",
+    "spectralResponse": "~760-1100nm (IR range flames emit strongly in)",
+    "outputType": "Analog (relative intensity) and digital (threshold, trimpot-adjustable)"
+  },
+  "pinMap": [
+    {
+      "name": "VCC",
+      "position": null,
+      "category": "power",
+      "function": "Power input.",
+      "voltageRange": "3.3V - 5V",
+      "currentLimit": "~15 mA",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "GND",
+      "position": null,
+      "category": "power",
+      "function": "Ground reference.",
+      "voltageRange": "0V",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "AOUT",
+      "position": null,
+      "category": "analog",
+      "function": "Analog output — voltage varies with detected IR intensity.",
+      "voltageRange": "0-5V",
+      "currentLimit": "N/A (analog output)",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "DOUT",
+      "position": null,
+      "category": "digital",
+      "function": "Digital threshold output — typically LOW when flame-range IR is detected above the trimpot-set threshold.",
+      "voltageRange": "0-5V digital",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Bright sunlight or incandescent bulbs can trigger false positives since they also emit strongly in the near-IR range this sensor watches."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Fire detection alarm",
+      "scenario": "Trigger a buzzer or notification when a flame is detected within range.",
+      "pinsInvolved": [
+        "DOUT",
+        "VCC",
+        "GND"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Fire-fighting robot (competition-style)",
+      "scenario": "Steer a small robot toward a detected candle flame and trigger a fan/extinguisher mechanism.",
+      "pinsInvolved": [
+        "AOUT",
+        "DOUT"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "Buzzer",
+      "Small fan/servo (extinguishing mechanism)"
+    ],
+    "oftenConfusedWith": [
+      "MQ-2 gas sensor (detects smoke/gas composition, not flame IR signature)",
+      "IR obstacle sensor (same form factor, different wavelength tuning)"
+    ],
+    "oftenUpgradedTo": [
+      "Thermal camera modules for actual temperature-based fire detection"
+    ]
+  }
+}

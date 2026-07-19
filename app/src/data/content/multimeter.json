@@ -1,0 +1,92 @@
+{
+  "identity": {
+    "id": "multimeter",
+    "name": "Multimeter",
+    "category": "Prototyping Essentials",
+    "difficulty": "Beginner",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A multimeter isn't a circuit component, but it's the single most-used tool in every roboticist's kit — it's how you actually verify a circuit is doing what you think, rather than guessing from code behavior alone. The three measurements used constantly are voltage (is this rail actually 5V?), continuity (is this wire actually connected, with the meter usually beeping to confirm), and resistance (what value is this unlabeled resistor?). Current measurement exists too, but requires breaking the circuit open and putting the meter in series — a step that trips up almost every beginner the first time, since voltage and resistance are both measured in parallel across a component instead.",
+  "simpleSummary": "A handheld tool for measuring voltage, current, and resistance — how you check that a circuit is actually working.",
+  "specifications": {
+    "measurementModes": "DC/AC voltage, DC/AC current, resistance, continuity (with buzzer), and often diode test/capacitance on nicer models",
+    "inputImpedance": "High-impedance (typically 1-10MΩ) on voltage mode, so as not to disturb the circuit being measured",
+    "displayType": "Digital LCD readout on nearly all modern hobbyist multimeters",
+    "probeConnectors": "Standard banana-jack ports, usually COM (black) and VΩmA (red)"
+  },
+  "pinMap": [
+    {
+      "name": "COM Port",
+      "position": null,
+      "category": "special",
+      "function": "Common/ground reference port — the black probe always plugs in here regardless of measurement mode.",
+      "voltageRange": "N/A (measurement input)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "V/Ω/mA Port",
+      "position": null,
+      "category": "special",
+      "function": "The red probe's port for voltage, resistance, and low-current measurements.",
+      "voltageRange": "N/A (measurement input)",
+      "currentLimit": "Fused, typically a few hundred mA max on this port",
+      "alternateFunctions": [],
+      "gotcha": "Measuring voltage while the probes are still plugged into the high-current 10A port (used for larger current measurements) can blow the meter's internal fuse or damage it — always match probe port to the selected mode."
+    },
+    {
+      "name": "Mode Selector Dial",
+      "position": null,
+      "category": "special",
+      "function": "Rotary switch selecting what's being measured (voltage, resistance, continuity, current, etc.) and the expected range.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Selecting current mode (A) but touching the probes directly across a voltage source (as if measuring voltage) creates a near-short-circuit through the meter — always double check the mode before connecting probes."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Verifying a power rail's actual voltage",
+      "scenario": "Confirm a buck converter or regulator is actually outputting the voltage it's supposed to, before connecting sensitive electronics.",
+      "pinsInvolved": [
+        "COM Port",
+        "V/Ω/mA Port"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Continuity-checking a wire or PCB trace",
+      "scenario": "Confirm a wire, solder joint, or trace is actually making an electrical connection.",
+      "pinsInvolved": [
+        "COM Port",
+        "V/Ω/mA Port"
+      ],
+      "difficulty": "Beginner"
+    },
+    {
+      "title": "Identifying an unlabeled resistor's value",
+      "scenario": "Measure resistance directly when color bands are unclear or a component is unmarked.",
+      "pinsInvolved": [
+        "COM Port",
+        "V/Ω/mA Port"
+      ],
+      "difficulty": "Beginner"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Breadboard",
+      "Basic passives",
+      "Any powered circuit under test"
+    ],
+    "oftenConfusedWith": [
+      "Oscilloscopes (show voltage changing over time, not just a single snapshot reading)"
+    ],
+    "oftenUpgradedTo": [
+      "An oscilloscope for observing signals that change over time (PWM, sensor waveforms, digital protocols)"
+    ]
+  }
+}

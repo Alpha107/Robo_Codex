@@ -1,0 +1,39 @@
+{
+  "identity": {
+    "id": "robot-dynamics-newton-euler-lagrangian",
+    "title": "Robot Dynamics (Newton-Euler / Lagrangian)",
+    "category": "Kinematics & Dynamics",
+    "level": "Advanced",
+    "tagline": "Moving beyond 'where is it' to 'how much torque does it actually take to move it there.'"
+  },
+  "simpleSummary": "The study of how much force or torque is actually needed to make a robot move the way you want, accounting for its mass, inertia, and gravity — not just describing the motion itself.",
+  "keyIdea": "Robot dynamics relates joint torques and forces to the resulting motion (and vice versa), accounting for mass, inertia, gravity, and velocity-dependent coupling effects between joints — computed via one of two classical, mathematically equivalent methods.",
+  "overview": "Kinematics (forward, inverse, and velocity kinematics) describes a robot's motion purely geometrically — positions, orientations, and velocities — without any reference to what forces or torques are actually needed to produce that motion. Dynamics fills in that missing piece: it relates the torques a robot's motors apply to the resulting joint accelerations, accounting for every link's mass and inertia, gravity acting on the whole structure, and the way a moving arm's own joints dynamically interact with each other. This matters immensely in practice: correctly sizing a robot arm's motors requires knowing the actual worst-case torque needed at each joint, and any model-based controller more sophisticated than basic PID (like feedforward gravity compensation, or Model Predictive Control) needs an accurate dynamics model to work well.",
+  "equations": [
+    {
+      "label": "General Manipulator Dynamics Equation",
+      "expression": "τ = M(q)·q̈ + C(q,q̇)·q̇ + G(q)",
+      "meaning": "τ is the vector of joint torques; q, q̇, q̈ are joint positions, velocities, and accelerations; M(q) is the configuration-dependent mass/inertia matrix; C(q,q̇)q̇ captures velocity-dependent Coriolis and centrifugal coupling between joints; G(q) is the configuration-dependent gravity torque."
+    },
+    {
+      "label": "Simple 1-Link Pendulum Example",
+      "expression": "τ = m·L²·θ̈ + m·g·L·cos(θ)",
+      "meaning": "For a single arm of mass m and length L at angle θ from horizontal, this gives the joint torque needed: the first term accelerates the arm, the second (m·g·L·cos θ) is exactly the gravity-compensation torque needed just to hold the arm still at that angle."
+    }
+  ],
+  "howItWorks": "Two classical methods derive the same underlying equations of motion. The Newton-Euler approach works link by link: a forward pass propagates velocities and accelerations from the base out to the tip, then a backward pass propagates forces and torques from the tip back to the base, applying Newton's second law (force = mass × acceleration) and its rotational equivalent at each link. This recursive structure is computationally efficient, which is why it's the method typically used inside real-time robot control software. The Lagrangian approach instead starts from the whole system's total kinetic and potential energy and applies the Euler-Lagrange equation to derive the equations of motion symbolically — a more systematic and often more intuitive method for deriving dynamics by hand or in symbolic math software, though less computationally efficient for real-time recursive evaluation on arms with many links. Both methods produce the identical τ = M(q)q̈ + C(q,q̇)q̇ + G(q) structure: M(q) is the effective mass/inertia 'felt' at each joint, which genuinely changes with the arm's configuration (an outstretched arm has more effective inertia at its base joint than a folded one); C(q,q̇)q̇ captures how the motion of one joint dynamically affects another through Coriolis and centrifugal effects; and G(q) is exactly the gravity-compensation torque referenced in feedforward control.",
+  "diagramCaption": "A single pendulum-like arm under gravity: the torque needed at the joint has one term to accelerate the arm and a separate gravity-compensation term (mgL·cos θ) needed just to hold the current angle.",
+  "realWorldExamples": [
+    "Selecting the correct motor for each joint of a robot arm by computing the worst-case torque needed across its full range of motion and expected payload — undersizing a motor here means the arm simply can't lift what it's supposed to.",
+    "The gravity-compensation feedforward term used in advanced robot arm controllers is computed directly from the G(q) part of the full dynamics equation.",
+    "Physics simulation environments (used for testing robot code before running it on real hardware) solve exactly these dynamics equations at every simulated timestep to produce realistic motion."
+  ],
+  "commonMisconceptions": [
+    "\"Kinematics and dynamics describe basically the same thing\" — kinematics is purely geometric (position, velocity, no forces involved); dynamics is specifically about the forces and torques causing that motion, involving mass and inertia that kinematics never considers.",
+    "\"Dynamics only matters for fast or heavy robots\" — even a slow-moving, lightweight arm needs at least the gravity term accounted for, or it will droop or drift when merely trying to hold a fixed position.",
+    "\"Newton-Euler and Lagrangian methods give different answers\" — they are mathematically equivalent, always producing the same equations of motion for the same physical system; they differ only in derivation approach and computational efficiency, not in the physics they describe."
+  ],
+  "relatedComponents": ["mg996r-servo", "sg90-servo", "dc-geared-motor", "bldc-motor", "nema17-stepper"],
+  "relatedProjects": [],
+  "relatedConcepts": ["state-space-representation", "feedforward-control", "pid-control"]
+}

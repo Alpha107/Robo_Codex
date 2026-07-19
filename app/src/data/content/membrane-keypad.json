@@ -1,0 +1,160 @@
+{
+  "identity": {
+    "id": "membrane-keypad",
+    "name": "Membrane Keypad (4x4)",
+    "category": "Input Devices",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A membrane keypad packs 16 buttons (in a 4x4 grid) into a flexible plastic sheet, but connects to a microcontroller with only 8 wires instead of 16 — the trick is that buttons are wired in a row/column matrix, and software scans one row at a time to see which column(s) register a press, deducing exactly which button was pressed from the row+column combination. That row/column scanning approach is a genuinely important pattern worth understanding, since it's how far larger button/LED matrices (keyboards, LED walls) stay wire-efficient too.",
+  "simpleSummary": "A flat sheet of 16 buttons wired so only 8 wires are needed to know which one was pressed.",
+  "specifications": {
+    "layout": "4x4 grid (16 keys), 3x4 variants also common",
+    "interface": "8 pins total (4 row + 4 column), scanned in software — no onboard driver chip",
+    "construction": "Flexible membrane/PET film with printed conductive traces, no mechanical click",
+    "ratedVoltage": "Logic-level, no specific voltage rating needed (purely passive contacts)"
+  },
+  "pinMap": [
+    {
+      "name": "R1",
+      "position": null,
+      "category": "digital",
+      "function": "Row 1 — driven LOW (or read) in turn while scanning columns to detect a press in this row.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "R2",
+      "position": null,
+      "category": "digital",
+      "function": "Row 2.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "R3",
+      "position": null,
+      "category": "digital",
+      "function": "Row 3.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "R4",
+      "position": null,
+      "category": "digital",
+      "function": "Row 4.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "C1",
+      "position": null,
+      "category": "digital",
+      "function": "Column 1 — read (with a pull-up/down) while a row is actively driven, to detect a press at that row/column intersection.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Uses all 8 pins even though it looks like it should need fewer — this is the standard matrix-scanning tradeoff: fewer wires than one-pin-per-button, but not zero."
+    },
+    {
+      "name": "C2",
+      "position": null,
+      "category": "digital",
+      "function": "Column 2.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "C3",
+      "position": null,
+      "category": "digital",
+      "function": "Column 3.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    },
+    {
+      "name": "C4",
+      "position": null,
+      "category": "digital",
+      "function": "Column 4.",
+      "voltageRange": "0-5V logic",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": null
+    }
+  ],
+  "useCases": [
+    {
+      "title": "PIN code entry / security system",
+      "scenario": "Enter a numeric code to unlock a door or disarm an alarm.",
+      "pinsInvolved": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Menu navigation input",
+      "scenario": "16 distinct keys for navigating menus or entering values on a standalone device.",
+      "pinsInvolved": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Simple calculator/data entry device",
+      "scenario": "Numeric and function key input for a custom standalone gadget.",
+      "pinsInvolved": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "C1",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "difficulty": "Intermediate"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Arduino Uno",
+      "16x2 LCD",
+      "Relay module"
+    ],
+    "oftenConfusedWith": [
+      "Individual tactile switches (simpler for a few buttons, but doesn't scale to 16 without matrix wiring anyway)"
+    ],
+    "oftenUpgradedTo": [
+      "Capacitive touch keypads for a sealed, more durable interface"
+    ]
+  }
+}

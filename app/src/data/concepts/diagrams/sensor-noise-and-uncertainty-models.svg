@@ -1,0 +1,36 @@
+<svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .drop circle { animation: drop 2.4s ease-in infinite; }
+    @keyframes drop { 0% { opacity: 0; transform: translateY(-18px); } 15% { opacity: 1; transform: translateY(0); } 70% { opacity: 1; } 100% { opacity: 0; } }
+  </style>
+
+  <text x="150" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2f9e44">Noisy but unbiased</text>
+  <line x1="150" y1="50" x2="150" y2="230" stroke="#1a1d23" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="150" y="245" text-anchor="middle" font-size="10.5" fill="#1a1d23">true value</text>
+  <g class="drop" fill="#4dabf7">
+    <circle cx="130" cy="80" r="5" style="animation-delay:0s"/>
+    <circle cx="168" cy="100" r="5" style="animation-delay:0.3s"/>
+    <circle cx="142" cy="120" r="5" style="animation-delay:0.6s"/>
+    <circle cx="160" cy="140" r="5" style="animation-delay:0.9s"/>
+    <circle cx="135" cy="160" r="5" style="animation-delay:1.2s"/>
+    <circle cx="155" cy="180" r="5" style="animation-delay:1.5s"/>
+    <circle cx="148" cy="200" r="5" style="animation-delay:1.8s"/>
+  </g>
+  <text x="150" y="270" text-anchor="middle" font-size="10.5" fill="#2f9e44">readings scatter evenly around the truth</text>
+
+  <line x1="310" y1="0" x2="310" y2="300" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="470" y="24" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e03131">Noisy AND biased</text>
+  <line x1="440" y1="50" x2="440" y2="230" stroke="#1a1d23" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="440" y="245" text-anchor="middle" font-size="10.5" fill="#1a1d23">true value</text>
+  <g class="drop" fill="#e03131">
+    <circle cx="500" cy="80" r="5" style="animation-delay:0.15s"/>
+    <circle cx="535" cy="100" r="5" style="animation-delay:0.45s"/>
+    <circle cx="510" cy="120" r="5" style="animation-delay:0.75s"/>
+    <circle cx="528" cy="140" r="5" style="animation-delay:1.05s"/>
+    <circle cx="505" cy="160" r="5" style="animation-delay:1.35s"/>
+    <circle cx="522" cy="180" r="5" style="animation-delay:1.65s"/>
+    <circle cx="515" cy="200" r="5" style="animation-delay:1.95s"/>
+  </g>
+  <text x="470" y="270" text-anchor="middle" font-size="10.5" fill="#e03131">scatter is consistently offset &#8212; averaging won't fix this</text>
+</svg>

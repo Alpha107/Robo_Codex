@@ -1,0 +1,140 @@
+{
+  "identity": {
+    "id": "slewing-ring-bearing",
+    "name": "Slewing Ring Bearing",
+    "category": "Structural & Mechanical",
+    "difficulty": "Intermediate",
+    "image": null,
+    "model3d": null
+  },
+  "overview": "A slewing ring bearing is a large-diameter, thin-section bearing built to carry combined axial load, radial load, and tilting moment simultaneously at low rotational speed — exactly the load case a pan/turntable base sees when it has to hold up an arm or sensor mast (axial), resist the mast being pushed sideways (radial), and resist it tipping over under an off-center load (moment), all at once, all while still rotating freely. Most designs integrate a ring gear directly into one race so a small pinion and motor can drive the whole rotation without a separate external ring gear assembly, but that integrated gear is only rated for drive torque — it is not a structural member, and the actual tipping/overturning load still has to be reacted through the ball raceway and the bolted inner/outer races. Unlike a small sealed ball bearing, a slewing ring is a serviceable component with a scheduled relubrication interval; skipping it lets the raceway pit under load long before any noise or roughness becomes noticeable.",
+  "simpleSummary": "A big flat ring bearing that lets a heavy rotating platform (like a robot's turntable base) spin freely while still supporting weight and resisting tipping.",
+  "specifications": {
+    "bearingType": "Single-row four-point contact ball slewing ring",
+    "innerDiameter": "~150-300 mm (varies widely by application/size)",
+    "outerDiameter": "~200-400 mm",
+    "axialLoadRating": "tens of kN dynamic (e.g. ~50 kN class, size-dependent)",
+    "radialLoadRating": "several kN",
+    "tiltingMomentRating": "several kN·m",
+    "gearType": "Integrated internal or external ring gear for pinion-driven rotation (some variants ungeared)",
+    "raceMaterial": "Induction-hardened alloy steel raceway (e.g. 42CrMo)",
+    "breakawayTorque": "A few Nm, dependent on preload and seal drag",
+    "sealType": "Contact rubber seals on both faces"
+  },
+  "pinMap": [
+    {
+      "name": "Inner Race Mounting Holes",
+      "position": null,
+      "category": "special",
+      "function": "Bolt circle on the rotating inner race, typically attached to the payload plate (arm base, sensor mast, or turntable top).",
+      "voltageRange": "N/A (mechanical interface)",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Inner and outer race bolt circles are different diameters and are not interchangeable. Mixing up which ring gets bolted to the rotating platform versus the fixed base is an easy assembly mistake that doesn't show up until the whole assembly binds under rotation."
+    },
+    {
+      "name": "Outer Race Mounting Holes",
+      "position": null,
+      "category": "special",
+      "function": "Bolt circle on the fixed outer race, attached to the stationary base structure.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Like the inner race, this needs a flat, rigid mounting surface. Bolting to a warped or under-stiffened plate preloads the raceway unevenly, creating a 'tight spot' once per revolution that's hard to diagnose after the fact."
+    },
+    {
+      "name": "Gear Teeth (Drive Gear)",
+      "position": null,
+      "category": "special",
+      "function": "Integrated ring gear meshed by a drive pinion to rotate the bearing under motor power.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "The gear teeth are rated only for drive torque, never for structural load. Never let the gear mesh react a tipping or overturning moment — that load path has to go through the ball raceway and bolted races, not the teeth, or they'll be damaged well below their nominal torque rating."
+    },
+    {
+      "name": "Grease Fitting / Lubrication Port",
+      "position": null,
+      "category": "special",
+      "function": "Relubrication point for the internal ball raceway on a scheduled maintenance interval.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Slewing rings are not sealed-for-life like small ball bearings. Skipping scheduled relubrication is the single most common cause of premature failure — the raceway pits under load silently, long before it becomes audible or rough to turn."
+    },
+    {
+      "name": "Seal",
+      "position": null,
+      "category": "special",
+      "function": "Rotating contact seal on each face that keeps dirt and moisture out of the raceway.",
+      "voltageRange": "N/A",
+      "currentLimit": "N/A",
+      "alternateFunctions": [],
+      "gotcha": "Seal drag adds directly to rotational breakaway torque, and stiffens further in cold weather. Sizing the drive motor from the bearing's bare rotational torque spec without accounting for seal drag is a common turntable design mistake."
+    }
+  ],
+  "useCases": [
+    {
+      "title": "Pan/turntable base for a robot arm or sensor mast",
+      "scenario": "Mount a robot arm base or a large sensor payload on the inner race so it can rotate a full 360 degrees while the outer race stays bolted to a fixed platform, carrying both the arm's weight and its tipping moment.",
+      "pinsInvolved": [
+        "Inner Race Mounting Holes",
+        "Outer Race Mounting Holes",
+        "Gear Teeth (Drive Gear)"
+      ],
+      "difficulty": "Advanced"
+    },
+    {
+      "title": "Telescope or antenna azimuth axis",
+      "scenario": "Use the slewing ring as the azimuth (horizontal rotation) bearing under a telescope or antenna mount, where it must hold significant off-center weight while still rotating smoothly.",
+      "pinsInvolved": [
+        "Inner Race Mounting Holes",
+        "Outer Race Mounting Holes",
+        "Seal"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Solar tracker azimuth rotation",
+      "scenario": "Rotate a solar panel array to track the sun through the day, where the bearing must resist wind-induced tipping moment as well as support the panel weight.",
+      "pinsInvolved": [
+        "Inner Race Mounting Holes",
+        "Outer Race Mounting Holes",
+        "Gear Teeth (Drive Gear)"
+      ],
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "Large mobile robot rotating base",
+      "scenario": "Give a heavy mobile robot's arm or turret a rotation stage that carries the arm's full weight and moment load, combining axial and radial capacity in one bearing instead of stacking separate thrust and radial bearings.",
+      "pinsInvolved": [
+        "Inner Race Mounting Holes",
+        "Outer Race Mounting Holes",
+        "Grease Fitting / Lubrication Port"
+      ],
+      "difficulty": "Advanced"
+    }
+  ],
+  "relatedComponents": {
+    "commonlyPairedWith": [
+      "Stepper or servo motor with drive pinion",
+      "Robotic arm base",
+      "Pan-tilt sensor mount",
+      "Slip ring (for passing power/signal across the rotating joint)"
+    ],
+    "oftenConfusedWith": [
+      "Standard thrust bearing (axial load only, no integrated gear, no combined moment rating)",
+      "Lazy susan bearing (similar concept but far lower load rating, no gear, hobby-grade only)"
+    ],
+    "oftenUpgradedTo": [
+      "Crossed roller bearing turntable (higher precision and lower runout at lower load capacity)"
+    ]
+  },
+  "beginnerMistakes": [
+    "Swapping the inner and outer race mounting, bolting the payload to the fixed race and the base to the rotating race.",
+    "Using the integrated gear teeth to react a tipping moment instead of just drive torque, damaging the teeth.",
+    "Bolting either race to a thin or warped plate, preloading the raceway unevenly and creating a rough spot once per rotation.",
+    "Skipping scheduled relubrication because the bearing still turns smoothly, not realizing raceway pitting is invisible until it fails.",
+    "Sizing the drive motor from the bearing's bare torque spec without adding margin for seal drag, especially in cold conditions."
+  ]
+}

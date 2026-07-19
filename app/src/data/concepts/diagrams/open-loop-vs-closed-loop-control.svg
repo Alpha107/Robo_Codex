@@ -1,0 +1,61 @@
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <style>
+    .fwd { stroke-dasharray: 6 5; animation: fwdflow 1s linear infinite; }
+    @keyframes fwdflow { to { stroke-dashoffset: -22; } }
+    .fb { stroke-dasharray: 6 4; animation: fbflow 1.4s linear infinite; }
+    @keyframes fbflow { to { stroke-dashoffset: -20; } }
+    .warn { animation: warnblink 1s steps(1) infinite; }
+    @keyframes warnblink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0.15; } }
+    .ok { animation: okpulse 1.4s ease-in-out infinite; }
+    @keyframes okpulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+  </style>
+
+  <text x="150" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d23">OPEN-LOOP</text>
+  <text x="20" y="90" font-size="12" font-weight="700" fill="#1a1d23">Command</text>
+  <path d="M20,100 H60" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="60,94 74,100 60,106" fill="#1a1d23"/>
+  <rect x="74" y="75" width="105" height="50" rx="7" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="126" y="105" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Controller</text>
+  <path d="M179,100 H213" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="213,94 227,100 213,106" fill="#1a1d23"/>
+  <rect x="227" y="75" width="90" height="50" rx="7" fill="#8d6e63" stroke="#1a1d23" stroke-width="2"/>
+  <text x="272" y="105" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Plant</text>
+  <path d="M317,100 H340" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <text x="345" y="105" font-size="12" font-weight="700" fill="#1a1d23">Output</text>
+  <text x="330" y="80" font-size="16" font-weight="700" fill="#e03131" class="warn">?</text>
+  <text x="60" y="160" font-size="11.5" fill="#e03131" font-weight="600">No feedback path — the controller never</text>
+  <text x="60" y="177" font-size="11.5" fill="#e03131" font-weight="600">learns whether the output was correct.</text>
+
+  <rect x="20" y="200" width="320" height="55" rx="8" fill="#fff5f5" stroke="#ffc9c9" stroke-width="1.4"/>
+  <text x="180" y="222" text-anchor="middle" font-size="11" font-weight="700" fill="#e03131">Example: 100 commanded stepper steps</text>
+  <text x="180" y="240" text-anchor="middle" font-size="10.5" fill="#5b6270">If one step is missed under load, the controller</text>
+  <text x="180" y="252" text-anchor="middle" font-size="10.5" fill="#5b6270">never finds out — position silently drifts.</text>
+
+  <line x1="360" y1="0" x2="360" y2="340" stroke="#dde1e8" stroke-width="1.5"/>
+
+  <text x="530" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1d23">CLOSED-LOOP</text>
+  <text x="390" y="90" font-size="12" font-weight="700" fill="#1a1d23">Command</text>
+  <path d="M390,100 H425" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="425,94 439,100 425,106" fill="#1a1d23"/>
+  <circle cx="452" cy="100" r="14" fill="#ffffff" stroke="#1a1d23" stroke-width="2.5"/>
+  <text x="452" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1d23">+</text>
+  <text x="452" y="110" text-anchor="middle" font-size="12" font-weight="700" fill="#e03131">&#8722;</text>
+  <path d="M466,100 H494" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="494,94 508,100 494,106" fill="#1a1d23"/>
+  <rect x="508" y="75" width="90" height="50" rx="7" fill="#2f6fae" stroke="#1a1d23" stroke-width="2"/>
+  <text x="553" y="105" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Controller</text>
+  <path d="M598,100 H621" stroke="#1a1d23" stroke-width="2.5" fill="none" class="fwd"/>
+  <polygon points="621,94 635,100 621,106" fill="#1a1d23"/>
+  <rect x="635" y="75" width="55" height="50" rx="7" fill="#8d6e63" stroke="#1a1d23" stroke-width="2"/>
+  <text x="662" y="105" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">Plant</text>
+  <text x="662" y="65" text-anchor="middle" font-size="16" font-weight="700" fill="#2f9e44" class="ok">&#10003;</text>
+
+  <path d="M662,125 V190 H452 V114" fill="none" stroke="#51cf66" stroke-width="2.5" class="fb"/>
+  <polygon points="446,120 452,108 458,120" fill="#51cf66"/>
+  <text x="557" y="207" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f9e44">measured output fed back</text>
+
+  <rect x="390" y="220" width="290" height="55" rx="8" fill="#f0fdf4" stroke="#b2f2bb" stroke-width="1.4"/>
+  <text x="535" y="242" text-anchor="middle" font-size="11" font-weight="700" fill="#2f9e44">Example: a hobby servo's built-in feedback</text>
+  <text x="535" y="260" text-anchor="middle" font-size="10.5" fill="#5b6270">confirms the shaft actually reached the</text>
+  <text x="535" y="272" text-anchor="middle" font-size="10.5" fill="#5b6270">commanded angle, correcting if it hasn't.</text>
+</svg>
