@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/Robo_Codex/:path*", "destination": "/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
